@@ -1,8 +1,12 @@
-# All for you - ReactJS Marketplace Project
+# 회의록링크
 
-All for you is a marketplace application for buying and selling services and goods such as electronics, fashion items, furniture, household goods, cars, properties and others. Users can sign up and advertise their goods or contact other sellers in case they want to receive more information about the proposed product or to buy it. They can also add products to Wishlist, archive their old sells or unarchive them if they want to be public again after some time. 
+[5월26일](https://difficult-wing-0b1.notion.site/2023-05-26-d8488e96ca7e4e59b0db9a97cc9fa9bb)  
 
-# Live demo: https://all-for-you.herokuapp.com/
+
+[5월24일](https://difficult-wing-0b1.notion.site/2023-05-24-7dd0bb8416cd49d6ac6cbeb65aaeb64b)  
+
+[5월16일](https://difficult-wing-0b1.notion.site/2023-05-16-eb0a51bc8326424e9d169b1948120140)
+
 
 ![Preview](https://res.cloudinary.com/silenceiv/image/upload/v1617894482/all-for-you-mockup_dafr6c.jpg)
 
