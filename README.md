@@ -24,7 +24,8 @@
 
 # How to run 
 
-- Install [MongoDB](https://www.mongodb.com/try/download)
+- Install [MongoDB](https://www.mongodb.com/try/download) (추가 : 몽고DB 설치 필요 X)
+
 - Navigate to server folder
 ```bash
 cd server
