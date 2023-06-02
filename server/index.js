@@ -1,55 +1,35 @@
-const express = require('express');
+const express = require("express");
 const app = express();
-const { PORT } = require('./config/config');
-const http = require('http').createServer(app);
-const auth = require('./middlewares/auth')
-const routes = require('./routes');
+// express 프레임워크를 불러옵니다.
+
+const { PORT } = require("./config/config");
+// 포트 번호를 설정합니다. 기본값은 5000입니다.
+
+const http = require("http").createServer(app);
+// Express 애플리케이션을 위한 HTTP 서버를 생성합니다.
+
+const auth = require("./middlewares/auth");
+// 인증을 처리하는 미들웨어를 불러옵니다.
+
+const routes = require("./routes");
+// 라우트를 정의한 파일을 불러옵니다.
+
 require("dotenv").config();
-require('./config/express')(app);
-require('./config/mongoose');
-app.use(auth())
+// .env 파일을 사용하기 위해 dotenv를 설정합니다.
 
-// const io = require("socket.io")(http, {
-//     cors: {
-//         origin: ["http://localhost:3000/"],
-//         credentials: true
-//     }
-// });
+require("./config/express")(app);
+// Express 애플리케이션의 설정을 위한 파일을 불러옵니다.
 
-// const ChatRoom = require('./models/ChatRoom')
+require("./config/mongoose");
+// MongoDB와의 연결을 설정하기 위한 파일을 불러옵니다.
 
-// io.on('connection', async function (socket) {
-    
-//     // Get chats from mongo collection
-//     let asd = await ChatRoom.find().populate("buyer").populate("seller");
-
-//     socket.emit('output', asd);
-
-//     socket.on('input', function(data){
-//         console.log(data)
-//     });
-// });
-
- // Handle input events
-//  io.on('input', async function (data) {
-//     console.log(data)
-
-    // let chat = await ChatRoom.findById(chatId);
-    // console.log(chat)
-    // chat.insert({name: name, message: message}, function(){
-    //     io.emit('output', [data]);
-
-    //     // Send status object
-    //     sendStatus({
-    //         message: 'Message sent',
-    //         clear: true
-    //     });
-    // });
-
-// });
-
-
+app.use(auth());
+// 애플리케이션에 인증 미들웨어를 사용합니다.
 
 app.use(routes);
-http.listen(PORT, () => console.log(`Server is running at http://localhost:${PORT}...`));
-// app.listen(PORT, () => console.log(`Server is listening on port ${PORT}...`));
+// 애플리케이션에 정의한 라우트를 사용합니다.
+
+http.listen(PORT, () =>
+  console.log(`Server is running at http://localhost:${PORT}...`)
+);
+// 설정한 포트 번호로 서버를 실행합니다.
