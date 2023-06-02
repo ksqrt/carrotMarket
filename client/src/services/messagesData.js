@@ -1,11 +1,13 @@
 const baseUrl = 'http://localhost:5000';
 
+// receiver, message를 인자로 받는 채팅방 생성
 export async function createChatRoom(receiver, message) {
     return (await fetch(`${baseUrl}/messages/createChatRoom`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
         },
+        // 로그인 인증 data도 같이 보냄
         credentials: 'include',
         body: JSON.stringify({message: message, receiver: receiver})
     })).json();

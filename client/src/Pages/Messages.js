@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
+// 메시지 관련 데이터를 가져오거나 보내는 함수들을 임포트
 import { getUserConversations, sendMessage } from '../services/messagesData';
+
 import { Container, Row, Form, InputGroup, Button, Alert } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
