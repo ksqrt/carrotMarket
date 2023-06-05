@@ -10,7 +10,7 @@ const messageService = require('../services/messageService')
 // 채팅방을 만드는 라우트 /createChatRoom URL로 post요청
 router.post('/createChatRoom', async (req, res) => {
 
-    // client 요청 body에서 메시지와 수신자를 가져옴
+    // client messagesData.jsdml body에서 메시지와 수신자를 가져옴
     const { message, receiver } = req.body;
     try {
         // messageService.js의 createChatRoom 함수 사용.

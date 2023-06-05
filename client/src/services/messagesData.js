@@ -4,7 +4,7 @@ const baseUrl = 'http://localhost:5000';
 export async function createChatRoom(receiver, message) {
     return (await fetch(`${baseUrl}/messages/createChatRoom`, {
         method: 'POST',
-        headers: {
+        headers: { 
             'Content-Type': 'application/json',
         },
         // 로그인 인증 data도 같이 보냄

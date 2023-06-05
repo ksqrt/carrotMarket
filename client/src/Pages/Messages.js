@@ -8,10 +8,10 @@ import { Link } from 'react-router-dom';
 import '../components/Messages/Aside.css'
 import '../components/Messages/Article.css'
 function Messages({ match }) {
-    let chatId = match.params.id;
-    const [conversations, setConversations] = useState([])
-    const [isSelected, setIsSelected] = useState(false);
-    const [selected, setSelected] = useState({
+    let chatId = match.params.id; // 선택된 채팅방의 id
+    const [conversations, setConversations] = useState([]) // 모든 채팅방의 정보를 저장하는 상태 변수
+    const [isSelected, setIsSelected] = useState(false); // 채팅방 선택 유무를 확인하는 상태 변수
+    const [selected, setSelected] = useState({ // 선택된 채팅방의 상세 정보(참가user, conversation(나눈 대화 내역))를 저장하는 상태 변수
         chats: {
             _id: 0,
             seller: {
@@ -34,12 +34,12 @@ function Messages({ match }) {
     const [alertShow, setAlertShow] = useState(false);
 
     useEffect(() => {
-        getUserConversations()
+        getUserConversations() // 현재 사용자와 관련된 모든 채팅방 목록을 가져옴
             .then(res => {
-                setConversations(res);
+                setConversations(res); // 가져온 채팅방 목록을 상태 변수에 저장.
             })
             .catch(err => console.log(err))
-        if (isSelected) {
+        if (isSelected) { // 채팅방이 선택되었다면 현재 선택된 채팅방의 정보를 selected 상태 변수에 저장
             setSelected(conversations.find(x => x.chats._id === chatId))
         }
     }, [isSelected, chatId, setSelected])

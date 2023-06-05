@@ -38,7 +38,7 @@ function Aside({ params, history }) {
     }
     const onMsgSent = (e) => {
         e.preventDefault();
-        createChatRoom(params.sellerId, message)
+        createChatRoom(params.sellerId, message) // 판매자의 ID, message 인자로 받음 
             .then((res) => {
                 history.push(`/messages/${res.messageId}`)
             })
