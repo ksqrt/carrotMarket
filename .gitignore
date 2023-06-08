@@ -3,6 +3,7 @@
 # 내가추가한 무시파일
 /server/config/config.js
 ./config/config.js
+carrotMarket.code-workspace
 
 # dependencies
 /node_modules
