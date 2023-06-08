@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const mongoosePaginate = require('mongoose-paginate-v2');
 
+// mongoose.Schema 인스턴스를 생성합니다.
 const productSchema = new mongoose.Schema({
     id: mongoose.Types.ObjectId,
     title: {
@@ -59,8 +60,11 @@ const productSchema = new mongoose.Schema({
         type: Boolean,
         default: true
     }
+    
 });
 
+// mongoosePaginate 플러그인을 productSchema에 적용합니다.
 productSchema.plugin(mongoosePaginate);
 
+// Product 모델로 productSchema를 컴파일하고 내보냅니다.
 module.exports = mongoose.model('Product', productSchema);
