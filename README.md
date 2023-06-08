@@ -5,7 +5,9 @@
 
 [5월24일](https://difficult-wing-0b1.notion.site/2023-05-24-7dd0bb8416cd49d6ac6cbeb65aaeb64b)  
 
-[5월16일](https://difficult-wing-0b1.notion.site/2023-05-16-eb0a51bc8326424e9d169b1948120140)
+[5월16일](https://difficult-wing-0b1.notion.site/2023-05-16-eb0a51bc8326424e9d169b1948120140)  
+
+[6월 7일](https://difficult-wing-0b1.notion.site/2023-06-07-59f4a2cede2246b9b5950d9c60b7fe44?pvs=4)
 
 
 ![Preview](https://res.cloudinary.com/silenceiv/image/upload/v1617894482/all-for-you-mockup_dafr6c.jpg)
