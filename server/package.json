@@ -13,7 +13,7 @@
     "nodemon": "^2.0.7"
   },
   "dependencies": {
-    "aws-sdk": "^2.348.0",
+    "aws-sdk": "^2.1393.0",
     "bcrypt": "^5.0.0",
     "cloudinary": "^1.25.1",
     "cookie-parser": "^1.4.5",
