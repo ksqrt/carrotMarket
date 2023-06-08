@@ -8,7 +8,9 @@ import { RiMessage3Fill } from 'react-icons/ri';
 import { createChatRoom } from '../../services/messagesData'
 
 function SellerProfile({ params, history }) {
+    //메시지 보여줌... 기본값은 false로
     const [showMsg, setShowMdg] = useState(false);
+    //메시지 내용는 공백으로
     const [message, setMessage] = useState("");
     const handleClose = () => setShowMdg(false);
     const handleShow = () => setShowMdg(true);

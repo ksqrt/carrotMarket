@@ -1,0 +1,10 @@
+@font-face {
+    font-family: "baemin_airFont";
+    src: url("../../../../public/Fonts/BMHANNAAir_ttf.ttf");
+}
+
+body {
+    font-family: "baemin_airFont", sans-serif;
+    font-style: normal;
+    font-size: 14pt;
+}
