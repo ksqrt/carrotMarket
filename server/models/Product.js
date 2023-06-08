@@ -60,6 +60,7 @@ const productSchema = new mongoose.Schema({
         type: Boolean,
         default: true
     }
+    
 });
 
 // mongoosePaginate 플러그인을 productSchema에 적용합니다.
