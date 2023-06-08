@@ -1,114 +1,80 @@
-import { useContext, useState, useEffect, useRef } from 'react';
+import { useContext } from 'react';
 import { Context } from '../../ContextStore';
+import { Navbar, NavDropdown, Nav, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import { NavLink } from 'react-router-dom';
 import { BsFillPersonFill, BsFillEnvelopeFill, BsFillPlusCircleFill } from 'react-icons/bs';
-import { IoLogOut } from 'react-icons/io5';
+import { IoLogOut } from 'react-icons/io5'
 
+import './Header.css'
 function Header() {
-  const { userData, setUserData } = useContext(Context);
-  const [showDropdown, setShowDropdown] = useState(false);
-  const dropdownRef = useRef(null);
+    const { userData, setUserData } = useContext(Context)
 
-  const toggleDropdown = () => {
-    setShowDropdown(!showDropdown);
-  };
+    return (
+        <Navbar collapseOnSelect bg="light" variant="light">
+            <div className="container">
+                <Navbar.Brand>
+                    <NavLink className="navbar-brand" to="/">All for you...</NavLink>
+                </Navbar.Brand>
+                <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+                <Navbar.Collapse id="responsive-navbar-nav">
+                    <Nav className="mr-auto">
+                        {/* <Nav.Link href="#features">Features</Nav.Link>
+                        <Nav.Link href="#pricing">Pricing</Nav.Link> */}
+                    </Nav>
+                    {userData ?
+                        (<Nav>
+                            <NavLink className="nav-item" id="addButton" to="/add-product">
+                                <OverlayTrigger key="bottom" placement="bottom"
+                                    overlay={
+                                        <Tooltip id={`tooltip-bottom`}>
+                                            <strong>Add</strong>  a sell.
+                                        </Tooltip>
+                                    }
+                                > 
+                                    <BsFillPlusCircleFill />
+                                </OverlayTrigger>
+                            </NavLink>
 
-  const handleClickOutside = (event) => {
-    if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-      setShowDropdown(false);
-    }
-  };
+                            <NavDropdown title={<img id="navImg" src={userData.avatar} alt="user-avatar"/>} drop="left" id="collasible-nav-dropdown">
+                                <NavLink className="dropdown-item" to={`/profile/${userData._id}`}>
+                                    <BsFillPersonFill />Profile
+                                </NavLink>
 
-  useEffect(() => {
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, []);
+                                {/* <NavDropdown.Divider /> */}
 
-  return (
-    <nav className="bg-white">
-      <div className="container mx-auto px-4">
-        <div className="flex items-center justify-between py-4">
-          <NavLink className="text-xl font-semibold" to="/">
-            All for you...
-          </NavLink>
-          {userData ? (
-            <div className="relative">
-              <button className="flex items-center justify-center w-8 h-8 overflow-hidden rounded-full" onClick={toggleDropdown}>
-                <img
-                  className="w-full h-full object-cover"
-                  src={userData.avatar}
-                  alt="user-avatar"
-                />
-              </button>
-              {showDropdown && (
-                <ul ref={dropdownRef} className="absolute right-0 mt-2 py-2 bg-white shadow-lg rounded-md z-50">
-                  <li>
-                    <NavLink
-                      className="block px-4 py-2 text-gray-800 hover:bg-gray-100"
-                      to="/add-product"
-                      onClick={toggleDropdown}
-                    >
-                      <BsFillPlusCircleFill className="mr-2" />
-                      Add a sell.
-                    </NavLink>
-                  </li>
-                  <li>
-                    <NavLink
-                      className="block px-4 py-2 text-gray-800 hover:bg-gray-100"
-                      to={`/profile/${userData._id}`}
-                      onClick={toggleDropdown}
-                    >
-                      <BsFillPersonFill className="mr-2" />
-                      Profile
-                    </NavLink>
-                  </li>
-                  <li>
-                    <NavLink
-                      className="block px-4 py-2 text-gray-800 hover:bg-gray-100"
-                      to="/messages"
-                      onClick={toggleDropdown}
-                    >
-                      <BsFillEnvelopeFill className="mr-2" />
-                      Messages
-                    </NavLink>
-                  </li>
-                  <li>
-                    <NavLink
-                      className="block px-4 py-2 text-gray-800 hover:bg-gray-100"
-                      to="/auth/logout"
-                      onClick={() => {
-                        setUserData(null);
-                      }}
-                    >
-                      <IoLogOut className="mr-2" />
-                      Log out
-                    </NavLink>
-                  </li>
-                </ul>
-              )}
+                                {/* <NavLink className="dropdown-item" to="/your-sells">
+                                    <BsFillGridFill />Sells
+                            </NavLink> */}
+                                <NavLink className="dropdown-item" to="/messages">
+                                    <BsFillEnvelopeFill />Messages
+                            </NavLink>
+                                {/* <NavLink className="dropdown-item" to="/wishlist">
+                                    <BsFillHeartFill />Wishlist
+                            </NavLink> */}
+
+                                <NavDropdown.Divider />
+
+                                <NavLink className="dropdown-item" to="/auth/logout" onClick={() => {
+                                    setUserData(null)
+                                }}>
+                                    <IoLogOut />Log out
+                                </NavLink>
+                            </NavDropdown>
+                        </Nav>)
+                        :
+                        (<Nav>
+                            <NavLink className="nav-item" id="nav-sign-in" to="/auth/login">
+                                Sign In
+                            </NavLink>
+                            <NavLink className="nav-item" id="nav-sign-up" to="/auth/register">
+                                Sign Up
+                            </NavLink>
+                        </Nav>)
+                    }
+                </Navbar.Collapse>
             </div>
-          ) : (
-            <div className="flex">
-              <NavLink
-                className="mr-2 px-4 py-2 text-gray-800 border border-gray-800 rounded hover:bg-gray-800 hover:text-white"
-                to="/auth/login"
-              >
-                Sign In
-              </NavLink>
-              <NavLink
-                className="px-4 py-2 text-white bg-blue-600 rounded hover:bg-blue-700"
-                to="/auth/register"
-              >
-                Sign Up
-              </NavLink>
-            </div>
-          )}
-        </div>
-      </div>
-    </nav>
-  );
+        </Navbar>
+    )
 }
 
 export default Header;
