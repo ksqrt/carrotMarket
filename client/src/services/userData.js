@@ -1,17 +1,17 @@
 const baseUrl = 'http://localhost:5000';
 
-export async function registerUser(userData) {
-    return (await fetch(`${baseUrl}/auth/register`, {
-        method: 'POST',
+export async function registerUser(userData) { //Register.js에서 userData 받음
+    return (await fetch(`${baseUrl}/auth/register`, { //App.js에 등록된 엔드포인트 URL
+        method: 'POST', //POST 요청에는 header와 body(본문)가 포함
         headers: {
-            'Content-Type': 'application/json',
+            'Content-Type': 'application/json', //JSON 형식의 데이터를 전송한다고 지정
         },
-        credentials: 'include',
-        body: JSON.stringify(userData)
-    })).json();
+        credentials: 'include', //요청에 쿠키를 포함하도록 설정
+        body: JSON.stringify(userData) //userData 객체를 JSON 문자열로 변환하여 요청 본문에 포함
+    })).json(); //서버의 응답을 JSON형식으로 파싱하여 반환. /await - 비동기 작업의 완료를 기다림
 }
 
-export async function loginUser(userData) {
+export async function loginUser(userData) { //Login.js에서 userData 받음???
     return (await fetch(`/auth/login`, {
         method: 'POST',
         headers: {
