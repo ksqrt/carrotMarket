@@ -24,17 +24,12 @@ function Details({ match, history }) {
     
     return (
         <>
-            <SimpleSider />
-            <div className="container">
+            <div className="container d-flex justify-content-center align-items-center">
                 {!loading ? (
                     <>
-                    <Breadcrumb params={product} />
                     <Row>
-                        <Col lg={8} id="detailsProduct">
+                        <Col lg={12} id="detailsProduct">
                             <ProductInfo params={product} />
-                        </Col>
-                        <Col lg={4}>
-                            <Aside params={product} history={history} />
                         </Col>
                     </Row></>) : (<Spinner animation="border" />)}
             </div>
