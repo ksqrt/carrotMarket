@@ -1,18 +1,18 @@
-import { useState, useEffect } from 'react';
-// 메시지 관련 데이터를 가져오거나 보내는 함수들을 임포트
-import { getUserConversations, sendMessage } from '../services/messagesData';
-
+import { useState, useEffect, useContext } from 'react';
+// import { getUserConversations, sendMessage } from '../services/messagesData';
+import {startChat, sendMessage, disconnect, getMessage, socket} from '../services/messagesData';
 import { Container, Row, Form, InputGroup, Button, Alert } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-
+import { Context } from '../../../ContextStore';
 import '../components/Messages/Aside.css'
 import '../components/Messages/Article.css'
-function Messages({ match }) {
+
+function Messages({ match }) { // match = Router 제공 객체, url을 매개변수로 사용. ex) 경로 : /messages/123  => match.params.id = "123" // app.js 참고 : <Route path="/messages" exact component={Messages} />;
     let chatId = match.params.id; // 선택된 채팅방의 id
     const [conversations, setConversations] = useState([]) // 모든 채팅방의 정보를 저장하는 상태 변수
     const [isSelected, setIsSelected] = useState(false); // 채팅방 선택 유무를 확인하는 상태 변수
-    const [selected, setSelected] = useState({ // 선택된 채팅방의 상세 정보(참가user, conversation(나눈 대화 내역))를 저장하는 상태 변수
-        chats: {
+    const [selected, setSelected] = useState({ // 선택된 채팅방의 상세 정보(참가user, conversation(나눈 대화 내역))를 저장하는 상태 변수  
+        chats: { // 초기값 설정
             _id: 0,
             seller: {
                 _id: "",

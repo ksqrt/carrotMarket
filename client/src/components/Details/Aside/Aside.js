@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { Button, Modal, Form, OverlayTrigger, Tooltip, Col } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { RiMessage3Fill } from 'react-icons/ri';
@@ -8,14 +8,17 @@ import { BsFillPersonFill } from 'react-icons/bs';
 import { MdEmail, MdPhoneAndroid } from 'react-icons/md'
 import { FaSellsy } from 'react-icons/fa'
 import { archiveSell } from '../../../services/productData';
-import { createChatRoom } from '../../../services/messagesData'
+import { startChat, socket } from '../../../services/messagesData'; // startChat 함수와 socket 객체를 import합니다.
+import { Context } from '../../../ContextStore'; // Context import
 import './Aside.css';
 
 
 function Aside({ params, history }) {
+    const { userData } = useContext(Context);
     const [showMsg, setShowMdg] = useState(false);
     const [showArchive, setShowArchive] = useState(false);
     const [message, setMessage] = useState("");
+
     const handleClose = () => setShowMdg(false);
     const handleShow = () => setShowMdg(true);
 
@@ -36,15 +39,37 @@ function Aside({ params, history }) {
         e.preventDefault();
         setMessage(e.target.value)
     }
+
     const onMsgSent = (e) => {
         e.preventDefault();
-        createChatRoom(params.sellerId, message) // 판매자의 ID, message 인자로 받음 
-            .then((res) => {
-                history.push(`/messages/${res.messageId}`)
-            })
-            .catch(err => console.log(err))
+
+        // buyer id, seller id 사용하여 채팅방 생성
+        startChat({ buyerId: userData._id, sellerId: params.seller }); // params = URL 경로 참고하겠다
+
+        // startchat 이벤트 실행
+        useEffect(() => {
+            socket.on('startChat', ({ chatId }) => {   // 수정: 'startchat' -> 'startChat'
+                history.push(`/messages/${chatId}`);
+            });
+        
+            // 컴포넌트가 언마운트될 때 이벤트 핸들러를 제거합니다.
+            return () => {
+                socket.off('startChat');
+            }
+        }, [history]); // react-router-dom에서 사용되는 객체, 페이지, url 이동 역할을 함
     }
 
+
+/*
+     const onMsgSent = (e) => {
+         e.preventDefault();
+         createChatRoom(params.sellerId, message) // 판매자의 ID, message 인자로 받음 
+             .then((res) => {
+                 history.push(`/messages/${res.messageId}`)
+             })
+             .catch(err => console.log(err))
+     }
+*/
     return (
         <aside>
             <div className="product-details-seller">
