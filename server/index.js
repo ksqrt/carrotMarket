@@ -29,10 +29,11 @@ app.use(auth());
 app.use(routes);
 // 애플리케이션에 정의한 라우트를 사용합니다.
 
+http.listen(PORT, () => {
+  console.log(`Server is running at http://localhost:${PORT}...`);
 
-
-
-http.listen(PORT, () =>
-  console.log(`Server is running at http://localhost:${PORT}...`)
-);
 // 설정한 포트 번호로 서버를 실행합니다.
+
+const Io = require('./services/io');
+Io(http);
+});
