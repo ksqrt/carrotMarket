@@ -3,11 +3,11 @@ const User = require('../models/User');
 const { S3 } = require('../config/aws-sdk');
 const { v4: uuidv4 } = require('uuid');
 
+const path = require('path');
 
 const { cloudinary } = require('../config/cloudinary');
 const { CLOUDINARY_STORAGE } = require('../config/config');
 const fs = require('fs');
-const path = require('path');
 const { promisify } = require('util');
 
 
@@ -54,41 +54,49 @@ async function create(data, userId) {
 // }
 
 async function uploadImage(image) {
+    const fileExtension = '.jpg';
+
     const bucket_name = 'ncp3';
-    const object_name = `sample-folder/${uuidv4()}.jpg`;
+
+    const object_name = `sample-folder/${uuidv4()}${fileExtension}`;
 
     try {
         // Convert image to Buffer
-        const imageBuffer = Buffer.from(image, 'binary');
+        const imageBuffer = Buffer.from(image, 'base64');
+
+        // Extract the file extension from the object name
+        const extension = path.extname(object_name).toLowerCase();
+
+        // Map the file extension to the corresponding MIME type
+        const mimeTypes = {
+            '.jpg': 'image/jpeg',
+            '.jpeg': 'image/jpeg',
+            '.png': 'image/png',
+            // Add more supported extensions and MIME types here
+        };
+
+        // Get the MIME type based on the file extension
+        const contentType = mimeTypes[extension] || 'application/octet-stream';
 
         // Upload file to S3
         const uploadParams = {
             Bucket: bucket_name,
             Key: object_name,
             ACL: 'public-read',
-            Body: imageBuffer
+            ContentType: contentType,
+            Body: imageBuffer,
         };
         const uploadResult = await S3.upload(uploadParams).promise();
 
         // 업로드된 이미지 URL 생성
         const imageUrl = uploadResult.Location;
 
-        // 이미지 URL을 원하는 형식으로 변환 (여기서는 리사이징 예시)
-        const index = imageUrl.indexOf('upload/') + 7;
-        const resizedImageUrl =
-            imageUrl.substring(0, index) +
-            'c_fit,q_auto,f_auto,w_800' +
-            imageUrl.substring(index);
-
         return imageUrl;
-
     } catch (error) {
         console.error('S3 image upload failed:', error);
         throw error;
     }
 }
-
-
 
 async function userCollectionUpdate(userId, product) {
     return await User.updateOne({ _id: userId }, { $push: { createdSells: product } });
