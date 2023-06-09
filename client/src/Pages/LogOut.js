@@ -1,5 +1,5 @@
 function LogOut({ history }) {
-    fetch('/auth/logout')
+    fetch('/auth/logout/old')
         .then(res => res.json())
         .then(res => {
             history.push('/')

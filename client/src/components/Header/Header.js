@@ -1,13 +1,20 @@
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { Context } from '../../ContextStore';
-import { Navbar, NavDropdown, Nav, OverlayTrigger, Tooltip } from 'react-bootstrap';
+import { Modal, Navbar, NavDropdown, Nav, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import { NavLink } from 'react-router-dom';
 import { BsFillPersonFill, BsFillEnvelopeFill, BsFillPlusCircleFill } from 'react-icons/bs';
-import { IoLogOut } from 'react-icons/io5'
+//import { IoLogOut } from 'react-icons/io5'
 
 import './Header.css'
+import LoginModal from '../../Pages/LoginModal';
+
 function Header() {
-    const { userData, setUserData } = useContext(Context)
+    const { userData, setUserData } = useContext(Context);
+    //로그인 모달
+    const [showModal, setShowModal] = useState(false);
+
+    const handleCloseModal = () => setShowModal(false);
+    const handleShowModal = () => setShowModal(true);
 
     return (
         <Navbar collapseOnSelect bg="light" variant="light">
@@ -57,24 +64,29 @@ function Header() {
                                 <NavLink className="dropdown-item" to="/auth/logout" onClick={() => {
                                     setUserData(null)
                                 }}>
-                                    <IoLogOut />Log out
+                                    {/* <IoLogOut />Log out */}
+                                    <a id='logout' href='/auth/logout' className='nav-item'>로그아웃</a>
                                 </NavLink>
                             </NavDropdown>
                         </Nav>)
                         :
                         (<Nav>
-                            <NavLink className="nav-item" id="nav-sign-in" to="/auth/login">
-                                Sign In
-                            </NavLink>
-                            <NavLink className="nav-item" id="nav-sign-up" to="/auth/register">
-                                Sign Up
+                            <NavLink className="nav-item" id="nav-sign-in" onClick={handleShowModal}>
+                                로그인/회원가입
                             </NavLink>
                         </Nav>)
                     }
                 </Navbar.Collapse>
             </div>
+            <Modal show={showModal} onHide={handleCloseModal}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Login</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <LoginModal handleCloseModal={handleCloseModal} />
+                </Modal.Body>
+            </Modal>
         </Navbar>
     )
 }
-
 export default Header;
