@@ -6,8 +6,9 @@ const User = require('../models/User');
 const productService = require('../services/productService');
 const userService = require('../services/userService');
 
+// 사용자 프로필을 수정하는 엔드포인트
 router.patch('/edit-profile/:id', async (req, res) => {
-    //TODO: Rewrite this 
+    //TODO: 이 부분 재작성하기 
     let { name, phoneNumber, email } = req.body;
     try {
         let errors = [];
@@ -37,6 +38,7 @@ router.patch('/edit-profile/:id', async (req, res) => {
     }
 })
 
+// 사용자 ID로 사용자 정보를 가져오는 엔드포인트
 router.get('/getUserById/:id', async (req, res) => {
     try {
         let user = await userService.getUserById(req.params.id);

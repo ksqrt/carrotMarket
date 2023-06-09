@@ -1,3 +1,11 @@
+
+
+body {
+    font-family: "baemin_airFont", sans-serif;
+    font-style: normal;
+    font-size: 14pt;
+}
+
 #avatar {
     width: 150px;
     height: 150px;

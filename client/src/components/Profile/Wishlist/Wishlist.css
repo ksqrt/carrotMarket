@@ -1,5 +1,12 @@
-.nothing-to-show {
+
+body {
+    font-family: "baemin_airFont", sans-serif;
+    font-style: normal;
+    font-size: 14pt;
+}
+
+/* .nothing-to-show {
     text-align: center;
     font-family: serif;
     font-size: 20pt;
-}
+} */
