@@ -55,7 +55,8 @@
 
 .navbar-brand a {
     font-family: baemin;
-    /* font-style: italic; */
+    font-weight: bold;
+    
     font-size: 20pt;
 }
 

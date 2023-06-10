@@ -1,25 +1,14 @@
 import { useContext, useState } from 'react';
 import { Context } from '../../ContextStore';
-import { Modal, Navbar, NavDropdown, Nav, OverlayTrigger, Tooltip } from 'react-bootstrap';
+import { Navbar, NavDropdown, Nav, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import { NavLink } from 'react-router-dom';
 import { BsFillPersonFill, BsFillEnvelopeFill, BsFillPlusCircleFill } from 'react-icons/bs';
-//import { IoLogOut } from 'react-icons/io5'
+import { IoLogOut } from 'react-icons/io5'
 
-<<<<<<< Updated upstream
-import './Header.css'
-import LoginModal from '../../Pages/LoginModal';
-
-=======
 import './Header.css';
 import LoginModal from '../Modal/LoginModal';
->>>>>>> Stashed changes
 function Header() {
-    const { userData, setUserData } = useContext(Context);
-    //로그인 모달
-    const [showModal, setShowModal] = useState(false);
-
-    const handleCloseModal = () => setShowModal(false);
-    const handleShowModal = () => setShowModal(true);
+    const { userData, setUserData } = useContext(Context)
 
     //모달
     const [isOpen, setIsOpen] = useState(false)
@@ -78,17 +67,12 @@ function Header() {
                                 <NavLink className="dropdown-item" to="/auth/logout" onClick={() => {
                                     setUserData(null)
                                 }}>
-                                    {/* <IoLogOut />Log out */}
-                                    <a id='logout' href='/auth/logout' className='nav-item'>로그아웃</a>
+                                    <IoLogOut />Log out
                                 </NavLink>
                             </NavDropdown>
                         </Nav>)
                         :
                         (<Nav>
-<<<<<<< Updated upstream
-                            <NavLink className="nav-item" id="nav-sign-in" onClick={handleShowModal}>
-                                로그인/회원가입
-=======
                             <div>
                                 <button className='nav-item' id="nav-sign-in" onClick={onOpen}>로그인/회원가입</button>
                                 {
@@ -100,21 +84,13 @@ function Header() {
                             </NavLink> */}
                             <NavLink className="nav-item" id="nav-sign-up" to="/auth/register">
                                 Sign Up
->>>>>>> Stashed changes
                             </NavLink>
                         </Nav>)
                     }
                 </Navbar.Collapse>
             </div>
-            <Modal show={showModal} onHide={handleCloseModal}>
-                <Modal.Header closeButton>
-                    <Modal.Title>Login</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    <LoginModal handleCloseModal={handleCloseModal} />
-                </Modal.Body>
-            </Modal>
         </Navbar>
     )
 }
+
 export default Header;

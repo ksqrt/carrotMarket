@@ -5,12 +5,15 @@ import { MdEmail, MdPhoneAndroid } from 'react-icons/md'
 import { FaSellsy } from 'react-icons/fa'
 import { GrEdit } from 'react-icons/gr';
 
+//사용자의 프로필 관련 정보들이 담겨져 있음
 function ProfileSection({ params }) {
     return (
         <div id="profile-head">
             <div className="container">
                 <Row className="profile-row">
+                    {/* 반응형 그리드 설정 */}
                     <Col lg={2} md={5} sm={12}>
+                        {/* 사용자 이미지를 표시하는 곳? */}
                         <img id="avatar" alt="avatar" src={params.avatar} />
                     </Col>
                     <Col lg={3} md={3} sm={12}>
