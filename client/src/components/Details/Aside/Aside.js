@@ -40,23 +40,24 @@ function Aside({ params, history }) {
         setMessage(e.target.value)
     }
 
+    
+    // startchat 이벤트 실행
+    useEffect(() => {
+        socket.on('startChat', ({ chatId }) => {   // 수정: 'startchat' -> 'startChat'
+            history.push(`/messages/${chatId}`);
+        });
+        
+        // 컴포넌트가 언마운트될 때 이벤트 핸들러를 제거합니다.
+        return () => {
+            socket.off('startChat');
+        }
+    }, [history]); // react-router-dom에서 사용되는 객체, 페이지, url 이동 역할을 함
+    
     const onMsgSent = (e) => {
         e.preventDefault();
 
         // buyer id, seller id 사용하여 채팅방 생성
         startChat({ buyerId: userData._id, sellerId: params.seller }); // params = URL 경로 참고하겠다
-
-        // startchat 이벤트 실행
-        useEffect(() => {
-            socket.on('startChat', ({ chatId }) => {   // 수정: 'startchat' -> 'startChat'
-                history.push(`/messages/${chatId}`);
-            });
-        
-            // 컴포넌트가 언마운트될 때 이벤트 핸들러를 제거합니다.
-            return () => {
-                socket.off('startChat');
-            }
-        }, [history]); // react-router-dom에서 사용되는 객체, 페이지, url 이동 역할을 함
     }
 
 
