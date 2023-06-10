@@ -5,9 +5,14 @@ import { NavLink } from 'react-router-dom';
 import { BsFillPersonFill, BsFillEnvelopeFill, BsFillPlusCircleFill } from 'react-icons/bs';
 //import { IoLogOut } from 'react-icons/io5'
 
+<<<<<<< Updated upstream
 import './Header.css'
 import LoginModal from '../../Pages/LoginModal';
 
+=======
+import './Header.css';
+import LoginModal from '../Modal/LoginModal';
+>>>>>>> Stashed changes
 function Header() {
     const { userData, setUserData } = useContext(Context);
     //로그인 모달
@@ -15,6 +20,15 @@ function Header() {
 
     const handleCloseModal = () => setShowModal(false);
     const handleShowModal = () => setShowModal(true);
+
+    //모달
+    const [isOpen, setIsOpen] = useState(false)
+    const onOpen = () => {
+        setIsOpen(true)
+    }
+    const onClose = () => {
+        setIsOpen(false)
+    }
 
     return (
         <Navbar collapseOnSelect bg="light" variant="light">
@@ -71,8 +85,22 @@ function Header() {
                         </Nav>)
                         :
                         (<Nav>
+<<<<<<< Updated upstream
                             <NavLink className="nav-item" id="nav-sign-in" onClick={handleShowModal}>
                                 로그인/회원가입
+=======
+                            <div>
+                                <button className='nav-item' id="nav-sign-in" onClick={onOpen}>로그인/회원가입</button>
+                                {
+                                    isOpen && <LoginModal onClose={onClose}/>
+                                }
+                            </div>
+                            {/* <NavLink className="nav-item" id="nav-sign-in" to="/auth/login">
+                                Sign In
+                            </NavLink> */}
+                            <NavLink className="nav-item" id="nav-sign-up" to="/auth/register">
+                                Sign Up
+>>>>>>> Stashed changes
                             </NavLink>
                         </Nav>)
                     }
