@@ -1,5 +1,6 @@
 // Mongoose 라이브러리를 사용하여 MongoDB 사용
 const mongoose = require('mongoose');
+const Product = require('./Product');
 
 // chatRoom 스키마를 생성 및 구조 정의
 const chatRoomSchema = new mongoose.Schema({
@@ -27,7 +28,12 @@ const chatRoomSchema = new mongoose.Schema({
             type: String,
             trim: true
         }
-    }]
+    }],
+    // Product Id 고유 id
+    product:{
+        type: mongoose.Types.ObjectId,
+        ref: 'Product'
+    }
 })
 
 // chatRoomSchema를 기반으로 ChatRoom 모델을 생성 후 export
