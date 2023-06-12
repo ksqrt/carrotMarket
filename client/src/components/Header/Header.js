@@ -63,11 +63,11 @@ function Header() {
                         </Nav>)
                         :
                         (<Nav>
-                            <NavLink className="nav-item" id="nav-sign-in" to="/auth/login">
-                                Sign In
+                            <NavLink style={{ backgroundColor: '#FF7E36' }} className="nav-item" id="nav-sign-in" to="/auth/login">
+                                로그인
                             </NavLink>
-                            <NavLink className="nav-item" id="nav-sign-up" to="/auth/register">
-                                Sign Up
+                            <NavLink className="nav-item " id="nav-sign-up" to="/auth/register">
+                                회원가입
                             </NavLink>
                         </Nav>)
                     }
