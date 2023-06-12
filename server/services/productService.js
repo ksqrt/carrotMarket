@@ -53,50 +53,49 @@ async function create(data, userId) {
 //     return compressedImg;
 // }
 
-async function uploadImage(image) {
-    const fileExtension = '.jpg';
 
+async function uploadImage(image) {
     const bucket_name = 'ncp3';
 
-    const object_name = `sample-folder/${uuidv4()}${fileExtension}`;
-
+    const base64Data = new Buffer.from(image.replace(/^data:image\/\w+;base64,/, ""), 'base64');
+    const type = image.split(';')[0].split('/')[1];
     try {
         // Convert image to Buffer
-        const imageBuffer = Buffer.from(image, 'base64');
-
-        // Extract the file extension from the object name
-        const extension = path.extname(object_name).toLowerCase();
-
-        // Map the file extension to the corresponding MIME type
-        const mimeTypes = {
-            '.jpg': 'image/jpeg',
-            '.jpeg': 'image/jpeg',
-            '.png': 'image/png',
-            // Add more supported extensions and MIME types here
-        };
-
-        // Get the MIME type based on the file extension
-        const contentType = mimeTypes[extension] || 'application/octet-stream';
+        // const imageBuffer = Buffer.from(image, 'base64');
 
         // Upload file to S3
         const uploadParams = {
             Bucket: bucket_name,
-            Key: object_name,
+            Key: `${uuidv4()}.${type}`,
+            Body: base64Data,
             ACL: 'public-read',
-            ContentType: contentType,
-            Body: imageBuffer,
+            ContentEncoding: 'base64',
+            ContentType: `image/${type}`,
         };
-        const uploadResult = await S3.upload(uploadParams).promise();
+        
+        let location = '';
+        let key = '';
+        try {
+            const { Location, Key } = await S3.upload(uploadParams).promise();
+            location = Location;
+            key = Key;
+        } catch (error) {
+            // console.log(error)
+        }
+        
+        // Save the Location (url) to your database and Key if needs be.
+        // As good developers, we should return the url and let other function do the saving to database etc
+        console.log(location, key);
+        
+        return location;
 
-        // 업로드된 이미지 URL 생성
-        const imageUrl = uploadResult.Location;
-
-        return imageUrl;
     } catch (error) {
         console.error('S3 image upload failed:', error);
         throw error;
     }
 }
+
+
 
 async function userCollectionUpdate(userId, product) {
     return await User.updateOne({ _id: userId }, { $push: { createdSells: product } });
@@ -114,5 +113,6 @@ module.exports = {
     edit,
     uploadImage,
     userCollectionUpdate,
-    findUserById
+    findUserById,
+   
 }
