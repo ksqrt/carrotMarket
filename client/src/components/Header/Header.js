@@ -4,6 +4,7 @@ import { Navbar, NavDropdown, Nav, OverlayTrigger, Tooltip } from 'react-bootstr
 import { NavLink } from 'react-router-dom';
 import { BsFillPersonFill, BsFillEnvelopeFill, BsFillPlusCircleFill } from 'react-icons/bs';
 import { IoLogOut } from 'react-icons/io5'
+import SearchBar from "../../components/Categories/SearchBar";
 
 import './Header.css'
 function Header() {
@@ -21,6 +22,7 @@ function Header() {
                         {/* <Nav.Link href="#features">Features</Nav.Link>
                         <Nav.Link href="#pricing">Pricing</Nav.Link> */}
                     </Nav>
+                    <SearchBar></SearchBar>
                     {userData ?
                         (<Nav>
                             <NavLink className="nav-item" id="addButton" to="/add-product">
