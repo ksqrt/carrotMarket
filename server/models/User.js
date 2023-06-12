@@ -17,6 +17,7 @@ const userSchema = new mongoose.Schema({
         required: 'Email address is required',
         match: [/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/, 'Please fill a valid email address']
     },
+    // password api 연동시 삭제 예정
     password: {
         type: String,
         trim: true,
@@ -55,7 +56,20 @@ const userSchema = new mongoose.Schema({
             type: mongoose.Schema.Types.ObjectId,
             ref: 'ChatRoom'
         }
-    ]
+    ],
+    // 차단 유저 목록 
+    blacklist: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'User'
+        }
+    ],
+    // 매너 온도 기본 36.5
+    mannertmp:{
+            type:String,
+            trim: true,
+            default: 36.5
+    }
 });
 
 userSchema.pre('save', async function (next) {

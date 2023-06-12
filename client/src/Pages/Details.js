@@ -4,7 +4,7 @@ import SimpleSider from '../components/Siders/SimpleSider';
 import Breadcrumb from '../components/Details/Breadcrumb'
 import ProductInfo from '../components/Details/ProductInfo/ProductInfo';
 import Aside from '../components/Details/Aside/Aside';
-import { getSpecific } from '../services/productData'
+import { getSpecific, views } from '../services/productData'
 
 import '../components/Details/ProductInfo/ProductInfo.css';
 import '../components/Details/Aside/Aside.css';
@@ -13,16 +13,21 @@ function Details({ match, history }) {
     let productId = match.params.id;
     let [product, setProduct] = useState([])
     let [loading, setLoading] = useState(true);
+    let [viewc, setViewc] = useState();
    
     useEffect(() => {
         window.scrollTo(0, 0)
         getSpecific(productId)
             .then(res => setProduct(res), setLoading(false))
             .catch(err => console.log(err));
-            
-    }, [productId, setProduct, setLoading])
-    
-    return (
+        
+        }, [productId, setProduct, setLoading])
+    useEffect(()=>{    
+        views(productId)
+            .then(res => setViewc(res))
+            .catch(err => console.log(err));
+    },[productId])
+        return (
         <>
             <div className="container d-flex justify-content-center align-items-center">
                 {!loading ? (
