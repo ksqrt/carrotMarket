@@ -1,13 +1,23 @@
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { Context } from '../../ContextStore';
 import { Navbar, NavDropdown, Nav, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import { NavLink } from 'react-router-dom';
 import { BsFillPersonFill, BsFillEnvelopeFill, BsFillPlusCircleFill } from 'react-icons/bs';
 import { IoLogOut } from 'react-icons/io5'
 
-import './Header.css'
+import './Header.css';
+import LoginModal from '../Modal/LoginModal';
 function Header() {
     const { userData, setUserData } = useContext(Context)
+
+    //모달
+    const [isOpen, setIsOpen] = useState(false)
+    const onOpen = () => {
+        setIsOpen(true)
+    }
+    const onClose = () => {
+        setIsOpen(false)
+    }
 
     return (
         <Navbar collapseOnSelect bg="light" variant="light">
@@ -63,9 +73,15 @@ function Header() {
                         </Nav>)
                         :
                         (<Nav>
-                            <NavLink className="nav-item" id="nav-sign-in" to="/auth/login">
+                            <div>
+                                <button className='nav-item' id="nav-sign-in" onClick={onOpen}>로그인/회원가입</button>
+                                {
+                                    isOpen && <LoginModal onClose={onClose}/>
+                                }
+                            </div>
+                            {/* <NavLink className="nav-item" id="nav-sign-in" to="/auth/login">
                                 Sign In
-                            </NavLink>
+                            </NavLink> */}
                             <NavLink className="nav-item" id="nav-sign-up" to="/auth/register">
                                 Sign Up
                             </NavLink>
