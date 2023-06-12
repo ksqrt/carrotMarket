@@ -31,9 +31,7 @@ app.use(routes);
 
 http.listen(PORT, () => {
   console.log(`Server is running at http://localhost:${PORT}...`);
-
-// 설정한 포트 번호로 서버를 실행합니다.
-
-const Io = require('./services/io');
-Io(http);
+  // 설정한 포트 번호로 서버를 실행합니다.
+  const Io = require('./services/io');
+  Io(http);
 });

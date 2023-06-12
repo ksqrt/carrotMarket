@@ -1,42 +1,49 @@
 const io = require('socket.io-client');
-const socket = io('http://localhost:5000');
+let socket;
 
 
-function startChat({ buyerId, sellerId }) {
+export function initializeSocket() {
+    socket = io('http://localhost:5000', {
+    });
+    console.log('Socket created:', socket);
+
+    socket.on('connect_error', (error) => {
+        console.log('Connection Error', error);
+    });
+}
+
+export function startChat({ buyerId, sellerId}) {
     socket.emit('startChat', { buyerId, sellerId });
 }
 
-function sendMessage({ chatId, senderId, message }) {
+export function sendMessage({ chatId, senderId, message }) {
     socket.emit('sendMessage', { chatId, senderId, message });
 }
 
-function getMessage(callback) {
+export function getMessage(callback) {
     socket.on('newMessage', ({ senderId, message }) => {
         callback({ senderId, message });
     });
 }
 
-function disconnect(callback) {
+export function disconnect(callback) {
+    console.log("연결 종료");
     socket.on('disconnect', () => {
         callback();
     });
 }
 
-function getUserConversations(userId, callback) {
-    socket.emit('getUserConversations', userId);
-    socket.on('userConversations', (conversations) => {
-        callback(conversations);
+export function getUserConversations(userId) {
+    return new Promise((resolve, reject) => {
+        socket.emit('getUserConversations', {userId});
+        socket.on('userConversations', (conversations) => {
+            resolve(conversations);
+        });
+        socket.on('error', reject);
     });
 }
 
-module.exports = {
-    startChat,
-    sendMessage,
-    getMessage,
-    disconnect,
-    getUserConversations,
-    socket
-};
+export { socket };
 
 
 /*

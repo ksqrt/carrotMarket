@@ -1,16 +1,17 @@
 import { useState, useEffect, useContext } from 'react';
 // import { getUserConversations, sendMessage } from '../services/messagesData';
-import {startChat, sendMessage, disconnect, getMessage, socket} from '../services/messagesData';
+import {startChat, sendMessage, disconnect, getMessage, socket, getUserConversations} from '../services/messagesData';
 import { Container, Row, Form, InputGroup, Button, Alert } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import { Context } from '../../../ContextStore';
+import { Context } from '../ContextStore';
 import '../components/Messages/Aside.css'
 import '../components/Messages/Article.css'
 
 function Messages({ match }) { // match = Router 제공 객체, url을 매개변수로 사용. ex) 경로 : /messages/123  => match.params.id = "123" // app.js 참고 : <Route path="/messages" exact component={Messages} />;
     let chatId = match.params.id; // 선택된 채팅방의 id
+    const { userData } = useContext(Context);
     const [conversations, setConversations] = useState([]) // 모든 채팅방의 정보를 저장하는 상태 변수
-    const [isSelected, setIsSelected] = useState(false); // 채팅방 선택 유무를 확인하는 상태 변수
+    const [isSelected, setIsSelected] = useState(false); // 채팅방 선택 유무를 확인하는 상태 변수, 선택된 채팅방
     const [selected, setSelected] = useState({ // 선택된 채팅방의 상세 정보(참가user, conversation(나눈 대화 내역))를 저장하는 상태 변수  
         chats: { // 초기값 설정
             _id: 0,
@@ -33,31 +34,54 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
     const [alert, setAlert] = useState(null);
     const [alertShow, setAlertShow] = useState(false);
 
+    console.log(userData._id);
+
     useEffect(() => {
-        getUserConversations() // 현재 사용자와 관련된 모든 채팅방 목록을 가져옴
-            .then(res => {
-                setConversations(res); // 가져온 채팅방 목록을 상태 변수에 저장.
-            })
-            .catch(err => console.log(err))
-        if (isSelected) { // 채팅방이 선택되었다면 현재 선택된 채팅방의 정보를 selected 상태 변수에 저장
-            setSelected(conversations.find(x => x.chats._id === chatId))
-        }
-    }, [isSelected, chatId, setSelected])
+        let timeoutId = setTimeout(() => { // db 가져오는 시간 고려해서 1초후 실행
+            getUserConversations(userData._id) // 현재 사용자와 관련된 모든 채팅방 목록을 가져옴
+                .then(res => {
+                    setConversations(res); // 가져온 채팅방 목록을 상태 변수에 저장.
+                    if (isSelected) { // 채팅방이 선택되었다면 현재 선택된 채팅방의 정보를 selected 상태 변수에 저장
+                        setSelected(res.find(x => x.chats._id === chatId))
+                    }
+                })
+                .catch(err => console.log(err))
+        }, 1000);
+
+        return () => {
+            clearTimeout(timeoutId); // unmount되면 timeout 제거
+        };
+    }, [isSelected, chatId, userData._id]);
+
+    useEffect(() => {
+        getMessage(({ senderId, message }) => {
+            console.log("Received Message", senderId, message);
+            if (isSelected && (selected.chats._id === chatId)) { // isselected가 true 상태(채팅방이 선택된 상태)이고, chatId와 selected.chats._id가 같은 경우
+                setSelected(pastChat => ({
+                    ...pastChat,
+                    chats: {
+                        ...pastChat.chats,
+                        conversation: [...pastChat.chats.conversation, { message, senderId }]
+                    }
+                }));
+                console.log("chatId : ",chatId);
+            }
+        });
+    }, [isSelected, chatId, selected]);
+
+
 
     function handleMsgSubmit(e) {
         e.preventDefault();
-        sendMessage(chatId, message)
-            .then((res) => {
+        console.log('My ID:', selected.myId);
+        sendMessage({ chatId, senderId: userData._id, message })
+        setMessage("");
                 setAlert("Message sent!");
-                setAlertShow(true);
-                setMessage("");
-                setSelected(selected, selected.chats.conversation.push({ message, senderId: res.sender }))
+                setAlertShow(true);                
                 setTimeout(() => {
                     setAlert(null);
                     setAlertShow(false);
                 }, 1000);
-            })
-            .catch(err => console.log(err))
     }
 
 

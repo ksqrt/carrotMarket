@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { Button, Modal, Form, OverlayTrigger, Tooltip, Col } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { RiMessage3Fill } from 'react-icons/ri';
@@ -8,7 +8,7 @@ import { BsFillPersonFill } from 'react-icons/bs';
 import { MdEmail, MdPhoneAndroid } from 'react-icons/md'
 import { FaSellsy } from 'react-icons/fa'
 import { archiveSell } from '../../../services/productData';
-import { startChat, socket } from '../../../services/messagesData'; // startChat 함수와 socket 객체를 import합니다.
+import { startChat, initializeSocket, socket } from '../../../services/messagesData'; // startChat 함수와 socket 객체를 import합니다.
 import { Context } from '../../../ContextStore'; // Context import
 import './Aside.css';
 
@@ -35,31 +35,26 @@ function Aside({ params, history }) {
             .catch(err => console.log(err))
     }
 
+    
     const handleMsgChange = (e) => {
         e.preventDefault();
         setMessage(e.target.value)
     }
-
-    
     // startchat 이벤트 실행
+    
     useEffect(() => {
-        socket.on('startChat', ({ chatId }) => {   // 수정: 'startchat' -> 'startChat'
+        initializeSocket();
+      }, []);
+
+    const onChatStart = (e) => {
+        e.preventDefault();
+        socket.on('startChat', ({ chatId }) => {
+            console.log("messages 페이지로 이동");
             history.push(`/messages/${chatId}`);
         });
-        
-        // 컴포넌트가 언마운트될 때 이벤트 핸들러를 제거합니다.
-        return () => {
-            socket.off('startChat');
-        }
-    }, [history]); // react-router-dom에서 사용되는 객체, 페이지, url 이동 역할을 함
-    
-    const onMsgSent = (e) => {
-        e.preventDefault();
-
-        // buyer id, seller id 사용하여 채팅방 생성
-        startChat({ buyerId: userData._id, sellerId: params.seller }); // params = URL 경로 참고하겠다
+       
+        startChat({ buyerId: userData._id, sellerId: params.sellerId }); // buyer id, seller id 사용하여 채팅방 생성
     }
-
 
 /*
      const onMsgSent = (e) => {
@@ -99,6 +94,8 @@ function Aside({ params, history }) {
                             <RiMessage3Fill />Contact Seller
                         </Button>
                     }
+                    
+                    <Button variant="dark" onClick={onChatStart}>Chat Start</Button>;
                     <Link to={`/profile/${params.sellerId}`}>
                         <Col lg={12}>
                             <img id="avatar" src={params.avatar} alt="user-avatar" />
@@ -126,7 +123,7 @@ function Aside({ params, history }) {
                     </Form>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button variant="dark" onClick={onMsgSent}>Sent</Button>
+                    {/* <Button variant="dark" onClick={onMsgSent}>Sent</Button> */}
                     <Button variant="secondary" onClick={handleClose}>Close</Button>
                 </Modal.Footer>
             </Modal>

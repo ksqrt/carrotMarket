@@ -1,8 +1,7 @@
 const Server = require('socket.io').Server;
 const mongoose = require('mongoose');
 const ChatRoom = require('../models/ChatRoom') // 채팅방 id, buyer, seller, conversation DB 연결
-const jwt = require('jsonwebtoken');
-const { SECRET, COOKIE_NAME } = require('../config/config');
+
 
 let io;
 function Io(server) {
@@ -10,24 +9,14 @@ function Io(server) {
     cors: {
       origin: "http://localhost:3000", 
       methods: ["GET", "POST"],
-      credentials: true
     }
   });
 
+  console.log('Before io.use');
 
-  io.use((socket, next) => {
-    // jwt -> authService.js의 loginUser 참고할 것.
-    if (socket.handshake.query && socket.handshake.query.token) {
-      jwt.verify(socket.handshake.query.token, SECRET, (err, decoded) => {
-        if (err) return next(new Error('Authentication error'));
-        socket.decoded = decoded;
-        next();
-      });
-    } else {
-      next(new Error('Authentication error'));
-    }    
-  }).on("connection", async (socket) => { //socket 변수 = socket.io에서 제공하는 것 
-    console.log("User connected", socket.decoded);
+  io.on("connection", async (socket) => { //socket 변수 = socket.io에서 제공하는 것 
+    try{
+    console.log("User connected");
 
     // let chatdb = await ChatRoom.find().populate("buyer").populate("seller");
 
@@ -46,6 +35,7 @@ function Io(server) {
         }
   
         socket.join(chatRoom._id.toString());
+        socket.emit('startChat', { chatId: chatRoom._id.toString() });
     });
 
     socket.on("sendMessage", async ({chatId, senderId, message}) => {
@@ -57,8 +47,7 @@ function Io(server) {
       console.log("disconnected");
     });
 
-    socket.on("getUserConversations", async () => {
-        let userId = socket.decoded._id;
+    socket.on("getUserConversations", async ({ userId }) => {
 
         let userChats = await ChatRoom.find({
             $or: [ // $or : 주어진 배열 내의 조건 중 하나라도 참이면 참으로 간주 buyer 또는 seller에 userId가 있는 경우에 참. 전부 가져옴.
@@ -68,8 +57,10 @@ function Io(server) {
         }).populate("buyer").populate("seller");
         let checkedChats = userChats.map(x => ({ chats: x, isBuyer: (x.buyer._id == userId), myId: userId }));
         socket.emit('userConversations', checkedChats);
-    });
-
+      });
+    } catch(err) {
+      console.log(err);
+    }
 
 });
 return io;
@@ -82,3 +73,27 @@ module.exports = Io;
     // chatId = client-server에서 채팅방 식별해주는 id
     // chatRoom._id = db-server에서 채팅방 식별해주는 id, mongoose 자동 생성
     // socket.id = 사용자 고유 식별 id, socket.io에서 연결 마다 자동 생성, 일회용 값
+
+    /*
+const jwt = require('jsonwebtoken');
+const { SECRET, COOKIE_NAME } = require('../config/config');
+
+  io.use((socket, next) => { // socket.io의 미들웨어를 등록하는 메서드
+    // jwt -> authService.js의 loginUser 참고할 것. authcontroller.js 의 /login 에 쿠키로 저장됨.
+    console.log(socket.handshake.query.token); 
+    if (socket.handshake.query && socket.handshake.query.token) {
+      jwt.verify(socket.handshake.query.token, SECRET, (err, decoded) => {
+        if (err) {
+          console.log(err); // 오류 로깅
+          console.log('SECRET: ', SECRET);
+          socket.disconnect(); // 연결 종료
+          return next(new Error('Authentication error'));
+        }
+        socket.decoded = decoded;
+        next();
+      });
+    } else {
+      next(new Error('Authentication error'));
+    }    
+  })
+  */
