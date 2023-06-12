@@ -32,6 +32,7 @@ export async function getSpecific(id) {
   ).json();
 }
 
+
 export async function createProduct(product) {
   return (
     await fetch(`${baseUrl}/products/create`, {
@@ -42,32 +43,40 @@ export async function createProduct(product) {
       credentials: "include",
       body: JSON.stringify(product),
     })
-  ).json();
-}
-
-export async function editProduct(id, product) {
-  return (
-    await fetch(`${baseUrl}/products/edit/${id}`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      credentials: "include",
-      body: JSON.stringify(product),
-    })
-  ).json();
-}
-
-export async function activateSell(id) {
-  return (await fetch(`/products/enable/${id}`)).json();
-}
-
-export async function archiveSell(id) {
-  return (await fetch(`/products/archive/${id}`)).json();
-}
-
-export async function wishProduct(id) {
-  return (
-    await fetch(`${baseUrl}/products/wish/${id}`, { credentials: "include" })
-  ).json();
-}
+    ).json();
+  }
+  
+  export async function editProduct(id, product) {
+    return (
+      await fetch(`${baseUrl}/products/edit/${id}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify(product),
+      })
+      ).json();
+    }
+    
+    export async function activateSell(id) {
+      return (await fetch(`/products/enable/${id}`)).json();
+    }
+    
+    export async function archiveSell(id) {
+      return (await fetch(`/products/archive/${id}`)).json();
+    }
+    
+    export async function wishProduct(id) {
+      return (
+        await fetch(`${baseUrl}/products/wish/${id}`, { credentials: "include" })
+        ).json();
+      }
+      
+    export async function views(id) {
+      return (
+        await fetch(`${baseUrl}/products/views/${id}`, {
+          credentials: "include"
+        })
+      ).json();
+    }

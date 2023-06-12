@@ -5,6 +5,7 @@ import Moment from "react-moment";
 
 function ProductCard({ params }) {
   const like = params.likes.length
+  const view = params.views.length
 
   return (
     <Card>
@@ -23,6 +24,8 @@ function ProductCard({ params }) {
           {/* <Link to="" id="heartIcon"><BsHeart /></Link> */}
           <br></br>
           <a>관심 ♥{like}</a>
+          <br></br>
+          <a>조회수 {view}</a>
         </small>
       </Card.Footer>
     </Card>

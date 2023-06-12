@@ -213,5 +213,28 @@ router.get('/wishlist/:id', async (req, res) => {
     }
 });
 
+router.get('/views/:id', async (req, res) => {
+    console.log('여기 일단 옴');
+    try{
+    let user = await User.findById(req.user._id);
+    let product = await Product.findById(req.params.id)
+        console.log()
+
+    if (!product.views.includes(req.user._id)) {
+        await Product.updateOne({ _id: req.params.id }, { $push: { views: user } });
+        res.status(200).json({ msg: "view" });
+    } else {
+
+        res.status(200).json({ msg: "dlal" });
+    }
+
+
+    } catch(error) {
+        console.log('여기 일단 옴ㅎㅇ');
+        console.log(error);
+        res.status(500).json({ message: error.message })
+    }
+})
+
 
 module.exports = router;
