@@ -13,7 +13,7 @@ function Header() {
         <Navbar collapseOnSelect bg="light" variant="light">
             <div className="container">
                 <Navbar.Brand>
-                    <NavLink className="navbar-brand" to="/">당신 근처의 당근마켓</NavLink>
+                    <NavLink className="navbar-brand" to="/"><img src="/logo_main_row.webp" alt="Logo" /></NavLink>
                 </Navbar.Brand>
                 <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                 <Navbar.Collapse id="responsive-navbar-nav">
