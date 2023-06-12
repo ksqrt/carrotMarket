@@ -38,9 +38,17 @@ function Io(server) {
         socket.emit('startChat', { chatId: chatRoom._id.toString() });
     });
 
-    socket.on("sendMessage", async ({chatId, senderId, message}) => {
+    socket.on("sendMessage", async ({chatId, senderId, message}, callback) => {
+      try{  
         await ChatRoom.updateOne({ _id: chatId }, { $push: { conversation: { senderId, message } } });
+        console.log('ChatRoom updated successfully');
         io.to(chatId).emit("newMessage", { senderId, message });
+        console.log('newMessage event emitted');
+        callback(null);
+      } catch (err) {
+        console.log('Error in sendMessage: ', err);
+        callback(err);
+      }
     });
 
     socket.on("disconnect", () => { // 인터넷 연결 끊어지면 작동

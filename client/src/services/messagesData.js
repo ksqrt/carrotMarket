@@ -17,11 +17,18 @@ export function startChat({ buyerId, sellerId}) {
 }
 
 export function sendMessage({ chatId, senderId, message }) {
-    socket.emit('sendMessage', { chatId, senderId, message });
+  return new Promise((resolve, reject) => {
+    socket.emit('sendMessage', { chatId, senderId, message }, (error) => {
+      if (error) return reject(error);
+      resolve();
+    });
+  });
 }
 
 export function getMessage(callback) {
+    console.log('getmessage test');
     socket.on('newMessage', ({ senderId, message }) => {
+        console.log('Received a new message 😎  ', { senderId, message }); // 로그 찍기
         callback({ senderId, message });
     });
 }
