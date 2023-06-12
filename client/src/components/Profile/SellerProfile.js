@@ -5,7 +5,7 @@ import { BsFillPersonFill } from 'react-icons/bs';
 import { MdEmail, MdPhoneAndroid } from 'react-icons/md'
 import { FaSellsy } from 'react-icons/fa'
 import { RiMessage3Fill } from 'react-icons/ri';
-import { createChatRoom } from '../../services/messagesData'
+// import { createChatRoom } from '../../services/messagesData'
 
 function SellerProfile({ params, history }) {
     //메시지 보여줌... 기본값은 false로
@@ -20,14 +20,14 @@ function SellerProfile({ params, history }) {
         setMessage(e.target.value)
     }
 
-    const onMsgSent = (e) => {
-        e.preventDefault();
-        createChatRoom(params._id, message)
-            .then((res) => {
-                history.push(`/messages`)
-            })
-            .catch(err => console.log(err))
-    }
+    // const onMsgSent = (e) => {
+    //     e.preventDefault();
+    //     createChatRoom(params._id, message)
+    //         .then((res) => {
+    //             history.push(`/messages`)
+    //         })
+    //         .catch(err => console.log(err))
+    // }
     return (
         <>
             <div id="profile-head">
@@ -69,7 +69,7 @@ function SellerProfile({ params, history }) {
                     </Form>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button variant="dark" onClick={onMsgSent}>Sent</Button>
+                    {/* <Button variant="dark" onClick={onMsgSent}>Sent</Button> */}
                     <Button variant="secondary" onClick={handleClose}>Close</Button>
                 </Modal.Footer>
             </Modal>

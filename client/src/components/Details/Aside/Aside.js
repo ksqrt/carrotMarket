@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { Button, Modal, Form, OverlayTrigger, Tooltip, Col } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { RiMessage3Fill } from 'react-icons/ri';
@@ -8,14 +8,17 @@ import { BsFillPersonFill } from 'react-icons/bs';
 import { MdEmail, MdPhoneAndroid } from 'react-icons/md'
 import { FaSellsy } from 'react-icons/fa'
 import { archiveSell } from '../../../services/productData';
-import { createChatRoom } from '../../../services/messagesData'
+import { startChat, initializeSocket, socket } from '../../../services/messagesData'; // startChat 함수와 socket 객체를 import합니다.
+import { Context } from '../../../ContextStore'; // Context import
 import './Aside.css';
 
 
 function Aside({ params, history }) {
+    const { userData } = useContext(Context);
     const [showMsg, setShowMdg] = useState(false);
     const [showArchive, setShowArchive] = useState(false);
     const [message, setMessage] = useState("");
+
     const handleClose = () => setShowMdg(false);
     const handleShow = () => setShowMdg(true);
 
@@ -31,20 +34,37 @@ function Aside({ params, history }) {
             })
             .catch(err => console.log(err))
     }
-
+    
     const handleMsgChange = (e) => {
         e.preventDefault();
         setMessage(e.target.value)
     }
-    const onMsgSent = (e) => {
+    // startchat 이벤트 실행
+    
+    useEffect(() => {
+        initializeSocket();
+      }, []);
+
+    const onChatStart = (e) => {
         e.preventDefault();
-        createChatRoom(params.sellerId, message)
-            .then((res) => {
-                history.push(`/messages/${res.messageId}`)
-            })
-            .catch(err => console.log(err))
+        socket.on('startChat', ({ chatId }) => {
+            console.log("messages 페이지로 이동");
+            history.push(`/messages/${chatId}`);
+        });
+       
+        startChat({ buyerId: userData._id, sellerId: params.sellerId }); // buyer id, seller id 사용하여 채팅방 생성
     }
 
+/*
+     const onMsgSent = (e) => {
+         e.preventDefault();
+         createChatRoom(params.sellerId, message) // 판매자의 ID, message 인자로 받음 
+             .then((res) => {
+                 history.push(`/messages/${res.messageId}`)
+             })
+             .catch(err => console.log(err))
+     }
+*/
     return (
         <aside>
             <div className="product-details-seller">
@@ -73,6 +93,8 @@ function Aside({ params, history }) {
                             <RiMessage3Fill />Contact Seller
                         </Button>
                     }
+                    
+                    <Button variant="dark" onClick={onChatStart}>Chat Start</Button>;
                     <Link to={`/profile/${params.sellerId}`}>
                         <Col lg={12}>
                             <img id="avatar" src={params.avatar} alt="user-avatar" />
@@ -100,7 +122,7 @@ function Aside({ params, history }) {
                     </Form>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button variant="dark" onClick={onMsgSent}>Sent</Button>
+                    {/* <Button variant="dark" onClick={onMsgSent}>Sent</Button> */}
                     <Button variant="secondary" onClick={handleClose}>Close</Button>
                 </Modal.Footer>
             </Modal>
