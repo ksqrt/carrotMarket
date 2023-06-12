@@ -32,7 +32,7 @@ function Header() {
                         {/* <Nav.Link href="#features">Features</Nav.Link>
                         <Nav.Link href="#pricing">Pricing</Nav.Link> */}
                     </Nav>
-                    <SearchBar></SearchBar>
+                    {/* <SearchBar></SearchBar> */}
                     {userData ?
                         (<Nav>
                             <NavLink className="nav-item" id="addButton" to="/add-product">
