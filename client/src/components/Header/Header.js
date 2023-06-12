@@ -4,6 +4,7 @@ import { Navbar, NavDropdown, Nav, OverlayTrigger, Tooltip } from 'react-bootstr
 import { NavLink } from 'react-router-dom';
 import { BsFillPersonFill, BsFillEnvelopeFill, BsFillPlusCircleFill } from 'react-icons/bs';
 import { IoLogOut } from 'react-icons/io5'
+import SearchBar from "../../components/Categories/SearchBar";
 
 import './Header.css';
 import LoginModal from '../Modal/LoginModal';
@@ -23,7 +24,7 @@ function Header() {
         <Navbar collapseOnSelect bg="light" variant="light">
             <div className="container">
                 <Navbar.Brand>
-                    <NavLink className="navbar-brand" to="/">당신 근처의 당근마켓</NavLink>
+                    <NavLink className="navbar-brand" to="/"><img src="/logo_main_row.webp" alt="Logo" /></NavLink>
                 </Navbar.Brand>
                 <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                 <Navbar.Collapse id="responsive-navbar-nav">
@@ -31,6 +32,7 @@ function Header() {
                         {/* <Nav.Link href="#features">Features</Nav.Link>
                         <Nav.Link href="#pricing">Pricing</Nav.Link> */}
                     </Nav>
+                    <SearchBar></SearchBar>
                     {userData ?
                         (<Nav>
                             <NavLink className="nav-item" id="addButton" to="/add-product">
@@ -41,7 +43,7 @@ function Header() {
                                         </Tooltip>
                                     }
                                 > 
-                                    <BsFillPlusCircleFill />
+                                     <BsFillPlusCircleFill style={{  }} />
                                 </OverlayTrigger>
                             </NavLink>
 
@@ -73,17 +75,11 @@ function Header() {
                         </Nav>)
                         :
                         (<Nav>
-                            <div>
-                                <button className='nav-item' id="nav-sign-in" onClick={onOpen}>로그인/회원가입</button>
-                                {
-                                    isOpen && <LoginModal onClose={onClose}/>
-                                }
-                            </div>
-                            {/* <NavLink className="nav-item" id="nav-sign-in" to="/auth/login">
-                                Sign In
-                            </NavLink> */}
-                            <NavLink className="nav-item" id="nav-sign-up" to="/auth/register">
-                                Sign Up
+                            <NavLink style={{ backgroundColor: '#FF7E36' }} className="nav-item" id="nav-sign-in" to="/auth/login">
+                                로그인
+                            </NavLink>
+                            <NavLink className="nav-item " id="nav-sign-up" to="/auth/register">
+                                회원가입
                             </NavLink>
                         </Nav>)
                     }

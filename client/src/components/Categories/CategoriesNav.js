@@ -14,7 +14,7 @@ import { MdPhoneAndroid } from "react-icons/md";
 function CategoriesNav() {
   return (
     <div className="container" id="categories">
-      <h1>카테고리</h1>
+      
       <Link to="/categories/all">
         <Button variant="dark" id="all">
           {/* <TiSortAlphabetically /> 는 아이콘임 */}
@@ -22,6 +22,7 @@ function CategoriesNav() {
           All
         </Button>{" "}
       </Link>
+      
       <Link to="/categories/properties">
         <Button variant="dark" id="properties">
           <BsHouseDoorFill />
