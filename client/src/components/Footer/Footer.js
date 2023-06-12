@@ -6,7 +6,7 @@ import Col from 'react-bootstrap/Col';
 
 const Footer = () => {
   return (
-    <footer  className="bg-dark py-4" style={{ height: '300px', maxHeight: '300px' }}>
+    <footer  className="bg-dark py-4" style={{ height: '250px', maxHeight: '250px' }}>
       <Container>
         <Row className="pb-14 border-bottom border-gray-500">
           <Col>
@@ -73,10 +73,11 @@ const Footer = () => {
               </li>
               <li>
                 <a href="https://www.daangn.com/policy/location" target="_blank" rel="noreferrer" className="text-secondary">
-                  위치기반서비스 이용약관
+                  위치기반 서비스
                 </a>
               </li>
             </ul>
+            <br></br>
           </Col>
         </Row>
         {/* <Row className="mt-6">
@@ -98,6 +99,7 @@ const Footer = () => {
         </Row> */}
         <Row>
           <Col>
+            <br></br>
             <h5 className="mt-6 text-secondary text-xs">© {new Date().getFullYear()} GW. ALL RIGHTS RESERVED.</h5>
           </Col>
         </Row>

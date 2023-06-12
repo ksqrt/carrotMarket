@@ -31,7 +31,7 @@ function Header() {
                                         </Tooltip>
                                     }
                                 > 
-                                     <BsFillPlusCircleFill style={{ color: "#FF7E36" }} />
+                                     <BsFillPlusCircleFill style={{  }} />
                                 </OverlayTrigger>
                             </NavLink>
 

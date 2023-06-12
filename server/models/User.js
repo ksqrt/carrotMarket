@@ -27,7 +27,7 @@ const userSchema = new mongoose.Schema({
         type: String,
         trim: true,
         required: ['Phone number is required'],
-        match: [/(\+)?(359|0)8[789]\d{1}(|-| )\d{3}(|-| )\d{3}/, 'Please fill a valid phone number']
+       
     },
     gender: {
         type: String,
@@ -36,7 +36,7 @@ const userSchema = new mongoose.Schema({
     },
     avatar: {
         type: String,
-        default: 'https://res.cloudinary.com/silenceiv/image/upload/q_auto:eco/v1617358367/defaultAvatar_wnoogh.png'
+        default: 'https://kr.object.ncloudstorage.com/ncp3/ghuPttFw_400x400.jpg'
     },
     createdSells: [
         {
