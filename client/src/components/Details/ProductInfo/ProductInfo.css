@@ -1,3 +1,9 @@
+.product-card {
+    /* padding: 3px;
+    margin-bottom: 20px; */
+    /* Add any additional styles to adjust the card size */
+}
+
 .tab-content {
     padding-top: 20px;
     padding-bottom: 20px;
@@ -34,4 +40,234 @@
     text-align: justify;
     letter-spacing: 1px;
 }
+
+#profile_link {
+    text-decoration: none;
+    display: block;
+    margin-top: 25px;
+    padding-bottom: 23px;
+    position: relative;
+    border-bottom: 1px solid #e9ecef;
+}
+
+#profile_link .space-between {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+#space-between {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+#profile_image {
+    display: inline-block;
+}
+
+#profile_image img {
+    width: 40px;
+    height: 40px;
+    -o-object-fit: cover;
+    object-fit: cover;
+    border-radius: 50%;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+}
+
+#profile_left {
+    display: inline-block;
+    margin-left: 8px;
+}
+
+#nickname {
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 1.5;
+    letter-spacing: -0.6px;
+    color: #212529;
+}
+
+#profile_address {
+    font-size: 13px;
+    line-height: 1.46;
+    letter-spacing: -0.6px;
+    color: #212529;
+}
+
+#profile {
+    width: 677px;
+    margin: 0 auto;
+}
+
+#profile_address {
+    font-size: 13px;
+    line-height: 1.46;
+    letter-spacing: -0.6px;
+    color: #212529;
+}
+
+#profile #profile_right {
+    position: absolute;
+    right: 0;
+    padding-right: 36px;
+}
+
+#profile_right dl {
+    display: block;
+    width: 100px;
+}
+
+#profile_right dl dt {
+    position: absolute;
+    top: 36px;
+    right: 0px;
+    font-size: 12px;
+    line-height: 1;
+    letter-spacing: -0.6px;
+    color: #868e96;
+}
+
+#profile_right dl dd {
+    position: absolute;
+    font-size: 16px;
+    font-weight: bold;
+    line-height: 1;
+    letter-spacing: -0.5px;
+    color: #212529;
+    margin-top: 1px;
+    width: 100px;
+    text-align: right;
+}
+
+.text-color {
+    color: #FF7E36;
+}
+
+#profile_right .meters {
+    clear: both;
+    display: block;
+    width: 100px;
+    background-color: #e9ecef;
+    height: 4px;
+    border-radius: 100px;
+    -webkit-border-radius: 100px;
+    -moz-border-radius: 100px;
+    position: relative;
+    vertical-align: middle;
+    margin-top: 24px;
+}
+
+#face {
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+
+#content {
+    padding: 32px 0;
+    width: 677px;
+    margin: 0 auto;
+    border-bottom: 1px solid #e9ecef;
+}
+
+#content_title {
+    margin-top: 16px;
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 1.5;
+    letter-spacing: -0.6px;
+}
+
+#content_category {
+    margin-top: 4px;
+    font-size: 13px;
+    line-height: 1.46;
+    letter-spacing: -0.6px;
+    color: #868e96;
+}
+
+#content_price {
+    margin-top: 4px;
+    font-size: 17px;
+    font-weight: 600;
+    line-height: 1.76;
+    letter-spacing: -0.6px
+}
+
+#profile_right #face {
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+
+#content_title {
+    margin-top: 16px;
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 1.5;
+    letter-spacing: -0.6px;
+}
+
+#content_category {
+    margin-top: 4px;
+    font-size: 13px;
+    line-height: 1.46;
+    letter-spacing: -0.6px;
+    color: #868e96;
+}
+
+#content_price {
+    margin-top: 4px;
+    font-size: 17px;
+    font-weight: 600;
+    line-height: 1.76;
+    letter-spacing: -0.6px;
+}
+
+#content_main {
+    margin-bottom: 16px;
+    margin-top: 8px;
+}
+
+#content_cnt {
+    font-size: 13px;
+    line-height: 1.46;
+    letter-spacing: -0.6px;
+    color: #868e96;
+}
+
+#product_more {
+    width: 677px;
+    margin: 0 auto;
+    padding-top: 32px;
+    position: relative;
+}
+
+#product_more h3 {
+    font-size: 18px;
+    text-align: left;
+    line-height: 1.47;
+    letter-spacing: -0.6px;
+    font-weight: 600;
+    padding-bottom: 0;
+    margin-bottom: 30px;
+}
+
+#more_link {
+    position: absolute;
+    top: 32px;
+    right: 0;
+    text-align: right;
+}
+
+#more_link a {
+    font-size: 15px;
+    line-height: 1.4;
+    letter-spacing: -0.6px;
+    text-decoration: none;
+    color: #FF7E36
+}
+
 
