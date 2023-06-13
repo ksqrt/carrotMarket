@@ -48,19 +48,19 @@ function ProductInfo({ params }) {
     const months = days / 30;
     const years = months / 12;
 
-    //업로드 시간이 60초 미만이라면 방금 전
+    //업로드 시간이 60초 미만이라면 방금 전.
     if (seconds < 60) {
       return "방금 전";
-    //업로드 시간이 60분 미만이라면 몇 분 전
+    //업로드 시간이 60분 미만이라면 몇 분 전.
     } else if (minutes < 60) {
       return `${Math.floor(minutes)}분 전`;
-    //업로드 시간이 24시간 미만이라면 몇 시간 전
+    //업로드 시간이 24시간 미만이라면 몇 시간 전.
     } else if (hours < 24) {
       return `${Math.floor(hours)}시간 전`;
-    //업로드 날짜가 30일 미만이라면 몇 일 전
+    //업로드 날짜가 30일 미만이라면 몇 일 전.
     } else if (days < 30) {
       return `${Math.floor(days)}일 전`;
-    //업로드 날짜가 1년 미만이라면 몇 달 전
+    //업로드 날짜가 1년 미만이라면 몇 달 전.
     } else if (months < 12) {
       return `${Math.floor(months)}달 전`;
     //나머지는 몇 년 전으로...
