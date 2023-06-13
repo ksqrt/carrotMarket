@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react';
 import InfiniteScroll from "react-infinite-scroll-component";
+import { Link } from 'react-router-dom';
 import { Col, Row, Spinner, Tabs, Tab, Image, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import { wishProduct } from '../../../services/productData';
 import ProductCard from "../../../components/ProductCard/ProductCard";
 import { getAll } from "../../../services/productData";
+import Messages from '../../../Pages/Messages';
 
 function ProductInfo({ params }) {
   const [products, setProducts] = useState([]);
@@ -67,48 +69,55 @@ function ProductInfo({ params }) {
     }
   };
 
-  //{params.title}: 상품 제목
-  //{params.addedAt}: 업로드 날짜
-  //{params.description}: 상품 설명
-  //{params.createdSells}: 물품 갯수
+  const [showMessages, setShowMessages] = useState(false);
+
+  const handleShowMessages = () => {
+    setShowMessages(true);
+  };
 
   return (
     <div className="d-flex flex-column align-items-center">
         <section id='images'>
-            <Image className="col-lg-12" src={params.image} rounded />
+            <Image className="col-lg-12" src={ params.image } rounded />
         </section>
 
         <section id="profile">
-            <a id="profile_link" href=''>
-                <div id="space-between">
-                    <div style={{ display: 'flex' }}>
-                        <div id='profile_image'>
-                            <img id="avatar" src={params.avatar} alt="user-avatar" />
-                        </div>
-                        <div id="profile_left">
-                            <div id="nickname">{params.name}</div>
-                            <div id="profile_address">안산시 단원구 선부동</div>
-                        </div>
-                    </div>
+          <div id="space-between">
+              <div style={{ display: 'flex' }}>
+                <Link to={ `/profile/${params.sellerId}` }>
+                  <div id='profile_image'>
+                      <img id="avatar" src={ params.avatar } alt="user-avatar" />
+                  </div>
+                </Link>
+                  <div id="profile_left">
+                    <Link to={ `/profile/${params.sellerId}` }>
+                      <div id="nickname">{ params.name }</div>
+                    </Link>
+                      <div id="profile_address">안산시 단원구 선부동</div>
+                      <div id="content_UpDel">
+                        <a href=''>게시글 수정하기     </a>
+                        <a href=''>게시글 삭제하기     </a>
+                      </div>
+                  </div>
+              </div>
 
-                    <div id="profile_right">
-                        <dl id="manner_temper">
-                            <dt>매너온도</dt>
-                            <dd className="text-color">75<span>°C</span></dd>
-                        </dl>
-                        <div className="meters">
-                            <div id="bar" className="bar-color-06" style={{ width: '75%' }}></div>
-                            <div id="face" className="face-06">페이스</div>
-                        </div>
-                    </div>
-                </div>
-            </a>
+              <div id="profile_right">
+                  <dl id="manner_temper">
+                      <dt>매너온도</dt>
+                      <dd className="text-color">75<span>°C</span></dd>
+                  </dl>
+                  <div className="meters">
+                      <div id="bar" className="bar-color-06" style={{ width: '75%' }}></div>
+                      <div id="face" className="face-06">페이스</div>
+                  </div>
+              </div>
+          </div>
         </section>
 
         <section id='content'>
             <h1 id='content_title'>{ params.title }</h1>
             <p id='content_category'>{ params.category } · <time>{displayCreateAt(params.addedAt)}</time></p>
-            <p id='content_price'>{ params.price }원</p>
+            <p id='content_price'>{ params.price ? params.price.toLocaleString() : '' }원</p>
             <p id='content_main'>{ params.description }</p>
             <p id='content_cnt'> 관심 갯수 · 채팅 갯수 · 조회수 </p>
         </section>

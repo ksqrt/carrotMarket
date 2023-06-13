@@ -96,6 +96,11 @@
     color: #212529;
 }
 
+#content_UpDel {
+    padding-top: 10px;
+    font-size: 13px;
+}
+
 #profile {
     width: 677px;
     margin: 0 auto;
