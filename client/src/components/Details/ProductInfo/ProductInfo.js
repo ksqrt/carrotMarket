@@ -4,10 +4,11 @@ import { Col, Modal, Form, Row, Spinner, Tabs, Tab, Image, OverlayTrigger, Toolt
 import { wishProduct } from '../../../services/productData';
 import ProductCard from "../../../components/ProductCard/ProductCard";
 import { getAll } from "../../../services/productData";
-import { startChat, initializeSocket, socket } from '../../../services/messagesData'; // startChat 함수와 socket 객체를 import합니다.
+import { startChat, initializeSocket } from '../../../services/messagesData'; // startChat 함수와 socket 객체를 import합니다.
 import { RiMessage3Fill } from 'react-icons/ri';
 import { Context } from '../../../ContextStore'; // Context import
 import { Link, useHistory } from 'react-router-dom';
+
 
 function ProductInfo({ params }) {
   const [products, setProducts] = useState([]);

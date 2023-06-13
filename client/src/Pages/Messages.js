@@ -3,6 +3,7 @@ import {startChat, sendMessage, disconnect, getMessage, getUserConversations, in
 import { Container, Row, Form, InputGroup, Button, Alert } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { Context } from '../ContextStore';
+import { ScrollToBottom } from 'react-scroll-to-bottom'; // 스크롤이 자동으로 맨 밑으로 이동하는 라이브러리, 메세지가 추가될 때마다 자동으로 맨 밑으로 이동.
 import '../components/Messages/Aside.css'
 import '../components/Messages/Article.css'
 
@@ -130,6 +131,7 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
                                     </p>
                                 </Alert>
                             }
+                            <ScrollToBottom>
                             <div className="chat-selected-body col-lg-12">
                                 {selected.chats.conversation.map((x, index) =>
                                     x && x._id ?
@@ -139,6 +141,7 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
                                     : null
                                 )}
                             </div>
+                            </ScrollToBottom>
                             <div className="chat-selected-footer col-lg-12">
                                 <Form onSubmit={handleMsgSubmit}>
                                     <Form.Group>
