@@ -76,7 +76,7 @@ function Profile({ match, history }) {
                 className={`sidebar-button ${active ? 'active' : ''}`}
                 onClick={handleActive}
               >
-                판매중인 상품
+                판매 물품
               </button>
               <button
                 className={`sidebar-button ${archived ? 'active' : ''}`}

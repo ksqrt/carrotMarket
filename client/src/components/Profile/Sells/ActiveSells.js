@@ -56,7 +56,7 @@ function ActiveSells({ params, history }) {
                                 .map(x =>
                                     <Col xs={12} md={6} lg={4} key={x._id.toString()}>
                                         <ProductCard params={x} />
-                                    </Col>
+                                    </Col> 
                                 )
                             }
                         </Row>
