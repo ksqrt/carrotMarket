@@ -1,4 +1,5 @@
 #profile-head .profile-row {
+    margin-left: 50px;
     align-items: center;
   }
   
@@ -26,6 +27,7 @@
   
   
   #profile_information2 {
+    margin-top: 25px;
     /* border: 1px solid black; */
     float:left;
   }
@@ -70,12 +72,17 @@
     
   
   
-    .sidebar {
+  .sidebar {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     margin-bottom: 20px;
+    border-bottom: 1px solid lightgray;
+    width: 95%;
+    margin-left: auto;
+    margin-right: auto;
   }
+  
   
   .sidebar-button {
     flex-grow: 1;
@@ -85,7 +92,9 @@
     background-color: white;
     color: #333333;
     border-bottom: 2px solid transparent;
+    font-weight: bold; /* Add this line to make the button text bold */
   }
+  
   
   .sidebar-button.active {
     border-bottom: 4px solid #FF7E36;

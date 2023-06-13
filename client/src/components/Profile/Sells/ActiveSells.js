@@ -48,7 +48,7 @@ function ActiveSells({ params, history }) {
                     {/* products 값이 존재 할 경우... */}
                     {/* 만약 값이 없으면 장바구니에 상품이 없다는 것. Nothing to show */}
                     {/* 로딩 중 상태를 나타내기 위해 spnner 컴포넌트를 사용.*/}
-                    {products ? (
+                    {products.length > 0 ?  (
                         <Row>
                             {/* map 함수를 사용하여, 배열의 각 항목에 대해 ProductCard 컴포넌트를 생성 */}
                             {/* Col xs={12} md={6} lg={4} key={x._id.toString()} -> 반응형 그리드 시스템 설정 */}
@@ -61,7 +61,7 @@ function ActiveSells({ params, history }) {
                             }
                         </Row>
                     ) : (
-                            <p className="nothing-to-show">Nothing to show</p>
+                            <p className="nothing-to-show">판매중인 상품이 없습니다.</p>
                         )
                     }
                 </>) :

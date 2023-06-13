@@ -1,11 +1,10 @@
 .nothing-to-show {
-    margin-top: 20px;
-    width: 1000px;
-    text-align: center;
-    font-family: serif;
-    font-size: 20pt;
-}
-
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100px; /* 필요한 높이 값을 지정해주세요 */
+  }
+  
 #profile_spinner {
     position: fixed;
     left: 50%;
@@ -20,7 +19,7 @@
 
   .search-button {
     border: none;
-    margin-left: 50%;
+    margin-left: 45%;
     display: flex;
     justify-content: center;
     margin-top: 16px;

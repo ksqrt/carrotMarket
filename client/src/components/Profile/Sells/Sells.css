@@ -8,3 +8,10 @@ body {
     font-style: normal;
     font-size: 14pt;
 } */
+
+.nothing-to-show {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100px; /* 필요한 높이 값을 지정해주세요 */
+  }
