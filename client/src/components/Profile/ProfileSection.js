@@ -102,7 +102,7 @@ function ProfileSection({ params }) {
                             </div>
                         </div>
                         <br></br>
-                        {/* <p><MdEmail /> {params.email}</p>
+                        {/* <p><MdEmail /> {params.email} asdasd</p>
                         <p><MdPhoneAndroid /> {params.phoneNumber}</p>
                         <p><FaSellsy /> {params.totalSells} sells in total</p> */}
                         </div>
