@@ -1,10 +1,12 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import InfiniteScroll from "react-infinite-scroll-component";
 import { Link } from 'react-router-dom';
 import { GrEdit } from 'react-icons/gr';
 import { MdArchive } from 'react-icons/md'
 import { Col, Row, Spinner, Tabs, Tab, Image, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import { getAll, archiveSell, wishProduct } from '../../../services/productData';
+import { Col, Modal, Form, Row, Spinner, Tabs, Tab, Image, OverlayTrigger, Tooltip, Button } from 'react-bootstrap';
+import { wishProduct } from '../../../services/productData';
 import ProductCard from "../../../components/ProductCard/ProductCard";
 import Messages from '../../../Pages/Messages';
 import aImage from '../../Profile/profile_images/a.png'; // 이미지 파일 경로
@@ -12,6 +14,11 @@ import bImage from '../../Profile/profile_images/b.png'; // 이미지 파일 경
 import cImage from '../../Profile/profile_images/c.png'; // 이미지 파일 경로
 import dImage from '../../Profile/profile_images/d.png'; // 이미지 파일 경로
 import eImage from '../../Profile/profile_images/e.png'; // 이미지 파일 경로
+import { getAll } from "../../../services/productData";
+import { startChat, initializeSocket, socket } from '../../../services/messagesData'; // startChat 함수와 socket 객체를 import합니다.
+import { RiMessage3Fill } from 'react-icons/ri';
+import { Context } from '../../../ContextStore'; // Context import
+import { Link, useHistory } from 'react-router-dom';
 
 function ProductInfo({ params, history }) {
   const [products, setProducts] = useState([]);
@@ -35,6 +42,9 @@ function ProductInfo({ params, history }) {
           })
           .catch(err => console.log(err))
   }
+  const { userData } = useContext(Context);
+  const history = useHistory();
+  const [socket, setSocket] = useState(null);
 
   useEffect(() => {
     setWish(params.isWished === true);
@@ -151,28 +161,30 @@ function ProductInfo({ params, history }) {
     }
   };
 
-  //찜 목록(하트)
-  const onHearthClick = () => {
-    if (wish === false) {
-        wishProduct(params._id)
-            .then(res => {
-                setWish(true);
-            })
-            .catch(err => console.log(err))
-    } else {
-        wishProduct(params._id)
-            .then(res => {
-                setWish(false);
-            })
-            .catch(err => console.log(err))
-    }
-}
-
-  const [showMessages, setShowMessages] = useState(false);
-
-  const handleShowMessages = () => {
-    setShowMessages(true);
+  // startchat 이벤트 실행
+  useEffect(() => {
+    const initSocket = async () => {
+      const socket = await initializeSocket();
+      setSocket(socket);
+  
+      socket.on('startChat', ({ chatId }) => {
+        history.push(`/messages/${chatId}`);
+      });
+    };
+  
+    initSocket();
+  }, []);
+  
+  const onChatStart = async (e) => {
+    e.preventDefault();
+    if (!socket) return;
+    startChat(socket, { buyerId: userData._id, sellerId: params.sellerId });
   };
+
+  //{params.title}: 상품 제목
+  //{params.addedAt}: 업로드 날짜
+  //{params.description}: 상품 설명
+  //{params.createdSells}: 물품 갯수
 
   return (
     <div className="d-flex flex-column align-items-center">
@@ -239,13 +251,23 @@ function ProductInfo({ params, history }) {
         </div>
       </section>
 
-      <section id='content'>
-        <h1 id='content_title'>{params.title}</h1>
-        <p id='content_category'>{params.category} · <time>{displayCreateAt(params.addedAt)}</time></p>
-        <p id='content_price'>{params.price ? params.price.toLocaleString() : ''}원</p>
-        <p id='content_main'>{params.description}</p>
-        <p id='content_cnt'> 관심 갯수 · 채팅 갯수 · 조회수 </p>
-      </section>
+        <section id='content'>
+            <h1 id='content_title'>{ params.title }</h1>
+            <p id='content_category'>{ params.category } · <time>{displayCreateAt(params.addedAt)}</time></p>
+            <p id='content_price'>{ params.price }원</p>
+            <p id='content_main'>{ params.description }</p>
+            <p id='content_cnt'> 관심 갯수 · 채팅 갯수 · 조회수 </p>
+            {params.isAuth ? (<>
+              {!params.isSeller &&
+                  <Button variant="dark" className="col-lg-10" id="btnContact" onClick={onChatStart}>
+                      <RiMessage3Fill />채팅으로 거래하기
+                  </Button>
+              }
+              
+               </>) : (
+                <p id="guest-msg"><Link to="/auth/login">Sign In</Link> now to contact the seller!</p>
+            )}
+        </section>
 
       <section id="product_more">
         <h3>당근마켓 인기중고</h3>
