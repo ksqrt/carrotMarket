@@ -14,11 +14,35 @@ class AddProduct extends Component {
 
     onChangeHandler(e) {
         e.preventDefault();
-        this.setState({ [e.target.name]: e.target.value });
-        if (e.target.files) {
-            this.setState({ image: e.target.files[0] })
+        let value = e.target.value;
+        if (value === "의류") {
+          value = "clothing";
+        } else if (value === "가전제품") {
+          value = "electronics";
+        } else if (value === "가구 및 인테리어") {
+          value = "furnitureAndInterior";
+        } else if (value === "자동차 및 오토바이") {
+          value = "automotive";
+        } else if (value === "스포츠 및 레저용품") {
+          value = "sportsAndLeisure";
+        } else if (value === "아동용품") {
+          value = "kidsItems";
+        } else if (value === "도서 및 문구용품") {
+          value = "booksAndStationery";
+        } else if (value === "신발") {
+          value = "shoes";
+        } else if (value === "악세서리 및 장신구") {
+          value = "accessoriesAndJewelry";
+        } else if (value === "뷰티 및 화장품") {
+          value = "beautyAndCosmetics";
         }
-    };
+      
+        this.setState({ [e.target.name]: value });
+      
+        if (e.target.files) {
+          this.setState({ image: e.target.files[0] });
+        }
+      };
 
     onSubmitHandler(e) {
         e.preventDefault();
@@ -90,17 +114,20 @@ class AddProduct extends Component {
                             </Form.Group>
 
                             <Form.Group as={Col} controlId="formGridCategory">
-                                <Form.Label>Category</Form.Label>
-                                <Form.Control as="select" defaultValue="Choose..." name="category" required onChange={this.onChangeHandler}>
-                                    <option>Choose...</option>
-                                    <option>properties</option>
-                                    <option>auto</option>
-                                    <option>electronics</option>
-                                    <option>clothes</option>
-                                    <option>toys</option>
-                                    <option>home</option>
-                                    <option>garden</option>
-                                </Form.Control>
+                            <Form.Label>Category</Form.Label>
+                            <Form.Control as="select" defaultValue="Choose..." name="category" required onChange={this.onChangeHandler}>
+                                <option>선택해주세요...</option>
+                                <option>의류</option>
+                                <option>가전제품</option>
+                                <option>가구 및 인테리어</option>
+                                <option>자동차 및 오토바이</option>
+                                <option>스포츠 및 레저용품</option>
+                                <option>아동용품</option>
+                                <option>도서 및 문구용품</option>
+                                <option>신발</option>
+                                <option>악세서리 및 장신구</option>
+                                <option>뷰티 및 화장품</option>
+                            </Form.Control>
                             </Form.Group>
 
                             <Form.Group as={Col} controlId="formGridImage" >
