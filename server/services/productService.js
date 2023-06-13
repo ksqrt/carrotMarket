@@ -34,6 +34,17 @@ async function create(data, userId) {
     return await User.updateOne({ _id: userId }, { $push: { createdSells: product } });
 }
 
+async function deleteProduct(userid, data) {
+    let product = await Product.findById(data);
+    if(!product) {
+        throw new Error('찾을 수 없는 상품입니다.');
+    } else {
+        await product.remove();
+    }
+
+    return await User.updateOne({ _id: userid }, { $pull: { createdSells: data } });
+
+}
 
 
 
@@ -95,8 +106,6 @@ async function uploadImage(image) {
     }
 }
 
-
-
 async function userCollectionUpdate(userId, product) {
     return await User.updateOne({ _id: userId }, { $push: { createdSells: product } });
 }
@@ -114,5 +123,5 @@ module.exports = {
     uploadImage,
     userCollectionUpdate,
     findUserById,
-   
+    deleteProduct,
 }

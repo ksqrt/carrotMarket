@@ -12,7 +12,6 @@ import { startChat, initializeSocket, socket } from '../../../services/messagesD
 import { Context } from '../../../ContextStore'; // Context import
 import './Aside.css';
 
-
 function Aside({ params, history }) {
     const { userData } = useContext(Context);
     const [showMsg, setShowMdg] = useState(false);
