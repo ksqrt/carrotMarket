@@ -29,6 +29,23 @@
     /* border: 1px solid black; */
     float:left;
   }
+
+  .profile-edit-button {
+    width: 100px;
+    background-color: white;
+    border: 1px solid lightgray;
+    padding: 5px 10px;
+    font-weight: bold;
+    font-size: 13px;
+    border-radius: 5px;
+    cursor: pointer;
+    color: #888888;
+  }
+  
+  
+  
+
+
   
   /* 프로필 이름 */
   #profile_name {
