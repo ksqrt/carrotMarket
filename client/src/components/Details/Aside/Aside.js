@@ -94,7 +94,6 @@ function Aside({ params, history }) {
                         </Button>
                     }
                     
-                    <Button variant="dark" onClick={onChatStart}>Chat Start</Button>;
                     <Link to={`/profile/${params.sellerId}`}>
                         <Col lg={12}>
                             <img id="avatar" src={params.avatar} alt="user-avatar" />
