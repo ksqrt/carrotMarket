@@ -1,56 +1,44 @@
-const io = require('socket.io-client');
-let socket;
+import { io as IO } from "socket.io-client";
 
+export const initializeSocket = async () => {
+  const socket = IO("http://localhost:5000");
+  console.log("Socket created:", socket);
+  return socket;
+};
 
-export function initializeSocket() {
-    socket = io('http://localhost:5000', {
-    });
-    console.log('Socket created:', socket);
-
-    socket.on('connect_error', (error) => {
-        console.log('Connection Error', error);
-    });
-}
-
-export function startChat({ buyerId, sellerId}) {
+export const startChat = (socket, { buyerId, sellerId}) => {
+    console.log('StartChat function execution');
     socket.emit('startChat', { buyerId, sellerId });
-}
+};
 
-export function sendMessage({ chatId, senderId, message }) {
-  return new Promise((resolve, reject) => {
-    socket.emit('sendMessage', { chatId, senderId, message }, (error) => {
-      if (error) return reject(error);
-      resolve();
+export const sendMessage = (socket, { chatId, senderId, message }) => {
+    socket.emit('sendMessage', { chatId, senderId, message });
+};
+
+
+  export const getMessage = (socket, callback) => {
+    socket.on('newMessage', (message) => {
+        callback(message);
     });
-  });
-}
+  };
 
-export function getMessage(callback) {
-    console.log('getmessage test');
-    socket.on('newMessage', ({ senderId, message }) => {
-        console.log('Received a new message 😎  ', { senderId, message }); // 로그 찍기
-        callback({ senderId, message });
-    });
-}
-
-export function disconnect(callback) {
-    console.log("연결 종료");
-    socket.on('disconnect', () => {
-        callback();
-    });
-}
-
-export function getUserConversations(userId) {
+  
+  export const getUserConversations = (socket, userId) => {
     return new Promise((resolve, reject) => {
-        socket.emit('getUserConversations', {userId});
-        socket.on('userConversations', (conversations) => {
-            resolve(conversations);
-        });
-        socket.on('error', reject);
+      socket.emit('getUserConversations', { userId });
+  
+      socket.on('userConversations', (userChats) => {
+        resolve(userChats);
+      });
+  
     });
-}
+  };
 
-export { socket };
+
+    export const disconnect = (socket, callback) => {
+        socket.disconnect();
+        if (callback) callback();
+      };
 
 /*
 const baseUrl = 'http://localhost:5000';
