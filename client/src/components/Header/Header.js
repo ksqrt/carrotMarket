@@ -3,12 +3,12 @@ import { Context } from '../../ContextStore';
 import { Navbar, NavDropdown, Nav, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import { NavLink } from 'react-router-dom';
 import { BsFillPersonFill, BsFillEnvelopeFill, BsFillPlusCircleFill } from 'react-icons/bs';
-import { IoLogOut } from 'react-icons/io5'
+//import { IoLogOut } from 'react-icons/io5'
 
 import './Header.css';
 import LoginModal from '../Modal/LoginModal';
 function Header() {
-    const { userData, setUserData } = useContext(Context)
+    const { userData, setUserData } = useContext(Context);
 
     //모달
     const [isOpen, setIsOpen] = useState(false)
@@ -55,20 +55,23 @@ function Header() {
                                 {/* <NavLink className="dropdown-item" to="/your-sells">
                                     <BsFillGridFill />Sells
                             </NavLink> */}
-                                <NavLink className="dropdown-item" to="/messages">
+                            <NavLink className="dropdown-item" to="/messages">
                                     <BsFillEnvelopeFill />Messages
                             </NavLink>
                                 {/* <NavLink className="dropdown-item" to="/wishlist">
                                     <BsFillHeartFill />Wishlist
                             </NavLink> */}
 
-                                <NavDropdown.Divider />
+                            <NavDropdown.Divider />
+                                <div>
+                                    <a className="ropdown-item" id='logout' href='/auth/logout' onClick={() => {setUserData(null)}}>로그아웃</a>
+                                </div>
 
-                                <NavLink className="dropdown-item" to="/auth/logout" onClick={() => {
+                                {/* <NavLink className="dropdown-item" to="/auth/logout" onClick={() => {
                                     setUserData(null)
                                 }}>
                                     <IoLogOut />Log out
-                                </NavLink>
+                                </NavLink> */}
                             </NavDropdown>
                         </Nav>)
                         :
@@ -92,5 +95,4 @@ function Header() {
         </Navbar>
     )
 }
-
 export default Header;
