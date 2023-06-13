@@ -17,7 +17,7 @@ const LoginModal = ({onClose}) => {
         document.body.appendChild(script);
 
         script.onload = () => {
-            //window.Kakao.init("c350194b116db72c1ae39746c3ce7b34");
+            //src/config/config.js 에 있음
             window.Kakao.init(JAVASCRIPT);
         };
 
