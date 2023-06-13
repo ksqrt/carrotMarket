@@ -6,11 +6,6 @@ import { wishProduct } from '../../../services/productData';
 import ProductCard from "../../../components/ProductCard/ProductCard";
 import { getAll } from "../../../services/productData";
 import Messages from '../../../Pages/Messages';
-import aImage from '../../Profile/profile_images/a.png'; // 이미지 파일 경로
-import bImage from '../../Profile/profile_images/b.png'; // 이미지 파일 경로
-import cImage from '../../Profile/profile_images/c.png'; // 이미지 파일 경로
-import dImage from '../../Profile/profile_images/d.png'; // 이미지 파일 경로
-import eImage from '../../Profile/profile_images/e.png'; // 이미지 파일 경로
 
 function ProductInfo({ params }) {
   const [products, setProducts] = useState([]);
@@ -38,64 +33,6 @@ function ProductInfo({ params }) {
         setPage(prevPage => prevPage + 1);
       })
       .catch(err => console.log(err));
-  };
-
-  const getMannerTemperatureStyle = (temperature) => {
-    const width = temperature + "%";
-    return {
-      width: width,
-      backgroundColor: getBackgroundColor(temperature)
-    };
-  };
-
-  const getBackgroundColor = (temperature) => {
-    // 여기에서 매너온도에 따른 배경색을 결정하는 로직을 작성하면 됩니다.
-    // 예시로 몇 가지 범위에 따른 배경색을 지정합니다.
-    if (temperature >= 0 && temperature < 21) {
-      return "black";
-    } else if (temperature >= 21 && temperature < 36.5) {
-      return "darkblue";
-    } else if (temperature >= 36.5 && temperature < 40) {
-        return "royalblue";
-    }else if (temperature >= 40 && temperature < 50) {
-      return "green";
-    }else if (temperature >= 50 && temperature < 60) {
-        return "#f9bc28";
-    }else {
-      return "#ff6f31";
-    }
-  };
-
-  const getMannerTemperatureImage = (temperature) => {
-    if (temperature >= 0 && temperature < 21) {
-      return aImage;
-    } else if (temperature >= 21 && temperature < 36.5) {
-      return bImage;
-    } else if (temperature >= 36.5 && temperature < 40) {
-      return cImage;
-    } else if (temperature >= 40 && temperature < 50) {
-      return dImage;
-    } else if (temperature >= 50 && temperature < 60) {
-      return eImage;
-    } else {
-      return null;
-    }
-  };
-
-  const getFontColor = (temperature) => {
-    if (temperature >= 0 && temperature < 21) {
-      return "black";
-    } else if (temperature >= 21 && temperature < 36.5) {
-      return "darkblue";
-    } else if (temperature >= 36.5 && temperature < 40) {
-      return "royalblue";
-    } else if (temperature >= 40 && temperature < 50) {
-      return "green";
-    } else if (temperature >= 50 && temperature < 60) {
-      return "#f9bc28";
-    } else {
-      return "#ff6f31";
-    }
   };
 
   //글 작성시간 계산 함수
@@ -165,27 +102,14 @@ function ProductInfo({ params }) {
               </div>
 
               <div id="profile_right">
-                <div id="tem_total">
-                            <p style={{ float: 'left', fontWeight: 'bold', textDecoration: 'underline' }}>매너온도</p>
-                            <p style={{ marginBottom: '-1px', float: 'right', color: getFontColor(36.5) }}>{36.5}%
-                                <img
-                                    src={getMannerTemperatureImage(36.5)}
-                                    alt="이미지 사진"
-                                    style={{ width: '50px', height: '50px' }}
-                                />
-                            </p>
-                            <div className="manner-thermometer" style={{ marginBottom: '10px' }}>
-                                <div className="manner-thermometer-fill" style={getMannerTemperatureStyle(36.5)}></div>
-                            </div>
-                        </div>
-                  {/* <dl id="manner_temper">
+                  <dl id="manner_temper">
                       <dt>매너온도</dt>
                       <dd className="text-color">75<span>°C</span></dd>
                   </dl>
                   <div className="meters">
                       <div id="bar" className="bar-color-06" style={{ width: '75%' }}></div>
                       <div id="face" className="face-06">페이스</div>
-                  </div> */}
+                  </div>
               </div>
           </div>
         </section>
