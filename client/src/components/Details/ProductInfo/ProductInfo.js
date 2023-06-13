@@ -254,39 +254,46 @@ function ProductInfo({ params, history }) {
         </div>
       </section>
 
-        <section id='content'>
-            <h1 id='content_title'>{ params.title }</h1>
-            <p id='content_category'>{ params.category } · <time>{displayCreateAt(params.addedAt)}</time></p>
-            <p id='content_price'>{ params.price }원</p>
-            <p id='content_main'>{ params.description }</p>
-            <p id='content_cnt'> 관심 갯수 · 채팅 갯수 · 조회수 </p>
-            <div id='content_button'>
-              <span id="heartIconDetails" className="col-lg-2 col-sm-2" onClick={ onHearthClick }>
-                  { params.isAuth && <>
-                      { !wish ? (
-                          <OverlayTrigger placement="top" overlay={<Tooltip>Add to Wishlist</Tooltip>}>
-                              <BsHeart />
-                          </OverlayTrigger>
-                      )
-                          : (
-                              <OverlayTrigger placement="top" overlay={<Tooltip>Remove from Wishlist</Tooltip>}>
-                                  <BsHeartFill />
-                              </OverlayTrigger>
-                          )
-                      }
-                  </>}
-              </span>
-                {params.isAuth ? (<>
-                {!params.isSeller &&
-                    <Button variant="dark" className="col-lg-10" id="btnContact" onClick={onChatStart}>
-                        <RiMessage3Fill />채팅으로 거래하기
-                    </Button>
-                }
-                </>) : (
-                  <p id="guest-msg"><Link to="/auth/login">Sign In</Link> now to contact the seller!</p>
-                )}
-            </div>
-        </section>
+      <section id='content'>
+        <h1 id='content_title'>{ params.title }</h1>
+        <p id='content_category'>{ params.category } · <time>{displayCreateAt(params.addedAt)}</time></p>
+        <p id='content_price'>{params.price ? params.price.toLocaleString() : ''}원</p>
+        <p id='content_main'>{ params.description }</p>
+        <p id='content_cnt'> 관심 ♥ · 채팅 갯수 · 조회 수 </p>
+        <div id='content_button'>
+          { params.isAuth ? (
+            <>
+              { !params.isSeller && (
+                <Button variant="dark" className="col-lg-10" id="btnContact" onClick={onChatStart}>
+                  <RiMessage3Fill />채팅으로 거래하기
+                </Button>
+              )}
+            </>
+          ) : (
+            <p id="guest-msg">
+              <Link to="/auth/login">Sign In</Link> now to contact the seller!
+            </p>
+          )}
+          { !params.isSeller && (
+            <span id="heartIconDetails" className="col-lg-1 col-sm-1" onClick={ onHearthClick }>
+              {params.isAuth && (
+                <>
+                  {!wish ? (
+                    <OverlayTrigger placement="top" overlay={<Tooltip>관심 목록에 추가</Tooltip>}>
+                      <BsHeart />
+                    </OverlayTrigger>
+                  ) : (
+                    <OverlayTrigger placement="top" overlay={<Tooltip>관심 목록에서 제거</Tooltip>}>
+                      <BsHeartFill />
+                    </OverlayTrigger>
+                  )}
+                </>
+              )}
+            </span>
+          )}
+          <p id='kakao_share'><img src=''></img></p>
+        </div>
+      </section>
 
       <section id="product_more">
         <h3>당근마켓 인기중고</h3>
@@ -295,9 +302,9 @@ function ProductInfo({ params, history }) {
         </div>
         <div id='container'>
           <InfiniteScroll
-            dataLength={products.length}
-            next={fetchMoreData}
-            hasMore={true}
+            dataLength={ products.length }
+            next={ fetchMoreData }
+            hasMore= {true }
             className="row"
           >
             <Row>

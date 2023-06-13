@@ -9,9 +9,14 @@
     padding-bottom: 20px;
 }
 
+#content_button {
+    display: block;
+}
+
 #heartIconDetails svg {
-    font-size: 20pt;
+    font-size: 1.5rem;
     cursor: pointer;
+    margin-bottom: 45px;
     color:#81002c;
 }
 
