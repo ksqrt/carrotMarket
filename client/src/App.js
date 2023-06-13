@@ -17,7 +17,7 @@ import Messages from "./Pages/Messages";
 
 function App() {
   return (
-    <>
+    <> 
       <Header />
       <Switch>
         {/* 루트주소일때는 카테고리 컴포넌트 */}
