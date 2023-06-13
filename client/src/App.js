@@ -21,7 +21,7 @@ function App() {
   return (
     <>
       <SearchProvider>     
-        <Header className="header"/>
+        <Header/>
           <Switch>
             {/* 루트주소일때는 카테고리 컴포넌트 */}
             <Route path="/" exact component={Categories} />
