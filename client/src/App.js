@@ -14,7 +14,6 @@ import CreateSell from "./Pages/CreateSell";
 import EditProfile from "./Pages/EditProfile";
 import Error404 from "./Pages/Error404";
 import Messages from "./Pages/Messages";
-import ImageTest from "./Pages/ImageTest";
 
 function App() {
   return (
@@ -34,7 +33,6 @@ function App() {
         <Route path="/profile/:id/edit" exact component={EditProfile} />;
         <Route path="/messages" exact component={Messages} />;
         <Route path="/messages/:id" exact component={Messages} />;
-        <Route path="/imageTest" exact component={ImageTest} />;
         <Route component={Error404} />
       </Switch>
       <Footer />
