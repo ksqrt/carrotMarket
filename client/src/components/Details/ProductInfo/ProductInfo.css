@@ -101,9 +101,15 @@
     font-size: 13px;
 }
 
+/* a 태그 간격 띄우기용 */
+.link-spacing {
+    margin-right: 10px;
+}
+
 #profile {
     width: 677px;
     margin: 0 auto;
+    padding-top: 30px;
 }
 
 #profile_address {
