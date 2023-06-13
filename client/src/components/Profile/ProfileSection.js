@@ -84,9 +84,11 @@ function ProfileSection({ params }) {
                             <p>
                                 <span style={{ fontWeight: 'bold' }}><BsFillPersonFill /> {params.name}</span>
                             </p>
-                            <span id="edit-icon">
-                                <Link to={`/profile/${params._id}/edit`}><button>프로필수정</button></Link>
-                            </span>
+                                <span id="edit-icon">
+                                    <Link to={`/profile/${params._id}/edit`}>
+                                        <button className="profile-edit-button">프로필 수정</button>
+                                    </Link>
+                                </span>
                             </div>
                         <div id="tem_total">
                             <p style={{ float: 'left', fontWeight: 'bold', textDecoration: 'underline' }}>매너온도</p>
