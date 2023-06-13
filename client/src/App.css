@@ -10,3 +10,13 @@ a:hover {
 .spinner-border {
     margin: 0 auto;
 }
+
+/* Header.css */
+.header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 999;
+  }
+  

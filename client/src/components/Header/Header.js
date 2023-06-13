@@ -1,5 +1,5 @@
-import { useContext, useState } from 'react';
-import { Context } from '../../ContextStore';
+import React, { useContext, useEffect, useState } from 'react';
+import { Context } from '../../ContextStore'; // Context 모듈의 경로를 확인하세요.
 import { Navbar, NavDropdown, Nav, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import { NavLink } from 'react-router-dom';
 import { BsFillPersonFill, BsFillEnvelopeFill, BsFillPlusCircleFill } from 'react-icons/bs';
@@ -10,7 +10,9 @@ import { SearchContext } from '../../ContextAPI/SearchContext';
 import './Header.css';
 import LoginModal from '../Modal/LoginModal';
 
+
 function Header() {
+    const [isSticky, setIsSticky] = useState(false);
     const { userData, setUserData } = useContext(Context);
     const { query, setQuery } = useContext(SearchContext);
     
@@ -26,11 +28,23 @@ function Header() {
 
     const handleSearch = (e) => {
         setQuery(e.target.value);
-      };
-    
+    };
+
+    useEffect(() => {
+        const handleScroll = () => {
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            setIsSticky(scrollTop > 0);
+        };
+
+        window.addEventListener('scroll', handleScroll);
+
+        return () => {
+            window.removeEventListener('scroll', handleScroll);
+        };
+    }, []);
+
     return (
-        
-        <Navbar collapseOnSelect bg="light" variant="light">
+        <Navbar collapseOnSelect bg="light" variant="light" className={isSticky ? 'sticky' : ''}>
             <div className="container">
                 <Navbar.Brand>
                     <NavLink className="navbar-brand" to="/"><img src="https://kr.object.ncloudstorage.com/ncp3/ncp3/logo_main_row.webp" alt="Logo" /></NavLink>

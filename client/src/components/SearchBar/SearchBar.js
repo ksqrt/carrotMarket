@@ -4,9 +4,9 @@ function SearchBar({ value, onChange }) {
   return (
     <div id="sider">
       <input
-        className="col-lg-7"
+        className="col-lg-15"
         type="text"
-        placeholder="검색..."
+        placeholder="물품을 검색해보세요"
         name="search"
         value={value}
         onChange={onChange}
