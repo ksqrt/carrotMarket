@@ -1,12 +1,9 @@
 import { useState, useEffect, useContext } from 'react';
 import InfiniteScroll from "react-infinite-scroll-component";
-import { Link } from 'react-router-dom';
 import { GrEdit } from 'react-icons/gr';
 import { MdArchive } from 'react-icons/md'
-import { Col, Row, Spinner, Tabs, Tab, Image, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import { getAll, archiveSell, wishProduct } from '../../../services/productData';
 import { Col, Modal, Form, Row, Spinner, Tabs, Tab, Image, OverlayTrigger, Tooltip, Button } from 'react-bootstrap';
-import { wishProduct } from '../../../services/productData';
 import ProductCard from "../../../components/ProductCard/ProductCard";
 import Messages from '../../../Pages/Messages';
 import aImage from '../../Profile/profile_images/a.png'; // 이미지 파일 경로
@@ -14,11 +11,11 @@ import bImage from '../../Profile/profile_images/b.png'; // 이미지 파일 경
 import cImage from '../../Profile/profile_images/c.png'; // 이미지 파일 경로
 import dImage from '../../Profile/profile_images/d.png'; // 이미지 파일 경로
 import eImage from '../../Profile/profile_images/e.png'; // 이미지 파일 경로
-import { getAll } from "../../../services/productData";
 import { startChat, initializeSocket, socket } from '../../../services/messagesData'; // startChat 함수와 socket 객체를 import합니다.
 import { RiMessage3Fill } from 'react-icons/ri';
 import { Context } from '../../../ContextStore'; // Context import
 import { Link, useHistory } from 'react-router-dom';
+
 
 function ProductInfo({ params, history }) {
   const [products, setProducts] = useState([]);
@@ -43,7 +40,6 @@ function ProductInfo({ params, history }) {
           .catch(err => console.log(err))
   }
   const { userData } = useContext(Context);
-  const history = useHistory();
   const [socket, setSocket] = useState(null);
 
   useEffect(() => {
