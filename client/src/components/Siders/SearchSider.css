@@ -1,12 +1,11 @@
 #sider {
-    background-image: url('https://www.colorhexa.com/ff7e36.png');
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
-    height: 100px;
+    height: 50px;
     text-align: center;
     vertical-align: middle;
-    padding: 113px;
+    padding: 0px;
 }
 
 #sider > input {
@@ -14,7 +13,7 @@
     border-radius: 50px;
     border: 1px;
     font-size: 18pt;
-    background-image: url('https://res.cloudinary.com/silenceiv/image/upload/v1616775441/search-icon_i5dy7o.png');
+    background-image: url('https://kr.object.ncloudstorage.com/ncp3/ncp3/search-icon_i5dy7o.png');
     background-repeat: no-repeat;
     height: 55px;
     padding-left: 68px;

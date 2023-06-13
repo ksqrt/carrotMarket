@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState,useContext } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import CategoriesNav from "../components/Categories/CategoriesNav";
 import ProductCard from "../components/ProductCard/ProductCard";
@@ -15,16 +15,18 @@ import {
 import "../components/Siders/SearchSider.css";
 import "../components/Categories/Categories.css";
 import "../components/ProductCard/ProductCard.css";
+import { SearchContext } from '../ContextAPI/SearchContext';
 
 
 function Categories({ match }) {
   let currentCategory = match.params.category;
+  const { query,setQuery } = useContext(SearchContext);
   const [products, setProduct] = useState([]);
   const [page, setPage] = useState(1);
-  const [query, setQuery] = useState("");
+  // const [query, setQuery] = useState("");
   const [loading, setLoading] = useState(true);
   const [sort, setSort] = useState("oldest");
-
+  
   useEffect(() => {
     setPage(1);
     setLoading(true);
@@ -62,7 +64,7 @@ function Categories({ match }) {
 
   return (
     <>
-      <SearchBar value={query} onChange={handleSearch} />
+      {/* <SearchBar value={query} onChange={handleSearch} /> */}
 
       {/* 카테고리 네비게이션 */}
       <CategoriesNav />

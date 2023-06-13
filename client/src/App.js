@@ -14,11 +14,13 @@ import CreateSell from "./Pages/CreateSell";
 import EditProfile from "./Pages/EditProfile";
 import Error404 from "./Pages/Error404";
 import Messages from "./Pages/Messages";
+import { SearchProvider } from './ContextAPI/SearchContext';
 
 function App() {
   return (
     <> 
-      <Header />
+      <SearchProvider>     
+         <Header />
       <Switch>
         {/* 루트주소일때는 카테고리 컴포넌트 */}
         <Route path="/" exact component={Categories} />
@@ -36,6 +38,7 @@ function App() {
         <Route component={Error404} />
       </Switch>
       <Footer />
+      </SearchProvider>
     </>
   );
 }

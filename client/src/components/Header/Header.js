@@ -4,23 +4,32 @@ import { Navbar, NavDropdown, Nav, OverlayTrigger, Tooltip } from 'react-bootstr
 import { NavLink } from 'react-router-dom';
 import { BsFillPersonFill, BsFillEnvelopeFill, BsFillPlusCircleFill } from 'react-icons/bs';
 import { IoLogOut } from 'react-icons/io5'
-import SearchBar from "../../components/Categories/SearchBar";
+import SearchBar from "../../components/SearchBar/SearchBar";
+import { SearchContext } from '../../ContextAPI/SearchContext';
 
 import './Header.css';
 import LoginModal from '../Modal/LoginModal';
-function Header() {
-    const { userData, setUserData } = useContext(Context)
 
+function Header() {
+    const { userData, setUserData } = useContext(Context);
+    const { query, setQuery } = useContext(SearchContext);
+    
     //모달
-    const [isOpen, setIsOpen] = useState(false)
+    const [isOpen, setIsOpen] = useState(false);
+
     const onOpen = () => {
-        setIsOpen(true)
+        setIsOpen(true);
     }
     const onClose = () => {
-        setIsOpen(false)
+        setIsOpen(false);
     }
 
+    const handleSearch = (e) => {
+        setQuery(e.target.value);
+      };
+    
     return (
+        
         <Navbar collapseOnSelect bg="light" variant="light">
             <div className="container">
                 <Navbar.Brand>
@@ -32,7 +41,7 @@ function Header() {
                         {/* <Nav.Link href="#features">Features</Nav.Link>
                         <Nav.Link href="#pricing">Pricing</Nav.Link> */}
                     </Nav>
-                    {/* <SearchBar></SearchBar> */}
+                    <SearchBar value={query} onChange={handleSearch} />
                     {userData ?
                         (<Nav>
                             <NavLink className="nav-item" id="addButton" to="/add-product">
