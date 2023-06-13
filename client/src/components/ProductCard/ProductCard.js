@@ -4,6 +4,9 @@ import { Link } from "react-router-dom";
 import Moment from "react-moment";
 
 function ProductCard({ params }) {
+  const like = params.likes.length
+  const view = params.views.length
+
   return (
     <Card>
       <Link to={`/categories/${params.category}/${params._id}/details`}>
@@ -12,12 +15,17 @@ function ProductCard({ params }) {
           <Card.Title>{params.title}</Card.Title>
           <Card.Text>{params.price.toFixed(2)}원</Card.Text>
         </Card.Body>
+        {/* 조회수 추가 */}
       </Link>
       <Card.Footer>
         <small className="text-muted">
           <Moment format="d MMM YYYY (dddd) HH:mm">{params.addedAt}</Moment>-{" "}
           <strong>{params.city}</strong>
           {/* <Link to="" id="heartIcon"><BsHeart /></Link> */}
+          <br></br>
+          <a>관심 ♥{like}</a>
+          <br></br>
+          <a>조회수 {view}</a>
         </small>
       </Card.Footer>
     </Card>

@@ -1,3 +1,4 @@
+/*
 import { useState } from 'react';
 import { Form, InputGroup, Button } from 'react-bootstrap';
 import { io } from "socket.io-client";
@@ -34,3 +35,4 @@ function SubmitForm({ chatId }) {
 }
 
 export default SubmitForm;
+*/
