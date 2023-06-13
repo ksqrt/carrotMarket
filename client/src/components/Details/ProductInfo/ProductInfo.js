@@ -2,8 +2,9 @@ import { useState, useEffect, useContext } from 'react';
 import InfiniteScroll from "react-infinite-scroll-component";
 import { GrEdit } from 'react-icons/gr';
 import { MdArchive } from 'react-icons/md'
+import { BsHeart, BsHeartFill } from 'react-icons/bs';
+import { Col, Row, Spinner, Tabs, Tab, Image, OverlayTrigger, Tooltip, Modal, Form, Button } from 'react-bootstrap';
 import { getAll, archiveSell, wishProduct } from '../../../services/productData';
-import { Col, Modal, Form, Row, Spinner, Tabs, Tab, Image, OverlayTrigger, Tooltip, Button } from 'react-bootstrap';
 import ProductCard from "../../../components/ProductCard/ProductCard";
 import Messages from '../../../Pages/Messages';
 import aImage from '../../Profile/profile_images/a.png'; // 이미지 파일 경로
@@ -15,7 +16,6 @@ import { startChat, initializeSocket, socket } from '../../../services/messagesD
 import { RiMessage3Fill } from 'react-icons/ri';
 import { Context } from '../../../ContextStore'; // Context import
 import { Link, useHistory } from 'react-router-dom';
-
 
 function ProductInfo({ params, history }) {
   const [products, setProducts] = useState([]);
@@ -46,14 +46,21 @@ function ProductInfo({ params, history }) {
     setWish(params.isWished === true);
   }, [params.isWished]);
 
-  const onHeartClick = () => {
-    const toggleWish = !wish;
-    wishProduct(params._id)
-      .then(res => {
-        setWish(toggleWish);
-      })
-      .catch(err => console.log(err));
-  };
+  const onHearthClick = () => {
+    if (wish === false) {
+      wishProduct(params._id)
+        .then(res => {
+          setWish(true);
+        })
+        .catch(err => console.log(err))
+    } else {
+      wishProduct(params._id)
+        .then(res => {
+          setWish(false);
+        })
+        .catch(err => console.log(err))
+    }
+  }
 
   const fetchMoreData = () => {
     getAll(page)
@@ -200,7 +207,7 @@ function ProductInfo({ params, history }) {
               <Link to={ `/profile/${params.sellerId}` }>
                 <div id="nickname">{ params.name }</div>
               </Link>
-              <div id="profile_address">안산시 단원구 선부동</div>
+              <div id="profile_address">{ params.city }</div>
               <div id="content_UpDel">
                 { params.isSeller && (
                   <>
@@ -253,16 +260,32 @@ function ProductInfo({ params, history }) {
             <p id='content_price'>{ params.price }원</p>
             <p id='content_main'>{ params.description }</p>
             <p id='content_cnt'> 관심 갯수 · 채팅 갯수 · 조회수 </p>
-            {params.isAuth ? (<>
-              {!params.isSeller &&
-                  <Button variant="dark" className="col-lg-10" id="btnContact" onClick={onChatStart}>
-                      <RiMessage3Fill />채팅으로 거래하기
-                  </Button>
-              }
-              
-               </>) : (
-                <p id="guest-msg"><Link to="/auth/login">Sign In</Link> now to contact the seller!</p>
-            )}
+            <div id='content_button'>
+              <span id="heartIconDetails" className="col-lg-2 col-sm-2" onClick={ onHearthClick }>
+                  { params.isAuth && <>
+                      { !wish ? (
+                          <OverlayTrigger placement="top" overlay={<Tooltip>Add to Wishlist</Tooltip>}>
+                              <BsHeart />
+                          </OverlayTrigger>
+                      )
+                          : (
+                              <OverlayTrigger placement="top" overlay={<Tooltip>Remove from Wishlist</Tooltip>}>
+                                  <BsHeartFill />
+                              </OverlayTrigger>
+                          )
+                      }
+                  </>}
+              </span>
+                {params.isAuth ? (<>
+                {!params.isSeller &&
+                    <Button variant="dark" className="col-lg-10" id="btnContact" onClick={onChatStart}>
+                        <RiMessage3Fill />채팅으로 거래하기
+                    </Button>
+                }
+                </>) : (
+                  <p id="guest-msg"><Link to="/auth/login">Sign In</Link> now to contact the seller!</p>
+                )}
+            </div>
         </section>
 
       <section id="product_more">
