@@ -10,7 +10,7 @@ const Footer = () => {
       <Container>
         <Row className="pb-14 border-bottom border-gray-500">
           <Col>
-            <img src="/logo_white.webp" alt="Logo" />
+            <img src="https://kr.object.ncloudstorage.com/ncp3/ncp3/logo_white.webp" alt="Logo" />
           </Col>
           <Col className="pt-2 space-y-3">
             <ul className="list-unstyled m-0">
