@@ -16,6 +16,7 @@ function ProductInfo({ params }) {
   const [loading, setLoading] = useState(true);
   const { userData } = useContext(Context);
   const history = useHistory();
+  const [socket, setSocket] = useState(null);
 
   useEffect(() => {
     setWish(params.isWished === true);
@@ -75,18 +76,23 @@ function ProductInfo({ params }) {
 
   // startchat 이벤트 실행
   useEffect(() => {
-    initializeSocket();
-  }, []);
-
-  const onChatStart = (e) => {
-      e.preventDefault();
+    const initSocket = async () => {
+      const socket = await initializeSocket();
+      setSocket(socket);
+  
       socket.on('startChat', ({ chatId }) => {
-          console.log("messages 페이지로 이동");
-          history.push(`/messages/${chatId}`);
+        history.push(`/messages/${chatId}`);
       });
-    
-      startChat({ buyerId: userData._id, sellerId: params.sellerId }); // buyer id, seller id 사용하여 채팅방 생성
-  }
+    };
+  
+    initSocket();
+  }, []);
+  
+  const onChatStart = async (e) => {
+    e.preventDefault();
+    if (!socket) return;
+    startChat(socket, { buyerId: userData._id, sellerId: params.sellerId });
+  };
 
   //{params.title}: 상품 제목
   //{params.addedAt}: 업로드 날짜
@@ -135,9 +141,11 @@ function ProductInfo({ params }) {
             {params.isAuth ? (<>
               {!params.isSeller &&
                   <Button variant="dark" className="col-lg-10" id="btnContact" onClick={onChatStart}>
-                      <RiMessage3Fill />Chat Start
+                      <RiMessage3Fill />채팅으로 거래하기
                   </Button>
-              } </>) : (
+              }
+              
+               </>) : (
                 <p id="guest-msg"><Link to="/auth/login">Sign In</Link> now to contact the seller!</p>
             )}
         </section>
