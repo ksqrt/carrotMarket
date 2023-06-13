@@ -27,7 +27,7 @@ function ProductCard({ params }) {
           
 
           <br></br>
-          <a>&nbsp;&nbsp;관심 ♥ {like}</a>
+          <a>관심 <a style={{ color: '#FF7E36'}}> ♥</a> {like}</a>
           <br></br>
           <a>조회수 {view}</a>
         </small>

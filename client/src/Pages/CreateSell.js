@@ -143,6 +143,7 @@ class AddProduct extends Component {
                             <Button className="col-lg-12" variant="dark" type="submit">Add product</Button>
                         }
                     </Form>
+                    <br></br>
                 </div>
             </>
         )

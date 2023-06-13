@@ -62,13 +62,14 @@ function Header() {
                                 <OverlayTrigger key="bottom" placement="bottom"
                                     overlay={
                                         <Tooltip id={`tooltip-bottom`}>
-                                            <strong>Add</strong>  a sell.
+                                            <strong>Add</strong> a sell.
                                         </Tooltip>
                                     }
-                                > 
-                                     <BsFillPlusCircleFill style={{  }} />
+                                >
+                                    <BsFillPlusCircleFill/>
                                 </OverlayTrigger>
                             </NavLink>
+
 
                             <NavDropdown title={<img id="navImg" src={userData.avatar} alt="user-avatar"/>} drop="left" id="collasible-nav-dropdown">
                                 <NavLink className="dropdown-item" to={`/profile/${userData._id}`}>
