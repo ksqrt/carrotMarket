@@ -1,13 +1,15 @@
 import { useEffect, useState } from 'react';
 import ProductCard from '../../ProductCard/ProductCard';
-import { Col, Row, Spinner } from 'react-bootstrap';
+import { Col, Row, Spinner, Button } from 'react-bootstrap';
 import { getUserWishlist } from '../../../services/userData';
+import { useHistory } from 'react-router-dom';
 
 import './Wishlist.css';
 
 function Wishlist() {
-    const [products, setProduct] = useState([])
+    const [products, setProduct] = useState([]);
     let [loading, setLoading] = useState(true);
+    const history = useHistory();
 
     useEffect(() => {
         //페이지 맨 위로 스크롤
@@ -21,7 +23,7 @@ function Wishlist() {
             })
             //에러를 콘솔로 출력
             .catch(err => console.log(err))
-    }, [setProduct, setLoading])
+    }, [])
 
     return (
         <>
@@ -39,17 +41,19 @@ function Wishlist() {
                                     </Col>
                                 )
                             }
-                            {/* 상품이 없으면 Noting to show 라는 메시지 표시 */}
                         </Row>
                     ) : (
-                            <p className="nothing-to-show">Nothing to show</p>
+                            <div className="nothing-to-show-container">
+                                <p className="nothing-to-show">관심 목록이 없습니다</p>
+                                <Button variant="primary" onClick={() => history.push('/')} className="search-button">
+                                    물건 검색
+                                </Button>
+                            </div>
                         )}
-
                 </>) :
                 <Spinner animation="border" />}
-
         </>
-    )
+    );
 }
 
 export default Wishlist;
