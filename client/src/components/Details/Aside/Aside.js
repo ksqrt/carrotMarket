@@ -94,6 +94,7 @@ function Aside({ params, history }) {
                         </Button>
                     }
                     
+                    
                     <Link to={`/profile/${params.sellerId}`}>
                         <Col lg={12}>
                             <img id="avatar" src={params.avatar} alt="user-avatar" />

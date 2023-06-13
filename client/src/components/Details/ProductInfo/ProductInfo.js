@@ -1,15 +1,21 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import InfiniteScroll from "react-infinite-scroll-component";
-import { Col, Row, Spinner, Tabs, Tab, Image, OverlayTrigger, Tooltip } from 'react-bootstrap';
+import { Col, Modal, Form, Row, Spinner, Tabs, Tab, Image, OverlayTrigger, Tooltip, Button } from 'react-bootstrap';
 import { wishProduct } from '../../../services/productData';
 import ProductCard from "../../../components/ProductCard/ProductCard";
 import { getAll } from "../../../services/productData";
+import { startChat, initializeSocket, socket } from '../../../services/messagesData'; // startChat 함수와 socket 객체를 import합니다.
+import { RiMessage3Fill } from 'react-icons/ri';
+import { Context } from '../../../ContextStore'; // Context import
+import { Link, useHistory } from 'react-router-dom';
 
 function ProductInfo({ params }) {
   const [products, setProducts] = useState([]);
   const [wish, setWish] = useState(false);
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(true);
+  const { userData } = useContext(Context);
+  const history = useHistory();
 
   useEffect(() => {
     setWish(params.isWished === true);
@@ -67,6 +73,21 @@ function ProductInfo({ params }) {
     }
   };
 
+  // startchat 이벤트 실행
+  useEffect(() => {
+    initializeSocket();
+  }, []);
+
+  const onChatStart = (e) => {
+      e.preventDefault();
+      socket.on('startChat', ({ chatId }) => {
+          console.log("messages 페이지로 이동");
+          history.push(`/messages/${chatId}`);
+      });
+    
+      startChat({ buyerId: userData._id, sellerId: params.sellerId }); // buyer id, seller id 사용하여 채팅방 생성
+  }
+
   //{params.title}: 상품 제목
   //{params.addedAt}: 업로드 날짜
   //{params.description}: 상품 설명
@@ -111,6 +132,14 @@ function ProductInfo({ params }) {
             <p id='content_price'>{ params.price }원</p>
             <p id='content_main'>{ params.description }</p>
             <p id='content_cnt'> 관심 갯수 · 채팅 갯수 · 조회수 </p>
+            {params.isAuth ? (<>
+              {!params.isSeller &&
+                  <Button variant="dark" className="col-lg-10" id="btnContact" onClick={onChatStart}>
+                      <RiMessage3Fill />Chat Start
+                  </Button>
+              } </>) : (
+                <p id="guest-msg"><Link to="/auth/login">Sign In</Link> now to contact the seller!</p>
+            )}
         </section>
 
         <section id="product_more">
