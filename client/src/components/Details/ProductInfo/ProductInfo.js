@@ -1,22 +1,45 @@
 import { useState, useEffect, useContext } from 'react';
 import InfiniteScroll from "react-infinite-scroll-component";
+import { GrEdit } from 'react-icons/gr';
+import { MdArchive } from 'react-icons/md'
+import { getAll, archiveSell, wishProduct } from '../../../services/productData';
 import { Col, Modal, Form, Row, Spinner, Tabs, Tab, Image, OverlayTrigger, Tooltip, Button } from 'react-bootstrap';
-import { wishProduct } from '../../../services/productData';
 import ProductCard from "../../../components/ProductCard/ProductCard";
-import { getAll } from "../../../services/productData";
-import { startChat, initializeSocket } from '../../../services/messagesData'; // startChat 함수와 socket 객체를 import합니다.
+import Messages from '../../../Pages/Messages';
+import aImage from '../../Profile/profile_images/a.png'; // 이미지 파일 경로
+import bImage from '../../Profile/profile_images/b.png'; // 이미지 파일 경로
+import cImage from '../../Profile/profile_images/c.png'; // 이미지 파일 경로
+import dImage from '../../Profile/profile_images/d.png'; // 이미지 파일 경로
+import eImage from '../../Profile/profile_images/e.png'; // 이미지 파일 경로
+import { startChat, initializeSocket, socket } from '../../../services/messagesData'; // startChat 함수와 socket 객체를 import합니다.
 import { RiMessage3Fill } from 'react-icons/ri';
 import { Context } from '../../../ContextStore'; // Context import
 import { Link, useHistory } from 'react-router-dom';
 
 
-function ProductInfo({ params }) {
+function ProductInfo({ params, history }) {
   const [products, setProducts] = useState([]);
   const [wish, setWish] = useState(false);
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(true);
+  const [showMsg, setShowMdg] = useState(false);
+  const [showArchive, setShowArchive] = useState(false);
+  const handleClose = () => setShowMdg(false);
+  const handleShow = () => setShowMdg(true);
+
+  const handleCloseArchive = () => setShowArchive(false);
+  const handleShowArchive = () => setShowArchive(true);
+
+  const handleSubmit = (e) => {
+      e.preventDefault();
+      archiveSell(params._id)
+          .then(res => {
+              setShowArchive(false);
+              history.push(`/profile/${params.seller}`);
+          })
+          .catch(err => console.log(err))
+  }
   const { userData } = useContext(Context);
-  const history = useHistory();
   const [socket, setSocket] = useState(null);
 
   useEffect(() => {
@@ -41,6 +64,65 @@ function ProductInfo({ params }) {
       .catch(err => console.log(err));
   };
 
+  //매너온도
+  const getMannerTemperatureStyle = (temperature) => {
+    const width = temperature + "%";
+    return {
+      width: width,
+      backgroundColor: getBackgroundColor(temperature)
+    };
+  };
+
+  const getBackgroundColor = (temperature) => {
+    // 여기에서 매너온도에 따른 배경색을 결정하는 로직을 작성하면 됩니다.
+    // 예시로 몇 가지 범위에 따른 배경색을 지정합니다.
+    if (temperature >= 0 && temperature < 21) {
+      return "black";
+    } else if (temperature >= 21 && temperature < 36.5) {
+      return "darkblue";
+    } else if (temperature >= 36.5 && temperature < 40) {
+      return "royalblue";
+    } else if (temperature >= 40 && temperature < 50) {
+      return "green";
+    } else if (temperature >= 50 && temperature < 60) {
+      return "#f9bc28";
+    } else {
+      return "#ff6f31";
+    }
+  };
+
+  const getMannerTemperatureImage = (temperature) => {
+    if (temperature >= 0 && temperature < 21) {
+      return aImage;
+    } else if (temperature >= 21 && temperature < 36.5) {
+      return bImage;
+    } else if (temperature >= 36.5 && temperature < 40) {
+      return cImage;
+    } else if (temperature >= 40 && temperature < 50) {
+      return dImage;
+    } else if (temperature >= 50 && temperature < 60) {
+      return eImage;
+    } else {
+      return null;
+    }
+  };
+
+  const getFontColor = (temperature) => {
+    if (temperature >= 0 && temperature < 21) {
+      return "black";
+    } else if (temperature >= 21 && temperature < 36.5) {
+      return "darkblue";
+    } else if (temperature >= 36.5 && temperature < 40) {
+      return "royalblue";
+    } else if (temperature >= 40 && temperature < 50) {
+      return "green";
+    } else if (temperature >= 50 && temperature < 60) {
+      return "#f9bc28";
+    } else {
+      return "#ff6f31";
+    }
+  };
+
   //글 작성시간 계산 함수
   const displayCreateAt = (createdAt) => {
     const date = new Date(createdAt);
@@ -54,22 +136,22 @@ function ProductInfo({ params }) {
     const months = days / 30;
     const years = months / 12;
 
-    //업로드 시간이 60초 미만이라면 방금 전
+    //업로드 시간이 60초 미만이라면 방금 전.
     if (seconds < 60) {
       return "방금 전";
-    //업로드 시간이 60분 미만이라면 몇 분 전
+      //업로드 시간이 60분 미만이라면 몇 분 전.
     } else if (minutes < 60) {
       return `${Math.floor(minutes)}분 전`;
-    //업로드 시간이 24시간 미만이라면 몇 시간 전
+      //업로드 시간이 24시간 미만이라면 몇 시간 전.
     } else if (hours < 24) {
       return `${Math.floor(hours)}시간 전`;
-    //업로드 날짜가 30일 미만이라면 몇 일 전
+      //업로드 날짜가 30일 미만이라면 몇 일 전.
     } else if (days < 30) {
       return `${Math.floor(days)}일 전`;
-    //업로드 날짜가 1년 미만이라면 몇 달 전
+      //업로드 날짜가 1년 미만이라면 몇 달 전.
     } else if (months < 12) {
       return `${Math.floor(months)}달 전`;
-    //나머지는 몇 년 전으로...
+      //나머지는 몇 년 전으로...
     } else {
       return `${Math.floor(years)}년 전`;
     }
@@ -102,36 +184,68 @@ function ProductInfo({ params }) {
 
   return (
     <div className="d-flex flex-column align-items-center">
-        <section id='images'>
-            <Image className="col-lg-12" src={params.image} rounded />
-        </section>
+      <section id='images'>
+        <Image className="col-lg-12" src={ params.image } rounded />
+      </section>
 
-        <section id="profile">
-            <a id="profile_link" href=''>
-                <div id="space-between">
-                    <div style={{ display: 'flex' }}>
-                        <div id='profile_image'>
-                            <img id="avatar" src={params.avatar} alt="user-avatar" />
-                        </div>
-                        <div id="profile_left">
-                            <div id="nickname">{params.name}</div>
-                            <div id="profile_address">안산시 단원구 선부동</div>
-                        </div>
-                    </div>
+      <section id="profile">
+        <div id="space-between">
+          <div style={{ display: 'flex' }}>
+            <Link to={ `/profile/${params.sellerId}` }>
+              <div id='profile_image'>
+                <img id="avatar" src={ params.avatar } alt="user-avatar" />
+              </div>
+            </Link>
+            <div id="profile_left">
+              <Link to={ `/profile/${params.sellerId}` }>
+                <div id="nickname">{ params.name }</div>
+              </Link>
+              <div id="profile_address">안산시 단원구 선부동</div>
+              <div id="content_UpDel">
+                { params.isSeller && (
+                  <>
+                  <OverlayTrigger placement="top" overlay={ <Tooltip>상품 수정하기</Tooltip>} >
+                    <Link to={`/categories/${params.category}/${params._id}/edit`}>게시글 수정하기</Link>
+                  </OverlayTrigger> 
+                  <span className="link-spacing"></span>
+                    <a href="#" className="delete-link">게시글 삭제하기</a>
+                  </>
+                ) }
+                {/* <OverlayTrigger placement="top" overlay={ <Tooltip>상품 활성화하기</Tooltip>} >
+                  <span id="archive-icon" onClick={ handleShowArchive }>
+                    <Link to={<MdArchive />}></Link>
+                  </span>
+                </OverlayTrigger> */}
+              </div>
+            </div>
+          </div>
 
-                    <div id="profile_right">
-                        <dl id="manner_temper">
-                            <dt>매너온도</dt>
-                            <dd className="text-color">75<span>°C</span></dd>
-                        </dl>
-                        <div className="meters">
-                            <div id="bar" className="bar-color-06" style={{ width: '75%' }}></div>
-                            <div id="face" className="face-06">페이스</div>
-                        </div>
-                    </div>
-                </div>
-            </a>
-        </section>
+          <div id="profile_right">
+            <div id="tem_total">
+              <p style={{ float: 'left', fontWeight: 'bold', textDecoration: 'underline' }}>매너온도</p>
+              <p style={{ marginBottom: '-1px', float: 'right', color: getFontColor(36.5) }}>{36.5}°C
+                <img
+                  src={getMannerTemperatureImage(36.5)}
+                  alt="이미지 사진"
+                  style={{ width: '50px', height: '50px' }}
+                />
+              </p>
+              <div className="manner-thermometer" style={{ marginBottom: '10px' }}>
+                <div className="manner-thermometer-fill" style={getMannerTemperatureStyle(36.5)}></div>
+              </div>
+            </div>
+
+            {/* <dl id="manner_temper">
+                      <dt>매너온도</dt>
+                      <dd className="text-color">75<span>°C</span></dd>
+                  </dl>
+                  <div className="meters">
+                      <div id="bar" className="bar-color-06" style={{ width: '75%' }}></div>
+                      <div id="face" className="face-06">페이스</div>
+                  </div> */}
+          </div>
+        </div>
+      </section>
 
         <section id='content'>
             <h1 id='content_title'>{ params.title }</h1>
@@ -151,30 +265,30 @@ function ProductInfo({ params }) {
             )}
         </section>
 
-        <section id="product_more">
-          <h3>당근마켓 인기중고</h3> 
-            <div id='more_link'>
-              <a href=''>더 구경하기</a>
-            </div>
-            <div id='container'>
-              <InfiniteScroll
-                  dataLength={ products.length }
-                  next={ fetchMoreData }
-                  hasMore={ true }
-                  className="row"
-                >
-                <Row>
-                  {products.map(product => (
-                    <Col md={ 8 } lg={ 4 } key={ product._id }>
-                      <div className="product-card">
-                        <ProductCard params={ product } />
-                      </div>
-                    </Col>
-                  ))}
-                </Row>
-              </InfiniteScroll>
-            </div>
-        </section>
+      <section id="product_more">
+        <h3>당근마켓 인기중고</h3>
+        <div id='more_link'>
+          <a href=''>더 구경하기</a>
+        </div>
+        <div id='container'>
+          <InfiniteScroll
+            dataLength={products.length}
+            next={fetchMoreData}
+            hasMore={true}
+            className="row"
+          >
+            <Row>
+              {products.map(product => (
+                <Col md={8} lg={4} key={product._id}>
+                  <div className="product-card">
+                    <ProductCard params={product} />
+                  </div>
+                </Col>
+              ))}
+            </Row>
+          </InfiniteScroll>
+        </div>
+      </section>
     </div>
   );
 }

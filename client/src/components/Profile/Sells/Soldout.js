@@ -1,12 +1,11 @@
+import React from 'react';
 import { useEffect, useState } from 'react';
 import ProductCard from '../../ProductCard/ProductCard';
 import { Col, Row, Spinner, Button } from 'react-bootstrap';
 import { getUserWishlist } from '../../../services/userData';
 import { useHistory } from 'react-router-dom';
 
-import './Wishlist.css';
-
-function Wishlist() {
+const Soldout = () => {
     const [products, setProduct] = useState([]);
     let [loading, setLoading] = useState(true);
     const history = useHistory();
@@ -29,8 +28,7 @@ function Wishlist() {
         <>
             {!loading ?
                 (<>
-                    <h1 className="heading">Wishlist</h1>
-                    {/* 찜 목록에서 상품이 있는지 확인한다. */}
+                    <h1 className="heading">soldoutList</h1>
                     {products.length > 0 ? (
                         <Row>
                             {/* 상품이 있으면 products.map()을 사용하여 각 상품에 대해 반복하면서 ProductCard 컴포넌트를 생성한다. */}
@@ -44,16 +42,13 @@ function Wishlist() {
                         </Row>
                     ) : (
                             <div className="nothing-to-show-container">
-                                <p className="nothing-to-show">관심 목록이 없습니다</p>
-                                <Button variant="primary" onClick={() => history.push('/')} className="search-button">
-                                    물건 검색
-                                </Button>
+                                <p className="nothing-to-show">판매완료 상품이 없습니다</p>
                             </div>
                         )}
                 </>) :
                 <Spinner animation="border" />}
         </>
     );
-}
+};
 
-export default Wishlist;
+export default Soldout;

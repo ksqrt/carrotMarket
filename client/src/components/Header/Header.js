@@ -1,30 +1,53 @@
-import { useContext, useState } from 'react';
-import { Context } from '../../ContextStore';
+import React, { useContext, useEffect, useState } from 'react';
+import { Context } from '../../ContextStore'; // Context 모듈의 경로를 확인하세요.
 import { Navbar, NavDropdown, Nav, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import { NavLink } from 'react-router-dom';
 import { BsFillPersonFill, BsFillEnvelopeFill, BsFillPlusCircleFill } from 'react-icons/bs';
 import { IoLogOut } from 'react-icons/io5'
-import SearchBar from "../../components/Categories/SearchBar";
+import SearchBar from "../../components/SearchBar/SearchBar";
+import { SearchContext } from '../../ContextAPI/SearchContext';
 
 import './Header.css';
 import LoginModal from '../Modal/LoginModal';
-function Header() {
-    const { userData, setUserData } = useContext(Context)
 
+
+function Header() {
+    const [isSticky, setIsSticky] = useState(false);
+    const { userData, setUserData } = useContext(Context);
+    const { query, setQuery } = useContext(SearchContext);
+    
     //모달
-    const [isOpen, setIsOpen] = useState(false)
+    const [isOpen, setIsOpen] = useState(false);
+
     const onOpen = () => {
-        setIsOpen(true)
+        setIsOpen(true);
     }
     const onClose = () => {
-        setIsOpen(false)
+        setIsOpen(false);
     }
 
+    const handleSearch = (e) => {
+        setQuery(e.target.value);
+    };
+
+    useEffect(() => {
+        const handleScroll = () => {
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            setIsSticky(scrollTop > 0);
+        };
+
+        window.addEventListener('scroll', handleScroll);
+
+        return () => {
+            window.removeEventListener('scroll', handleScroll);
+        };
+    }, []);
+
     return (
-        <Navbar collapseOnSelect bg="light" variant="light">
+        <Navbar collapseOnSelect bg="light" variant="light" className={isSticky ? 'sticky' : ''}>
             <div className="container">
                 <Navbar.Brand>
-                    <NavLink className="navbar-brand" to="/"><img src="/logo_main_row.webp" alt="Logo" /></NavLink>
+                    <NavLink className="navbar-brand" to="/"><img src="https://kr.object.ncloudstorage.com/ncp3/ncp3/logo_main_row.webp" alt="Logo" /></NavLink>
                 </Navbar.Brand>
                 <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                 <Navbar.Collapse id="responsive-navbar-nav">
@@ -32,20 +55,21 @@ function Header() {
                         {/* <Nav.Link href="#features">Features</Nav.Link>
                         <Nav.Link href="#pricing">Pricing</Nav.Link> */}
                     </Nav>
-                    {/* <SearchBar></SearchBar> */}
+                    <SearchBar value={query} onChange={handleSearch} />
                     {userData ?
                         (<Nav>
                             <NavLink className="nav-item" id="addButton" to="/add-product">
                                 <OverlayTrigger key="bottom" placement="bottom"
                                     overlay={
                                         <Tooltip id={`tooltip-bottom`}>
-                                            <strong>Add</strong>  a sell.
+                                            <strong>Add</strong> a sell.
                                         </Tooltip>
                                     }
-                                > 
-                                     <BsFillPlusCircleFill style={{  }} />
+                                >
+                                    <BsFillPlusCircleFill/>
                                 </OverlayTrigger>
                             </NavLink>
+
 
                             <NavDropdown title={<img id="navImg" src={userData.avatar} alt="user-avatar"/>} drop="left" id="collasible-nav-dropdown">
                                 <NavLink className="dropdown-item" to={`/profile/${userData._id}`}>

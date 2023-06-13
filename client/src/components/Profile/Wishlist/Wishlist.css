@@ -1,0 +1,41 @@
+.nothing-to-show {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100px; /* 필요한 높이 값을 지정해주세요 */
+  }
+  
+#profile_spinner {
+    position: fixed;
+    left: 50%;
+    transform: translateX(-50%);
+    margin-top: 65px; 
+  }
+
+  .nothing-to-show-container {
+    text-align: center;
+    margin-bottom: 16px;
+  }
+
+  .search-button {
+    border: none;
+    margin-left: 45%;
+    display: flex;
+    justify-content: center;
+    margin-top: 16px;
+    background-color: #ffb091;
+    border-radius: 50px; /* 당근 모양을 위한 border-radius 설정 */
+    padding: 10px 20px; /* 버튼 내용물의 padding 조정 */
+    font-weight: bold; /* 텍스트 굵기 설정 */
+    color: #ffffff; /* 텍스트 색상 설정 */
+    text-transform: uppercase; /* 텍스트 대문자 변환 */
+    text-decoration: none; /* 텍스트에 밑줄 제거 */
+    transition: background-color 0.3s ease; /* 호버 시 배경색 변화를 위한 트랜지션 설정 */
+  }
+  
+  .search-button:hover {
+    background-color: #ff7e36;
+  }
+  
+  
+

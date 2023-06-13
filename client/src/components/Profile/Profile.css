@@ -1,62 +1,186 @@
-
-#avatar {
-    width: 150px;
-    height: 150px;
+#profile-head .profile-row {
+    margin-left: 50px;
+    align-items: center;
+  }
+  
+  
+  #profile_avatar {
+    width: 80px;
+    /* border: 1px solid black; */
+  }
+  
+  #avatar {
+    margin: 0 auto;
+    display: block;
+    width: 75px;
+    height: 75px;
     border-radius: 100px;
     object-fit: cover;
-}
-
-#profile-head {
-    /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#f8f9fa+0,e5e5e5+100 */
-    background: #f8f9fa;
-    /* Old browsers */
-    background: -moz-linear-gradient(top, #f8f9fa 0%, #e5e5e5 100%);
-    /* FF3.6-15 */
-    background: -webkit-linear-gradient(top, #f8f9fa 0%, #e5e5e5 100%);
-    /* Chrome10-25,Safari5.1-6 */
-    background: linear-gradient(to bottom, #f8f9fa 0%, #e5e5e5 100%);
-    /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f8f9fa', endColorstr='#e5e5e5', GradientType=0);
-    /* IE6-9 */
-    margin-bottom: 30px;
-}
-
-.profile-row {
-    padding: 12px;
-    justify-content: center;
-}
-
-#aside {
-    border-right: 1px solid #8080804a;
+  }
+  
+    #profile-head {
+      display: flex;
+      background-color: #ffffff; /* 흰색 배경으로 변경 */
+      margin-bottom: 30px;
+      border: 1px solid rgba(128, 128, 128, 0.2); /* 1픽셀 굵기의 연한 회색 테두리 */
+  }
+  
+  
+  #profile_information2 {
     margin-top: 25px;
-}
+    /* border: 1px solid black; */
+    float:left;
+  }
 
-#aside button {
-    width: 150px;
-    margin-bottom: 10px;
-}
-
-.custom-file-upload {
+  .profile-edit-button {
+    width: 100px;
+    background-color: white;
+    border: 1px solid lightgray;
+    padding: 5px 10px;
+    font-weight: bold;
+    font-size: 13px;
+    border-radius: 5px;
     cursor: pointer;
-}
+    color: #888888;
+  }
+  
+  
+  
 
-#edit-profile-icons {
-    text-align: center;
-    font-size: 24pt;
-    margin-top: -14px;
-}
 
-@media (min-width: 100px) {
-    .col-sm-12 {
-        text-align: center;
+  
+  /* 프로필 이름 */
+  #profile_name {
+    display: flex;
+  }
+  #profile_name button {
+    margin-left: 20px;
+  }
+  
+  
+  
+    #profile_infobtn {
+      margin-top:20px;
     }
-    #avatar {
-        margin-bottom: 20px;
+  
+  
+    #edit-profile-icons {
+      text-align: center;
+      font-size: 30pt;
+      margin-top: -14px;
+  }
+    
+  
+  
+  .sidebar {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    border-bottom: 1px solid lightgray;
+    width: 95%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  
+  .sidebar-button {
+    flex-grow: 1;
+    height: 50px;
+    margin-right: 5px;
+    border: none;
+    background-color: white;
+    color: #333333;
+    border-bottom: 2px solid transparent;
+    font-weight: bold; /* Add this line to make the button text bold */
+  }
+  
+  
+  .sidebar-button.active {
+    border-bottom: 4px solid #FF7E36;
+    color: #FF7E36;
+  }
+  
+  
+  .profile-main-contents {
+    background-color: white;
+    padding: 20px;
+  }
+  
+  
+    
+  
+  
+  
+    .custom-file-upload {
+      cursor: pointer;
     }
-}
-
-@media (min-width: 840px) {
-    .profile-row, .col-md-3 {
-        text-align: left;
+  
+    .heading {
+      display: none;
     }
-}
+  
+  
+  
+  /* 매너칭찬버튼 */
+  .custom-button {
+    background-color: #ff8b00;
+    color: #fff;
+    border: none;
+    padding: 8px 20px;
+    font-size: 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    height: 36px;
+    font-family: 'Arial', sans-serif;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  
+  .custom-button:hover {
+    background-color: #ffae00;
+    color: #fff;
+  }
+  
+  .custom-button:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px #ffae00;
+  }
+  
+  
+  
+  
+  
+  /* 매너온도 부분 */
+  #tem_total {
+    width: 250px;
+    /* border: 1px solid black; */
+  }
+  
+  
+  
+  
+  .manner-thermometer {
+    margin-top: -5px;
+    width: 240px;
+    height: 10px;
+    background-color: #f2f2f2;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  
+  .manner-thermometer-fill {
+    height: 100%;
+    border-radius: 10px;
+    background-color: #ff6f31;
+    transition: width 0.3s ease-in-out;
+  }
+  
+  .manner-thermometer-label {
+    font-size: 12px;
+    text-align: right;
+    padding-right: 5px;
+  }
+  
