@@ -1,28 +1,46 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import './Modal.css';
-
+import { JAVASCRIPT } from '../../config/config';
 
 const LoginModal = ({onClose}) => {
 
-    // const Rest_api_key= process.env.REACT_APP_KAKAO_API;
-    // const redirect_uri = 'http://localhost:3000/auth' //Redirect URI
-    // // oauth 요청 URL
-    // const kakaoURL = `https://kauth.kakao.com/oauth/authorize?client_id=${Rest_api_key}&redirect_uri=${redirect_uri}&response_type=code`
-    // const handleLogin = ()=>{
+    // const kakaoURL = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${process.env.REACT_APP_KAKAO_API}&redirect_uri=${process.env.REACT_APP_KAKAO_REDIRECT}`;
+    // const handleLogin = () => {
     //     window.location.href = kakaoURL
     // }
-    // return(
-    // <>
-    // <button onClick={handleLogin}>카카오 로그인</button>
-    // </>
-    // )
-   
+    // const code = new URL(window.location.href).searchParams.get("code");
 
-    const kakaoURL = `https://kauth.kakao.com/oauth/authorize?client_id=${process.env.KAKAO_API}&redirect_uri=${process.env.KAKAO_REDIRECT}&response_type=code`;
-    const handleLogin = () => {
-        window.location.href = kakaoURL
+    useEffect(() => {
+        const script = document.createElement('script');
+        script.src = 'https://developers.kakao.com/sdk/js/kakao.js';
+        script.async = true;
+        document.body.appendChild(script);
+
+        script.onload = () => {
+            //window.Kakao.init("c350194b116db72c1ae39746c3ce7b34");
+            window.Kakao.init(JAVASCRIPT);
+        };
+
+        return () => {
+            document.body.removeChild(script);
+        };
+    }, []);
+
+    const kakaoLogin = () => {
+        window.Kakao.Auth.login({
+            scope: 'profile_nickname, account_email, gender',
+            success: function(authObj) {
+                console.log(authObj);
+                window.Kakao.API.request({
+                    url: '/v2/user/me',
+                    success: res => {
+                        const kakao_account = res.kakao_account;
+                        console.log(kakao_account);
+                    } 
+                });
+            }
+        });
     };
-    //const code = new URL(window.location.href).searchParams.get("code");
 
     return (
         <>
@@ -36,21 +54,12 @@ const LoginModal = ({onClose}) => {
                     <div className="modal-title">당근마켓으로 중고거래 시작하기</div>
                     <div className="modal-subtitle">간편하게 가입하고 상품을 확인하세요</div>
                     <div className="modal-paths"> 
-                        <button onClick={handleLogin}>
-                            <img src='https://developers.kakao.com/tool/resource/static/img/button/login/full/ko/kakao_login_medium_narrow.png' height="30" alt='카카오'/>
-                        </button> 
-                        <a id='kakao' href="#" onClick={handleLogin}>
+                        <a href="#" onClick={kakaoLogin}>
                             <div className='modal-path'>
                                 <img src='https://m.bunjang.co.kr/pc-static/resource/7bf83f72cf54461af573.png' width="30" alt="카카오"/>
                                 &nbsp;&nbsp;카카오로 이용하기
                             </div>
                         </a>     
-                        <a id='kakao' href="/auth/kakao">
-                            <div className='modal-path'>
-                                <img src='https://m.bunjang.co.kr/pc-static/resource/7bf83f72cf54461af573.png' width="30" alt="카카오"/>
-                                &nbsp;&nbsp;카카오로 이용하기
-                            </div>
-                        </a>    
                         <a id='kakao' href="/auth/google">
                             <div className='modal-path'>
                                 <img src='https://littledeep.com/wp-content/uploads/2019/03/google_logo_download_thumbnail.png' width="50" alt="구글"/>
