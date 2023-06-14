@@ -12,12 +12,12 @@ import bImage from '../../Profile/profile_images/b.png'; // 이미지 파일 경
 import cImage from '../../Profile/profile_images/c.png'; // 이미지 파일 경로
 import dImage from '../../Profile/profile_images/d.png'; // 이미지 파일 경로
 import eImage from '../../Profile/profile_images/e.png'; // 이미지 파일 경로
-import { startChat, initializeSocket, socket } from '../../../services/messagesData'; // startChat 함수와 socket 객체를 import합니다.
+import { startChat, initializeSocket, getUserConversations } from '../../../services/messagesData'; // startChat 함수와 socket 객체를 import합니다.
 import { RiMessage3Fill } from 'react-icons/ri';
 import { Context } from '../../../ContextStore'; // Context import
 import { Link, useHistory } from 'react-router-dom';
 
-function ProductInfo({ params, history }) {
+function ProductInfo({ params }) {
   const [products, setProducts] = useState([]);
   const [wish, setWish] = useState(false);
   const [page, setPage] = useState(1);
@@ -39,8 +39,6 @@ function ProductInfo({ params, history }) {
           })
           .catch(err => console.log(err))
   }
-  const { userData } = useContext(Context);
-  const [socket, setSocket] = useState(null);
 
   useEffect(() => {
     setWish(params.isWished === true);
@@ -165,6 +163,10 @@ function ProductInfo({ params, history }) {
   };
 
   // startchat 이벤트 실행
+  const history = useHistory();
+  const { userData } = useContext(Context);
+  const [socket, setSocket] = useState(null);
+  
   useEffect(() => {
     const initSocket = async () => {
       const socket = await initializeSocket();

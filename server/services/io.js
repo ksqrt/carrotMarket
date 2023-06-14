@@ -12,7 +12,7 @@ function Io(server) {
   });
 
   io.on("connection", (socket) => { //socket 변수 = socket.io에서 제공하는 것 
-    console.log("User connected");
+    console.log("socket.io connected");
 
     
     socket.on("startChat", async ({buyerId, sellerId}) => { // 클라이언트에서 받을 내용 buyerId = buyer._id 될듯.
@@ -24,9 +24,9 @@ function Io(server) {
 
     socket.on("sendMessage", async ({chatId, senderId, message}) => { // chatId, senderId, message 인자와 함께 이벤트를 받았을 때 실행됨.
       await ChatRoom.updateOne({ _id: chatId }, { $push: { conversation: { senderId, message } } });
-      console.log('2. io.js, sendMessage', { chatId, senderId, message } );
-      io.to(chatId).emit("newMessage", { chatId, senderId, message }); // senderId, message 인자 제공 필요
-      console.log('3. io.js, newMessage');
+      console.log('3. io.js, sendMessage', { chatId, senderId, message } );
+      io.emit("newMessage", { senderId, message }); // senderId, message 인자 제공 필요
+      console.log('4. io.js, newMessage');
     });
 
     socket.on("getUserConversations", async ({ userId }) => {
