@@ -3,7 +3,7 @@ import {sendMessage, disconnect, getUserConversations, initializeSocket} from '.
 import { Container, Row, Form, InputGroup, Button, Alert } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { Context } from '../ContextStore';
-import ScrollToBottom from 'react-scroll-to-bottom'; // 스크롤이 자동으로 맨 밑으로 이동하는 라이브러리, 메세지가 추가될 때마다 자동으로 맨 밑으로 이동.
+import ScrollToBottom from 'react-scroll-to-bottom';
 import '../components/Messages/Aside.css'
 import '../components/Messages/Article.css'
 
@@ -34,11 +34,12 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
         (async () => {
           setSocket(await initializeSocket());
         })();
-    }, []);
+      }, []);
 
-      useEffect(() => {
+
+      useEffect(() => { // 대화방 가져오기, 선택시 내용 가져오기
         if (!userData || !socket) return;
-        console.log("messages.js, getUserConversations ");
+        console.log("1. messages.js, getUserConversations ");
         getUserConversations(socket, userData._id) // 현재 사용자와 관련된 모든 채팅방 목록을 가져옴
           .then(res => {
             setChatroomList(res); // 가져온 채팅방 목록을 상태 변수에 저장.
@@ -47,34 +48,36 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
             }
           })
           .catch(console.log)
-      }, [isSelected, chatId, userData, socket, selected.chats.conversation]);
-   
+      }, [isSelected, chatId, socket, userData]);
+
       useEffect(() => {
+        if (!socket) return;
+        console.log('5. messages.js, newmessage');
+        const handleNewMessage = (newMessage) => {
+            setSelected((prevSelected) => ({
+                ...prevSelected,
+                chats: {
+                    ...prevSelected.chats,
+                    conversation: [...prevSelected.chats.conversation, newMessage],
+                },
+            }));
+        };
+    
+        socket.on('newMessage', handleNewMessage);
+    
+        return () => {
+            socket.off('newMessage', handleNewMessage);
+        };
+    }, [socket]);
+    
+    useEffect(() => {
         return () => {
           if (socket) {
             disconnect(socket, console.log.bind(null, "Socket disconnected"));
           }
         };
       }, [socket]);
-      
-    useEffect(() => {
-        if (!socket) return;
-        console.log('4. messages.js, newMessage');
-        socket.on('newMessage', (newMessage) => { // newMessage 인자와 함께 sendMessage 이벤트를 받았을 때 실행됨.
-            if(selected.chats._id === newMessage.chatId) {
-                setSelected((prevSelected) => ({
-                    ...prevSelected,
-                    chats: {
-                        ...prevSelected.chats,
-                        conversation: [...prevSelected.chats.conversation, newMessage],
-                    },
-                }));
-                setLastMessage(newMessage);
-            }
-        console.log('selected.chats.conversation : ',selected.chats.conversation);
-        console.log('selected : ',selected);
-        });
-    }, [selected.chats._id, selected.chats.conversation]); // 채팅방, 대화 내용 배열 변경 시마다 이벤트 발생.
+
 
     const handleMsgSubmit = event => {
         event.preventDefault();
@@ -124,8 +127,15 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
                                     </Link>
                                 }
                             </div>
-                        
+                            {alertShow &&
+                                <Alert variant="success" onClose={() => setAlertShow(false)} dismissible>
+                                    <p>
+                                        {alert}
+                                    </p>
+                                </Alert>
+                            }
                             <div className="chat-selected-body col-lg-12">
+                                
                                 {selected.chats.conversation.map((x, index) =>
                                     x ?
                                     <div className={selected.myId === x.senderId ? 'me' : "not-me"} key={index}>
@@ -133,6 +143,7 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
                                     </div>
                                     : null
                                 )}
+
                             </div>
                             <div className="chat-selected-footer col-lg-12">
                                 <Form onSubmit={handleMsgSubmit}>
