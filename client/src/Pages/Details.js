@@ -8,6 +8,7 @@ import { getSpecific, views } from '../services/productData'
 
 import '../components/Details/ProductInfo/ProductInfo.css';
 import '../components/Details/Aside/Aside.css';
+import KakaoShare from '../components/Kakao/KakaoShare';
 
 function Details({ match, history }) {
     let productId = match.params.id;
