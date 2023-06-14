@@ -18,14 +18,14 @@ import { Context } from '../../../ContextStore'; // Context import
 import { Link, useHistory } from 'react-router-dom';
 import KakaoShare from '../../Kakao/KakaoShare';
 
-function ProductInfo({ params, history }) {
+function ProductInfo({ params }) {
   const [products, setProducts] = useState([]);
   const [wish, setWish] = useState(false);
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(true);
   const [showMsg, setShowMdg] = useState(false);
   const [showArchive, setShowArchive] = useState(false);
-  // const history = useHistory();
+  const history = useHistory();
   const handleClose = () => setShowMdg(false);
   const handleShow = () => setShowMdg(true);
 
