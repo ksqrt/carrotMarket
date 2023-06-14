@@ -18,13 +18,9 @@ import { Context } from '../../../ContextStore'; // Context import
 import { Link, useHistory } from 'react-router-dom';
 import KakaoShare from '../../Kakao/KakaoShare';
 
-<<<<<<< HEAD
 import '../Aside/Aside.css';
 
 function ProductInfo({ params, history }) {
-=======
-function ProductInfo({ params }) {
->>>>>>> 07d1e8a7d55731dd1db9728dee00db3aa2ad525b
   const [products, setProducts] = useState([]);
   const [wish, setWish] = useState(false);
   const [page, setPage] = useState(1);
