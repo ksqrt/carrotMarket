@@ -2,10 +2,13 @@ import { io as IO } from "socket.io-client";
 
 export const initializeSocket = async () => {
   const socket = IO("http://localhost:5000");
+  // const socket = IO("http://101.79.11.48:5000");
+
   socket.on('connect', () => {
     console.log('Socket connected:', socket.id);
     console.log(socket.connected);
     });
+  console.log("Socket created:", socket);
   return socket;
 
 };
