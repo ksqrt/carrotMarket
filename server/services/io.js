@@ -12,7 +12,7 @@ function Io(server) {
   });
 
   io.on("connection", (socket) => { //socket 변수 = socket.io에서 제공하는 것 
-    console.log("User connected");
+    console.log("socket.io connected");
 
     
     socket.on("startChat", async ({buyerId, sellerId}) => { // 클라이언트에서 받을 내용 buyerId = buyer._id 될듯.

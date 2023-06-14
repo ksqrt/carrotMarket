@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Button, Modal, Form, OverlayTrigger, Tooltip, Col } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { RiMessage3Fill } from 'react-icons/ri';
@@ -8,16 +8,13 @@ import { BsFillPersonFill } from 'react-icons/bs';
 import { MdEmail, MdPhoneAndroid } from 'react-icons/md'
 import { FaSellsy } from 'react-icons/fa'
 import { archiveSell } from '../../../services/productData';
-import { startChat, initializeSocket } from '../../../services/messagesData'; // startChat 함수와 socket 객체를 import합니다.
-import { Context } from '../../../ContextStore'; // Context import
+//import { startChat, initializeSocket } from '../../../services/messagesData'; // startChat 함수와 socket 객체를 import합니다.
+//import { Context } from '../../../ContextStore'; // Context import
 import './Aside.css';
 
 function Aside({ params, history }) {
-    const { userData } = useContext(Context);
     const [showMsg, setShowMdg] = useState(false);
-    const [showArchive, setShowArchive] = useState(false);
-    const [message, setMessage] = useState("");
-    const [socket, setSocket] = useState(null);
+    const [showArchive, setShowArchive] = useState(false); 
 
     const handleClose = () => setShowMdg(false);
     const handleShow = () => setShowMdg(true);
@@ -35,12 +32,17 @@ function Aside({ params, history }) {
             .catch(err => console.log(err))
     }
     
+    
+    
+    // startchat 이벤트 실행
+    /*
+    const { userData } = useContext(Context);
+    const [socket, setSocket] = useState(null);
+    const [message, setMessage] = useState("");
     const handleMsgChange = (e) => {
         e.preventDefault();
         setMessage(e.target.value)
     }
-    // startchat 이벤트 실행
-    
     useEffect(() => {
         const initSocket = async () => {
           const socket = await initializeSocket();
@@ -59,6 +61,7 @@ function Aside({ params, history }) {
         if (!socket) return;
         startChat(socket, { buyerId: userData._id, sellerId: params.sellerId });
       };
+    */
 
 /*
      const onMsgSent = (e) => {
@@ -122,7 +125,7 @@ function Aside({ params, history }) {
                 <Modal.Body>
                     <Form>
                         <Form.Group>
-                            <Form.Control as="textarea" name="textarea" onChange={handleMsgChange} rows={3} />
+                            {/* <Form.Control as="textarea" name="textarea" onChange={handleMsgChange} rows={3} /> */}
                         </Form.Group>
                     </Form>
                 </Modal.Body>
