@@ -1,5 +1,4 @@
 const Server = require('socket.io').Server;
-const mongoose = require('mongoose');
 const ChatRoom = require('../models/ChatRoom') // 채팅방 id, buyer, seller, conversation DB 연결
 
 
@@ -12,66 +11,33 @@ function Io(server) {
     }
   });
 
-  console.log('Before io.use');
+  io.on("connection", (socket) => { //socket 변수 = socket.io에서 제공하는 것 
+    console.log("socket.io connected");
 
-  io.on("connection", async (socket) => { //socket 변수 = socket.io에서 제공하는 것 
-    try{
-    console.log("User connected");
-
-    // let chatdb = await ChatRoom.find().populate("buyer").populate("seller");
-
+    
     socket.on("startChat", async ({buyerId, sellerId}) => { // 클라이언트에서 받을 내용 buyerId = buyer._id 될듯.
-        
-        if(buyerId === sellerId) {
-            console.log("본인에게 채팅방 신청은 안됩니ㄷ");
-            return;
-        }
-
-        let chatRoom = await ChatRoom.findOne({ buyer: buyerId, seller: sellerId }); // 구매자, 판매자 간 채팅방 있는지 확인
-        
-        if(!chatRoom) { // chatroom이 없을 때 if문 실행.
-          chatRoom = new ChatRoom({ buyer: buyerId, seller: sellerId });
-          await chatRoom.save();
-        }
-  
-        socket.join(chatRoom._id.toString());
-        socket.emit('startChat', { chatId: chatRoom._id.toString() });
+      let chatRoom = buyerId !== sellerId && await ChatRoom.findOne({ buyer: buyerId, seller: sellerId }) || new ChatRoom({ buyer: buyerId, seller: sellerId });
+      await chatRoom.save();
+      socket.join(chatRoom._id.toString());
+      socket.emit('startChat', { chatId: chatRoom._id.toString() });
     });
 
-    socket.on("sendMessage", async ({chatId, senderId, message}, callback) => {
-      try{  
-        await ChatRoom.updateOne({ _id: chatId }, { $push: { conversation: { senderId, message } } });
-        console.log('ChatRoom updated successfully');
-        io.to(chatId).emit("newMessage", { senderId, message });
-        console.log('newMessage event emitted');
-        callback(null);
-      } catch (err) {
-        console.log('Error in sendMessage: ', err);
-        callback(err);
-      }
-    });
-
-    socket.on("disconnect", () => { // 인터넷 연결 끊어지면 작동
-      console.log("disconnected");
+    socket.on("sendMessage", async ({chatId, senderId, message}) => { // chatId, senderId, message 인자와 함께 이벤트를 받았을 때 실행됨.
+      await ChatRoom.updateOne({ _id: chatId }, { $push: { conversation: { senderId, message } } });
+      console.log('3. io.js, sendMessage', { chatId, senderId, message } );
+      io.emit("newMessage", { senderId, message }); // senderId, message 인자 제공 필요
+      console.log('4. io.js, newMessage');
     });
 
     socket.on("getUserConversations", async ({ userId }) => {
-
-        let userChats = await ChatRoom.find({
-            $or: [ // $or : 주어진 배열 내의 조건 중 하나라도 참이면 참으로 간주 buyer 또는 seller에 userId가 있는 경우에 참. 전부 가져옴.
-                { 'buyer': userId },
-                { 'seller': userId }
-            ]
-        }).populate("buyer").populate("seller");
-        let checkedChats = userChats.map(x => ({ chats: x, isBuyer: (x.buyer._id == userId), myId: userId }));
-        socket.emit('userConversations', checkedChats);
-      });
-    } catch(err) {
-      console.log(err);
-    }
-
-});
-return io;
+      // $or : 주어진 배열 내의 조건 중 하나라도 참이면 참으로 간주 buyer 또는 seller에 userId가 있는 경우에 참. 전부 가져옴.
+      let userChats = await ChatRoom.find({ $or: [ { 'buyer': userId }, { 'seller': userId } ] }).populate("buyer").populate("seller").populate("conversation");
+      socket.emit('userConversations', userChats.map(x => ({ chats: x, isBuyer: (x.buyer._id == userId), myId: userId })));
+    });
+  
+    socket.on("disconnect", () => console.log("disconnected"));
+  });
+  return io;
 }
 
 module.exports = Io;

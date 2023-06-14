@@ -1,4 +1,5 @@
 const baseUrl = 'http://localhost:5000';
+// const baseUrl = 'http://101.79.11.48:5000';
 
 export async function loginKakao(access_token) {
     const response = await fetch('https://kapi.kakao.com/v2/user/me', {
