@@ -1,8 +1,9 @@
 import { useState, useEffect, useContext } from 'react';
-import {startChat, sendMessage, disconnect, getMessage, getUserConversations, initializeSocket} from '../services/messagesData';
+import {sendMessage, disconnect, getUserConversations, initializeSocket} from '../services/messagesData';
 import { Container, Row, Form, InputGroup, Button, Alert } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { Context } from '../ContextStore';
+import ScrollToBottom from 'react-scroll-to-bottom';
 import '../components/Messages/Aside.css'
 import '../components/Messages/Article.css'
 
@@ -27,7 +28,7 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
     const [alert, setAlert] = useState(null); // 메세지 전송 성공 메세지
     const [alertShow, setAlertShow] = useState(false); // 메세지 전송 성공 메세지 토글
     const [socket, setSocket] = useState(null); // initializeSocket 소켓 초기화
-    const [lastMessage, setLastMessage] = useState(null);
+    
     
     useEffect(() => {
         (async () => {
@@ -35,9 +36,10 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
         })();
       }, []);
 
-      useEffect(() => {
+
+      useEffect(() => { // 대화방 가져오기, 선택시 내용 가져오기
         if (!userData || !socket) return;
-        console.log("messages.js, getUserConversations ");
+        console.log("1. messages.js, getUserConversations ");
         getUserConversations(socket, userData._id) // 현재 사용자와 관련된 모든 채팅방 목록을 가져옴
           .then(res => {
             setChatroomList(res); // 가져온 채팅방 목록을 상태 변수에 저장.
@@ -46,34 +48,36 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
             }
           })
           .catch(console.log)
-      }, [isSelected, chatId, userData, socket, selected.chats.conversation]);
-   
+      }, [isSelected, chatId, socket, userData]);
+
       useEffect(() => {
+        if (!socket) return;
+        console.log('5. messages.js, newmessage');
+        const handleNewMessage = (newMessage) => {
+            setSelected((prevSelected) => ({
+                ...prevSelected,
+                chats: {
+                    ...prevSelected.chats,
+                    conversation: [...prevSelected.chats.conversation, newMessage],
+                },
+            }));
+        };
+    
+        socket.on('newMessage', handleNewMessage);
+    
+        return () => {
+            socket.off('newMessage', handleNewMessage);
+        };
+    }, [socket]);
+    
+    useEffect(() => {
         return () => {
           if (socket) {
             disconnect(socket, console.log.bind(null, "Socket disconnected"));
           }
         };
       }, [socket]);
-      
-    useEffect(() => {
-        if (!socket) return;
-        console.log('4. messages.js, newMessage');
-        socket.on('newMessage', (newMessage) => { // newMessage 인자와 함께 sendMessage 이벤트를 받았을 때 실행됨.
-            if(selected.chats._id === newMessage.chatId) {
-                setSelected((prevSelected) => ({
-                    ...prevSelected,
-                    chats: {
-                        ...prevSelected.chats,
-                        conversation: [...prevSelected.chats.conversation, newMessage],
-                    },
-                }));
-                setLastMessage(newMessage);
-            }
-        console.log('selected.chats.conversation : ',selected.chats.conversation);
-        console.log('selected : ',selected);
-        });
-    }, [selected.chats._id, selected.chats.conversation]); // 채팅방, 대화 내용 배열 변경 시마다 이벤트 발생.
+
 
     const handleMsgSubmit = event => {
         event.preventDefault();
@@ -81,7 +85,7 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
         setMessage("");
         setAlert("Message sent!");
         setAlertShow(true);
-        console.log('1. messages.js, sendmessage');
+        console.log('2. messages.js, sendmessage');
     };
 
     return (
@@ -131,13 +135,15 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
                                 </Alert>
                             }
                             <div className="chat-selected-body col-lg-12">
+                                
                                 {selected.chats.conversation.map((x, index) =>
-                                    x && x._id ?
-                                    <div className={selected.myId === x.senderId ? 'me' : "not-me"} key={x._id}>
+                                    x ?
+                                    <div className={selected.myId === x.senderId ? 'me' : "not-me"} key={index}>
                                         <span className="message">{x.message}</span>
                                     </div>
                                     : null
                                 )}
+
                             </div>
                             <div className="chat-selected-footer col-lg-12">
                                 <Form onSubmit={handleMsgSubmit}>
@@ -150,7 +156,9 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
                                                 onChange={(e) => setMessage(e.target.value)}>
                                             </Form.Control>
                                             <InputGroup.Append>
+                                            <ScrollToBottom>
                                                 <Button type="submit" variant="secondary">Sent</Button>
+                                            </ScrollToBottom>
                                             </InputGroup.Append>
                                         </InputGroup>
                                     </Form.Group>

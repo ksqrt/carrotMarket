@@ -2,8 +2,12 @@ import { io as IO } from "socket.io-client";
 
 export const initializeSocket = async () => {
   const socket = IO("http://localhost:5000");
-  console.log("Socket created:", socket);
+  socket.on('connect', () => {
+    console.log('Socket connected:', socket.id);
+    console.log(socket.connected);
+    });
   return socket;
+
 };
 
 export const startChat = (socket, { buyerId, sellerId}) => {
@@ -16,11 +20,11 @@ export const sendMessage = (socket, { chatId, senderId, message }) => {
 };
 
 
-  export const getMessage = (socket, callback) => {
-    socket.on('newMessage', (message) => {
-        callback(message);
-    });
-  };
+//   export const getMessage = (socket, callback) => {
+//     socket.on('newMessage', (newmessage) => {
+//         callback(newmessage);
+//     });
+//   };
 
   
   export const getUserConversations = (socket, userId) => {
