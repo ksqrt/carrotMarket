@@ -3,7 +3,7 @@ import {sendMessage, disconnect, getUserConversations, initializeSocket} from '.
 import { Container, Row, Form, InputGroup, Button, Alert } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { Context } from '../ContextStore';
-import ScrollToBottom from 'react-scroll-to-bottom';
+//import ScrollToBottom from 'react-scroll-to-bottom';
 import '../components/Messages/Aside.css'
 import '../components/Messages/Article.css'
 
@@ -13,7 +13,7 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
 
     const { userData } = useContext(Context); // 사용자 id 가져오기
     const [chatroomList, setChatroomList] = useState([]) // 사용자의 모든 채팅방 정보
-    const [isSelected, setIsSelected] = useState(false); // 채팅방 선택
+    const [isSelected, setIsSelected] = useState(true); // 채팅방 선택
     const [selected, setSelected] = useState({ // 선택된 채팅방의 상세 정보(참가user, conversation(나눈 대화 내역)) 저장 
         chats: {
             _id: 0,
@@ -156,9 +156,7 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
                                                 onChange={(e) => setMessage(e.target.value)}>
                                             </Form.Control>
                                             <InputGroup.Append>
-                                            <ScrollToBottom>
                                                 <Button type="submit" variant="secondary">Sent</Button>
-                                            </ScrollToBottom>
                                             </InputGroup.Append>
                                         </InputGroup>
                                     </Form.Group>
