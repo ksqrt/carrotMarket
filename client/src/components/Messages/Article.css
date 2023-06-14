@@ -45,3 +45,10 @@ article img {
     height: 65px;
     resize: none;
 }
+
+.chat-selected-body {
+    display: flex;
+    flex-direction: column-reverse;
+    overflow-y: auto;
+    height: 300px; /* 스크롤이 보일 최대 높이 */
+}

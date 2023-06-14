@@ -12,20 +12,26 @@ import bImage from '../../Profile/profile_images/b.png'; // 이미지 파일 경
 import cImage from '../../Profile/profile_images/c.png'; // 이미지 파일 경로
 import dImage from '../../Profile/profile_images/d.png'; // 이미지 파일 경로
 import eImage from '../../Profile/profile_images/e.png'; // 이미지 파일 경로
-import { startChat, initializeSocket, socket } from '../../../services/messagesData'; // startChat 함수와 socket 객체를 import합니다.
+import { startChat, initializeSocket, getUserConversations } from '../../../services/messagesData'; // startChat 함수와 socket 객체를 import합니다.
 import { RiMessage3Fill } from 'react-icons/ri';
 import { Context } from '../../../ContextStore'; // Context import
 import { Link, useHistory } from 'react-router-dom';
+import KakaoShare from '../../Kakao/KakaoShare';
 
+<<<<<<< HEAD
 import '../Aside/Aside.css';
 
 function ProductInfo({ params, history }) {
+=======
+function ProductInfo({ params }) {
+>>>>>>> 07d1e8a7d55731dd1db9728dee00db3aa2ad525b
   const [products, setProducts] = useState([]);
   const [wish, setWish] = useState(false);
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(true);
   const [showMsg, setShowMdg] = useState(false);
   const [showArchive, setShowArchive] = useState(false);
+  const history = useHistory();
   const handleClose = () => setShowMdg(false);
   const handleShow = () => setShowMdg(true);
 
@@ -43,9 +49,8 @@ function ProductInfo({ params, history }) {
           })
           .catch(err => console.log(err))
   }
-  const { userData } = useContext(Context);
-  const [socket, setSocket] = useState(null);
 
+  // wishList 처리
   useEffect(() => {
     setWish(params.isWished === true);
   }, [params.isWished]);
@@ -169,6 +174,10 @@ function ProductInfo({ params, history }) {
   };
 
   // startchat 이벤트 실행
+  // const history = useHistory();
+  const { userData } = useContext(Context);
+  const [socket, setSocket] = useState(null);
+  
   useEffect(() => {
     const initSocket = async () => {
       const socket = await initializeSocket();
@@ -192,6 +201,37 @@ function ProductInfo({ params, history }) {
   //{params.addedAt}: 업로드 날짜
   //{params.description}: 상품 설명
   //{params.createdSells}: 물품 갯수
+
+  //kakao api
+  useEffect(() => {
+    const script = document.createElement("script");
+    script.src = "https://developers.kakao.com/sdk/js/kakao.js";
+    script.async = true;
+    document.body.appendChild(script);
+    return () => document.body.removeChild(script);
+  }, []);
+
+  const shareKakao = () => { // url이 id값에 따라 변경되기 때문에 route를 인자값으로 받아줌
+    if (window.Kakao) {
+      const kakao = window.Kakao;
+      if (!kakao.isInitialized()) {
+        kakao.init('7286bd8c9d717d7ebd38369e55aa226e'); // 카카오에서 제공받은 javascript key를 넣어줌 -> .env파일에서 호출시킴
+      }
+  
+      kakao.Link.sendDefault({
+        objectType: "feed", // 카카오 링크 공유 여러 type들 중 feed라는 타입 -> 자세한 건 카카오에서 확인
+        content: {
+          title: params.title, // 인자값으로 받은 title
+          description: params.description, // 인자값으로 받은 title
+          imageUrl: params.image,
+          link: {
+            mobileWebUrl: 'https://developers.kakao.com', // 인자값으로 받은 route(uri 형태)
+            webUrl: 'https://developers.kakao.com'
+          }
+        }
+      });
+    }
+  };
 
   return (
     <div className="d-flex flex-column align-items-center">
@@ -328,6 +368,11 @@ function ProductInfo({ params, history }) {
             </span>
           )}
           <p id='kakao_share'><img src=''></img></p>
+
+          {/* <KakaoShare params={params}/> */}
+          <button onClick={() => shareKakao()}>
+            <img className="w-12 h-12" src="https://developers.kakao.com/assets/img/about/logos/kakaotalksharing/kakaotalk_sharing_btn_medium.png" />
+          </button>
         </div>
       </section>
 
