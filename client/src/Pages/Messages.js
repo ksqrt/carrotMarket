@@ -3,7 +3,7 @@ import {startChat, sendMessage, disconnect, getMessage, getUserConversations, in
 import { Container, Row, Form, InputGroup, Button, Alert } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { Context } from '../ContextStore';
-import { ScrollToBottom } from 'react-scroll-to-bottom'; // 스크롤이 자동으로 맨 밑으로 이동하는 라이브러리, 메세지가 추가될 때마다 자동으로 맨 밑으로 이동.
+import ScrollToBottom from 'react-scroll-to-bottom'; // 스크롤이 자동으로 맨 밑으로 이동하는 라이브러리, 메세지가 추가될 때마다 자동으로 맨 밑으로 이동.
 import '../components/Messages/Aside.css'
 import '../components/Messages/Article.css'
 
@@ -34,28 +34,28 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
         (async () => {
           setSocket(await initializeSocket());
         })();
-      }, []);
+    }, []);
 
-      useEffect(() => {
-        if (!userData || !socket) return;
-        console.log("messages.js, getUserConversations ");
-        getUserConversations(socket, userData._id) // 현재 사용자와 관련된 모든 채팅방 목록을 가져옴
-          .then(res => {
-            setChatroomList(res); // 가져온 채팅방 목록을 상태 변수에 저장.
-            if (isSelected) { // 채팅방이 선택되었다면 현재 선택된 채팅방의 정보를 selected 상태 변수에 저장
-              setSelected(res.find(x => x.chats._id === chatId))
-            }
-          })
-          .catch(console.log)
-      }, [isSelected, chatId, userData, socket, selected.chats.conversation]);
-   
-      useEffect(() => {
-        return () => {
-          if (socket) {
-            disconnect(socket, console.log.bind(null, "Socket disconnected"));
-          }
-        };
-      }, [socket]);
+    useEffect(() => {
+    if (!userData || !socket) return;
+    console.log("messages.js, getUserConversations ");
+    getUserConversations(socket, userData._id) // 현재 사용자와 관련된 모든 채팅방 목록을 가져옴
+        .then(res => {
+        setChatroomList(res); // 가져온 채팅방 목록을 상태 변수에 저장.
+        if (isSelected) { // 채팅방이 선택되었다면 현재 선택된 채팅방의 정보를 selected 상태 변수에 저장
+            setSelected(res.find(x => x.chats._id === chatId))
+        }
+        })
+        .catch(console.log)
+    }, [isSelected, chatId, userData, socket]);
+
+    useEffect(() => {
+    return () => {
+        if (socket) {
+        disconnect(socket, console.log.bind(null, "Socket disconnected"));
+        }
+    };
+    }, [socket]);
       
     useEffect(() => {
         if (!socket) return;
@@ -74,7 +74,7 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
         console.log('selected.chats.conversation : ',selected.chats.conversation);
         console.log('selected : ',selected);
         });
-    }, [selected.chats._id, selected.chats.conversation]); // 채팅방, 대화 내용 배열 변경 시마다 이벤트 발생.
+    }, [selected]); // 채팅방, 대화 내용 배열 변경 시마다 이벤트 발생.
 
     const handleMsgSubmit = event => {
         event.preventDefault();
@@ -124,24 +124,19 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
                                     </Link>
                                 }
                             </div>
-                            {alertShow &&
-                                <Alert variant="success" onClose={() => setAlertShow(false)} dismissible>
-                                    <p>
-                                        {alert}
-                                    </p>
-                                </Alert>
-                            }
-                            <ScrollToBottom>
+                        
                             <div className="chat-selected-body col-lg-12">
+                                <div>
                                 {selected.chats.conversation.map((x, index) =>
-                                    x && x._id ?
-                                    <div className={selected.myId === x.senderId ? 'me' : "not-me"} key={x._id}>
+                                    x ?
+                                    <div className={selected.myId === x.senderId ? 'me' : "not-me"} key={index}>
                                         <span className="message">{x.message}</span>
                                     </div>
                                     : null
                                 )}
+                                </div>
                             </div>
-                            </ScrollToBottom>
+                      
                             <div className="chat-selected-footer col-lg-12">
                                 <Form onSubmit={handleMsgSubmit}>
                                     <Form.Group>
