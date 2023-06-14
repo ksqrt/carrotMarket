@@ -1,6 +1,5 @@
 import { useState, useEffect, useContext } from 'react';
-// import { getUserConversations, sendMessage } from '../services/messagesData';
-import {startChat, sendMessage, disconnect, getMessage, socket, getUserConversations, initializeSocket} from '../services/messagesData';
+import {startChat, sendMessage, disconnect, getMessage, getUserConversations, initializeSocket} from '../services/messagesData';
 import { Container, Row, Form, InputGroup, Button, Alert } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { Context } from '../ContextStore';
@@ -8,107 +7,91 @@ import '../components/Messages/Aside.css'
 import '../components/Messages/Article.css'
 
 function Messages({ match }) { // match = Router 제공 객체, url을 매개변수로 사용. ex) 경로 : /messages/123  => match.params.id = "123" // app.js 참고 : <Route path="/messages" exact component={Messages} />;
+    
     let chatId = match.params.id; // 선택된 채팅방의 id
 
-    const { userData } = useContext(Context);
-    const [conversations, setConversations] = useState([]) // 모든 채팅방의 정보를 저장하는 상태 변수
-    const [isSelected, setIsSelected] = useState(false); // 채팅방 선택 유무를 확인하는 상태 변수, 선택된 채팅방
-    const [selected, setSelected] = useState({ // 선택된 채팅방의 상세 정보(참가user, conversation(나눈 대화 내역))를 저장하는 상태 변수  
-        chats: { // 초기값 설정
+    const { userData } = useContext(Context); // 사용자 id 가져오기
+    const [chatroomList, setChatroomList] = useState([]) // 사용자의 모든 채팅방 정보
+    const [isSelected, setIsSelected] = useState(false); // 채팅방 선택
+    const [selected, setSelected] = useState({ // 선택된 채팅방의 상세 정보(참가user, conversation(나눈 대화 내역)) 저장 
+        chats: {
             _id: 0,
-            seller: {
-                _id: "",
-                avatar: "",
-                name: ""
-            },
-            buyer: {
-                _id: "",
-                avatar: "",
-                name: ""
-            },
+            seller: { _id: "", avatar: "", name: "" },
+            buyer: { _id: "", avatar: "", name: "" },
             conversation: []
         },
         isBuyer: null,
         myId: 0
     });
-    const [message, setMessage] = useState("");
-    const [alert, setAlert] = useState(null);
-    const [alertShow, setAlertShow] = useState(false);
+    const [message, setMessage] = useState(""); // 내가 입력한 메세지 
+    const [alert, setAlert] = useState(null); // 메세지 전송 성공 메세지
+    const [alertShow, setAlertShow] = useState(false); // 메세지 전송 성공 메세지 토글
+    const [socket, setSocket] = useState(null); // initializeSocket 소켓 초기화
+    const [lastMessage, setLastMessage] = useState(null);
     
-
-    console.log(userData._id);
-
     useEffect(() => {
-        initializeSocket();
-            getUserConversations(userData._id) // 현재 사용자와 관련된 모든 채팅방 목록을 가져옴
-                .then(res => {
-                    setConversations(res); // 가져온 채팅방 목록을 상태 변수에 저장.
-                    if (isSelected) { // 채팅방이 선택되었다면 현재 선택된 채팅방의 정보를 selected 상태 변수에 저장
-                        setSelected(res.find(x => x.chats._id === chatId))
-                    }
-                })
-                .catch(err => console.log(err))
-  
-        return () => {
-             // unmount되면 timeout 제거
-            disconnect(() => {
-                console.log("Socket disconnected");
-            });
-        };
-    }, [isSelected, chatId, userData._id]);
+        (async () => {
+          setSocket(await initializeSocket());
+        })();
+      }, []);
+
+      useEffect(() => {
+        if (!userData || !socket) return;
+        console.log("messages.js, getUserConversations ");
+        getUserConversations(socket, userData._id) // 현재 사용자와 관련된 모든 채팅방 목록을 가져옴
+          .then(res => {
+            setChatroomList(res); // 가져온 채팅방 목록을 상태 변수에 저장.
+            if (isSelected) { // 채팅방이 선택되었다면 현재 선택된 채팅방의 정보를 selected 상태 변수에 저장
+              setSelected(res.find(x => x.chats._id === chatId))
+            }
+          })
+          .catch(console.log)
+      }, [isSelected, chatId, userData, socket, selected.chats.conversation]);
    
-
-    
-    useEffect(() => {
-        getMessage((newMessage) => {
-            console.log("Received Message", newMessage);
-            if (isSelected && (selected.chats._id === chatId)) { // isselected가 true 상태(채팅방이 선택된 상태)이고, chatId와 selected.chats._id가 같은 경우
-                setSelected(pastChat => ({
-                    ...pastChat,
-                    chats: {
-                        ...pastChat.chats,
-                        conversation: [...pastChat.chats.conversation, newMessage]
-                    }
-                }));
-                console.log("chatId : ",chatId);
-            }
-        });
+      useEffect(() => {
         return () => {
-            socket.off('newMessage'); // 컴포넌트 unmount시에 리스너 제거
-        }
-    }, [isSelected, chatId, selected, message]);
-
-
-    async function handleMsgSubmit(e) {
-        e.preventDefault();
-        console.log('My ID:', selected.myId);
-        console.log('chatId:', chatId);
-        console.log('userData._id:', userData._id);
-        console.log('message:', message);
-        try {
-          await sendMessage({ chatId, senderId: userData._id, message });
-          setSelected(pastChat => ({
-            ...pastChat,
-            chats: {
-                ...pastChat.chats,
-                conversation: [...pastChat.chats.conversation, { senderId: userData._id, message }]
+          if (socket) {
+            disconnect(socket, console.log.bind(null, "Socket disconnected"));
+          }
+        };
+      }, [socket]);
+      
+    useEffect(() => {
+        if (!socket) return;
+        console.log('4. messages.js, newMessage');
+        socket.on('newMessage', (newMessage) => { // newMessage 인자와 함께 sendMessage 이벤트를 받았을 때 실행됨.
+            if(selected.chats._id === newMessage.chatId) {
+                setSelected((prevSelected) => ({
+                    ...prevSelected,
+                    chats: {
+                        ...prevSelected.chats,
+                        conversation: [...prevSelected.chats.conversation, newMessage],
+                    },
+                }));
+                setLastMessage(newMessage);
             }
-          }));
-          setMessage("");
-        } catch (err) {
-          console.log(err);
-        }
-    }
+        console.log('selected.chats.conversation : ',selected.chats.conversation);
+        console.log('selected : ',selected);
+        });
+    }, [selected.chats._id, selected.chats.conversation]); // 채팅방, 대화 내용 배열 변경 시마다 이벤트 발생.
 
+    const handleMsgSubmit = event => {
+        event.preventDefault();
+        sendMessage(socket, { chatId: selected.chats._id, senderId: userData._id, message });
+        setMessage("");
+        setAlert("Message sent!");
+        setAlertShow(true);
+        console.log('1. messages.js, sendmessage');
+    };
 
     return (
         <Container>
             <Row>
                 <aside className="col-lg-4 col-md-4">
                     <h3>Conversations</h3>
-                    {conversations.length >= 1 ?
+                    {chatroomList.length >= 1 ?
                         <>
-                            {conversations.map(x =>
+                            {chatroomList.map(x =>
                                 <div className="chat-connections" key={x.chats._id}>
                                     <Link onClick={() => setIsSelected(true)} to={`/messages/${x.chats._id}`}>
                                         {x.isBuyer ?
@@ -148,10 +131,12 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
                                 </Alert>
                             }
                             <div className="chat-selected-body col-lg-12">
-                                {selected.chats.conversation.map(x =>
+                                {selected.chats.conversation.map((x, index) =>
+                                    x && x._id ?
                                     <div className={selected.myId === x.senderId ? 'me' : "not-me"} key={x._id}>
                                         <span className="message">{x.message}</span>
                                     </div>
+                                    : null
                                 )}
                             </div>
                             <div className="chat-selected-footer col-lg-12">

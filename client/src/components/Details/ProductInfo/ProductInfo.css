@@ -9,10 +9,14 @@
     padding-bottom: 20px;
 }
 
+#content_button {
+    display: block;
+}
+
 #heartIconDetails svg {
-    font-size: 34pt;
+    font-size: 1.5rem;
     cursor: pointer;
-    margin-top: 22px;
+    margin-bottom: 45px;
     color:#81002c;
 }
 
@@ -96,9 +100,20 @@
     color: #212529;
 }
 
+#content_UpDel {
+    padding-top: 10px;
+    font-size: 13px;
+}
+
+/* a 태그 간격 띄우기용 */
+.link-spacing {
+    margin-right: 10px;
+}
+
 #profile {
     width: 677px;
     margin: 0 auto;
+    padding-top: 30px;
 }
 
 #profile_address {

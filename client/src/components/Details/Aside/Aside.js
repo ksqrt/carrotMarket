@@ -8,16 +8,16 @@ import { BsFillPersonFill } from 'react-icons/bs';
 import { MdEmail, MdPhoneAndroid } from 'react-icons/md'
 import { FaSellsy } from 'react-icons/fa'
 import { archiveSell } from '../../../services/productData';
-import { startChat, initializeSocket, socket } from '../../../services/messagesData'; // startChat 함수와 socket 객체를 import합니다.
+import { startChat, initializeSocket } from '../../../services/messagesData'; // startChat 함수와 socket 객체를 import합니다.
 import { Context } from '../../../ContextStore'; // Context import
 import './Aside.css';
-
 
 function Aside({ params, history }) {
     const { userData } = useContext(Context);
     const [showMsg, setShowMdg] = useState(false);
     const [showArchive, setShowArchive] = useState(false);
     const [message, setMessage] = useState("");
+    const [socket, setSocket] = useState(null);
 
     const handleClose = () => setShowMdg(false);
     const handleShow = () => setShowMdg(true);
@@ -42,18 +42,23 @@ function Aside({ params, history }) {
     // startchat 이벤트 실행
     
     useEffect(() => {
-        initializeSocket();
-      }, []);
-
-    const onChatStart = (e) => {
-        e.preventDefault();
-        socket.on('startChat', ({ chatId }) => {
-            console.log("messages 페이지로 이동");
+        const initSocket = async () => {
+          const socket = await initializeSocket();
+          setSocket(socket);
+      
+          socket.on('startChat', ({ chatId }) => {
             history.push(`/messages/${chatId}`);
-        });
-       
-        startChat({ buyerId: userData._id, sellerId: params.sellerId }); // buyer id, seller id 사용하여 채팅방 생성
-    }
+          });
+        };
+      
+        initSocket();
+      }, []);
+      
+      const onChatStart = async (e) => {
+        e.preventDefault();
+        if (!socket) return;
+        startChat(socket, { buyerId: userData._id, sellerId: params.sellerId });
+      };
 
 /*
      const onMsgSent = (e) => {
@@ -93,6 +98,7 @@ function Aside({ params, history }) {
                             <RiMessage3Fill />Contact Seller
                         </Button>
                     }
+                    
                     
                     <Link to={`/profile/${params.sellerId}`}>
                         <Col lg={12}>
