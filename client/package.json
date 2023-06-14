@@ -12,6 +12,7 @@
     "axios": "^1.4.0",
     "bootstrap": "^4.6.0",
     "deep-equal": "^2.2.1",
+    "kakao-js-sdk": "^1.2.3",
     "moment": "^2.29.4",
     "react": "^17.0.1",
     "react-bootstrap": "^1.5.2",

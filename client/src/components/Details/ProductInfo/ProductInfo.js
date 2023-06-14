@@ -16,7 +16,7 @@ import { startChat, initializeSocket, socket } from '../../../services/messagesD
 import { RiMessage3Fill } from 'react-icons/ri';
 import { Context } from '../../../ContextStore'; // Context import
 import { Link, useHistory } from 'react-router-dom';
-import KakaoShare from './KakaoShare';
+import KakaoShare from '../../Kakao/KakaoShare';
 
 function ProductInfo({ params, history }) {
   const [products, setProducts] = useState([]);
@@ -43,6 +43,7 @@ function ProductInfo({ params, history }) {
   const { userData } = useContext(Context);
   const [socket, setSocket] = useState(null);
 
+  // wishList 처리
   useEffect(() => {
     setWish(params.isWished === true);
   }, [params.isWished]);
@@ -190,6 +191,37 @@ function ProductInfo({ params, history }) {
   //{params.description}: 상품 설명
   //{params.createdSells}: 물품 갯수
 
+  //kakao api
+  useEffect(() => {
+    const script = document.createElement("script");
+    script.src = "https://developers.kakao.com/sdk/js/kakao.js";
+    script.async = true;
+    document.body.appendChild(script);
+    return () => document.body.removeChild(script);
+  }, []);
+
+  const shareKakao = () => { // url이 id값에 따라 변경되기 때문에 route를 인자값으로 받아줌
+    if (window.Kakao) {
+      const kakao = window.Kakao;
+      if (!kakao.isInitialized()) {
+        kakao.init('7286bd8c9d717d7ebd38369e55aa226e'); // 카카오에서 제공받은 javascript key를 넣어줌 -> .env파일에서 호출시킴
+      }
+  
+      kakao.Link.sendDefault({
+        objectType: "feed", // 카카오 링크 공유 여러 type들 중 feed라는 타입 -> 자세한 건 카카오에서 확인
+        content: {
+          title: params.title, // 인자값으로 받은 title
+          description: params.description, // 인자값으로 받은 title
+          imageUrl: params.image,
+          link: {
+            mobileWebUrl: 'https://developers.kakao.com', // 인자값으로 받은 route(uri 형태)
+            webUrl: 'https://developers.kakao.com'
+          }
+        }
+      });
+    }
+  };
+
   return (
     <div className="d-flex flex-column align-items-center">
       <section id='images'>
@@ -294,7 +326,10 @@ function ProductInfo({ params, history }) {
           )}
           <p id='kakao_share'><img src=''></img></p>
 
-          <KakaoShare/>
+          {/* <KakaoShare params={params}/> */}
+          <button onClick={() => shareKakao()}>
+            <img className="w-12 h-12" src="https://developers.kakao.com/assets/img/about/logos/kakaotalksharing/kakaotalk_sharing_btn_medium.png" />
+          </button>
         </div>
       </section>
 
