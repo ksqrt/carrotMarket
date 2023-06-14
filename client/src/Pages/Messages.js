@@ -155,7 +155,7 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
                                     </p>
                                 </Alert>
                             } */}
-                            {/* <div className="chat-selected-body col-lg-12"> */}
+
                             <ScrollToBottom className="chat-selected-body col-lg-12" defaultScrollBehavior="bottom">
                                 {selected.chats.conversation.map((x, index) =>
                                     x ?
@@ -165,7 +165,7 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
                                     : null
                                 )}
                             </ScrollToBottom>
-                            {/* </div> */}
+
                             <div className="chat-selected-footer col-lg-12">
                                 <Form onSubmit={handleMsgSubmit}>
                                     <Form.Group>
