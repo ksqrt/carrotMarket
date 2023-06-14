@@ -1,4 +1,5 @@
 const baseUrl = 'http://localhost:5000';
+// const baseUrl = 'http://101.79.11.48:5000';
 
 export async function registerUser(userData) { //Register.js에서 userData 받음
     return (await fetch(`${baseUrl}/auth/register`, { //App.js에 등록된 엔드포인트 URL
