@@ -16,6 +16,7 @@ import { startChat, initializeSocket, socket } from '../../../services/messagesD
 import { RiMessage3Fill } from 'react-icons/ri';
 import { Context } from '../../../ContextStore'; // Context import
 import { Link, useHistory } from 'react-router-dom';
+import KakaoShare from './KakaoShare';
 
 function ProductInfo({ params, history }) {
   const [products, setProducts] = useState([]);
@@ -292,6 +293,8 @@ function ProductInfo({ params, history }) {
             </span>
           )}
           <p id='kakao_share'><img src=''></img></p>
+
+          <KakaoShare/>
         </div>
       </section>
 
