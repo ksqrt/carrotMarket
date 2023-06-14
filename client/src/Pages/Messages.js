@@ -13,7 +13,7 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
 
     const { userData } = useContext(Context); // 사용자 id 가져오기
     const [chatroomList, setChatroomList] = useState([]) // 사용자의 모든 채팅방 정보
-    const [isSelected, setIsSelected] = useState(false); // 채팅방 선택
+    const [isSelected, setIsSelected] = useState(true); // 채팅방 선택
     const [selected, setSelected] = useState({ // 선택된 채팅방의 상세 정보(참가user, conversation(나눈 대화 내역)) 저장 
         chats: {
             _id: 0,
@@ -29,6 +29,17 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
     const [alertShow, setAlertShow] = useState(false); // 메세지 전송 성공 메세지 토글
     const [socket, setSocket] = useState(null); // initializeSocket 소켓 초기화
     
+    useEffect(() => {
+        // 현재 URL이 '/messages'인지 확인합니다.
+        const isOnMessageListPage = window.location.pathname === '/messages';
+      
+        if (isOnMessageListPage) {
+          // '/messages' 페이지에 있으면, 아무 채팅방도 선택되지 않았다는 의미이므로,
+          // isSelected 상태 값을 false로 설정합니다.
+          setIsSelected(false);
+        }
+      }, []);
+      
     
     useEffect(() => {
         (async () => {
