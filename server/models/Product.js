@@ -18,7 +18,7 @@ const productSchema = new mongoose.Schema({
             validator: function (v) {
                 return (v != 'Choose...');
             },
-            message: 'Pleese choose a category'
+            message: 'Please choose a category'
         }
     },
     description: {
@@ -59,8 +59,14 @@ const productSchema = new mongoose.Schema({
     active: {
         type: Boolean,
         default: true
-    }
-    
+    },
+    // 조회수 추가
+    views:[
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'User'
+        }
+    ]
 });
 
 // mongoosePaginate 플러그인을 productSchema에 적용합니다.
