@@ -1,14 +1,13 @@
-import React, { useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import './Modal.css';
 import { JAVASCRIPT } from '../../config/config';
+import { Context } from '../../ContextStore'; // 컨텍스트 관련 컴포넌트
+import { loginKakao } from '../../services/userData';
 
-const LoginModal = ({onClose}) => {
 
-    // const kakaoURL = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${process.env.REACT_APP_KAKAO_API}&redirect_uri=${process.env.REACT_APP_KAKAO_REDIRECT}`;
-    // const handleLogin = () => {
-    //     window.location.href = kakaoURL
-    // }
-    // const code = new URL(window.location.href).searchParams.get("code");
+const LoginModal = ({history, onClose}) => {
+    const [error, setError] = useState(null);
+    const { setUserData } = useContext(Context)
 
     useEffect(() => {
         const script = document.createElement('script');
@@ -30,12 +29,23 @@ const LoginModal = ({onClose}) => {
         window.Kakao.Auth.login({
             scope: 'profile_nickname, account_email, gender',
             success: function(authObj) {
-                console.log(authObj);
+                console.log(authObj); //토큰
+                const access_token = authObj.access_token;
                 window.Kakao.API.request({
                     url: '/v2/user/me',
                     success: res => {
                         const kakao_account = res.kakao_account;
-                        console.log(kakao_account);
+                        console.log(kakao_account); //계정정보
+                        loginKakao(access_token) //user값 담아서 loginUser로 보냄('../services/userData')
+                            .then(res => {
+                                if (!res.error) {               
+                                    setUserData(access_token);
+                                    history.push('/') //메인 페이지로 이동
+                                } else {
+                                    setError(res.error.message);
+                                }
+                            }).catch(err => console.error('error from login: ', err))
+                        
                     } 
                 });
             }
