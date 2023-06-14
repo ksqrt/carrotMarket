@@ -17,6 +17,8 @@ import { RiMessage3Fill } from 'react-icons/ri';
 import { Context } from '../../../ContextStore'; // Context import
 import { Link, useHistory } from 'react-router-dom';
 
+import '../Aside/Aside.css';
+
 function ProductInfo({ params, history }) {
   const [products, setProducts] = useState([]);
   const [wish, setWish] = useState(false);
@@ -29,6 +31,8 @@ function ProductInfo({ params, history }) {
 
   const handleCloseArchive = () => setShowArchive(false);
   const handleShowArchive = () => setShowArchive(true);
+
+  console.log(params)
 
   const handleSubmit = (e) => {
       e.preventDefault();
@@ -211,13 +215,45 @@ function ProductInfo({ params, history }) {
               <div id="content_UpDel">
                 { params.isSeller && (
                   <>
-                  <OverlayTrigger placement="top" overlay={ <Tooltip>상품 수정하기</Tooltip>} >
-                    <Link to={`/categories/${params.category}/${params._id}/edit`}>게시글 수정하기</Link>
-                  </OverlayTrigger> 
-                  <span className="link-spacing"></span>
-                    <a href="#" className="delete-link">게시글 삭제하기</a>
+                    <OverlayTrigger placement="top" overlay={ <Tooltip>상품 보관함 이동</Tooltip>} >
+                      <span id="archive-icon" onClick={handleShowArchive}>
+                        <Link to={<MdArchive />}>보관함으로 이동</Link>
+                      </span>
+                    </OverlayTrigger>
+                    <span className="link-spacing"></span>
+                    <OverlayTrigger placement="top" overlay={ <Tooltip>상품 수정하기</Tooltip>} >
+                      <Link to={`/categories/${params.category}/${params._id}/edit`}>게시글 수정하기</Link>
+                    </OverlayTrigger> 
+                    <span className="link-spacing"></span>
+                    <OverlayTrigger placement="top" overlay={ <Tooltip>상품 삭제하기</Tooltip>} >
+                      <Link to={`/categories/${params.category}/${params._id}/delete`}>게시글 삭제하기</Link>
+                    </OverlayTrigger>
                   </>
                 ) }
+                <Modal show={ showArchive } onHide={ handleCloseArchive }>
+                <Modal.Header closeButton>
+                    <Modal.Title>보관함으로 이동하시겠습니까???</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <p>
+                        By clicking <strong>Archive</strong>, this sell will change
+                    it's status to <strong>Archived</strong>,
+                    which means that no one but you will be able see it.
+                    You may want to change the status to <strong>Actived</strong> if you have
+                    sold the item or you don't want to sell it anymore.
+                    </p>
+
+                    Don't worry, you can unarchive it at any time from Profile - Sells!
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={handleCloseArchive}>
+                        Close
+                    </Button>
+                    <Button variant="success" onClick={handleSubmit}>
+                        Archive
+                    </Button>
+                </Modal.Footer>
+              </Modal>
                 {/* <OverlayTrigger placement="top" overlay={ <Tooltip>상품 활성화하기</Tooltip>} >
                   <span id="archive-icon" onClick={ handleShowArchive }>
                     <Link to={<MdArchive />}></Link>
