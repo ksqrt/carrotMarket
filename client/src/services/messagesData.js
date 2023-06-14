@@ -3,8 +3,12 @@ import { io as IO } from "socket.io-client";
 //initializeSocket: 소켓을 초기화하고 서버에 연결하는 함수입니다. IO 함수를 사용하여 http://localhost:5000에 소켓을 생성하고 반환합니다.
 export const initializeSocket = async () => {
   const socket = IO("http://localhost:5000");
-  console.log("Socket created:", socket);
+  socket.on('connect', () => {
+    console.log('Socket connected:', socket.id);
+    console.log(socket.connected);
+    });
   return socket;
+
 };
 
 //startChat: 채팅을 시작하는 함수입니다. socket.emit을 사용하여 startChat 이벤트와 buyerId, sellerId 정보를 서버로 전송합니다.
@@ -24,6 +28,12 @@ export const getMessage = (socket, callback) => {
       callback(message);
   });
 };
+
+//   export const getMessage = (socket, callback) => {
+//     socket.on('newMessage', (newmessage) => {
+//         callback(newmessage);
+//     });
+//   };
 
 //getUserConversations: 사용자의 대화 목록을 가져오는 함수입니다. socket.emit을 사용하여 getUserConversations 이벤트와 userId 정보를 서버로 전송합니다. 그리고 userConversations 이벤트를 수신하여 대화 목록을 해결된 프로미스로 반환합니다.  
 export const getUserConversations = (socket, userId) => {

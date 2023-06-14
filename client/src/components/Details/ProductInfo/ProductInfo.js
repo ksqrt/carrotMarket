@@ -2,8 +2,9 @@ import { useState, useEffect, useContext } from 'react';
 import InfiniteScroll from "react-infinite-scroll-component";
 import { GrEdit } from 'react-icons/gr';
 import { MdArchive } from 'react-icons/md'
+import { BsHeart, BsHeartFill } from 'react-icons/bs';
+import { Col, Row, Spinner, Tabs, Tab, Image, OverlayTrigger, Tooltip, Modal, Form, Button } from 'react-bootstrap';
 import { getAll, archiveSell, wishProduct } from '../../../services/productData';
-import { Col, Modal, Form, Row, Spinner, Tabs, Tab, Image, OverlayTrigger, Tooltip, Button } from 'react-bootstrap';
 import ProductCard from "../../../components/ProductCard/ProductCard";
 import Messages from '../../../Pages/Messages';
 import aImage from '../../Profile/profile_images/a.png'; // 이미지 파일 경로
@@ -46,14 +47,21 @@ function ProductInfo({ params }) {
     setWish(params.isWished === true);
   }, [params.isWished]);
 
-  const onHeartClick = () => {
-    const toggleWish = !wish;
-    wishProduct(params._id)
-      .then(res => {
-        setWish(toggleWish);
-      })
-      .catch(err => console.log(err));
-  };
+  const onHearthClick = () => {
+    if (wish === false) {
+      wishProduct(params._id)
+        .then(res => {
+          setWish(true);
+        })
+        .catch(err => console.log(err))
+    } else {
+      wishProduct(params._id)
+        .then(res => {
+          setWish(false);
+        })
+        .catch(err => console.log(err))
+    }
+  }
 
   const fetchMoreData = () => {
     getAll(page)
@@ -200,7 +208,7 @@ function ProductInfo({ params }) {
               <Link to={ `/profile/${params.sellerId}` }>
                 <div id="nickname">{ params.name }</div>
               </Link>
-              <div id="profile_address">안산시 단원구 선부동</div>
+              <div id="profile_address">{ params.city }</div>
               <div id="content_UpDel">
                 { params.isSeller && (
                   <>
@@ -247,23 +255,46 @@ function ProductInfo({ params }) {
         </div>
       </section>
 
-        <section id='content'>
-            <h1 id='content_title'>{ params.title }</h1>
-            <p id='content_category'>{ params.category } · <time>{displayCreateAt(params.addedAt)}</time></p>
-            <p id='content_price'>{ params.price }원</p>
-            <p id='content_main'>{ params.description }</p>
-            <p id='content_cnt'> 관심 갯수 · 채팅 갯수 · 조회수 </p>
-            {params.isAuth ? (<>
-              {!params.isSeller &&
-                  <Button variant="dark" className="col-lg-10" id="btnContact" onClick={onChatStart}>
-                      <RiMessage3Fill />채팅으로 거래하기
-                  </Button>
-              }
-              
-               </>) : (
-                <p id="guest-msg"><Link to="/auth/login">Sign In</Link> now to contact the seller!</p>
-            )}
-        </section>
+      <section id='content'>
+        <h1 id='content_title'>{ params.title }</h1>
+        <p id='content_category'>{ params.category } · <time>{displayCreateAt(params.addedAt)}</time></p>
+        <p id='content_price'>{params.price ? params.price.toLocaleString() : ''}원</p>
+        <p id='content_main'>{ params.description }</p>
+        <p id='content_cnt'> 관심 ♥ · 채팅 갯수 · 조회 수 </p>
+        <div id='content_button'>
+          { params.isAuth ? (
+            <>
+              { !params.isSeller && (
+                <Button variant="dark" className="col-lg-10" id="btnContact" onClick={onChatStart}>
+                  <RiMessage3Fill />채팅으로 거래하기
+                </Button>
+              )}
+            </>
+          ) : (
+            <p id="guest-msg">
+              <Link to="/auth/login">Sign In</Link> now to contact the seller!
+            </p>
+          )}
+          { !params.isSeller && (
+            <span id="heartIconDetails" className="col-lg-1 col-sm-1" onClick={ onHearthClick }>
+              {params.isAuth && (
+                <>
+                  {!wish ? (
+                    <OverlayTrigger placement="top" overlay={<Tooltip>관심 목록에 추가</Tooltip>}>
+                      <BsHeart />
+                    </OverlayTrigger>
+                  ) : (
+                    <OverlayTrigger placement="top" overlay={<Tooltip>관심 목록에서 제거</Tooltip>}>
+                      <BsHeartFill />
+                    </OverlayTrigger>
+                  )}
+                </>
+              )}
+            </span>
+          )}
+          <p id='kakao_share'><img src=''></img></p>
+        </div>
+      </section>
 
       <section id="product_more">
         <h3>당근마켓 인기중고</h3>
@@ -272,9 +303,9 @@ function ProductInfo({ params }) {
         </div>
         <div id='container'>
           <InfiniteScroll
-            dataLength={products.length}
-            next={fetchMoreData}
-            hasMore={true}
+            dataLength={ products.length }
+            next={ fetchMoreData }
+            hasMore= {true }
             className="row"
           >
             <Row>
