@@ -164,7 +164,7 @@ function ProductInfo({ params }) {
   };
 
   // startchat 이벤트 실행
-  const history = useHistory();
+  // const history = useHistory();
   const { userData } = useContext(Context);
   const [socket, setSocket] = useState(null);
   
