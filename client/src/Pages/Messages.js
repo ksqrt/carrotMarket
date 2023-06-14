@@ -3,7 +3,6 @@ import {sendMessage, disconnect, getUserConversations, initializeSocket} from '.
 import { Container, Row, Form, InputGroup, Button, Alert } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { Context } from '../ContextStore';
-import ScrollToBottom from 'react-scroll-to-bottom';
 import ScrollToBottom from 'react-scroll-to-bottom'; // 스크롤이 자동으로 맨 밑으로 이동하는 라이브러리, 메세지가 추가될 때마다 자동으로 맨 밑으로 이동.
 import '../components/Messages/Aside.css'
 import '../components/Messages/Article.css'
