@@ -18,8 +18,6 @@ import { Context } from '../../../ContextStore'; // Context import
 import { Link, useHistory } from 'react-router-dom';
 import KakaoShare from '../../Kakao/KakaoShare';
 
-import '../Aside/Aside.css';
-
 function ProductInfo({ params, history }) {
   const [products, setProducts] = useState([]);
   const [wish, setWish] = useState(false);
