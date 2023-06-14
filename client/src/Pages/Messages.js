@@ -3,13 +3,19 @@ import {sendMessage, disconnect, getUserConversations, initializeSocket} from '.
 import { Container, Row, Form, InputGroup, Button, Alert } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { Context } from '../ContextStore';
-//import ScrollToBottom from 'react-scroll-to-bottom';
+import ScrollToBottom, { useScrollToBottom, useSticky } from 'react-scroll-to-bottom';
+import InfiniteScroll from 'react-infinite-scroll-component';
+
 import '../components/Messages/Aside.css'
 import '../components/Messages/Article.css'
+
+
 
 function Messages({ match }) { // match = Router 제공 객체, url을 매개변수로 사용. ex) 경로 : /messages/123  => match.params.id = "123" // app.js 참고 : <Route path="/messages" exact component={Messages} />;
     
     let chatId = match.params.id; // 선택된 채팅방의 id
+    const scrollToBottom = useScrollToBottom();
+    const { sticky } = useSticky();
 
     const { userData } = useContext(Context); // 사용자 id 가져오기
     const [chatroomList, setChatroomList] = useState([]) // 사용자의 모든 채팅방 정보
@@ -25,11 +31,19 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
         myId: 0
     });
     const [message, setMessage] = useState(""); // 내가 입력한 메세지 
-    const [alert, setAlert] = useState(null); // 메세지 전송 성공 메세지
-    const [alertShow, setAlertShow] = useState(false); // 메세지 전송 성공 메세지 토글
+    //const [alert, setAlert] = useState(null); // 메세지 전송 성공 메세지
+    //const [alertShow, setAlertShow] = useState(false); // 메세지 전송 성공 메세지 토글
     const [socket, setSocket] = useState(null); // initializeSocket 소켓 초기화
     
-    
+    useEffect(() => {
+        const isOnMessageListPage = window.location.pathname === '/messages';
+      
+        if (isOnMessageListPage) {
+          setIsSelected(false);
+        }
+      }, []);
+
+
     useEffect(() => {
         (async () => {
           setSocket(await initializeSocket());
@@ -61,6 +75,10 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
                     conversation: [...prevSelected.chats.conversation, newMessage],
                 },
             }));
+
+            if(sticky) {
+                scrollToBottom();
+            }
         };
     
         socket.on('newMessage', handleNewMessage);
@@ -68,7 +86,7 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
         return () => {
             socket.off('newMessage', handleNewMessage);
         };
-    }, [socket]);
+    }, [socket, sticky]);
     
     useEffect(() => {
         return () => {
@@ -83,8 +101,11 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
         event.preventDefault();
         sendMessage(socket, { chatId: selected.chats._id, senderId: userData._id, message });
         setMessage("");
-        setAlert("Message sent!");
-        setAlertShow(true);
+        if(sticky) {
+            scrollToBottom();
+        }
+        //setAlert("Message sent!");
+        //setAlertShow(true);
         console.log('2. messages.js, sendmessage');
     };
 
@@ -127,15 +148,15 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
                                     </Link>
                                 }
                             </div>
-                            {alertShow &&
+                            {/* {alertShow &&
                                 <Alert variant="success" onClose={() => setAlertShow(false)} dismissible>
                                     <p>
                                         {alert}
                                     </p>
                                 </Alert>
-                            }
-                            <div className="chat-selected-body col-lg-12">
-                                
+                            } */}
+                            {/* <div className="chat-selected-body col-lg-12"> */}
+                            <ScrollToBottom className="chat-selected-body col-lg-12" defaultScrollBehavior="bottom">
                                 {selected.chats.conversation.map((x, index) =>
                                     x ?
                                     <div className={selected.myId === x.senderId ? 'me' : "not-me"} key={index}>
@@ -143,8 +164,8 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
                                     </div>
                                     : null
                                 )}
-
-                            </div>
+                            </ScrollToBottom>
+                            {/* </div> */}
                             <div className="chat-selected-footer col-lg-12">
                                 <Form onSubmit={handleMsgSubmit}>
                                     <Form.Group>
@@ -153,7 +174,16 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
                                                 as="textarea"
                                                 required
                                                 value={message}
-                                                onChange={(e) => setMessage(e.target.value)}>
+                                                onChange={(e) => setMessage(e.target.value)}
+                                                onKeyDown={event => {
+                                                    if (event.key === 'Enter' && (event.ctrlKey || event.shiftKey)) {
+                                                        event.preventDefault();
+                                                        setMessage(prevMessage => prevMessage + "\n");
+                                                    } else if (event.key === 'Enter') {
+                                                        event.preventDefault();
+                                                        handleMsgSubmit(event);
+                                                    }
+                                                }}>
                                             </Form.Control>
                                             <InputGroup.Append>
                                                 <Button type="submit" variant="secondary">Sent</Button>
