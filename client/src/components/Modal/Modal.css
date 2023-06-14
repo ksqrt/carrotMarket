@@ -29,7 +29,10 @@
     top: 20px;
     border: none;
 }
-
+.carrot-logo {
+    display: block;
+    margin: auto auto 20px;
+}
 .modal-title {
     font-size: 20px;
     line-height: 1.5;
