@@ -12,7 +12,6 @@ import { startChat, initializeSocket } from '../../../services/messagesData'; //
 import { Context } from '../../../ContextStore'; // Context import
 import './Aside.css';
 
-
 function Aside({ params, history }) {
     const { userData } = useContext(Context);
     const [showMsg, setShowMdg] = useState(false);
@@ -35,7 +34,6 @@ function Aside({ params, history }) {
             })
             .catch(err => console.log(err))
     }
-
     
     const handleMsgChange = (e) => {
         e.preventDefault();
@@ -101,7 +99,7 @@ function Aside({ params, history }) {
                         </Button>
                     }
                     
-                    <Button variant="dark" onClick={onChatStart}>Chat Start</Button>;
+                    
                     <Link to={`/profile/${params.sellerId}`}>
                         <Col lg={12}>
                             <img id="avatar" src={params.avatar} alt="user-avatar" />

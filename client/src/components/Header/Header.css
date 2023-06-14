@@ -1,3 +1,13 @@
+.sticky {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 9999;
+    /* 필요한 스타일을 추가로 설정하세요 */
+  }
+
+
 .dropdown-item svg {
     margin-bottom: 2px;
     margin-right: 7px;
@@ -55,7 +65,8 @@
 
 .navbar-brand a {
     font-family: baemin;
-    /* font-style: italic; */
+    font-weight: bold;
+    
     font-size: 20pt;
 }
 

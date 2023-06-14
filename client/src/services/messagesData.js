@@ -44,7 +44,6 @@ export const sendMessage = (socket, { chatId, senderId, message }) => {
         if (callback) callback();
       };
 
-
 /*
 const baseUrl = 'http://localhost:5000';
 

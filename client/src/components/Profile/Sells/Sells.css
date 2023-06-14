@@ -1,0 +1,17 @@
+/* @font-face {
+    font-family: "baemin_airFont";
+    src: url("../../../../public/Fonts/BMHANNAAir_ttf.ttf");
+}
+
+body {
+    font-family: "baemin_airFont", sans-serif;
+    font-style: normal;
+    font-size: 14pt;
+} */
+
+.nothing-to-show {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100px; /* 필요한 높이 값을 지정해주세요 */
+  }

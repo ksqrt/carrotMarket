@@ -17,6 +17,7 @@ const userSchema = new mongoose.Schema({
         required: 'Email address is required',
         match: [/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/, 'Please fill a valid email address']
     },
+    // password api 연동시 삭제 예정
     password: {
         type: String,
         trim: true,
@@ -27,7 +28,7 @@ const userSchema = new mongoose.Schema({
         type: String,
         trim: true,
         required: ['Phone number is required'],
-        match: [/(\+)?(359|0)8[789]\d{1}(|-| )\d{3}(|-| )\d{3}/, 'Please fill a valid phone number']
+       
     },
     gender: {
         type: String,
@@ -36,7 +37,7 @@ const userSchema = new mongoose.Schema({
     },
     avatar: {
         type: String,
-        default: 'https://res.cloudinary.com/silenceiv/image/upload/q_auto:eco/v1617358367/defaultAvatar_wnoogh.png'
+        default: 'https://kr.object.ncloudstorage.com/ncp3/ghuPttFw_400x400.jpg'
     },
     createdSells: [
         {
@@ -55,7 +56,20 @@ const userSchema = new mongoose.Schema({
             type: mongoose.Schema.Types.ObjectId,
             ref: 'ChatRoom'
         }
-    ]
+    ],
+    // 차단 유저 목록 
+    blacklist: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'User'
+        }
+    ],
+    // 매너 온도 기본 36.5
+    mannertmp:{
+            type:String,
+            trim: true,
+            default: 36.5
+    }
 });
 
 userSchema.pre('save', async function (next) {
