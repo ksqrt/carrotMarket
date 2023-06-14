@@ -19,6 +19,7 @@ import { Link, useHistory } from 'react-router-dom';
 import KakaoShare from './KakaoShare';
 
 function ProductInfo({ params, history }) {
+
   const [products, setProducts] = useState([]);
   const [wish, setWish] = useState(false);
   const [page, setPage] = useState(1);
@@ -42,6 +43,22 @@ function ProductInfo({ params, history }) {
   }
   const { userData } = useContext(Context);
   const [socket, setSocket] = useState(null);
+
+  useEffect(() => {
+    const script = document.createElement("script");
+    script.src = "https://developers.kakao.com/sdk/js/kakao.js";
+    script.async = true;
+    script.onload = () => {
+      Kakao.init('8766bf986c048a5e20e2ae4278463a7b');
+    };
+    document.body.appendChild(script);
+
+    return () => {
+      document.body.removeChild(script);
+    };
+  }, []);  //수정
+
+
 
   useEffect(() => {
     setWish(params.isWished === true);
@@ -190,6 +207,49 @@ function ProductInfo({ params, history }) {
   //{params.description}: 상품 설명
   //{params.createdSells}: 물품 갯수
 
+
+  function sendLinkCustom() {
+    
+    if (window.Kakao) {
+      window.Kakao.Link.sendCustom({
+        templateId: 94886
+      });
+    }
+  }
+
+
+  function sendLinkDefault() {
+    
+    if (window.Kakao) {
+      window.Kakao.Link.sendDefault({
+        objectType: 'feed',
+        content: {
+          title:params && params.title ? params.title : '호랑이',
+          description: params.description,
+          imageUrl: params.image,
+          link: {
+            mobileWebUrl: 'https://developers.kakao.com',
+            webUrl: 'https://developers.kakao.com',
+          },
+        },
+        social: {
+          likeCount: 286,
+          commentCount: 45,
+          sharedCount: 845,
+        },
+        buttons: [
+          {
+            title: '웹으로 보기',
+            link: {
+              mobileWebUrl: 'https://developers.kakao.com',
+              webUrl: `http://localhost:3000/categories/auto/${params._id}/details`,
+            },
+          },
+        ],
+      });
+    }
+  }//수정
+
   return (
     <div className="d-flex flex-column align-items-center">
       <section id='images'>
@@ -292,10 +352,20 @@ function ProductInfo({ params, history }) {
               )}
             </span>
           )}
-          <p id='kakao_share'><img src=''></img></p>
 
-          <KakaoShare/>
-        </div>
+
+           <div>
+            {/* <button onClick={sendLinkCustom}>Send Custom Link</button> */}
+
+                 
+
+            </div>
+
+            </div>
+
+
+
+
       </section>
 
       <section id="product_more">
