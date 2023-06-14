@@ -17,8 +17,8 @@ import { RiMessage3Fill } from 'react-icons/ri';
 import { Context } from '../../../ContextStore'; // Context import
 import { Link, useHistory } from 'react-router-dom';
 
-
 function ProductInfo({ params, history }) {
+
 
   const [products, setProducts] = useState([]);
   const [wish, setWish] = useState(false);
@@ -44,23 +44,6 @@ function ProductInfo({ params, history }) {
           })
           .catch(err => console.log(err))
   }
-
-  // wishList 처리
-  useEffect(() => {
-    const script = document.createElement("script");
-    script.src = "https://developers.kakao.com/sdk/js/kakao.js";
-    script.async = true;
-    script.onload = () => {
-      Kakao.init('8766bf986c048a5e20e2ae4278463a7b');
-    };
-    document.body.appendChild(script);
-
-    return () => {
-      document.body.removeChild(script);
-    };
-  }, []);  //수정
-
-
 
   useEffect(() => {
     setWish(params.isWished === true);
