@@ -1,18 +1,25 @@
 import { useState, useEffect, useContext } from 'react';
-import {startChat, sendMessage, disconnect, getMessage, getUserConversations, initializeSocket} from '../services/messagesData';
+import {sendMessage, disconnect, getUserConversations, initializeSocket} from '../services/messagesData';
 import { Container, Row, Form, InputGroup, Button, Alert } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { Context } from '../ContextStore';
+import ScrollToBottom, { useScrollToBottom, useSticky } from 'react-scroll-to-bottom';
+import InfiniteScroll from 'react-infinite-scroll-component';
+
 import '../components/Messages/Aside.css'
 import '../components/Messages/Article.css'
+
+
 
 function Messages({ match }) { // match = Router 제공 객체, url을 매개변수로 사용. ex) 경로 : /messages/123  => match.params.id = "123" // app.js 참고 : <Route path="/messages" exact component={Messages} />;
     
     let chatId = match.params.id; // 선택된 채팅방의 id
+    const scrollToBottom = useScrollToBottom();
+    const { sticky } = useSticky();
 
     const { userData } = useContext(Context); // 사용자 id 가져오기
     const [chatroomList, setChatroomList] = useState([]) // 사용자의 모든 채팅방 정보
-    const [isSelected, setIsSelected] = useState(false); // 채팅방 선택
+    const [isSelected, setIsSelected] = useState(true); // 채팅방 선택
     const [selected, setSelected] = useState({ // 선택된 채팅방의 상세 정보(참가user, conversation(나눈 대화 내역)) 저장 
         chats: {
             _id: 0,
@@ -24,20 +31,29 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
         myId: 0
     });
     const [message, setMessage] = useState(""); // 내가 입력한 메세지 
-    const [alert, setAlert] = useState(null); // 메세지 전송 성공 메세지
-    const [alertShow, setAlertShow] = useState(false); // 메세지 전송 성공 메세지 토글
+    //const [alert, setAlert] = useState(null); // 메세지 전송 성공 메세지
+    //const [alertShow, setAlertShow] = useState(false); // 메세지 전송 성공 메세지 토글
     const [socket, setSocket] = useState(null); // initializeSocket 소켓 초기화
-    const [lastMessage, setLastMessage] = useState(null);
     
+    useEffect(() => {
+        const isOnMessageListPage = window.location.pathname === '/messages';
+      
+        if (isOnMessageListPage) {
+          setIsSelected(false);
+        }
+      }, []);
+
+
     useEffect(() => {
         (async () => {
           setSocket(await initializeSocket());
         })();
       }, []);
 
-      useEffect(() => {
+
+      useEffect(() => { // 대화방 가져오기, 선택시 내용 가져오기
         if (!userData || !socket) return;
-        console.log("messages.js, getUserConversations ");
+        console.log("1. messages.js, getUserConversations ");
         getUserConversations(socket, userData._id) // 현재 사용자와 관련된 모든 채팅방 목록을 가져옴
           .then(res => {
             setChatroomList(res); // 가져온 채팅방 목록을 상태 변수에 저장.
@@ -46,42 +62,51 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
             }
           })
           .catch(console.log)
-      }, [isSelected, chatId, userData, socket, selected.chats.conversation]);
-   
+      }, [isSelected, chatId, socket, userData]);
+
       useEffect(() => {
+        if (!socket) return;
+        console.log('5. messages.js, newmessage');
+        const handleNewMessage = (newMessage) => {
+            setSelected((prevSelected) => ({
+                ...prevSelected,
+                chats: {
+                    ...prevSelected.chats,
+                    conversation: [...prevSelected.chats.conversation, newMessage],
+                },
+            }));
+
+            if(sticky) {
+                scrollToBottom();
+            }
+        };
+    
+        socket.on('newMessage', handleNewMessage);
+    
+        return () => {
+            socket.off('newMessage', handleNewMessage);
+        };
+    }, [socket, sticky]);
+    
+    useEffect(() => {
         return () => {
           if (socket) {
             disconnect(socket, console.log.bind(null, "Socket disconnected"));
           }
         };
       }, [socket]);
-      
-    useEffect(() => {
-        if (!socket) return;
-        console.log('4. messages.js, newMessage');
-        socket.on('newMessage', (newMessage) => { // newMessage 인자와 함께 sendMessage 이벤트를 받았을 때 실행됨.
-            if(selected.chats._id === newMessage.chatId) {
-                setSelected((prevSelected) => ({
-                    ...prevSelected,
-                    chats: {
-                        ...prevSelected.chats,
-                        conversation: [...prevSelected.chats.conversation, newMessage],
-                    },
-                }));
-                setLastMessage(newMessage);
-            }
-        console.log('selected.chats.conversation : ',selected.chats.conversation);
-        console.log('selected : ',selected);
-        });
-    }, [selected.chats._id, selected.chats.conversation]); // 채팅방, 대화 내용 배열 변경 시마다 이벤트 발생.
+
 
     const handleMsgSubmit = event => {
         event.preventDefault();
         sendMessage(socket, { chatId: selected.chats._id, senderId: userData._id, message });
         setMessage("");
-        setAlert("Message sent!");
-        setAlertShow(true);
-        console.log('1. messages.js, sendmessage');
+        if(sticky) {
+            scrollToBottom();
+        }
+        //setAlert("Message sent!");
+        //setAlertShow(true);
+        console.log('2. messages.js, sendmessage');
     };
 
     return (
@@ -123,22 +148,24 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
                                     </Link>
                                 }
                             </div>
-                            {alertShow &&
+                            {/* {alertShow &&
                                 <Alert variant="success" onClose={() => setAlertShow(false)} dismissible>
                                     <p>
                                         {alert}
                                     </p>
                                 </Alert>
-                            }
-                            <div className="chat-selected-body col-lg-12">
+                            } */}
+
+                            <ScrollToBottom className="chat-selected-body col-lg-12" defaultScrollBehavior="bottom">
                                 {selected.chats.conversation.map((x, index) =>
-                                    x && x._id ?
-                                    <div className={selected.myId === x.senderId ? 'me' : "not-me"} key={x._id}>
+                                    x ?
+                                    <div className={selected.myId === x.senderId ? 'me' : "not-me"} key={index}>
                                         <span className="message">{x.message}</span>
                                     </div>
                                     : null
                                 )}
-                            </div>
+                            </ScrollToBottom>
+
                             <div className="chat-selected-footer col-lg-12">
                                 <Form onSubmit={handleMsgSubmit}>
                                     <Form.Group>
@@ -147,7 +174,16 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
                                                 as="textarea"
                                                 required
                                                 value={message}
-                                                onChange={(e) => setMessage(e.target.value)}>
+                                                onChange={(e) => setMessage(e.target.value)}
+                                                onKeyDown={event => {
+                                                    if (event.key === 'Enter' && (event.ctrlKey || event.shiftKey)) {
+                                                        event.preventDefault();
+                                                        setMessage(prevMessage => prevMessage + "\n");
+                                                    } else if (event.key === 'Enter') {
+                                                        event.preventDefault();
+                                                        handleMsgSubmit(event);
+                                                    }
+                                                }}>
                                             </Form.Control>
                                             <InputGroup.Append>
                                                 <Button type="submit" variant="secondary">Sent</Button>

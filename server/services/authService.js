@@ -22,7 +22,28 @@ async function registerUser(userData) {
     return await user.save();
 }
 
-async function loginUser({ email, password }) {
+async function loginUser(userData) {
+
+    let user = await User.findOne({ email: userData.email });
+
+    if (!user) {
+        let user = new User(userData);
+        await user.save();
+    }
+    let token = jwt.sign(
+        {
+          _id: user._id,
+          email: user.email,
+          nickname: user.nickname,
+          gender: user.gender
+        },
+        SECRET
+      );
+      
+    return token;
+}
+
+async function loginUser_two({ email, password }) {
     let user = await User.findOne({ email });
     if (!user) throw { message: 'Invalid email or password' };
 
@@ -43,8 +64,19 @@ async function getUser(id) {
     return await User.findById(id).lean()
 }
 
+async function getUserByEmail(email) {
+    try {
+      const user = await User.findOne({ email });
+      return user;
+    } catch (error) {
+      // 오류 처리
+      throw new Error('Failed to get user by email');
+    }
+  }
+
 module.exports = {
     registerUser,
     loginUser,
-    getUser
+    getUser,
+    getUserByEmail
 }

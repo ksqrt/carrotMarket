@@ -12,23 +12,26 @@ import bImage from '../../Profile/profile_images/b.png'; // 이미지 파일 경
 import cImage from '../../Profile/profile_images/c.png'; // 이미지 파일 경로
 import dImage from '../../Profile/profile_images/d.png'; // 이미지 파일 경로
 import eImage from '../../Profile/profile_images/e.png'; // 이미지 파일 경로
-import { startChat, initializeSocket, socket } from '../../../services/messagesData'; // startChat 함수와 socket 객체를 import합니다.
+import { startChat, initializeSocket, getUserConversations } from '../../../services/messagesData'; // startChat 함수와 socket 객체를 import합니다.
 import { RiMessage3Fill } from 'react-icons/ri';
 import { Context } from '../../../ContextStore'; // Context import
 import { Link, useHistory } from 'react-router-dom';
 
-function ProductInfo({ params, history }) {
+function ProductInfo({ params }) {
   const [products, setProducts] = useState([]);
   const [wish, setWish] = useState(false);
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(true);
   const [showMsg, setShowMdg] = useState(false);
   const [showArchive, setShowArchive] = useState(false);
+  const history = useHistory();
   const handleClose = () => setShowMdg(false);
   const handleShow = () => setShowMdg(true);
 
   const handleCloseArchive = () => setShowArchive(false);
   const handleShowArchive = () => setShowArchive(true);
+
+  console.log(params)
 
   const handleSubmit = (e) => {
       e.preventDefault();
@@ -39,8 +42,6 @@ function ProductInfo({ params, history }) {
           })
           .catch(err => console.log(err))
   }
-  const { userData } = useContext(Context);
-  const [socket, setSocket] = useState(null);
 
   useEffect(() => {
     setWish(params.isWished === true);
@@ -165,6 +166,10 @@ function ProductInfo({ params, history }) {
   };
 
   // startchat 이벤트 실행
+  // const history = useHistory();
+  const { userData } = useContext(Context);
+  const [socket, setSocket] = useState(null);
+  
   useEffect(() => {
     const initSocket = async () => {
       const socket = await initializeSocket();
@@ -189,6 +194,51 @@ function ProductInfo({ params, history }) {
   //{params.description}: 상품 설명
   //{params.createdSells}: 물품 갯수
 
+
+  function sendLinkCustom() {
+    
+    if (window.Kakao) {
+      window.Kakao.Link.sendCustom({
+        templateId: 94886
+      });
+    }
+  }
+
+
+  function sendLinkDefault() {
+    
+    if (window.Kakao) {
+      window.Kakao.Link.sendDefault({
+        objectType: 'feed',
+        content: {
+          title:params && params.title ? params.title : '호랑이',
+          description: params.description,
+          imageUrl: params.image,
+          link: {
+            mobileWebUrl: 'https://developers.kakao.com',
+            webUrl: 'https://developers.kakao.com',
+          },
+        },
+        social: {
+          likeCount: 286,
+          commentCount: 45,
+          sharedCount: 845,
+        },
+        buttons: [
+          {
+            title: '웹으로 보기',
+            link: {
+              mobileWebUrl: 'https://developers.kakao.com',
+              webUrl: `http://localhost:3000/categories/auto/${params._id}/details`,
+            },
+          },
+        ],
+      });
+    }
+  }//수정
+
+  
+
   return (
     <div className="d-flex flex-column align-items-center">
       <section id='images'>
@@ -211,13 +261,45 @@ function ProductInfo({ params, history }) {
               <div id="content_UpDel">
                 { params.isSeller && (
                   <>
-                  <OverlayTrigger placement="top" overlay={ <Tooltip>상품 수정하기</Tooltip>} >
-                    <Link to={`/categories/${params.category}/${params._id}/edit`}>게시글 수정하기</Link>
-                  </OverlayTrigger> 
-                  <span className="link-spacing"></span>
-                    <a href="#" className="delete-link">게시글 삭제하기</a>
+                    <OverlayTrigger placement="top" overlay={ <Tooltip>상품 보관함 이동</Tooltip>} >
+                      <span id="archive-icon" onClick={handleShowArchive}>
+                        <Link to={<MdArchive />}>보관함으로 이동</Link>
+                      </span>
+                    </OverlayTrigger>
+                    <span className="link-spacing"></span>
+                    <OverlayTrigger placement="top" overlay={ <Tooltip>상품 수정하기</Tooltip>} >
+                      <Link to={`/categories/${params.category}/${params._id}/edit`}>게시글 수정하기</Link>
+                    </OverlayTrigger> 
+                    <span className="link-spacing"></span>
+                    <OverlayTrigger placement="top" overlay={ <Tooltip>상품 삭제하기</Tooltip>} >
+                      <Link to={`/categories/${params.category}/${params._id}/delete`}>게시글 삭제하기</Link>
+                    </OverlayTrigger>
                   </>
                 ) }
+                <Modal show={ showArchive } onHide={ handleCloseArchive }>
+                <Modal.Header closeButton>
+                    <Modal.Title>보관함으로 이동하시겠습니까???</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <p>
+                        By clicking <strong>Archive</strong>, this sell will change
+                    it's status to <strong>Archived</strong>,
+                    which means that no one but you will be able see it.
+                    You may want to change the status to <strong>Actived</strong> if you have
+                    sold the item or you don't want to sell it anymore.
+                    </p>
+
+                    Don't worry, you can unarchive it at any time from Profile - Sells!
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={handleCloseArchive}>
+                        Close
+                    </Button>
+                    <Button variant="success" onClick={handleSubmit}>
+                        Archive
+                    </Button>
+                </Modal.Footer>
+              </Modal>
                 {/* <OverlayTrigger placement="top" overlay={ <Tooltip>상품 활성화하기</Tooltip>} >
                   <span id="archive-icon" onClick={ handleShowArchive }>
                     <Link to={<MdArchive />}></Link>
@@ -291,8 +373,20 @@ function ProductInfo({ params, history }) {
               )}
             </span>
           )}
-          <p id='kakao_share'><img src=''></img></p>
-        </div>
+
+
+           <div>
+            {/* <button onClick={sendLinkCustom}>Send Custom Link</button> */}
+                <button onClick = {sendLinkDefault}>카카오 공유하기</button>
+                 
+
+            </div>
+
+            </div>
+
+
+
+
       </section>
 
       <section id="product_more">
