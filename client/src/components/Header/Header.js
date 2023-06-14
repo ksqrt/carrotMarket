@@ -11,11 +11,6 @@ import { SearchContext } from '../../ContextAPI/SearchContext';
 
 import './Header.css';
 import LoginModal from '../Modal/LoginModal';
-<<<<<<< HEAD
-=======
-function Header() {
-    const { userData, setUserData } = useContext(Context);
->>>>>>> 60b8f23d6f4067fe51eb0cf890e4ebeb764984f4
 
 
 function Header() {
@@ -128,9 +123,5 @@ function Header() {
         </Navbar>
     )
 }
-<<<<<<< HEAD
 
 export default Header;
-=======
-export default Header;
->>>>>>> 60b8f23d6f4067fe51eb0cf890e4ebeb764984f4

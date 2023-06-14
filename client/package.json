@@ -12,6 +12,7 @@
     "@testing-library/user-event": "^12.8.3",
     "axios": "^1.4.0",
     "bootstrap": "^4.6.0",
+    "config": "^3.3.9",
     "deep-equal": "^2.2.1",
     "kakao-js-sdk": "^1.2.3",
     "moment": "^2.29.4",
