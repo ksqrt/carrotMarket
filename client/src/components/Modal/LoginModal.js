@@ -2,11 +2,13 @@ import React, { useContext, useEffect, useState } from 'react';
 import './Modal.css';
 import { JAVASCRIPT } from '../../config/config';
 import { Context } from '../../ContextStore'; // 컨텍스트 관련 컴포넌트
+import { Spinner } from 'react-bootstrap';
 import { loginUser } from '../../services/userData';
 import { kakaoUser } from '../../services/userData';
+import { useHistory } from 'react-router-dom';
 
-
-const LoginModal = ({history, onClose}) => {
+const LoginModal = ({ onClose}) => {
+    const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [user, setUser] = useState({
         email: "",
@@ -14,6 +16,7 @@ const LoginModal = ({history, onClose}) => {
         provider: ""
     });
     const { setUserData } = useContext(Context)
+    const history = useHistory();
 
     useEffect(() => {
         const script = document.createElement('script');
@@ -31,9 +34,7 @@ const LoginModal = ({history, onClose}) => {
         };
     }, []);
 
-    const kakaoLogin = (e) => {
-        e.preventDefault();
-
+    const kakaoLogin = () => {
         window.Kakao.Auth.login({
             scope: 'profile_nickname, account_email, gender',
             success: function(authObj) {
@@ -50,13 +51,14 @@ const LoginModal = ({history, onClose}) => {
                             provider: 'kakao',
                         });
                         console.log(user); //계정정보
-
+                        setLoading(true);
                         kakaoUser(user)
                             .then(res => {
                                 if (!res.error) {               
                                     setUserData(res.user)
-                                    history.push('/')  //메인 페이지로 이동
-                                } else {
+                                    history.push('/') 
+                                    } else {
+                                    setLoading(false);
                                     setError(res.error.message);
                                 }
                             }).catch(err => console.error('error from login: ', err))
@@ -78,6 +80,9 @@ const LoginModal = ({history, onClose}) => {
                     <img src="https://upload.wikimedia.org/wikipedia/commons/a/ae/DaangnMarket_logo.png" height="40" className="carrot-logo" alt='웹 로고'/>
                     <div className="modal-title">당근마켓으로 중고거래 시작하기</div>
                     <div className="modal-subtitle">간편하게 가입하고 상품을 확인하세요</div>
+                    {loading ?
+                    <div>Please wait... <Spinner animation="border" /></div>
+                    :
                     <div className="modal-paths"> 
                         <a href="#" onClick={kakaoLogin}>
                             <div className='modal-path'>
@@ -92,6 +97,7 @@ const LoginModal = ({history, onClose}) => {
                             </div>
                         </a>                                   
                     </div>
+                    }
                 </div>
             </div>
         </>

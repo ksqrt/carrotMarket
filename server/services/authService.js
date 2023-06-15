@@ -14,7 +14,7 @@ async function snsLoginUser({ email, name, provider }) {
   }
 
   const token = jwt.sign(
-    { email: user.email, name: user.name, provider: user.provider },
+    {  _id: user._id, email: user.email, name: user.name, provider: user.provider },
     SECRET
   );
 

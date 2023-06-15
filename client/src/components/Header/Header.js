@@ -91,10 +91,6 @@ function Header() {
                             </NavLink> */}
 
                             <NavDropdown.Divider />
-                                {/* <div>
-                                    <a className="ropdown-item" id='logout' href='/auth/logout' onClick={() => {setUserData(null)}}>로그아웃</a>
-                                </div> */}
-
                                 <NavLink className="dropdown-item" to="/auth/logout" onClick={() => {
                                     setUserData(null)
                                 }}>
