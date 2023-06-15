@@ -53,3 +53,9 @@ article img {
 
 /* .chat-selected-body button {
 } */
+
+.img-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
