@@ -5,6 +5,22 @@ const jwt = require('jsonwebtoken');
 //- 사용자 데이터와 비밀키(SECRET)를 기반으로 JWT를 생성
 const { SECRET } = require('../config/config');
 
+async function snsLoginUser({ email, name, provider }) {
+  let user = await User.findOne({ email, name, provider });
+
+  if (!user) {
+    user = new User({ email, name, provider });
+    await user.save();
+  }
+
+  const token = jwt.sign(
+    {  _id: user._id, email: user.email, name: user.name, provider: user.provider },
+    SECRET
+  );
+
+  return token;
+}
+
 async function registerUser(userData) {
   let { name, email, gender, phoneNumber, password, repeatPassword } = userData;
   let errors = [];
@@ -32,7 +48,6 @@ async function loginUser({ email, password }) {
   let token = jwt.sign({ _id: user._id, email: user.email, phoneNumber: user.phoneNumber, createdSells: user.createdSells.length, avatar: user.avatar }, SECRET);
   return token;
 }
-
 
 
 async function getUser(id) {
