@@ -93,7 +93,7 @@ function Header() {
                             <NavDropdown.Divider />
                                 <NavLink className="dropdown-item" to="/auth/logout" onClick={() => {
                                     setUserData(null)
-                                }}>
+                                }}> 
                                     <IoLogOut />Log out
                                 </NavLink>
                             </NavDropdown>

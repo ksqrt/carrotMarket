@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
-//const bcrypt = require('bcrypt');
-//const { SALT } = require('../config/config')
+const bcrypt = require('bcrypt');
+const { SALT } = require('../config/config')
+const findOrCreate = require('mongoose-findorcreate');
 
 const userSchema = new mongoose.Schema({
     id: mongoose.Types.ObjectId,
@@ -22,16 +23,16 @@ const userSchema = new mongoose.Schema({
         trim: true
     },
     // password api 연동시 삭제 예정
-    // password: {
-    //     type: String,
-    //     trim: true,
-    //     //required: ['Password is required'],
-    //     //minlength: [8, 'Password should be at least 8 characters long']
-    // },
+    password: {
+        type: String,
+        trim: true,
+        //required: ['Password is required'],
+        //minlength: [8, 'Password should be at least 8 characters long']
+    },
     phoneNumber: {
         type: String,
         trim: true,
-        //required: ['Phone number is required']
+        required: ['Phone number is required']
     },
     gender: {
         type: String,
@@ -75,12 +76,13 @@ const userSchema = new mongoose.Schema({
     }
 });
 
-// userSchema.pre('save', async function (next) {
-//     let salt = await bcrypt.genSalt(SALT);
-//     let hash = await bcrypt.hash(this.password, salt);
-//     this.password = hash;
-//     next();
-// })
+userSchema.pre('save', async function (next) {
+    let salt = await bcrypt.genSalt(SALT);
+    let hash = await bcrypt.hash(this.password, salt);
+    this.password = hash;
+    next();
+})
+userSchema.plugin(findOrCreate);
 
 
 module.exports = mongoose.model('User', userSchema);
