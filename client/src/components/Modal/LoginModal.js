@@ -2,11 +2,17 @@ import React, { useContext, useEffect, useState } from 'react';
 import './Modal.css';
 import { JAVASCRIPT } from '../../config/config';
 import { Context } from '../../ContextStore'; // 컨텍스트 관련 컴포넌트
-import { loginKakao } from '../../services/userData';
+import { loginUser } from '../../services/userData';
+import { kakaoUser } from '../../services/userData';
 
 
 const LoginModal = ({history, onClose}) => {
     const [error, setError] = useState(null);
+    const [user, setUser] = useState({
+        email: "",
+        name: "",
+        provider: ""
+    });
     const { setUserData } = useContext(Context)
 
     useEffect(() => {
@@ -25,22 +31,31 @@ const LoginModal = ({history, onClose}) => {
         };
     }, []);
 
-    const kakaoLogin = () => {
+    const kakaoLogin = (e) => {
+        e.preventDefault();
+
         window.Kakao.Auth.login({
             scope: 'profile_nickname, account_email, gender',
             success: function(authObj) {
-                console.log(authObj); //토큰
-                const access_token = authObj.access_token;
+                //console.log(authObj); //토큰             
+                const {access_token} = authObj
+                //console.log(access_token);
                 window.Kakao.API.request({
                     url: '/v2/user/me',
                     success: res => {
-                        const kakao_account = res.kakao_account;
-                        console.log(kakao_account); //계정정보
-                        loginKakao(access_token) //user값 담아서 loginUser로 보냄('../services/userData')
+                        const kakao_account = res.kakao_account;                  
+                        setUser({
+                            email: kakao_account.email,
+                            name: kakao_account.profile.nickname,
+                            provider: 'kakao',
+                        });
+                        console.log(user); //계정정보
+
+                        kakaoUser(user)
                             .then(res => {
                                 if (!res.error) {               
-                                    setUserData(access_token);
-                                    history.push('/') //메인 페이지로 이동
+                                    setUserData(res.user)
+                                    history.push('/')  //메인 페이지로 이동
                                 } else {
                                     setError(res.error.message);
                                 }
