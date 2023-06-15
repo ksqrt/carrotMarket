@@ -32,8 +32,6 @@ export async function loginUser(userData) {
         body: JSON.stringify(userData)
     })).json();
 }
-
-
 // export async function kakaoUser(access_token) {
 
 //     const response = await fetch('https://kapi.kakao.com/v2/user/me', {

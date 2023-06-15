@@ -22,6 +22,7 @@ const userSchema = new mongoose.Schema({
         type: String,
         trim: true
     },
+    // password api 연동시 삭제 예정
     password: {
         type: String,
         trim: true,
