@@ -4,6 +4,7 @@
 /server/config/config.js
 ./config/config.js
 carrotMarket.code-workspace
+.env
 
 # dependencies
 /node_modules

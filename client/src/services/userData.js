@@ -1,6 +1,27 @@
 const baseUrl = 'http://localhost:5000';
 // const baseUrl = 'http://101.79.11.48:5000';
 
+export async function loginKakao(access_token) {
+    const response = await fetch('https://kapi.kakao.com/v2/user/me', {
+    method: 'POST',
+    headers: {
+        Authorization: `Bearer ${access_token}`,
+    },
+    });
+
+    const userData = await response.json();
+    console.log(userData);
+
+    return (await fetch(`/auth/login`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+        body: JSON.stringify(userData)
+    })).json();
+}  
+
 export async function registerUser(userData) { //Register.js에서 userData 받음
     return (await fetch(`${baseUrl}/auth/register`, { //App.js에 등록된 엔드포인트 URL
         method: 'POST', //POST 요청에는 header와 body(본문)가 포함

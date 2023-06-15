@@ -36,7 +36,7 @@ async function create(data, userId) {
 
 async function findOneAndDelete(data, userId) {
     let product = await Product.findById(data);
-    await product.findOneAndDelete({ _id: id }, data);
+    await product.remove(userId);
 
     return await User.updateOne({ _id: userId }, { $pull: { createdSells: product } });
 }
