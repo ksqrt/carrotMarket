@@ -3,9 +3,9 @@ import {sendMessage, disconnect, getUserConversations, initializeSocket} from '.
 import { Container, Row, Form, InputGroup, Button, Alert } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { Context } from '../ContextStore';
-import ScrollToBottom, { useScrollToBottom, useSticky } from 'react-scroll-to-bottom';
+//import ScrollToBottom, { useScrollToBottom, useSticky, } from 'react-scroll-to-bottom';
 import InfiniteScroll from 'react-infinite-scroll-component';
-
+import { animateScroll,  } from 'react-scroll';
 import '../components/Messages/Aside.css'
 import '../components/Messages/Article.css'
 
@@ -14,9 +14,15 @@ import '../components/Messages/Article.css'
 function Messages({ match }) { // match = Router 제공 객체, url을 매개변수로 사용. ex) 경로 : /messages/123  => match.params.id = "123" // app.js 참고 : <Route path="/messages" exact component={Messages} />;
     
     let chatId = match.params.id; // 선택된 채팅방의 id
-    const scrollToBottom = useScrollToBottom();
-    const { sticky } = useSticky();
-
+    //const scrollToBottom = useScrollToBottom({ behavior: 'auto' });
+    const scrollToBottom = () => {
+        animateScroll.scrollToBottom({
+            containerId: "chat-selected-body",
+            duration: 0,
+            smooth: false
+        });
+    }
+    //const { sticky } = useSticky();
     const { userData } = useContext(Context); // 사용자 id 가져오기
     const [chatroomList, setChatroomList] = useState([]) // 사용자의 모든 채팅방 정보
     const [isSelected, setIsSelected] = useState(true); // 채팅방 선택
@@ -59,6 +65,7 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
             setChatroomList(res); // 가져온 채팅방 목록을 상태 변수에 저장.
             if (isSelected) { // 채팅방이 선택되었다면 현재 선택된 채팅방의 정보를 selected 상태 변수에 저장
               setSelected(res.find(x => x.chats._id === chatId))
+              scrollToBottom();
             }
           })
           .catch(console.log)
@@ -75,10 +82,10 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
                     conversation: [...prevSelected.chats.conversation, newMessage],
                 },
             }));
-
-            if(sticky) {
-                scrollToBottom();
-            }
+            scrollToBottom();
+            //  if(sticky) {
+            //      scrollToBottom();
+            //  }
         };
     
         socket.on('newMessage', handleNewMessage);
@@ -86,8 +93,12 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
         return () => {
             socket.off('newMessage', handleNewMessage);
         };
-    }, [socket, sticky]);
+    }, [socket]);
     
+    useEffect(() => {
+        console.log("asdf", selected);
+      }, [selected]);
+
     useEffect(() => {
         return () => {
           if (socket) {
@@ -101,11 +112,7 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
         event.preventDefault();
         sendMessage(socket, { chatId: selected.chats._id, senderId: userData._id, message });
         setMessage("");
-        if(sticky) {
-            scrollToBottom();
-        }
-        //setAlert("Message sent!");
-        //setAlertShow(true);
+        //scrollToBottom();
         console.log('2. messages.js, sendmessage');
     };
 
@@ -155,8 +162,8 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
                                     </p>
                                 </Alert>
                             } */}
-                            {/* <div className="chat-selected-body col-lg-12"> */}
-                            <ScrollToBottom className="chat-selected-body col-lg-12" defaultScrollBehavior="bottom">
+                            <div id="chat-selected-body" className="chat-selected-body col-lg-12">
+                            {/* <ScrollToBottom className="chat-selected-body col-lg-12" > */}
                                 {selected.chats.conversation.map((x, index) =>
                                     x ?
                                     <div className={selected.myId === x.senderId ? 'me' : "not-me"} key={index}>
@@ -164,8 +171,8 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
                                     </div>
                                     : null
                                 )}
-                            </ScrollToBottom>
-                            {/* </div> */}
+                            {/* </ScrollToBottom> */}
+                            </div>
                             <div className="chat-selected-footer col-lg-12">
                                 <Form onSubmit={handleMsgSubmit}>
                                     <Form.Group>
