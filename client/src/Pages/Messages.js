@@ -179,13 +179,17 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
                             <div className="chat-selected-header col-lg-12">
                                 {selected.isBuyer ?
                                     <Link to={`/profile/${selected.chats.seller._id}`}>
+                                        <div class="img-container">
                                         <img src={selected.chats.seller.avatar} alt="user-avatar" />
                                         <span>{selected.chats.seller.name}</span>
+                                        </div>
                                     </Link>
                                     :
                                     <Link to={`/profile/${selected.chats.buyer._id}`}>
+                                        <div class="img-container">
                                         <img src={selected.chats.buyer.avatar} alt="user-avatar" />
                                         <span>{selected.chats.buyer.name}</span>
+                                        </div>
                                     </Link>
                                 }
                             </div>
