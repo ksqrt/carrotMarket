@@ -13,32 +13,36 @@ article img {
 
 .me {
     text-align: right;
-    margin: 20px 0px;
+    margin: 15px 0px;
 }
 
 .me .message {
     text-align: right;
-    width: 50%;
+    width: fit-content;
     font-size: 9pt;
     background: #5d5d5d;
     padding: 10px;
-    border-radius: 100px;
+    border-radius: 20px;
     color: white;
+    white-space: pre-wrap;
+    display: inline-block;
 }
 
 .not-me {
     text-align: left;
-    margin: 20px 0px;
+    margin: 15px 0px;
 }
 
 .not-me .message {
     text-align: left;
-    width: 50%;
+    width: fit-content;
     font-size: 9pt;
     background: #ffffff;
     padding: 10px;
-    border-radius: 100px;
+    border-radius: 20px;
     border: 1px solid #8080804a;
+    white-space: pre-wrap;
+    display: inline-block;
 }
 
 .chat-selected-footer textarea {
@@ -48,7 +52,11 @@ article img {
 
 .chat-selected-body {
     overflow-y: auto;
-    height: 300px; /* 스크롤이 보일 최대 높이 */
+    height: 550px; /* 스크롤이 보일 최대 높이 */
+    /* background-image: url('https://veiled-jay-0c2.notion.site/image/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2F9e0b0bbd-b7f7-4a2d-9ed8-dfe08f72c35f%2F1e917e59f980468a78f2bff7dcc25ac2f604e7b0e6900f9ac53a43965300eb9a.png?id=653f7765-1ec3-485c-8d54-2af4e2b0e6aa&table=block&spaceId=5989bf22-29e0-4423-b8aa-9d2d5f3b5c6b&width=420&userId=&cache=v2'); */
+    background-repeat: no-repeat;
+    background-position: center;
+    /* background-size: 20%; */
 }
 
 /* .chat-selected-body button {
