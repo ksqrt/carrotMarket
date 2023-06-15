@@ -10,7 +10,6 @@ const productService = require('../services/productService');
 router.post('/', async (req, res) => {
     try {
 
-
         let compressedImg = await productService.uploadImage(req.body.image);
 
         res.status(200).json({ success });
