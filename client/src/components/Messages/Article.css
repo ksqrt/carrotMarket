@@ -8,7 +8,7 @@ article img {
 .chat-selected-header {
     border-bottom: 1px solid #8080804a;
     padding: 4px 25px;
-    margin: 6px 10px;
+    margin: auto;
 }
 
 .me {
@@ -19,6 +19,7 @@ article img {
 .me .message {
     text-align: right;
     width: fit-content;
+    max-width: 50%;
     font-size: 9pt;
     background: #5d5d5d;
     padding: 10px;
@@ -36,6 +37,7 @@ article img {
 .not-me .message {
     text-align: left;
     width: fit-content;
+    max-width: 50%;
     font-size: 9pt;
     background: #ffffff;
     padding: 10px;
