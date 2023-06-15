@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from 'react';
+import { useState, useEffect, useContext, useRef } from 'react';
 import {sendMessage, disconnect, getUserConversations, initializeSocket} from '../services/messagesData';
 import { Container, Row, Form, InputGroup, Button, Alert } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
@@ -36,11 +36,46 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
         isBuyer: null,
         myId: 0
     });
-    const [message, setMessage] = useState(""); // 내가 입력한 메세지 
+    const [message, setMessage] = useState(""); // 내가 입력한 메세지
     //const [alert, setAlert] = useState(null); // 메세지 전송 성공 메세지
     //const [alertShow, setAlertShow] = useState(false); // 메세지 전송 성공 메세지 토글
     const [socket, setSocket] = useState(null); // initializeSocket 소켓 초기화
     
+    // 위로 스크롤 시 추가 로딩 구현
+    const [showMessagesCount, setShowMessagesCount] = useState(10);
+    const chatContainerRef = useRef(null);
+    useEffect(() => {
+        const element = chatContainerRef.current;
+        if (!element) return;
+    
+        const handleScroll = () => {
+            //console.log(element.scrollTop); // 스크롤 위치 확인용
+            if (element.scrollTop === 0) {
+                setShowMessagesCount(count => count + 10);
+
+                setTimeout(() => {
+                    element.scrollTop = 500;
+                }, 0);
+            }
+        };
+    
+        element.addEventListener("scroll", handleScroll);
+        return () => element.removeEventListener("scroll", handleScroll);
+    }, [selected]);
+
+
+
+    // 5% 확률로 다른 이모티콘 나옴
+    const [bgUrl, setBgUrl] = useState('');
+    useEffect(() => {
+        const firstUrl = "https://veiled-jay-0c2.notion.site/image/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2F9e0b0bbd-b7f7-4a2d-9ed8-dfe08f72c35f%2F1e917e59f980468a78f2bff7dcc25ac2f604e7b0e6900f9ac53a43965300eb9a.png?id=653f7765-1ec3-485c-8d54-2af4e2b0e6aa&table=block&spaceId=5989bf22-29e0-4423-b8aa-9d2d5f3b5c6b&width=420&userId=&cache=v2";
+        const secondUrl = "https://veiled-jay-0c2.notion.site/image/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2F1d1e1eb4-d168-41ad-900e-ca97dd8e3663%2Fi16595761484.jpg?id=8b345997-b188-420a-9b2c-1df970806512&table=block&spaceId=5989bf22-29e0-4423-b8aa-9d2d5f3b5c6b&width=730&userId=&cache=v2";
+        setBgUrl(Math.random() < 0.05 ? secondUrl : firstUrl);
+    }, [selected]);
+
+
+
+
     useEffect(() => {
         const isOnMessageListPage = window.location.pathname === '/messages';
       
@@ -96,7 +131,7 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
     }, [socket]);
     
     useEffect(() => {
-        console.log("asdf", selected);
+        console.log("채팅방 전체 로그 : ", selected);
       }, [selected]);
 
     useEffect(() => {
@@ -112,7 +147,6 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
         event.preventDefault();
         sendMessage(socket, { chatId: selected.chats._id, senderId: userData._id, message });
         setMessage("");
-        //scrollToBottom();
         console.log('2. messages.js, sendmessage');
     };
 
@@ -162,9 +196,9 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
                                     </p>
                                 </Alert>
                             } */}
-                            <div id="chat-selected-body" className="chat-selected-body col-lg-12">
+                            <div ref={chatContainerRef} id="chat-selected-body" className="chat-selected-body col-lg-12" style={{backgroundImage: `url(${bgUrl})`, backgroundSize: '20%'}}>
                             {/* <ScrollToBottom className="chat-selected-body col-lg-12" > */}
-                                {selected.chats.conversation.map((x, index) =>
+                            {selected.chats.conversation.slice(Math.max(selected.chats.conversation.length - showMessagesCount, 0)).map((x, index) =>
                                     x ?
                                     <div className={selected.myId === x.senderId ? 'me' : "not-me"} key={index}>
                                         <span className="message">{x.message}</span>
