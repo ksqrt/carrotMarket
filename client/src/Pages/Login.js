@@ -23,12 +23,14 @@ function Login({ history }) {
     const handleSubmitLogin = (e) => {
         e.preventDefault();
         setLoading(true);
+        console.log(loginUser(user))
         loginUser(user) //user값 담아서 loginUser로 보냄('../services/userData')
             .then(res => {
                 if (!res.error) {
                     setUserData(res.user) //컨텍스트에 사용자 데이터 설정
                     history.push('/') //메인 페이지로 이동
                 } else {
+                    console.log(res.user)
                     setLoading(false);
                     setError(res.error.message);
                     setAlertShow(true);

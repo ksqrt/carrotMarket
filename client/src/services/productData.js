@@ -59,6 +59,8 @@ export async function createProduct(product) {
       })
       ).json();
     }
+
+    
     
     export async function activateSell(id) {
       return (await fetch(`/products/enable/${id}`)).json();

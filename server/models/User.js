@@ -18,7 +18,10 @@ const userSchema = new mongoose.Schema({
         //required: 'Email address is required',
         //match: [/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/, 'Please fill a valid email address']
     },
-    // password api 연동시 삭제 예정
+    provider: {
+        type: String,
+        trim: true
+    },
     password: {
         type: String,
         trim: true,
@@ -78,7 +81,6 @@ userSchema.pre('save', async function (next) {
     this.password = hash;
     next();
 })
+
 userSchema.plugin(findOrCreate);
-
-
 module.exports = mongoose.model('User', userSchema);
