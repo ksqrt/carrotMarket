@@ -16,8 +16,7 @@ const LoginModal = ({ onClose }) => {
         provider: ""
     });
     const { setUserData } = useContext(Context)
-    const history = useHistory();
-    console.log(process.env.REACT_APP_KAKAO_API)
+    const history = useHistory()
 
     useEffect(() => {
         const script = document.createElement('script');
