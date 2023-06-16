@@ -173,6 +173,7 @@ router.get('/enable/:id', async (req, res) => {
 
 // 상품을 비활성화하는 엔드포인트
 router.get('/archive/:id', async (req, res) => {
+    console.log('handleSubmit called응답 엔드포인트트')
     try {
         await Product.updateOne({ _id: req.params.id }, { active: false });
         res.status(200).json({ msg: "Archived" });
