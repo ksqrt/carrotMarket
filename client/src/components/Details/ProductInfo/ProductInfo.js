@@ -312,11 +312,6 @@ function ProductInfo({ params }) {
                     </Button>
                 </Modal.Footer>
               </Modal>
-                {/* <OverlayTrigger placement="top" overlay={ <Tooltip>상품 활성화하기</Tooltip>} >
-                  <span id="archive-icon" onClick={ handleShowArchive }>
-                    <Link to={<MdArchive />}></Link>
-                  </span>
-                </OverlayTrigger> */}
               </div>
             </div>
           </div>
