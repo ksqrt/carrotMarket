@@ -214,7 +214,6 @@ router.get('/wishlist/:id', async (req, res) => {
 });
 
 router.get('/views/:id', async (req, res) => {
-    console.log('여기 일단 옴');
     try{
     let user = await User.findById(req.user._id);
     let product = await Product.findById(req.params.id)
