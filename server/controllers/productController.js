@@ -240,22 +240,20 @@ router.get('/views/:id', async (req, res) => {
 router.delete('/delete/:id', async (req, res) => {
     try {
         let user = await User.findById(req.user._id);
-        let productId = req.params.id;
+        let product = await Product.findById(req.params.id)
         
-        //상품이 없는 경우 삭제할 수 없음
-        let product = await Product.findById(productId);
+        // 상품이 없는 경우 삭제할 수 없음
         if (!product) {
             return res.status(404).json({ error: '상품을 찾을 수 없습니다.' });
         }
 
-        //자신이 등록한 상품이 아닌 경우 삭제할 수 없음
+        // 자신이 등록한 상품이 아닌 경우 삭제할 수 없음
         if (product.seller.toString() !== user._id.toString()) {
             return res.status(403).json({ error: '상품 삭제 권한이 없습니다.' });
         }
 
         // Product 모델에서 findOneAndDelete 함수를 호출하여 상품을 삭제
-        await findOneAndDelete(productId, req.user._id);
-
+        await Product.findOneAndDelete( {_id: req.params.id} );
         return res.status(200).json({ message: '상품이 성공적으로 삭제되었습니다.' });
     
     } catch (err) {
