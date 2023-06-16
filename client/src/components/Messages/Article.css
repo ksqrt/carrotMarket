@@ -1,3 +1,8 @@
+ .chatlist_scroll {
+    overflow-y: auto; 
+    max-height: 600px; 
+} 
+
 article img {
     width: 50px;
     height: 50px;
@@ -8,47 +13,111 @@ article img {
 .chat-selected-header {
     border-bottom: 1px solid #8080804a;
     padding: 4px 25px;
-    margin: 6px 10px;
+    margin: auto;
 }
 
 .me {
-    text-align: right;
-    margin: 20px 0px;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: flex-end;
+    margin: 15px 0px;
 }
 
 .me .message {
-    text-align: right;
-    width: 50%;
+    text-align: left;
+    width: fit-content;
+    max-width: 50%;
     font-size: 9pt;
-    background: #5d5d5d;
+    background: #FF7E36;
     padding: 10px;
-    border-radius: 100px;
+    border-radius: 20px;
     color: white;
+    white-space: pre-wrap;
+    display: inline-block;
+    overflow-wrap: break-word;
 }
 
 .not-me {
-    text-align: left;
-    margin: 20px 0px;
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: flex-end;
+    align-items: flex-end;
+    margin: 15px 0px;
 }
 
 .not-me .message {
-    text-align: left;
-    width: 50%;
+    width: fit-content;
+    max-width: 50%;
     font-size: 9pt;
-    background: #ffffff;
+    background: #F2F3F7;
     padding: 10px;
-    border-radius: 100px;
-    border: 1px solid #8080804a;
+    border-radius: 20px;
+    white-space: pre-wrap;
+    display: inline-block;
+    overflow-wrap: break-word;
 }
 
 .chat-selected-footer textarea {
-    height: 65px;
+    height: 40px;
     resize: none;
 }
 
+.form-control{
+    width: 150px;
+}
+
 .chat-selected-body {
-    display: flex;
-    flex-direction: column-reverse;
     overflow-y: auto;
-    height: 300px; /* 스크롤이 보일 최대 높이 */
+    height: 600px; /* 스크롤이 보일 최대 높이 */
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size:20%;
+}
+
+.chat-selected-body::-webkit-scrollbar { /* 스크롤 숨김 */
+    background-color: transparent;
+}
+
+.img-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.BeSend_chat_button { /* 보내기 버튼 */
+    background-color: transparent;
+    text-align: center;
+    border-radius: 20px !important;
+}
+
+
+.plusToX{ /* 업로드 버튼 */
+    cursor:pointer;
+    border-radius: 20px;
+}
+
+.plusToX:hover {
+    background-color: #e2e6ea;
+}
+
+.label-no-margin{
+    margin: 0;
+}
+
+.me .timestamp{ /* 채팅 보낸 시간 표시 */
+    font-size: 0.7em;
+    color: #aaa;
+
+}
+
+.not-me .timestamp{
+    font-size: 0.7em;
+    color: #aaa;
+}
+
+.not-me .user-avatar {
+    align-self: center;
+    width: 40px;
+    height: 40px;
 }
