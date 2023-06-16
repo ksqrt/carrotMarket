@@ -285,4 +285,14 @@
     color: #FF7E36
 }
 
+#guest-msg {
+    font-weight: bold;
+    font-family: serif;
+    font-size: 14pt;
+}
+
+#guest-msg a {
+    text-decoration: underline;
+}
+
 

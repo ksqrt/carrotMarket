@@ -1,6 +1,6 @@
 const Server = require('socket.io').Server;
 const ChatRoom = require('../models/ChatRoom') // 채팅방 id, buyer, seller, conversation DB 연결
-
+const mongoose = require('mongoose');
 
 let io;
 function Io(server) {
@@ -23,9 +23,10 @@ function Io(server) {
     });
 
     socket.on("sendMessage", async ({chatId, senderId, message}) => { // chatId, senderId, message 인자와 함께 이벤트를 받았을 때 실행됨.
-      await ChatRoom.updateOne({ _id: chatId }, { $push: { conversation: { senderId, message } } });
-      console.log('3. io.js, sendMessage', { chatId, senderId, message } );
-      io.emit("newMessage", { senderId, message }); // senderId, message 인자 제공 필요
+      const sentAt = new mongoose.Types.ObjectId(); // MongoDB의 ObjectId를 사용하여 서버 시간을 가져옵니다. 
+      await ChatRoom.updateOne({ _id: chatId }, { $push: { conversation: { senderId, message, sentAt: sentAt.getTimestamp()  } } });
+      console.log('3. io.js, sendMessage', { chatId, senderId, message,sentAt: sentAt.getTimestamp() } );
+      io.emit("newMessage", { senderId, message, sentAt: sentAt.getTimestamp() }); // senderId, message, sentAt 인자 제공 필요
       console.log('4. io.js, newMessage');
     });
 

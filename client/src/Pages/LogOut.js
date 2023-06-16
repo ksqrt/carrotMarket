@@ -1,8 +1,8 @@
 function LogOut({ history }) {
-    fetch('/auth/logout')
+    fetch('http://localhost:5000/auth/logout')
         .then(res => res.json())
         .then(res => {
-            history.push('/')
+            window.location.href = '/';
         })
         .catch(err => console.log(err))
 }

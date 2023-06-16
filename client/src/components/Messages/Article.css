@@ -1,3 +1,8 @@
+ .chatlist_scroll {
+    overflow-y: auto; 
+    max-height: 600px; 
+} 
+
 article img {
     width: 50px;
     height: 50px;
@@ -15,57 +20,67 @@ article img {
 }
 
 .me {
-    text-align: right;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: flex-end;
     margin: 15px 0px;
 }
 
 .me .message {
-    text-align: right;
+    text-align: left;
     width: fit-content;
     max-width: 50%;
     font-size: 9pt;
-    background: #5d5d5d;
+    background: #FF7E36;
     padding: 10px;
     border-radius: 20px;
     color: white;
     white-space: pre-wrap;
     display: inline-block;
+    overflow-wrap: break-word;
 }
 
 .not-me {
-    text-align: left;
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: flex-end;
+    align-items: flex-end;
     margin: 15px 0px;
 }
 
 .not-me .message {
-    text-align: left;
     width: fit-content;
     max-width: 50%;
     font-size: 9pt;
-    background: #ffffff;
+    background: #F2F3F7;
     padding: 10px;
     border-radius: 20px;
-    border: 1px solid #8080804a;
     white-space: pre-wrap;
     display: inline-block;
+    overflow-wrap: break-word;
 }
 
 .chat-selected-footer textarea {
-    height: 65px;
+    height: 40px;
     resize: none;
+}
+
+.form-control{
+    width: 150px;
 }
 
 .chat-selected-body {
     overflow-y: auto;
-    height: 550px; /* 스크롤이 보일 최대 높이 */
-    /* background-image: url('https://veiled-jay-0c2.notion.site/image/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2F9e0b0bbd-b7f7-4a2d-9ed8-dfe08f72c35f%2F1e917e59f980468a78f2bff7dcc25ac2f604e7b0e6900f9ac53a43965300eb9a.png?id=653f7765-1ec3-485c-8d54-2af4e2b0e6aa&table=block&spaceId=5989bf22-29e0-4423-b8aa-9d2d5f3b5c6b&width=420&userId=&cache=v2'); */
+    height: 600px; /* 스크롤이 보일 최대 높이 */
     background-repeat: no-repeat;
     background-position: center;
-    /* background-size: 20%; */
+    background-size:20%;
 }
 
-/* .chat-selected-body button {
-} */
+.chat-selected-body::-webkit-scrollbar { /* 스크롤 숨김 */
+    background-color: transparent;
+}
 
   .dropdown {
     position: relative;
@@ -123,3 +138,45 @@ article img {
     background-color: white;
   }
   
+.img-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.BeSend_chat_button { /* 보내기 버튼 */
+    background-color: transparent;
+    text-align: center;
+    border-radius: 20px !important;
+}
+
+
+.plusToX{ /* 업로드 버튼 */
+    cursor:pointer;
+    border-radius: 20px;
+}
+
+.plusToX:hover {
+    background-color: #e2e6ea;
+}
+
+.label-no-margin{
+    margin: 0;
+}
+
+.me .timestamp{ /* 채팅 보낸 시간 표시 */
+    font-size: 0.7em;
+    color: #aaa;
+
+}
+
+.not-me .timestamp{
+    font-size: 0.7em;
+    color: #aaa;
+}
+
+.not-me .user-avatar {
+    align-self: center;
+    width: 40px;
+    height: 40px;
+}

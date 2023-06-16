@@ -12,8 +12,8 @@ ReactDOM.render(
       <ContextStore>
          <BrowserRouter>
             <App />
-         </BrowserRouter>
-      </ContextStore>,
+         </BrowserRouter>,
+      // </ContextStore>,
    // </React.StrictMode>,
    document.getElementById('root')
 );

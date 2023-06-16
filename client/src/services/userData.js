@@ -1,5 +1,16 @@
 const baseUrl = 'http://localhost:5000';
 
+export async function kakaoUser(userData) {
+    return (await fetch(`${baseUrl}/auth/snsLogin`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+        body: JSON.stringify(userData)
+    })).json();
+}
+
 export async function registerUser(userData) { //Register.js에서 userData 받음
     return (await fetch(`${baseUrl}/auth/register`, { //App.js에 등록된 엔드포인트 URL
         method: 'POST', //POST 요청에는 header와 body(본문)가 포함
@@ -11,8 +22,8 @@ export async function registerUser(userData) { //Register.js에서 userData 받�
     })).json(); //서버의 응답을 JSON형식으로 파싱하여 반환. /await - 비동기 작업의 완료를 기다림
 }
 
-export async function loginUser(userData) { //Login.js에서 userData 받음???
-    return (await fetch(`/auth/login`, {
+export async function loginUser(userData) {
+    return (await fetch(`${baseUrl}/auth/login`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -21,6 +32,47 @@ export async function loginUser(userData) { //Login.js에서 userData 받음???
         body: JSON.stringify(userData)
     })).json();
 }
+// export async function kakaoUser(access_token) {
+
+//     const response = await fetch('https://kapi.kakao.com/v2/user/me', {
+//     method: 'POST',
+//     headers: {
+//         Authorization: `Bearer ${access_token}`,
+//     },
+//     });
+
+//     const user_data = await response.json();
+//     console.log(user_data);
+//     const user = ({
+//         email: user_data.kakao_account.email,
+//         name: user_data.properties.nickname,
+//         provider: 'kakao',
+//     })
+//     setUserData(user);
+
+//     return (await fetch(`${baseUrl}/auth/snsLogin`, {
+//         method: 'POST',
+//         headers: {
+//             'Content-Type': 'application/json',
+//         },
+//         credentials: 'include',
+//         body: JSON.stringify(user)
+//     })).json();
+// }  
+
+// export async function loginUser(user) {
+//   try {
+//     const response = await axios.post(`${baseUrl}/auth/login`, user, {
+//       headers: {
+//         'Content-Type': 'application/json',
+//       },
+//       withCredentials: true,
+//     });
+//     return response.data;
+//   } catch (error) {
+//     throw new Error(error.message);
+//   }
+// }
 
 export async function getUser() {
     return await (await fetch(baseUrl + '/auth/getUser', {credentials: 'include'})).json()
