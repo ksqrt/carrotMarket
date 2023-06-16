@@ -14,7 +14,7 @@ const LoginModal = ({ onClose}) => {
         email: "",
         name: "",
         provider: ""
-    });
+    },[]);
     const { setUserData } = useContext(Context)
     const history = useHistory();
 
@@ -44,13 +44,18 @@ const LoginModal = ({ onClose}) => {
                 window.Kakao.API.request({
                     url: '/v2/user/me',
                     success: res => {
-                        const kakao_account = res.kakao_account;                  
+                        const kakao_account = res.kakao_account;     
+                        
+                        //console.log(kakao_account.email);
+                        
+
                         setUser({
                             email: kakao_account.email,
                             name: kakao_account.profile.nickname,
                             provider: 'kakao',
                         });
                         console.log(user); //계정정보
+                       
                         setLoading(true);
                         kakaoUser(user)
                             .then(res => {
