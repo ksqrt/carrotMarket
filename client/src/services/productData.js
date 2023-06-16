@@ -59,6 +59,18 @@ export async function createProduct(product) {
       })
       ).json();
     }
+
+    export async function deleteProduct(id) {
+      return (
+        await fetch(`${baseUrl}/products/delete/${id}`, {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+        })
+      ).json();
+    }
     
     export async function activateSell(id) {
       return (await fetch(`/products/enable/${id}`)).json();
