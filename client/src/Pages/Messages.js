@@ -169,6 +169,7 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
                                             <><img src={x.chats.buyer.avatar} alt="user-avatar" /> <span>{x.chats.buyer.name}</span></>
                                         }
                                     </Link>
+                                    {/* 내가 isbuyer라면 표시할 아바타는 seller.avatar*/}
                                 </div>)
                             }
                         </>
@@ -208,8 +209,9 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
                             {selected.chats.conversation.slice(Math.max(selected.chats.conversation.length - showMessagesCount, 0)).map((x, index) =>
                                     x ?
                                     <div className={selected.myId === x.senderId ? 'me' : "not-me"} key={index}>
-                                        <span className="timestamp">{new Date(x.sentAt).toLocaleTimeString('ko-KR', { hour: 'numeric', minute: 'numeric', hour12: true })}</span> &nbsp;
+                                        <span className="timestamp">{x.sentAt ? new Date(x.sentAt).toLocaleTimeString('ko-KR', { hour: 'numeric', minute: 'numeric', hour12: true }) : ""}</span> &nbsp;
                                         <span className="message"><Linkify>{x.message}</Linkify></span>
+                                        {selected.myId !== x.senderId && <img className="user-avatar" src={selected.isBuyer ? selected.chats.seller.avatar : selected.chats.buyer.avatar} alt="user-avatar" />}
                                     </div>
                                     : null
                                 )}
@@ -220,14 +222,14 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
                                         <InputGroup style={{ display: 'flex', alignItems: 'center' }}>
                                             <InputGroup.Append>
                                                 <input type="file" id="file-upload" style={{ display: 'none' }}/>
-                                                <label htmlFor="file-upload"><UseAnimations className="plusToX" animation={plusToX} size={40} /></label>
+                                                <label className="label-no-margin" htmlFor="file-upload"><UseAnimations className="plusToX" animation={plusToX} size={40} /></label>
                                             </InputGroup.Append>
                                             <Form.Control
                                                 as="textarea"
                                                 required
                                                 value={message}
                                                 onChange={(e) => setMessage(e.target.value)}
-                                                style={{ borderRadius: '30px', verticalAlign: 'middle' }}
+                                                style={{ borderRadius: '30px', verticalAlign: 'middle', marginTop:'5px', marginBottom:'5px', fontSize:'16px', overflow:'hidden' }}
                                                 onKeyDown={event => {
                                                     if (event.key === 'Enter' && (event.ctrlKey || event.shiftKey)) {
                                                         event.preventDefault();
@@ -236,7 +238,9 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
                                                         event.preventDefault();
                                                         handleMsgSubmit(event);
                                                     }
-                                                }}>
+                                                }}
+                                                // placeholder="메세지를 입력하세요."
+                                                >
                                             </Form.Control>
                                             <InputGroup.Append>
                                                 <Button className='BeSend_chat_button' type="submit" variant="light"><BsSend/></Button>
