@@ -13,7 +13,6 @@ import { ImBlocked } from 'react-icons/im';
 import { IoIosArrowBack } from 'react-icons/io';
 import Linkify from 'react-linkify'; // url 주소 링크 처리하는 라이브러리
 import { BsSend } from "react-icons/bs";
-import UseAnimations from "react-useanimations";
 import plusToX from "react-useanimations/lib/plusToX";
 import '../components/Messages/Aside.css'
 import '../components/Messages/Article.css'
