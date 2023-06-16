@@ -60,13 +60,14 @@ const productSchema = new mongoose.Schema({
         type: Boolean,
         default: true
     },
-    // 조회수 추가
+    // 조회수 추가  
     views:[
         {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'User'
         }
     ]
+    
 });
 
 // mongoosePaginate 플러그인을 productSchema에 적용합니다.

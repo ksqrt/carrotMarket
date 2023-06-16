@@ -1,39 +1,43 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const { SALT } = require('../config/config')
+const findOrCreate = require('mongoose-findorcreate');
 
 const userSchema = new mongoose.Schema({
     id: mongoose.Types.ObjectId,
     name: {
         type: String,
         trim: true,
-        required: 'Please fill a name. It can be your real one or a username.'
+        //required: 'Please fill a name. It can be your real one or a username.'
     },
     email: {
         type: String,
         trim: true,
         lowercase: true,
         unique: true,
-        required: 'Email address is required',
-        match: [/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/, 'Please fill a valid email address']
+        //required: 'Email address is required',
+        //match: [/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/, 'Please fill a valid email address']
+    },
+    provider: {
+        type: String,
+        trim: true
     },
     // password api 연동시 삭제 예정
     password: {
         type: String,
         trim: true,
-        required: ['Password is required'],
-        minlength: [8, 'Password should be at least 8 characters long']
+        //required: ['Password is required'],
+        //minlength: [8, 'Password should be at least 8 characters long']
     },
     phoneNumber: {
         type: String,
         trim: true,
-        required: ['Phone number is required'],
-       
+        required: ['Phone number is required']
     },
     gender: {
         type: String,
         trim: true,
-        default: 'Not specified'
+        //default: 'Not specified'
     },
     avatar: {
         type: String,
@@ -79,6 +83,5 @@ userSchema.pre('save', async function (next) {
     next();
 })
 
-
-
+userSchema.plugin(findOrCreate);
 module.exports = mongoose.model('User', userSchema);

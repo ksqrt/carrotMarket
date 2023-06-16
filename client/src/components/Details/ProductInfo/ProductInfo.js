@@ -24,11 +24,15 @@ function ProductInfo({ params }) {
   const [loading, setLoading] = useState(true);
   const [showMsg, setShowMdg] = useState(false);
   const [showArchive, setShowArchive] = useState(false);
+  const history = useHistory();
   const handleClose = () => setShowMdg(false);
   const handleShow = () => setShowMdg(true);
 
   const handleCloseArchive = () => setShowArchive(false);
   const handleShowArchive = () => setShowArchive(true);
+
+  console.log(params)
+  console.log(history)
 
   const handleSubmit = (e) => {
       e.preventDefault();
@@ -163,7 +167,7 @@ function ProductInfo({ params }) {
   };
 
   // startchat 이벤트 실행
-  const history = useHistory();
+  // const history = useHistory();
   const { userData } = useContext(Context);
   const [socket, setSocket] = useState(null);
   
@@ -191,6 +195,51 @@ function ProductInfo({ params }) {
   //{params.description}: 상품 설명
   //{params.createdSells}: 물품 갯수
 
+
+  function sendLinkCustom() {
+    
+    if (window.Kakao) {
+      window.Kakao.Link.sendCustom({
+        templateId: 94886
+      });
+    }
+  }
+
+
+  function sendLinkDefault() {
+    
+    if (window.Kakao) {
+      window.Kakao.Link.sendDefault({
+        objectType: 'feed',
+        content: {
+          title:params && params.title ? params.title : '호랑이',
+          description: params.description,
+          imageUrl: params.image,
+          link: {
+            mobileWebUrl: 'https://developers.kakao.com',
+            webUrl: 'https://developers.kakao.com',
+          },
+        },
+        social: {
+          likeCount: 286,
+          commentCount: 45,
+          sharedCount: 845,
+        },
+        buttons: [
+          {
+            title: '웹으로 보기',
+            link: {
+              mobileWebUrl: 'https://developers.kakao.com',
+              webUrl: `http://localhost:3000/categories/auto/${params._id}/details`,
+            },
+          },
+        ],
+      });
+    }
+  }//수정
+
+  
+
   return (
     <div className="d-flex flex-column align-items-center">
       <section id='images'>
@@ -213,13 +262,45 @@ function ProductInfo({ params }) {
               <div id="content_UpDel">
                 { params.isSeller && (
                   <>
-                  <OverlayTrigger placement="top" overlay={ <Tooltip>상품 수정하기</Tooltip>} >
-                    <Link to={`/categories/${params.category}/${params._id}/edit`}>게시글 수정하기</Link>
-                  </OverlayTrigger> 
-                  <span className="link-spacing"></span>
-                    <a href="#" className="delete-link">게시글 삭제하기</a>
+                    <OverlayTrigger placement="top" overlay={ <Tooltip>상품 보관함 이동</Tooltip>} >
+                      <span id="archive-icon" onClick={handleShowArchive}>
+                        <Link to={<MdArchive />}>보관함으로 이동</Link>
+                      </span>
+                    </OverlayTrigger>
+                    <span className="link-spacing"></span>
+                    <OverlayTrigger placement="top" overlay={ <Tooltip>상품 수정하기</Tooltip>} >
+                      <Link to={`/categories/${params.category}/${params._id}/edit`}>게시글 수정하기</Link>
+                    </OverlayTrigger> 
+                    <span className="link-spacing"></span>
+                    <OverlayTrigger placement="top" overlay={ <Tooltip>상품 삭제하기</Tooltip>} >
+                      <Link to={`/categories/${params.category}/${params._id}/delete`}>게시글 삭제하기</Link>
+                    </OverlayTrigger>
                   </>
                 ) }
+                <Modal show={ showArchive } onHide={ handleCloseArchive }>
+                <Modal.Header closeButton>
+                    <Modal.Title>보관함으로 이동하시겠습니까???</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <p>
+                        By clicking <strong>Archive</strong>, this sell will change
+                    it's status to <strong>Archived</strong>,
+                    which means that no one but you will be able see it.
+                    You may want to change the status to <strong>Actived</strong> if you have
+                    sold the item or you don't want to sell it anymore.
+                    </p>
+
+                    Don't worry, you can unarchive it at any time from Profile - Sells!
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={handleCloseArchive}>
+                        Close
+                    </Button>
+                    <Button variant="success" onClick={handleSubmit}>
+                        Archive
+                    </Button>
+                </Modal.Footer>
+              </Modal>
                 {/* <OverlayTrigger placement="top" overlay={ <Tooltip>상품 활성화하기</Tooltip>} >
                   <span id="archive-icon" onClick={ handleShowArchive }>
                     <Link to={<MdArchive />}></Link>
@@ -293,8 +374,20 @@ function ProductInfo({ params }) {
               )}
             </span>
           )}
-          <p id='kakao_share'><img src=''></img></p>
-        </div>
+
+
+           <div>
+            {/* <button onClick={sendLinkCustom}>Send Custom Link</button> */}
+                <button onClick = {sendLinkDefault}>카카오 공유하기</button>
+                 
+
+            </div>
+
+            </div>
+
+
+
+
       </section>
 
       <section id="product_more">

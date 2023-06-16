@@ -3,9 +3,11 @@ import { Context } from '../../ContextStore'; // Context 모듈의 경로를 확
 import { Navbar, NavDropdown, Nav, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import { NavLink } from 'react-router-dom';
 import { BsFillPersonFill, BsFillEnvelopeFill, BsFillPlusCircleFill } from 'react-icons/bs';
+
 import { IoLogOut } from 'react-icons/io5'
 import SearchBar from "../../components/SearchBar/SearchBar";
 import { SearchContext } from '../../ContextAPI/SearchContext';
+
 
 import './Header.css';
 import LoginModal from '../Modal/LoginModal';
@@ -81,24 +83,31 @@ function Header() {
                                 {/* <NavLink className="dropdown-item" to="/your-sells">
                                     <BsFillGridFill />Sells
                             </NavLink> */}
-                                <NavLink className="dropdown-item" to="/messages">
+                            <NavLink className="dropdown-item" to="/messages">
                                     <BsFillEnvelopeFill />Messages
                             </NavLink>
                                 {/* <NavLink className="dropdown-item" to="/wishlist">
                                     <BsFillHeartFill />Wishlist
                             </NavLink> */}
 
-                                <NavDropdown.Divider />
-
+                            <NavDropdown.Divider />
                                 <NavLink className="dropdown-item" to="/auth/logout" onClick={() => {
                                     setUserData(null)
-                                }}>
+                                }}> 
                                     <IoLogOut />Log out
                                 </NavLink>
                             </NavDropdown>
                         </Nav>)
                         :
                         (<Nav>
+                            <div>
+                                <button className='nav-item' id="nav-sign-in" onClick={onOpen}>로그인/회원가입</button>
+                                {
+                                    isOpen && <LoginModal onClose={onClose}/>
+                                }
+                            </div>
+                            {/* 추후 삭제 */}
+                            &nbsp;&nbsp;
                             <NavLink style={{ backgroundColor: '#FF7E36' }} className="nav-item" id="nav-sign-in" to="/auth/login">
                                 로그인
                             </NavLink>
