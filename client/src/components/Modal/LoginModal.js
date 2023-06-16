@@ -26,7 +26,7 @@ const LoginModal = ({ onClose}) => {
 
         script.onload = () => {
             //src/config/config.js 에 있음
-            window.Kakao.init(JAVASCRIPT);
+            window.Kakao.init(process.env.REACT_APP_KAKAO_API);
         };
 
         return () => {

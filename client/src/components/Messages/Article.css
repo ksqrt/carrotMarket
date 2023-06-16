@@ -1,3 +1,9 @@
+.chat-connections {
+    /* 기존 스타일 */
+    overflow-y: auto; /* 또는 scroll */
+    max-height: 100px; /* 또는 원하는 값 */
+}
+
 article img {
     width: 50px;
     height: 50px;
@@ -12,7 +18,10 @@ article img {
 }
 
 .me {
-    text-align: right;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
     margin: 15px 0px;
 }
 
@@ -31,12 +40,14 @@ article img {
 }
 
 .not-me {
-    text-align: left;
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: flex-end;
+    align-items: center;
     margin: 15px 0px;
 }
 
 .not-me .message {
-    text-align: left;
     width: fit-content;
     max-width: 50%;
     font-size: 9pt;
@@ -89,4 +100,15 @@ article img {
 
 .plusToX:hover {
     background-color: #e2e6ea;
-  }
+}
+
+.me .timestamp{ /* 채팅 보낸 시간 표시 */
+    font-size: 0.7em;
+    color: #aaa;
+
+}
+
+.not-me .timestamp{
+    font-size: 0.7em;
+    color: #aaa;
+}

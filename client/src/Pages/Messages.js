@@ -15,13 +15,6 @@ import '../components/Messages/Article.css'
 function Messages({ match }) { // match = Router 제공 객체, url을 매개변수로 사용. ex) 경로 : /messages/123  => match.params.id = "123" // app.js 참고 : <Route path="/messages" exact component={Messages} />;
     
     let chatId = match.params.id; // 선택된 채팅방의 id
-    const scrollToBottom = () => {
-        animateScroll.scrollToBottom({
-            containerId: "chat-selected-body",
-            duration: 0,
-            smooth: false
-        });
-    }
     const { userData } = useContext(Context); // 사용자 id 가져오기
     const [chatroomList, setChatroomList] = useState([]) // 사용자의 모든 채팅방 정보
     const [isSelected, setIsSelected] = useState(true); // 채팅방 선택
@@ -39,6 +32,13 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
     //const [alert, setAlert] = useState(null); // 메세지 전송 성공 메세지
     //const [alertShow, setAlertShow] = useState(false); // 메세지 전송 성공 메세지 토글
     const [socket, setSocket] = useState(null); // initializeSocket 소켓 초기화
+    const scrollToBottom = () => {
+        animateScroll.scrollToBottom({
+            containerId: "chat-selected-body",
+            duration: 0,
+            smooth: false
+        });
+    }
     
     // 위로 스크롤 시 추가 로딩 구현
     const [showMessagesCount, setShowMessagesCount] = useState(15);
@@ -79,38 +79,39 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
 
 
 
-
+    // 페이지 이동 오류 해결용
     useEffect(() => {
         const isOnMessageListPage = window.location.pathname === '/messages';
       
         if (isOnMessageListPage) {
           setIsSelected(false);
         }
-      }, []);
+    }, []);
 
 
     useEffect(() => {
         (async () => {
           setSocket(await initializeSocket());
         })();
-      }, []);
+    }, []);
 
 
-      useEffect(() => { // 대화방 가져오기, 선택시 내용 가져오기
-        if (!userData || !socket) return;
-        console.log("1. messages.js, getUserConversations ");
-        getUserConversations(socket, userData._id) // 현재 사용자와 관련된 모든 채팅방 목록을 가져옴
-          .then(res => {
-            setChatroomList(res); // 가져온 채팅방 목록을 상태 변수에 저장.
-            if (isSelected) { // 채팅방이 선택되었다면 현재 선택된 채팅방의 정보를 selected 상태 변수에 저장
-              setSelected(res.find(x => x.chats._id === chatId))
-              scrollToBottom();
-            }
-          })
-          .catch(console.log)
-      }, [isSelected, chatId, socket, userData]);
+    useEffect(() => { // 대화방 가져오기, 선택시 내용 가져오기
+    if (!userData || !socket) return;
+    console.log("1. messages.js, getUserConversations ");
+    getUserConversations(socket, userData._id) // 현재 사용자와 관련된 모든 채팅방 목록을 가져옴
+        .then(res => {
+        setChatroomList(res); // 가져온 채팅방 목록을 상태 변수에 저장.
+        if (isSelected) { // 채팅방이 선택되었다면 현재 선택된 채팅방의 정보를 selected 상태 변수에 저장
+            setSelected(res.find(x => x.chats._id === chatId))
+            scrollToBottom();
+        }
+        })
+        .catch(console.log)
+    }, [isSelected, chatId, socket, userData]);
 
-      useEffect(() => {
+
+    useEffect(() => { // 채팅 내역 가져오기
         if (!socket) return;
         console.log('5. messages.js, newmessage');
         const handleNewMessage = (newMessage) => {
@@ -144,7 +145,7 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
       }, [socket]);
 
 
-    const handleMsgSubmit = event => {
+    const handleMsgSubmit = event => { // 채팅 보내기
         event.preventDefault();
         sendMessage(socket, { chatId: selected.chats._id, senderId: userData._id, message });
         setMessage("");
@@ -156,6 +157,7 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
             <Row>
                 <aside className="col-lg-4 col-md-4">
                     <h3>Conversations</h3>
+                    <div className="chatlist_scroll">
                     {chatroomList.length >= 1 ?
                         <>
                             {chatroomList.map(x =>
@@ -173,6 +175,7 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
                         :
                         <h5>No messages yet</h5>
                     }
+                    </div>
                 </aside>
                 <article className="col-lg-8 col-md-8">
                     {isSelected &&
@@ -205,6 +208,7 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
                             {selected.chats.conversation.slice(Math.max(selected.chats.conversation.length - showMessagesCount, 0)).map((x, index) =>
                                     x ?
                                     <div className={selected.myId === x.senderId ? 'me' : "not-me"} key={index}>
+                                        <span className="timestamp">{new Date(x.sentAt).toLocaleTimeString('ko-KR', { hour: 'numeric', minute: 'numeric', hour12: true })}</span> &nbsp;
                                         <span className="message"><Linkify>{x.message}</Linkify></span>
                                     </div>
                                     : null
