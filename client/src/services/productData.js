@@ -81,6 +81,12 @@ export async function createProduct(product) {
       console.log('handleSubmit called응답받기')
       return (await fetch(`${baseUrl}/products/archive/${id}`)).json();
     }
+
+    export async function archiveSoldout(id) {
+      console.log(id+'이것은 아이디입니다.,')
+      console.log('soldout test')
+      return (await fetch(`${baseUrl}/products/soldout/${id}`)).json();
+    }
     
     export async function wishProduct(id) {
       return (
