@@ -4,7 +4,7 @@ import { GrEdit } from 'react-icons/gr';
 import { MdArchive } from 'react-icons/md'
 import { BsHeart, BsHeartFill } from 'react-icons/bs';
 import { Col, Row, Spinner, Tabs, Tab, Image, OverlayTrigger, Tooltip, Modal, Form, Button } from 'react-bootstrap';
-import { getAll, archiveSell, wishProduct } from '../../../services/productData';
+import { getAll, archiveSell, wishProduct, deleteProduct } from '../../../services/productData';
 import ProductCard from "../../../components/ProductCard/ProductCard";
 import Messages from '../../../Pages/Messages';
 import aImage from '../../Profile/profile_images/a.png'; // 이미지 파일 경로
@@ -70,6 +70,20 @@ function ProductInfo({ params }) {
         setPage(prevPage => prevPage + 1);
       })
       .catch(err => console.log(err));
+  };
+
+  //상품 삭제
+  const handleDelPro = () => {
+    if (window.confirm('정말로 삭제하시겠습니까?')) {
+      deleteProduct(params._id)
+        .then(res => {
+          alert('상품이 삭제되었습니다.');
+          history.push('/'); // '/'로 이동
+        })
+        .catch(error => {
+          alert('상품 삭제에 실패하였습니다. 다시 시도해주세요.');
+        });
+    }
   };
 
   //매너온도
@@ -286,7 +300,7 @@ function ProductInfo({ params }) {
                     </OverlayTrigger> 
                     <span className="link-spacing"></span>
                     <OverlayTrigger placement="top" overlay={ <Tooltip>상품 삭제하기</Tooltip>} >
-                      <Link to={`/categories/${params.category}/${params._id}/delete`}>게시글 삭제하기</Link>
+                      <button onClick={ handleDelPro }>게시글 삭제하기</button>
                     </OverlayTrigger>
                   </>
                 ) }
@@ -391,7 +405,7 @@ function ProductInfo({ params }) {
 
            <div>
             {/* <button onClick={sendLinkCustom}>Send Custom Link</button> */}
-                <button onClick = {sendLinkDefault}>카카오 공유하기</button>
+                <button class="kakao-button" onClick = {sendLinkDefault}>카카오 공유하기</button>
                  
 
             </div>
