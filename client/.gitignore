@@ -27,3 +27,6 @@ carrotMarket.code-workspace
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# API KEY
+.env

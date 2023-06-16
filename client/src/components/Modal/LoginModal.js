@@ -1,13 +1,13 @@
 import React, { useContext, useEffect, useState } from 'react';
 import './Modal.css';
-import { JAVASCRIPT } from '../../config/config';
+// import { JAVASCRIPT } from '../../config/config';
 import { Context } from '../../ContextStore'; // 컨텍스트 관련 컴포넌트
 import { Spinner } from 'react-bootstrap';
 import { loginUser } from '../../services/userData';
 import { kakaoUser } from '../../services/userData';
 import { useHistory } from 'react-router-dom';
 
-const LoginModal = ({ onClose}) => {
+const LoginModal = ({ onClose }) => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [user, setUser] = useState({
@@ -17,16 +17,17 @@ const LoginModal = ({ onClose}) => {
     });
     const { setUserData } = useContext(Context)
     const history = useHistory();
+    console.log(process.env.REACT_APP_KAKAO_API)
 
     useEffect(() => {
         const script = document.createElement('script');
         script.src = 'https://developers.kakao.com/sdk/js/kakao.js';
         script.async = true;
         document.body.appendChild(script);
-
+        
         script.onload = () => {
             //src/config/config.js 에 있음
-            window.Kakao.init(JAVASCRIPT);
+            window.Kakao.init(process.env.REACT_APP_KAKAO_API);
         };
 
         return () => {
@@ -40,7 +41,6 @@ const LoginModal = ({ onClose}) => {
             success: function(authObj) {
                 //console.log(authObj); //토큰             
                 const {access_token} = authObj
-                //console.log(access_token);
                 window.Kakao.API.request({
                     url: '/v2/user/me',
                     success: res => {

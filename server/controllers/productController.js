@@ -214,11 +214,9 @@ router.get('/wishlist/:id', async (req, res) => {
 });
 
 router.get('/views/:id', async (req, res) => {
-    console.log('여기 일단 옴');
     try{
     let user = await User.findById(req.user._id);
     let product = await Product.findById(req.params.id)
-        console.log()
 
     if (!product.views.includes(req.user._id)) {
         await Product.updateOne({ _id: req.params.id }, { $push: { views: user } });
@@ -227,7 +225,6 @@ router.get('/views/:id', async (req, res) => {
 
         res.status(200).json({ msg: "dlal" });
     }
-
 
     } catch(error) {
         console.log('여기 일단 옴ㅎㅇ');
@@ -261,6 +258,5 @@ router.delete('/delete/:id', async (req, res) => {
         return res.status(500).json({ error: '서버 오류로 인해 상품을 삭제할 수 없습니다.' });
     }
 });
-
 
 module.exports = router;

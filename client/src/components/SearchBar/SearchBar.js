@@ -1,6 +1,15 @@
 import React from "react";
+import { useHistory } from "react-router-dom";
 
 function SearchBar({ value, onChange }) {
+  const history = useHistory();
+
+  const handleKeyPress = (e) => {
+    if (e.key === "Enter") {
+      history.push("/");
+    }
+  };
+
   return (
     <div id="sider">
       <input
@@ -10,6 +19,7 @@ function SearchBar({ value, onChange }) {
         name="search"
         value={value}
         onChange={onChange}
+        onKeyPress={handleKeyPress} // Enter 키 누를 때 이벤트 핸들러
       />
     </div>
   );
