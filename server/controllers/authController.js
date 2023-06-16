@@ -8,6 +8,7 @@ const jwt = require('jsonwebtoken');
 router.post('/snsLogin', (req, res) => {
     authService.snsLoginUser(req.body)
         .then(token => {
+            // localStorage.setItem('token', token); //로컬 스토리지에 토큰 저장
             jwt.verify(token, SECRET, (err, decoded) => {
                 if (err) {
                     res.clearCookie(COOKIE_NAME);

@@ -6,6 +6,7 @@ import { Spinner } from 'react-bootstrap';
 import { loginUser } from '../../services/userData';
 import { kakaoUser } from '../../services/userData';
 import { useHistory } from 'react-router-dom';
+import GoogleLogin from './GoogleLogin';
 
 const LoginModal = ({ onClose}) => {
     const [loading, setLoading] = useState(false);
@@ -54,7 +55,7 @@ const LoginModal = ({ onClose}) => {
                         setLoading(true);
                         kakaoUser(user)
                             .then(res => {
-                                if (!res.error) {               
+                                if (!res.error) {        
                                     setUserData(res.user)
                                     history.push('/') 
                                     } else {
@@ -94,8 +95,12 @@ const LoginModal = ({ onClose}) => {
                             <div className='modal-path'>
                                 <img src='https://littledeep.com/wp-content/uploads/2019/03/google_logo_download_thumbnail.png' width="50" alt="구글"/>
                                 구글로 이용하기
+                                <GoogleLogin/>
                             </div>
-                        </a>                                   
+                        </a> 
+                                                        
+
+                        
                     </div>
                     }
                 </div>
