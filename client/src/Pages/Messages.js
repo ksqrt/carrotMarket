@@ -46,6 +46,7 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
     //const [alert, setAlert] = useState(null); // 메세지 전송 성공 메세지
     //const [alertShow, setAlertShow] = useState(false); // 메세지 전송 성공 메세지 토글
     const [socket, setSocket] = useState(null); // initializeSocket 소켓 초기화
+
     
     // 위로 스크롤 시 추가 로딩 구현
     const [showMessagesCount, setShowMessagesCount] = useState(10);
@@ -78,9 +79,6 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
         const secondUrl = "https://veiled-jay-0c2.notion.site/image/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2F1d1e1eb4-d168-41ad-900e-ca97dd8e3663%2Fi16595761484.jpg?id=8b345997-b188-420a-9b2c-1df970806512&table=block&spaceId=5989bf22-29e0-4423-b8aa-9d2d5f3b5c6b&width=730&userId=&cache=v2";
         setBgUrl(Math.random() < 0.05 ? secondUrl : firstUrl);
     }, [selected]);
-
-
-
 
     useEffect(() => {
         const isOnMessageListPage = window.location.pathname === '/messages';
@@ -184,7 +182,7 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
                         <>
                             <div className="chat-selected-header col-lg-12">
                                 <button className='out'>
-                                <IoIosArrowBack size={30}/>
+                                <a href="/messages"><IoIosArrowBack size={30}/></a>
                                 </button>
                                 {selected.isBuyer ?
                                     <Link to={`/profile/${selected.chats.seller._id}`}>
@@ -205,7 +203,7 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
                                         <UseAnimations animation={github} size={35}/>
                                     </button>
                                     <div className="dropdown-content">
-                                        <a href="#/action-1">채팅방 나가기</a>
+                                        <a href="/messages">채팅방 나가기</a>
                                         <a href="#/action-2"><ImBlocked size={20} /> 차단하기 </a>
                                         <a href="#/action-3"><AiOutlineAlert size={20} /> 신고하기 </a>
                                     </div>
