@@ -23,7 +23,6 @@ function Login({ history }) {
     const handleSubmitLogin = (e) => {
         e.preventDefault();
         setLoading(true);
-        console.log(loginUser(user))
         loginUser(user) //user값 담아서 loginUser로 보냄('../services/userData')
             .then(res => {
                 if (!res.error) {
