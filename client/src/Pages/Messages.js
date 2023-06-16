@@ -1,7 +1,7 @@
 import { useState, useEffect, useContext, useRef, React } from 'react';
 import {sendMessage, disconnect, getUserConversations, initializeSocket} from '../services/messagesData';
 import { Navbar, NavDropdown, Nav, Container, Row, Form, InputGroup, Button, Alert } from 'react-bootstrap';
-import { Link, NavLink } from 'react-router-dom';
+import { Link, NavLink, useHistory } from 'react-router-dom';
 import { Context } from '../ContextStore';
 //import ScrollToBottom, { useScrollToBottom, useSticky, } from 'react-scroll-to-bottom';
 import InfiniteScroll from 'react-infinite-scroll-component';
@@ -110,6 +110,7 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
           .catch(console.log)
       }, [isSelected, chatId, socket, userData]);
 
+      //채팅 내용 불러오기
       useEffect(() => {
         if (!socket) return;
         console.log('5. messages.js, newmessage');
@@ -152,6 +153,14 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
         sendMessage(socket, { chatId: selected.chats._id, senderId: userData._id, message });
         setMessage("");
         console.log('2. messages.js, sendmessage');
+    };
+
+    //채팅방 삭제
+    const history = useHistory();
+    const handleLeaveChat = () => {
+
+
+        history.push('/messages');
     };
 
     return (
@@ -203,9 +212,15 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
                                         <UseAnimations animation={github} size={35}/>
                                     </button>
                                     <div className="dropdown-content">
-                                        <a href="/messages">채팅방 나가기</a>
-                                        <a href="#/action-2"><ImBlocked size={20} /> 차단하기 </a>
-                                        <a href="#/action-3"><AiOutlineAlert size={20} /> 신고하기 </a>
+                                        <button className="dropdown-content-out" onClick={handleLeaveChat}>
+                                            채팅방 나가기
+                                        </button>
+                                        <button className="dropdown-content-block"> 
+                                            <ImBlocked size={20} /> 차단하기  
+                                        </button>
+                                        <button className="dropdown-content-declare">
+                                            <AiOutlineAlert size={20} /> 신고하기 
+                                        </button>
                                     </div>
                                 </div>
 

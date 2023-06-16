@@ -81,7 +81,7 @@ function Header() {
                                 {/* <NavLink className="dropdown-item" to="/your-sells">
                                     <BsFillGridFill />Sells
                             </NavLink> */}
-                            <NavLink className="dropdown-item" to="/messages">
+                            <NavLink>
                                     <BsFillEnvelopeFill />Messages
                             </NavLink>
                                 {/* <NavLink className="dropdown-item" to="/wishlist">
