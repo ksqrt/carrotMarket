@@ -3,18 +3,18 @@ import {sendMessage, disconnect, getUserConversations, initializeSocket} from '.
 import { Container, Row, Form, InputGroup, Button, Alert } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { Context } from '../ContextStore';
-//import ScrollToBottom, { useScrollToBottom, useSticky, } from 'react-scroll-to-bottom';
-import InfiniteScroll from 'react-infinite-scroll-component';
-import { animateScroll,  } from 'react-scroll';
+import { animateScroll } from 'react-scroll';
+import Linkify from 'react-linkify'; // url 주소 링크 처리하는 라이브러리
+import { BsSend } from "react-icons/bs";
+import UseAnimations from "react-useanimations";
+import plusToX from "react-useanimations/lib/plusToX";
 import '../components/Messages/Aside.css'
 import '../components/Messages/Article.css'
-
 
 
 function Messages({ match }) { // match = Router 제공 객체, url을 매개변수로 사용. ex) 경로 : /messages/123  => match.params.id = "123" // app.js 참고 : <Route path="/messages" exact component={Messages} />;
     
     let chatId = match.params.id; // 선택된 채팅방의 id
-    //const scrollToBottom = useScrollToBottom({ behavior: 'auto' });
     const scrollToBottom = () => {
         animateScroll.scrollToBottom({
             containerId: "chat-selected-body",
@@ -22,7 +22,6 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
             smooth: false
         });
     }
-    //const { sticky } = useSticky();
     const { userData } = useContext(Context); // 사용자 id 가져오기
     const [chatroomList, setChatroomList] = useState([]) // 사용자의 모든 채팅방 정보
     const [isSelected, setIsSelected] = useState(true); // 채팅방 선택
@@ -42,7 +41,7 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
     const [socket, setSocket] = useState(null); // initializeSocket 소켓 초기화
     
     // 위로 스크롤 시 추가 로딩 구현
-    const [showMessagesCount, setShowMessagesCount] = useState(10);
+    const [showMessagesCount, setShowMessagesCount] = useState(15);
     const chatContainerRef = useRef(null);
     useEffect(() => {
         const element = chatContainerRef.current;
@@ -51,17 +50,22 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
         const handleScroll = () => {
             //console.log(element.scrollTop); // 스크롤 위치 확인용
             if (element.scrollTop === 0) {
-                setShowMessagesCount(count => count + 10);
-
-                setTimeout(() => {
-                    element.scrollTop = 500;
-                }, 0);
+                setShowMessagesCount(prevCount => {
+                    // 모든 메시지를 불러왔으면 스크롤 위치를 조정하지 않음
+                    if (selected.chats.conversation.length <= prevCount) return prevCount;
+                    
+                    setTimeout(() => {
+                        element.scrollTop = 500;
+                    }, 0);
+    
+                    return prevCount + 10;
+                });
             }
         };
     
         element.addEventListener("scroll", handleScroll);
         return () => element.removeEventListener("scroll", handleScroll);
-    }, [selected]);
+    }, [selected.chats.conversation.length]);
 
 
 
@@ -118,9 +122,6 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
                 },
             }));
             scrollToBottom();
-            //  if(sticky) {
-            //      scrollToBottom();
-            //  }
         };
     
         socket.on('newMessage', handleNewMessage);
@@ -179,14 +180,14 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
                             <div className="chat-selected-header col-lg-12">
                                 {selected.isBuyer ?
                                     <Link to={`/profile/${selected.chats.seller._id}`}>
-                                        <div class="img-container">
+                                        <div className="img-container">
                                         <img src={selected.chats.seller.avatar} alt="user-avatar" />
                                         <span>{selected.chats.seller.name}</span>
                                         </div>
                                     </Link>
                                     :
                                     <Link to={`/profile/${selected.chats.buyer._id}`}>
-                                        <div class="img-container">
+                                        <div className="img-container">
                                         <img src={selected.chats.buyer.avatar} alt="user-avatar" />
                                         <span>{selected.chats.buyer.name}</span>
                                         </div>
@@ -200,26 +201,29 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
                                     </p>
                                 </Alert>
                             } */}
-                            <div ref={chatContainerRef} id="chat-selected-body" className="chat-selected-body col-lg-12" style={{backgroundImage: `url(${bgUrl})`, backgroundSize: '20%'}}>
-                            {/* <ScrollToBottom className="chat-selected-body col-lg-12" > */}
+                            <div ref={chatContainerRef} id="chat-selected-body" className="chat-selected-body col-lg-12" style={{backgroundImage: `url(${bgUrl})`}}>
                             {selected.chats.conversation.slice(Math.max(selected.chats.conversation.length - showMessagesCount, 0)).map((x, index) =>
                                     x ?
                                     <div className={selected.myId === x.senderId ? 'me' : "not-me"} key={index}>
-                                        <span className="message">{x.message}</span>
+                                        <span className="message"><Linkify>{x.message}</Linkify></span>
                                     </div>
                                     : null
                                 )}
-                            {/* </ScrollToBottom> */}
                             </div>
-                            <div className="chat-selected-footer col-lg-12">
+                            <div className="chat-selected-footer col-lg-12" style={{backgroundColor: '#F2F3F7', padding:0, borderRadius:20}}>
                                 <Form onSubmit={handleMsgSubmit}>
                                     <Form.Group>
-                                        <InputGroup>
+                                        <InputGroup style={{ display: 'flex', alignItems: 'center' }}>
+                                            <InputGroup.Append>
+                                                <input type="file" id="file-upload" style={{ display: 'none' }}/>
+                                                <label htmlFor="file-upload"><UseAnimations className="plusToX" animation={plusToX} size={40} /></label>
+                                            </InputGroup.Append>
                                             <Form.Control
                                                 as="textarea"
                                                 required
                                                 value={message}
                                                 onChange={(e) => setMessage(e.target.value)}
+                                                style={{ borderRadius: '30px', verticalAlign: 'middle' }}
                                                 onKeyDown={event => {
                                                     if (event.key === 'Enter' && (event.ctrlKey || event.shiftKey)) {
                                                         event.preventDefault();
@@ -231,7 +235,7 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
                                                 }}>
                                             </Form.Control>
                                             <InputGroup.Append>
-                                                <Button type="submit" variant="secondary">Sent</Button>
+                                                <Button className='BeSend_chat_button' type="submit" variant="light"><BsSend/></Button>
                                             </InputGroup.Append>
                                         </InputGroup>
                                     </Form.Group>
