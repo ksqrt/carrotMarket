@@ -31,6 +31,8 @@ function ProductInfo({ params }) {
   const handleCloseArchive = () => setShowArchive(false);
   const handleShowArchive = () => setShowArchive(true);
 
+  console.log(params)
+
   const handleSubmit = (e) => {
       e.preventDefault();
       archiveSell(params._id)
@@ -194,12 +196,23 @@ function ProductInfo({ params }) {
   
     initSocket();
   }, []);
-  
+
+  useEffect(() => {
+    const script = document.createElement("script");
+    script.src = "https://developers.kakao.com/sdk/js/kakao.js";
+    script.async = true;
+    document.body.appendChild(script);
+    return () => document.body.removeChild(script);
+  }, []);
+
+
   const onChatStart = async (e) => {
     e.preventDefault();
     if (!socket) return;
     startChat(socket, { buyerId: userData._id, sellerId: params.sellerId });
   };
+
+
 
   //{params.title}: 상품 제목
   //{params.addedAt}: 업로드 날짜
@@ -208,7 +221,7 @@ function ProductInfo({ params }) {
 
 
   function sendLinkCustom() {
-    
+
     if (window.Kakao) {
       window.Kakao.Link.sendCustom({
         templateId: 94886
@@ -218,8 +231,12 @@ function ProductInfo({ params }) {
 
 
   function sendLinkDefault() {
-    
     if (window.Kakao) {
+
+      if(!window.Kakao.isInitialized()){
+        window.Kakao.init("8766bf986c048a5e20e2ae4278463a7b");
+      }
+      
       window.Kakao.Link.sendDefault({
         objectType: 'feed',
         content: {
@@ -249,7 +266,6 @@ function ProductInfo({ params }) {
     }
   }//수정
 
-  
 
   return (
     <div className="d-flex flex-column align-items-center">
@@ -389,7 +405,7 @@ function ProductInfo({ params }) {
 
            <div>
             {/* <button onClick={sendLinkCustom}>Send Custom Link</button> */}
-                <button onClick = {sendLinkDefault}>카카오 공유하기</button>
+                <button class="kakao-button" onClick = {sendLinkDefault}>카카오 공유하기</button>
                  
 
             </div>
