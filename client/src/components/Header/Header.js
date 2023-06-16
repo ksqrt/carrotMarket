@@ -4,7 +4,7 @@ import { Navbar, NavDropdown, Nav, OverlayTrigger, Tooltip } from 'react-bootstr
 import { NavLink } from 'react-router-dom';
 import { BsFillPersonFill, BsFillEnvelopeFill, BsFillPlusCircleFill } from 'react-icons/bs';
 import { useHistory } from "react-router-dom";
-
+import { useNavigate } from 'react-router-dom';
 import { IoLogOut } from 'react-icons/io5'
 import SearchBar from "../../components/SearchBar/SearchBar";
 // import { SearchContext } from '../../ContextAPI/SearchContext';
@@ -41,7 +41,7 @@ function Header() {
             setQuery(e.target.value);
             console.log("타겟" + e.target.value)
             console.log("쿼리값" + query)
-            history.push("/");
+            history.push("/categories/all");
         }
     }
 
