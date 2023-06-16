@@ -34,7 +34,7 @@ export async function registerUser(userData) { //Register.js에서 userData 받�
 }
 
 export async function loginUser(userData) { //Login.js에서 userData 받음???
-    return (await fetch(`/auth/login`, {
+    return (await fetch(`${baseUrl}/auth/login`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
