@@ -3,20 +3,23 @@ import { Context } from '../../ContextStore'; // Context 모듈의 경로를 확
 import { Navbar, NavDropdown, Nav, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import { NavLink } from 'react-router-dom';
 import { BsFillPersonFill, BsFillEnvelopeFill, BsFillPlusCircleFill } from 'react-icons/bs';
+import { useHistory } from "react-router-dom";
 
 import { IoLogOut } from 'react-icons/io5'
 import SearchBar from "../../components/SearchBar/SearchBar";
-import { SearchContext } from '../../ContextAPI/SearchContext';
-
+// import { SearchContext } from '../../ContextAPI/SearchContext';
 
 import './Header.css';
 import LoginModal from '../Modal/LoginModal';
 
 
 function Header() {
+
+
     const [isSticky, setIsSticky] = useState(false);
     const { userData, setUserData } = useContext(Context);
-    const { query, setQuery } = useContext(SearchContext);
+    const { query, setQuery } = useContext(Context);
+    const history = useHistory();
     
     //모달
     const [isOpen, setIsOpen] = useState(false);
@@ -31,6 +34,16 @@ function Header() {
     const handleSearch = (e) => {
         setQuery(e.target.value);
     };
+
+    // 검색창에서 enter 를 누르면 
+    const onKeyPress = (e) =>{
+        if (e.key === "Enter") {
+            setQuery(e.target.value);
+            console.log("타겟" + e.target.value)
+            console.log("쿼리값" + query)
+            history.push("/");
+        }
+    }
 
     useEffect(() => {
         const handleScroll = () => {
@@ -57,8 +70,8 @@ function Header() {
                         {/* <Nav.Link href="#features">Features</Nav.Link>
                         <Nav.Link href="#pricing">Pricing</Nav.Link> */}
                     </Nav>
-                    <SearchBar value={query} onChange={handleSearch} />
-                    {userData ?
+                    <SearchBar value={query} onChange={handleSearch} onKeyPress = {onKeyPress} />
+                    {userData ? 
                         (<Nav>
                             <NavLink className="nav-item" id="addButton" to="/add-product">
                                 <OverlayTrigger key="bottom" placement="bottom"
