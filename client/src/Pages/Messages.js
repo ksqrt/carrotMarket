@@ -1,19 +1,23 @@
-import { useState, useEffect, useContext, useRef } from 'react';
+import { useState, useEffect, useContext, useRef, React } from 'react';
 import {sendMessage, disconnect, getUserConversations, initializeSocket} from '../services/messagesData';
-import { Container, Row, Form, InputGroup, Button, Alert } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { Navbar, NavDropdown, Nav, Container, Row, Form, InputGroup, Button, Alert } from 'react-bootstrap';
+import { Link, NavLink, useHistory } from 'react-router-dom';
 import { Context } from '../ContextStore';
 import { animateScroll } from 'react-scroll';
+import { AiOutlineAlert } from 'react-icons/ai';
+import { ImBlocked } from 'react-icons/im';
+import { IoIosArrowBack } from 'react-icons/io';
 import Linkify from 'react-linkify'; // url 주소 링크 처리하는 라이브러리
 import { BsSend } from "react-icons/bs";
 import UseAnimations from "react-useanimations";
 import plusToX from "react-useanimations/lib/plusToX";
+import settings from 'react-useanimations/lib/settings';
 import '../components/Messages/Aside.css'
 import '../components/Messages/Article.css'
 
 
 function Messages({ match }) { // match = Router 제공 객체, url을 매개변수로 사용. ex) 경로 : /messages/123  => match.params.id = "123" // app.js 참고 : <Route path="/messages" exact component={Messages} />;
-    
+    const github = settings;
     let chatId = match.params.id; // 선택된 채팅방의 id
     const { userData } = useContext(Context); // 사용자 id 가져오기
     const [chatroomList, setChatroomList] = useState([]) // 사용자의 모든 채팅방 정보
@@ -110,8 +114,8 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
         .catch(console.log)
     }, [isSelected, chatId, socket, userData]);
 
-
-    useEffect(() => { // 채팅 내역 가져오기
+      //채팅 내용 불러오기
+      useEffect(() => {
         if (!socket) return;
         console.log('5. messages.js, newmessage');
         const handleNewMessage = (newMessage) => {
@@ -152,6 +156,14 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
         console.log('2. messages.js, sendmessage');
     };
 
+    //채팅방 삭제
+    const history = useHistory();
+    const handleLeaveChat = () => {
+
+
+        history.push('/messages');
+    };
+
     return (
         <Container>
             <Row>
@@ -182,21 +194,40 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
                     {isSelected &&
                         <>
                             <div className="chat-selected-header col-lg-12">
+                                <button className='out'>
+                                <a href="/messages"><IoIosArrowBack size={30}/></a>
+                                </button>
                                 {selected.isBuyer ?
                                     <Link to={`/profile/${selected.chats.seller._id}`}>
-                                        <div className="img-container">
                                         <img src={selected.chats.seller.avatar} alt="user-avatar" />
-                                        <span>{selected.chats.seller.name}</span>
-                                        </div>
+                                        <span>{selected.chats.seller.name}</span>    
                                     </Link>
                                     :
                                     <Link to={`/profile/${selected.chats.buyer._id}`}>
-                                        <div className="img-container">
+
                                         <img src={selected.chats.buyer.avatar} alt="user-avatar" />
                                         <span>{selected.chats.buyer.name}</span>
-                                        </div>
+                                        
                                     </Link>
                                 }
+
+                                <div className="dropdown">
+                                    <button className="dropdown-button">
+                                        <UseAnimations animation={github} size={35}/>
+                                    </button>
+                                    <div className="dropdown-content">
+                                        <button className="dropdown-content-out" onClick={handleLeaveChat}>
+                                            채팅방 나가기
+                                        </button>
+                                        <button className="dropdown-content-block"> 
+                                            <ImBlocked size={20} /> 차단하기  
+                                        </button>
+                                        <button className="dropdown-content-declare">
+                                            <AiOutlineAlert size={20} /> 신고하기 
+                                        </button>
+                                    </div>
+                                </div>
+
                             </div>
                             {/* {alertShow &&
                                 <Alert variant="success" onClose={() => setAlertShow(false)} dismissible>
