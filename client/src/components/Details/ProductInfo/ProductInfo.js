@@ -26,7 +26,6 @@ function ProductInfo({ params }) {
   const [showArchive, setShowArchive] = useState(false);
   const history = useHistory();
 
-
   const handleClose = () => setShowMdg(false);
   const handleShow = () => setShowMdg(true);
 
