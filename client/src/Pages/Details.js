@@ -1,3 +1,4 @@
+import React from 'react';
 import { useEffect, useState } from 'react';
 import { Col, Row, Spinner } from 'react-bootstrap';
 import SimpleSider from '../components/Siders/SimpleSider';

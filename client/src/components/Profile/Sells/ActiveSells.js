@@ -1,3 +1,4 @@
+import React from 'react';
 import { useEffect, useState } from 'react';
 import ProductCard from '../../ProductCard/ProductCard';
 import { Col, Row, Spinner } from 'react-bootstrap';

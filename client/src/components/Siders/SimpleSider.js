@@ -1,3 +1,4 @@
+import React from 'react';
 import './SimpleSider.css'
 
 function SimpleSider({params}) {

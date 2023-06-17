@@ -1,3 +1,4 @@
+import React from 'react';
 import { useEffect, useState,useContext } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import CategoriesNav from "../components/Categories/CategoriesNav";

@@ -1,3 +1,4 @@
+import React from 'react';
 import { useState, useContext } from 'react';
 import { Context } from '../ContextStore'; // 컨텍스트 관련 컴포넌트
 import { loginUser } from '../services/userData'

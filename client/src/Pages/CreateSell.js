@@ -1,3 +1,4 @@
+import React from 'react';
 import { Component } from 'react';
 import { Form, Button, Col, Spinner, Alert } from 'react-bootstrap';
 import { createProduct } from '../services/productData';
