@@ -1,3 +1,4 @@
+import React from 'react';
 import { useState } from 'react';
 import ActiveSells from './Sells/ActiveSells'
 import { Col, Row, Button, Form, Modal } from 'react-bootstrap';

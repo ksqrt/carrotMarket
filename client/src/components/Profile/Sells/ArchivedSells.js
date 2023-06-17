@@ -1,3 +1,4 @@
+import React from 'react';
 import { useEffect, useState } from 'react';
 import DisabledCard from '../../DisabledProductCard/DisabledCard';
 import { Col, Row, Spinner } from 'react-bootstrap';

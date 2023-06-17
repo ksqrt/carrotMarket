@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const { SALT } = require('../config/config')
-const findOrCreate = require('mongoose-findorcreate');
 
 const userSchema = new mongoose.Schema({
     id: mongoose.Types.ObjectId,
@@ -83,5 +82,4 @@ userSchema.pre('save', async function (next) {
     next();
 })
 
-userSchema.plugin(findOrCreate);
 module.exports = mongoose.model('User', userSchema);

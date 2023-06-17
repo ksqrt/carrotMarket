@@ -1,3 +1,4 @@
+import React from 'react';
 import { useState, useEffect, useContext } from 'react';
 import {sendMessage, disconnect, getUserConversations, initializeSocket} from '../services/messagesData';
 import { Container, Row, Form, InputGroup, Button, Alert } from 'react-bootstrap';
