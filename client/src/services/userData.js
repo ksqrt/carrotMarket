@@ -43,8 +43,16 @@ export async function getUserActiveSells(id) {
 }
 
 export async function getUserArchivedSells() {
+    console.log('첫번째 함수이동')
     return (await fetch(`${baseUrl}/products/sells/archived`, {credentials: 'include'})).json();
 }
+
+export async function getUserSoldoutSells() {
+    console.log('판매 완료 함수 작성')
+    return (await fetch(`${baseUrl}/products/sells/soldout`, {credentials: 'include'})).json();
+}
+
+
 
 export async function getUserWishlist() {
     return (await fetch(`${baseUrl}/products/wishlist/getWishlist`, {credentials: 'include'})).json();

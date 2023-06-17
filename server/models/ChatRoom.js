@@ -27,6 +27,10 @@ const chatRoomSchema = new mongoose.Schema({
         message: {
             type: String,
             trim: true
+        },
+        sentAt: {  // 메시지에 타임스탬프를 추가
+            type: Date,
+            default: Date.now  // 현재 시간을 기본값으로 설정
         }
     }],
     // Product Id 고유 id

@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
 import './Modal.css';
-// import { JAVASCRIPT } from '../../config/config';
 import { Context } from '../../ContextStore'; // 컨텍스트 관련 컴포넌트
 import { Spinner } from 'react-bootstrap';
 import { loginUser } from '../../services/userData';
@@ -16,8 +15,7 @@ const LoginModal = ({ onClose }) => {
         provider: ""
     });
     const { setUserData } = useContext(Context)
-    const history = useHistory();
-    console.log(process.env.REACT_APP_KAKAO_API)
+    const history = useHistory()
 
     useEffect(() => {
         const script = document.createElement('script');
