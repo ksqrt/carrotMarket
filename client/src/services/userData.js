@@ -2,6 +2,7 @@ const baseUrl = 'http://localhost:5000';
 // const baseUrl = 'http://101.79.11.48:5000';
 
 export async function kakaoUser(userData) {
+
     return (await fetch(`${baseUrl}/auth/snsLogin`, {
         method: 'POST',
         headers: {
