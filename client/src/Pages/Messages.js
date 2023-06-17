@@ -14,7 +14,6 @@ import { IoIosArrowBack } from 'react-icons/io';
 import Linkify from 'react-linkify'; // url 주소 링크 처리하는 라이브러리
 import { BsSend } from "react-icons/bs";
 import plusToX from "react-useanimations/lib/plusToX";
-import settings from 'react-useanimations/lib/settings';
 import '../components/Messages/Aside.css'
 import '../components/Messages/Article.css'
 import styles from '../components/Messages/flower.module.css'
