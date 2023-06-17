@@ -33,9 +33,7 @@ function ProductInfo({ params }) {
   const handleCloseArchive = () => setShowArchive(false);
   const handleShowArchive = () => setShowArchive(true);
 
-  
-  const handleCloseArchive2 = () => setShowArchive(false);
-  const handleShowArchive2 = () => setShowArchive(true);
+  console.log(params._id);
 
   const handleSubmit = (e) => {
     console.log('handleSubmit called')

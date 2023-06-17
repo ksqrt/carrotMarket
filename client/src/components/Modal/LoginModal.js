@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import './Modal.css';
+import { JAVASCRIPT } from '../../config/config';
 import { Context } from '../../ContextStore'; // 컨텍스트 관련 컴포넌트
 import { Spinner } from 'react-bootstrap';
 import { loginUser } from '../../services/userData';
@@ -14,7 +15,7 @@ const LoginModal = ({ onClose }) => {
         email: "",
         name: "",
         provider: ""
-    });
+    },[]);
     const { setUserData } = useContext(Context)
     const history = useHistory();
     console.log(process.env.REACT_APP_KAKAO_API)
@@ -26,8 +27,8 @@ const LoginModal = ({ onClose }) => {
         document.body.appendChild(script);
         
         script.onload = () => {
-            window.Kakao.init(process.env.REACT_APP_KAKAO_API);
-
+            //src/config/config.js 에 있음
+            window.Kakao.init(JAVASCRIPT);
         };
 
         return () => {
@@ -35,22 +36,39 @@ const LoginModal = ({ onClose }) => {
         };
     }, []);
 
+
+
+
+    useEffect(() => {
+        console.log(user.email);
+
+    }, [user]);
+
+
+
     const kakaoLogin = () => {
         window.Kakao.Auth.login({
-            scope: 'profile_nickname, account_email',
+            scope: 'profile_nickname,account_email, gender',
             success: function(authObj) {
                 //console.log(authObj); //토큰             
                 const {access_token} = authObj
                 window.Kakao.API.request({
                     url: '/v2/user/me',
                     success: res => {
-                        const kakao_account = res.kakao_account;                  
+                        const kakao_account = res.kakao_account;     
+                        
+                        console.log(kakao_account.profile.nickname);
+
+
                         setUser({
                             email: kakao_account.email,
                             name: kakao_account.profile.nickname,
                             provider: 'kakao',
                         });
-                        console.log(user); //계정정보
+
+
+                       
+
                         setLoading(true);
                         snsUser(user)
                             .then(res => {
@@ -104,3 +122,9 @@ const LoginModal = ({ onClose }) => {
 };
 
 export default LoginModal;
+
+
+
+
+
+
