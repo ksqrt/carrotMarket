@@ -43,15 +43,13 @@ function ArchivedSells({ history }) {
                             {/* map 함수를 사용하여, 배열의 각 항목에 대해 ProductCard 컴포넌트를 생성 */}
                             {/* Col xs={12} md={6} lg={4} key={x._id.toString()} -> 반응형 그리드 시스템 설정 */}
                             {products
-                                .filter(x => x.active === true || x.soldout === false)
+                                .filter(x => x.active === false)
                                 .map(x =>
                                     <Col xs={12} md={6} lg={4} key={x._id.toString()}>
                                         <DisabledCard params={x} history={history} />
                                     </Col>
                                 )
                             }
-
-
                         </Row>
                     ) : (
                             <p className="nothing-to-show">보관함 목록이 없습니다.</p>

@@ -54,7 +54,6 @@ function ActiveSells({ params, history }) {
                             {/* map 함수를 사용하여, 배열의 각 항목에 대해 ProductCard 컴포넌트를 생성 */}
                             {/* Col xs={12} md={6} lg={4} key={x._id.toString()} -> 반응형 그리드 시스템 설정 */}
                             {products
-                            .filter(x => x.soldout === false)
                                 .map(x =>
                                     <Col xs={12} md={6} lg={4} key={x._id.toString()}>
                                         <ProductCard params={x} />
