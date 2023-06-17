@@ -6,11 +6,6 @@ import { BsFillPersonFill } from 'react-icons/bs';
 import { MdEmail, MdPhoneAndroid } from 'react-icons/md'
 import { TiTick } from 'react-icons/ti'
 import { AiFillCloseSquare } from 'react-icons/ai'
-import './EditProfile.css';
-
-
-
-
 
 function EditProfile({ history }) {
     const [user, setUser] = useState({ name: "", phoneNumber: "", email: "", avatar: "" });
@@ -97,7 +92,7 @@ function EditProfile({ history }) {
                             <Col lg={3} md={5} sm={12}>
                                 <label htmlFor="file-upload" className="custom-file-upload">
                                     <OverlayTrigger placement="bottom"
-                                        overlay={<Tooltip>사진을 추가하시오</Tooltip>}
+                                        overlay={<Tooltip>Click to select a photo</Tooltip>}
                                     >
                                         <img id="avatar" src={user.avatar} alt="user-avatar"/>
                                     </OverlayTrigger>
@@ -119,12 +114,12 @@ function EditProfile({ history }) {
                                 ) : (
                                         <>
                                             <OverlayTrigger placement="bottom"
-                                                overlay={<Tooltip> 변경하기</Tooltip>}
+                                                overlay={<Tooltip> Save changes</Tooltip>}
                                             >
                                                 <span onClick={handleSave}><TiTick /></span>
                                             </OverlayTrigger>
                                             <OverlayTrigger placement="bottom"
-                                                overlay={<Tooltip>변경 취소 </Tooltip>}
+                                                overlay={<Tooltip>Discard changes </Tooltip>}
                                             >
                                                 <span onClick={handleDiscard}><AiFillCloseSquare /></span>
                                             </OverlayTrigger>
@@ -136,7 +131,7 @@ function EditProfile({ history }) {
                     </form>
                 </div>
             </div>
-            {/* <div className="container">
+            <div className="container">
                 <Row>
                     <Col lg={2} sm={12} id="aside">
                         <Button disabled variant="dark" id="active-sells">Active Sells</Button>{' '}
@@ -147,7 +142,7 @@ function EditProfile({ history }) {
                         <ActiveSells params={user}/>
                     </Col>
                 </Row>
-            </div> */}
+            </div>
         </>
     )
 }

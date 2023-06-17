@@ -72,20 +72,12 @@ export async function createProduct(product) {
       ).json();
     }
     
-    export async function activateSell(id) { 
-      return (await fetch(`${baseUrl}/products/enable/${id}`)).json();
+    export async function activateSell(id) {
+      return (await fetch(`/products/enable/${id}`)).json();
     }
     
     export async function archiveSell(id) {
-      console.log(id+'이것은 아이디입니다.,')
-      console.log('handleSubmit called응답받기')
-      return (await fetch(`${baseUrl}/products/archive/${id}`)).json();
-    }
-
-    export async function archiveSoldout(id) {
-      console.log(id+'이것은 아이디입니다.,')
-      console.log('soldout test')
-      return (await fetch(`${baseUrl}/products/soldout/${id}`)).json();
+      return (await fetch(`/products/archive/${id}`)).json();
     }
     
     export async function wishProduct(id) {
