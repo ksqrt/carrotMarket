@@ -5,17 +5,19 @@ import { Link, NavLink, useHistory } from 'react-router-dom';
 import { Context } from '../ContextStore';
 //import ScrollToBottom, { useScrollToBottom, useSticky, } from 'react-scroll-to-bottom';
 import InfiniteScroll from 'react-infinite-scroll-component';
-import { animateScroll,  } from 'react-scroll';
 import UseAnimations from "react-useanimations";
 import settings from 'react-useanimations/lib/settings';
+import { animateScroll } from 'react-scroll';
 import { AiOutlineAlert } from 'react-icons/ai';
 import { ImBlocked } from 'react-icons/im';
 import { IoIosArrowBack } from 'react-icons/io';
 import Linkify from 'react-linkify'; // url 주소 링크 처리하는 라이브러리
 import { BsSend } from "react-icons/bs";
 import plusToX from "react-useanimations/lib/plusToX";
+import settings from 'react-useanimations/lib/settings';
 import '../components/Messages/Aside.css'
 import '../components/Messages/Article.css'
+import styles from '../components/Messages/flower.module.css'
 
 
 function Messages({ match }) { // match = Router 제공 객체, url을 매개변수로 사용. ex) 경로 : /messages/123  => match.params.id = "123" // app.js 참고 : <Route path="/messages" exact component={Messages} />;
@@ -116,8 +118,8 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
         .catch(console.log)
     }, [isSelected, chatId, socket, userData]);
 
-
-    useEffect(() => { // 채팅 내역 가져오기
+      //채팅 내용 불러오기
+    useEffect(() => {
         if (!socket) return;
         console.log('5. messages.js, newmessage');
         const handleNewMessage = (newMessage) => {
@@ -130,7 +132,6 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
             }));
             scrollToBottom();
         };
-    
         socket.on('newMessage', handleNewMessage);
     
         return () => {
@@ -201,15 +202,14 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
                                 </button>
                                 {selected.isBuyer ?
                                     <Link to={`/profile/${selected.chats.seller._id}`}>
-                                        <div className="img-container">
+                                        <div>
                                         <img src={selected.chats.seller.avatar} alt="user-avatar" />
                                         <span>{selected.chats.seller.name}</span> 
                                         </div>   
                                     </Link>
                                     :
                                     <Link to={`/profile/${selected.chats.buyer._id}`}>
-                                        
-                                        <div className="img-container">
+                                        <div>
                                         <img src={selected.chats.buyer.avatar} alt="user-avatar" />
                                         <span>{selected.chats.buyer.name}</span>
                                         </div>  
@@ -257,9 +257,23 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
                                     <Form.Group>
                                         <InputGroup style={{ display: 'flex', alignItems: 'center' }}>
                                             <InputGroup.Append>
-                                                <input type="file" id="file-upload" style={{ display: 'none' }}/>
-                                                <label className="label-no-margin" htmlFor="file-upload"><UseAnimations className="plusToX" animation={plusToX} size={40} /></label>
+                                            <nav className={styles.menu}>
+                                            <input type="checkbox" href="#" className={styles['menu-open']} name="menu-open" id="menu-open" />
+                                            <label className={styles['menu-open-button']} htmlFor="menu-open">
+                                                <UseAnimations className="plusToX" animation={plusToX} size={40} />
+                                            </label>
+
+                                            <button className={`${styles['menu-item']} ${styles.blue}`}> <i className="fa fa-anchor"></i> </button>
+                                            <button className={`${styles['menu-item']} ${styles.green}`}> <i className="fa fa-coffee"></i> </button>
+                                            <button className={`${styles['menu-item']} ${styles.red}`}> <i className="fa fa-heart"></i> </button>
+                                            <button className={`${styles['menu-item']} ${styles.purple}`}> <i className="fa fa-microphone"></i> </button>
+                                            <button className={`${styles['menu-item']} ${styles.orange}`}> <i className="fa fa-star"></i> </button>
+                                            <button className={`${styles['menu-item']} ${styles.lightblue}`}> <i className="fa fa-diamond"></i> </button>
+                                            </nav>
+                                                {/* <input type="file" id="file-upload" style={{ display: 'none' }}/> */}
+                                                {/* <label className="label-no-margin" htmlFor="file-upload"><UseAnimations className="plusToX" animation={plusToX} size={40} /></label> */}
                                             </InputGroup.Append>
+                                            &nbsp;&nbsp;
                                             <Form.Control
                                                 as="textarea"
                                                 required
