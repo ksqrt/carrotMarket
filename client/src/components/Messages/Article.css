@@ -6,6 +6,9 @@ article img {
 }
 
 .chat-selected-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     border-bottom: 1px solid #8080804a;
     padding: 4px 25px;
     margin: 6px 10px;
@@ -50,5 +53,105 @@ article img {
     display: flex;
     flex-direction: column-reverse;
     overflow-y: auto;
-    height: 300px; /* 스크롤이 보일 최대 높이 */
+    height: 600px; /* 스크롤이 보일 최대 높이 */
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size:20%;
 }
+
+.chat-selected-body::-webkit-scrollbar { /* 스크롤 숨김 */
+    background-color: transparent;
+}
+
+  .dropdown {
+    position: relative;
+    display: inline-block;
+  }
+  
+   .dropdown-button {
+    border: none;
+    cursor: pointer;
+    background-color: white;
+    }
+
+  .dropdown-content {
+    display: none;
+    font-size: 13px;
+    position: absolute;
+    border-radius: 10px;
+    background-color: #ffb091;
+    color: #ffffff;
+    min-width: 130px;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+    text-align: center;
+    transition: background-color 0.3s ease;
+  }
+  
+  .dropdown-content button {
+    width: 100%;
+    border: 1px solid transparent;
+    background-color: #ffb091;
+    border-radius: 10px;
+    color: #ffffff;
+    padding: 12px 16px;
+    text-decoration: none;
+    text-align: center;
+    display: block;
+  }
+
+  .dropdown-content button:hover{
+    font-size: 15px;
+    font-weight: bold;
+    padding: 12px 16px;
+    border-radius: 10px;
+    background-color: #ff7e36;
+    text-align: center;
+  }
+  
+  .dropdown:hover .dropdown-content {
+    display: block;
+  }
+
+  .out{
+    border: none;
+    cursor: pointer;
+    background-color: white;
+  }
+
+.BeSend_chat_button { /* 보내기 버튼 */
+    background-color: transparent;
+    text-align: center;
+    border-radius: 20px !important;
+}
+
+
+.plusToX{ /* 업로드 버튼 */
+    cursor:pointer;
+    border-radius: 20px;
+}
+
+.plusToX:hover {
+    background-color: #e2e6ea;
+}
+
+.label-no-margin{
+    margin: 0;
+}
+
+.me .timestamp{ /* 채팅 보낸 시간 표시 */
+    font-size: 0.7em;
+    color: #aaa;
+
+}
+
+.not-me .timestamp{
+    font-size: 0.7em;
+    color: #aaa;
+}
+
+.not-me .user-avatar {
+    align-self: center;
+    width: 40px;
+    height: 40px;
+}  
