@@ -35,7 +35,7 @@ const LoginModal = ({ onClose }) => {
 
     const kakaoLogin = () => {
         window.Kakao.Auth.login({
-            scope: 'profile_nickname, account_email, gender',
+            scope: 'profile_nickname, account_email',
             success: function(authObj) {
                 //console.log(authObj); //토큰             
                 const {access_token} = authObj

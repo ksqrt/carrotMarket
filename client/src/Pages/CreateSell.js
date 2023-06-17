@@ -92,29 +92,44 @@ class AddProduct extends Component {
                         }
                         <Form.Row>
                             <Form.Group as={Col} controlId="formGridTitle">
-                                <Form.Label>Title</Form.Label>
-                                <Form.Control type="text" placeholder="Enter title" name="title" required onChange={this.onChangeHandler} />
+                                <Form.Label>글 제목</Form.Label>
+                                <Form.Control 
+                                style={{
+                                    width:"auto"
+
+
+                                }}
+                                type="text" placeholder="제목을 입력해주세요" name="title" required onChange={this.onChangeHandler} 
+                                />
                             </Form.Group>
 
                             <Form.Group as={Col} controlId="formGridPrice">
-                                <Form.Label>Price</Form.Label>
-                                <Form.Control type="number" step="0.01" placeholder="Price" name="price" required onChange={this.onChangeHandler} />
+                                <Form.Label>가격 (₩)</Form.Label>
+                                <Form.Control 
+                                style={{
+                                    width:"auto"
+                                }}
+                                type="number" step="1000" placeholder="가격을 입력해주세요" name="price" required onChange={this.onChangeHandler}/>
                             </Form.Group>
                         </Form.Row>
 
                         <Form.Group controlId="formGridDescription.ControlTextarea1">
-                            <Form.Label>Description</Form.Label>
-                            <Form.Control as="textarea" rows={3} name="description" required onChange={this.onChangeHandler} />
+                            <Form.Label>상품 설명</Form.Label>
+                            <Form.Control 
+                            style={{
+                                width:"75%"
+                            }}
+                            as="textarea" rows={3} name="description" required onChange={this.onChangeHandler} />
                         </Form.Group>
 
                         <Form.Row>
                             <Form.Group as={Col} controlId="formGridCity">
-                                <Form.Label>City</Form.Label>
+                                <Form.Label>거래 희망 장소</Form.Label>
                                 <Form.Control name="city" placeholder="Sofia" required onChange={this.onChangeHandler} />
                             </Form.Group>
 
                             <Form.Group as={Col} controlId="formGridCategory">
-                            <Form.Label>Category</Form.Label>
+                            <Form.Label>상품 분류</Form.Label>
                             <Form.Control as="select" defaultValue="Choose..." name="category" required onChange={this.onChangeHandler}>
                                 <option>선택해주세요...</option>
                                 <option>의류</option>
@@ -131,7 +146,7 @@ class AddProduct extends Component {
                             </Form.Group>
 
                             <Form.Group as={Col} controlId="formGridImage" >
-                                <Form.Label>Image</Form.Label>
+                                <Form.Label>상품 이미지</Form.Label>
                                 <Form.Control name="image" type="file" required onChange={this.onChangeHandler} />
                             </Form.Group>
                         </Form.Row>
@@ -140,7 +155,7 @@ class AddProduct extends Component {
                                 Please wait... <Spinner animation="border" />
                             </Button>
                             :
-                            <Button className="col-lg-12" variant="dark" type="submit">Add product</Button>
+                            <Button className="col-lg-12" variant="dark" type="submit">상품 등록</Button>
                         }
                     </Form>
                     <br></br>
