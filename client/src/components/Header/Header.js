@@ -12,10 +12,7 @@ import SearchBar from "../../components/SearchBar/SearchBar";
 import './Header.css';
 import LoginModal from '../Modal/LoginModal';
 
-
 function Header() {
-
-
     const [isSticky, setIsSticky] = useState(false);
     const { userData, setUserData } = useContext(Context);
     const { query, setQuery } = useContext(Context);

@@ -73,11 +73,11 @@ export async function createProduct(product) {
     }
     
     export async function activateSell(id) {
-      return (await fetch(`${baseUrl}/products/enable/${id}`)).json();
+      return (await fetch(`/products/enable/${id}`)).json();
     }
     
     export async function archiveSell(id) {
-      return (await fetch(`${baseUrl}/products/archive/${id}`)).json();
+      return (await fetch(`/products/archive/${id}`)).json();
     }
     
     export async function wishProduct(id) {

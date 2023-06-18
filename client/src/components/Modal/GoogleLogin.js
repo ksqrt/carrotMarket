@@ -4,7 +4,6 @@ import { Context } from '../../ContextStore';
 import { snsUser } from '../../services/userData';
 import { useHistory } from 'react-router-dom';
 
-
 const GoogleLogin = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
