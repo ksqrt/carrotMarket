@@ -8,12 +8,11 @@ const jwt = require('jsonwebtoken');
 router.post('/snsLogin', (req, res) => {
     authService.snsLoginUser(req.body)
         .then(token => {
-            // localStorage.setItem('token', token); //로컬 스토리지에 토큰 저장
             jwt.verify(token, SECRET, (err, decoded) => {
                 if (err) {
                     res.clearCookie(COOKIE_NAME);
                 } else {
-                    req.user = decoded;
+                    req.user = decoded;     
                     res
                         .status(200)
                         .cookie(COOKIE_NAME, token, { sameSite: 'none', secure: true, httpOnly: true })
@@ -25,7 +24,7 @@ router.post('/snsLogin', (req, res) => {
 });
 
 router.post('/login', (req, res) => {
-    authService.loginUser(req.body)
+    authService.registerUser(req.body)
         .then(token => {
             jwt.verify(token, SECRET, (err, decoded) => {
                 if (err) {
@@ -45,7 +44,6 @@ router.post('/login', (req, res) => {
 router.get('/logout', (req, res) => {
     res.clearCookie(COOKIE_NAME);
     res.status(200).json({ message: 'Successfully logged out' });
-    
 });
 
 router.get('/getUser', async (req, res) => {

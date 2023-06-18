@@ -1,13 +1,13 @@
 const baseUrl = 'http://localhost:5000';
 
-export async function snsUser(userData) {
+export async function snsUser(user) {
     return (await fetch(`${baseUrl}/auth/snsLogin`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
         },
         credentials: 'include',
-        body: JSON.stringify(userData)
+        body: JSON.stringify(user)
     })).json();
 }
 
@@ -32,48 +32,6 @@ export async function loginUser(userData) {
         body: JSON.stringify(userData)
     })).json();
 }
-
-// export async function kakaoUser(access_token) {
-
-//     const response = await fetch('https://kapi.kakao.com/v2/user/me', {
-//     method: 'POST',
-//     headers: {
-//         Authorization: `Bearer ${access_token}`,
-//     },
-//     });
-
-//     const user_data = await response.json();
-//     console.log(user_data);
-//     const user = ({
-//         email: user_data.kakao_account.email,
-//         name: user_data.properties.nickname,
-//         provider: 'kakao',
-//     })
-//     setUserData(user);
-
-//     return (await fetch(`${baseUrl}/auth/snsLogin`, {
-//         method: 'POST',
-//         headers: {
-//             'Content-Type': 'application/json',
-//         },
-//         credentials: 'include',
-//         body: JSON.stringify(user)
-//     })).json();
-// }  
-
-// export async function loginUser(user) {
-//   try {
-//     const response = await axios.post(`${baseUrl}/auth/login`, user, {
-//       headers: {
-//         'Content-Type': 'application/json',
-//       },
-//       withCredentials: true,
-//     });
-//     return response.data;
-//   } catch (error) {
-//     throw new Error(error.message);
-//   }
-// }
 
 export async function getUser() {
     return await (await fetch(baseUrl + '/auth/getUser', {credentials: 'include'})).json()

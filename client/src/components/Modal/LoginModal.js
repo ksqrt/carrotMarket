@@ -6,15 +6,11 @@ import { loginUser } from '../../services/userData';
 import { snsUser } from '../../services/userData';
 import { useHistory } from 'react-router-dom';
 import GoogleLogin from './GoogleLogin';
+import NaverLogin from './NaverLogin';
 
 const LoginModal = ({ onClose}) => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
-    const [user, setUser] = useState({
-        email: "",
-        name: "",
-        provider: ""
-    });
     const { setUserData } = useContext(Context)
     const history = useHistory();
 
@@ -39,13 +35,11 @@ const LoginModal = ({ onClose}) => {
             scope: 'profile_nickname, account_email',
             success: function(authObj) {
                 //console.log(authObj); //토큰             
-                const {access_token} = authObj
-                //console.log(access_token);
                 window.Kakao.API.request({
                     url: '/v2/user/me',
                     success: res => {
                         const kakao_account = res.kakao_account;                  
-                        setUser({
+                        const user = ({
                             email: kakao_account.email,
                             name: kakao_account.profile.nickname,
                             provider: 'kakao',
@@ -56,6 +50,8 @@ const LoginModal = ({ onClose}) => {
                             .then(res => {
                                 if (!res.error) {        
                                     setUserData(res.user)
+                                    // 로컬 스토리지에 토큰 값을 저장
+                                    localStorage.setItem('user', JSON.stringify(res.user))
                                     history.push('/') 
                                     } else {
                                     setLoading(false);
@@ -91,9 +87,7 @@ const LoginModal = ({ onClose}) => {
                             </div>
                         </a>     
                         <GoogleLogin/>
-                        
-                                                        
-
+                        {/* <NaverLogin/> */}
                         
                     </div>
                     }

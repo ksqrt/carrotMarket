@@ -19,6 +19,7 @@ import Messages from "./Pages/Messages";
 import { SearchProvider } from './ContextAPI/SearchContext';
 
 function App() {
+  
   return (
     <>
       <SearchProvider>     
