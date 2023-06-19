@@ -13,13 +13,21 @@ const userSchema = new mongoose.Schema({
         type: String,
         trim: true,
         lowercase: true,
-        unique: true,
+        // unique: true,
         //required: 'Email address is required',
         //match: [/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/, 'Please fill a valid email address']
     },
+    //소속 :
     provider: {
         type: String,
-        trim: true
+        trim: true,
+        default: 'local'
+    },
+    //역할
+    role: {
+        type: String,
+        trim: true,
+        default: 'member'
     },
     // password api 연동시 삭제 예정
     password: {

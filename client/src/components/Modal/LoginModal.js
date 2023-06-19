@@ -14,7 +14,6 @@ const LoginModal = ({ onClose }) => {
     const [error, setError] = useState(null);
     const { setUserData } = useContext(Context)
     const history = useHistory();
-    console.log(process.env.REACT_APP_KAKAO_API)
 
     useEffect(() => {
         const script = document.createElement('script');
@@ -23,24 +22,15 @@ const LoginModal = ({ onClose }) => {
         document.body.appendChild(script);
         
         script.onload = () => {
-            //src/config/config.js 에 있음
-            window.Kakao.init(process.env.REACT_APP_KAKAO_API);
+            //src/config/config.js 에 있음   
+            window.Kakao.init('7286bd8c9d717d7ebd38369e55aa226e');
+            // window.Kakao.init(process.env.REACT_APP_KAKAO_API);
         };
 
         return () => {
             document.body.removeChild(script);
         };
     }, []);
-
-
-
-
-    useEffect(() => {
-        console.log(user.email);
-
-    }, [user]);
-
-
 
     const kakaoLogin = () => {
         window.Kakao.Auth.login({
@@ -58,8 +48,7 @@ const LoginModal = ({ onClose }) => {
                         });
 
 
-                       
-
+                        console.log(user); //계정정보
                         setLoading(true);
                         snsUser(user)
                             .then(res => {
