@@ -34,6 +34,7 @@ export const ContextStore = ({ children }) => {
     let initialValue = null;
     const [cookies] = useCookies(['USER_SESSION']);
     const [userData, setUserData] = useState(initialValue)
+    const [query, setQuery] = useState('')
     
     useEffect(() => {
         if (cookies.USER_SESSION) {
@@ -49,9 +50,8 @@ export const ContextStore = ({ children }) => {
         }
     }, [])
 
-
-    console.log(userData)
-    const providerValue = useMemo(() => ({ userData, setUserData }), [userData, setUserData])
+    console.log(userData);
+    const providerValue = useMemo(() => ({ userData, setUserData, query, setQuery }), [userData, setUserData, query, setQuery]);
 
     return (
         <Context.Provider value={providerValue}>
@@ -59,3 +59,6 @@ export const ContextStore = ({ children }) => {
         </Context.Provider>
     )
 }
+
+
+

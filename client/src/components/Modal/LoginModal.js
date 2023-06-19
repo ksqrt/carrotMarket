@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import './Modal.css';
+// import { JAVASCRIPT } from '../../config/config';
 import { Context } from '../../ContextStore'; // 컨텍스트 관련 컴포넌트
 import { Spinner } from 'react-bootstrap';
 import { loginUser } from '../../services/userData';
@@ -8,21 +9,22 @@ import { useHistory } from 'react-router-dom';
 import GoogleLogin from './GoogleLogin';
 import NaverLogin from './NaverLogin';
 
-const LoginModal = ({ onClose}) => {
+const LoginModal = ({ onClose }) => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const { setUserData } = useContext(Context)
     const history = useHistory();
+    console.log(process.env.REACT_APP_KAKAO_API)
 
     useEffect(() => {
         const script = document.createElement('script');
         script.src = 'https://developers.kakao.com/sdk/js/kakao.js';
         script.async = true;
         document.body.appendChild(script);
-
+        
         script.onload = () => {
+            //src/config/config.js 에 있음
             window.Kakao.init(process.env.REACT_APP_KAKAO_API);
-
         };
 
         return () => {
@@ -30,9 +32,19 @@ const LoginModal = ({ onClose}) => {
         };
     }, []);
 
+
+
+
+    useEffect(() => {
+        console.log(user.email);
+
+    }, [user]);
+
+
+
     const kakaoLogin = () => {
         window.Kakao.Auth.login({
-            scope: 'profile_nickname, account_email',
+            scope: 'profile_nickname,account_email, gender',
             success: function(authObj) {
                 //console.log(authObj); //토큰             
                 window.Kakao.API.request({
@@ -44,7 +56,10 @@ const LoginModal = ({ onClose}) => {
                             name: kakao_account.profile.nickname,
                             provider: 'kakao',
                         });
-                        console.log(user); //계정정보
+
+
+                       
+
                         setLoading(true);
                         snsUser(user)
                             .then(res => {
@@ -98,3 +113,9 @@ const LoginModal = ({ onClose}) => {
 };
 
 export default LoginModal;
+
+
+
+
+
+

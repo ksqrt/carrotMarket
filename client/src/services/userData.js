@@ -1,4 +1,5 @@
 const baseUrl = 'http://localhost:5000';
+// const baseUrl = 'http://101.79.11.48:5000';
 
 export async function snsUser(user) {
     return (await fetch(`${baseUrl}/auth/snsLogin`, {
@@ -22,7 +23,7 @@ export async function registerUser(userData) { //Register.js에서 userData 받�
     })).json(); //서버의 응답을 JSON형식으로 파싱하여 반환. /await - 비동기 작업의 완료를 기다림
 }
 
-export async function loginUser(userData) {
+export async function loginUser(userData) { //Login.js에서 userData 받음???
     return (await fetch(`${baseUrl}/auth/login`, {
         method: 'POST',
         headers: {
