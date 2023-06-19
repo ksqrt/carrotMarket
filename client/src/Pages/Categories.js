@@ -1,4 +1,5 @@
-import { useEffect, useState,useContext } from "react";
+import React from 'react';
+import { useEffect, useState, useContext } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import CategoriesNav from "../components/Categories/CategoriesNav";
 import ProductCard from "../components/ProductCard/ProductCard";
@@ -16,11 +17,12 @@ import "../components/Siders/SearchSider.css";
 import "../components/Categories/Categories.css";
 import "../components/ProductCard/ProductCard.css";
 import { SearchContext } from '../ContextAPI/SearchContext';
-
+import { Context } from "../ContextStore.js";
 
 function Categories({ match }) {
   let currentCategory = match.params.category;
-  const { query,setQuery } = useContext(SearchContext);
+  // const { query,setQuery } = useContext(SearchContext);
+  const { query, setQuery } = useContext(Context);
   const [products, setProduct] = useState([]);
   const [page, setPage] = useState(1);
   // const [query, setQuery] = useState("");

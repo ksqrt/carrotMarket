@@ -1,3 +1,4 @@
+import React from 'react';
 import { useEffect, useState } from 'react';
 import ProfileSection from '../components/Profile/ProfileSection';
 import Wishlist from '../components/Profile/Wishlist/Wishlist';

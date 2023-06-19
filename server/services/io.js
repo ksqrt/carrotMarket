@@ -23,9 +23,12 @@ function Io(server) {
     });
 
     socket.on("sendMessage", async ({chatId, senderId, message}) => { // chatId, senderId, message 인자와 함께 이벤트를 받았을 때 실행됨.
-      await ChatRoom.updateOne({ _id: chatId }, { $push: { conversation: { senderId, message } } });
-      console.log('3. io.js, sendMessage', { chatId, senderId, message } );
-      io.emit("newMessage", { senderId, message }); // senderId, message 인자 제공 필요
+      const sentAt = new mongoose.Types.ObjectId(); // MongoDB의 ObjectId를 사용하여 서버 시간을 가져옵니다. 
+      const _id = new mongoose.Types.ObjectId();
+      const newMessage = { _id, senderId, message, sentAt: sentAt.getTimestamp() };
+      await ChatRoom.updateOne({ _id: chatId }, { $push: { conversation: newMessage } });
+      console.log('3. io.js, sendMessage', newMessage );
+      io.emit("newMessage", newMessage); // senderId, message, sentAt 인자 제공 필요
       console.log('4. io.js, newMessage');
     });
 
