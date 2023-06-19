@@ -11,7 +11,7 @@ function Login({ history }) {
     const [error, setError] = useState(null);
     const [user, setUser] = useState({
         email: "",
-        password: ""
+        password: ""        
     });
     const { setUserData } = useContext(Context) //컨텍스트에서 사용자 데이터를 설정하는 함수를 가져옴
 
