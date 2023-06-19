@@ -24,9 +24,6 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
     const onOpen = () => {
         setIsOpen(true)
     }
-    const onClose = () => {
-        setIsOpen(false)
-    }
 
     const github = settings;
     let chatId = match.params.id; // 선택된 채팅방의 id
@@ -285,7 +282,10 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
                                             <button className={`${styles['menu-item']} ${styles.red}`}> <div style={{fontSize:'16px', marginBottom:'7px'}} >🤗</div> </button>
                                             <button className={`${styles['menu-item']} ${styles.purple}`}> </button>
                                             <button className={`${styles['menu-item']} ${styles.orange}`}>  </button>
-                                            <button className={`${styles['menu-item']} ${styles.lightblue}`}> <FaMapMarkedAlt className="upload-icon" size={20} style={{marginBottom:'8px'}} /> </button>
+                                            <button className={`${styles['menu-item']} ${styles.lightblue}`} onClick={ onOpen }> <FaMapMarkedAlt className="upload-icon" size={20} style={{marginBottom:'8px'}} /> </button>
+                                            {
+                                                isOpen && <KakaoMapAPI />       
+                                            }
                                             </nav>
                                                 {/* <input type="file" id="file-upload" style={{ display: 'none' }}/> */}
                                                 {/* <label className="label-no-margin" htmlFor="file-upload"><UseAnimations className="plusToX" animation={plusToX} size={40} /></label> */}

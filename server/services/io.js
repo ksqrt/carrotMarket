@@ -27,6 +27,7 @@ function Io(server) {
       const _id = new mongoose.Types.ObjectId();
       const newMessage = { _id, senderId, message, sentAt: sentAt.getTimestamp() };
       await ChatRoom.updateOne({ _id: chatId }, { $push: { conversation: newMessage } });
+      
       console.log('3. io.js, sendMessage', newMessage );
       io.emit("newMessage", newMessage); // senderId, message, sentAt 인자 제공 필요
       console.log('4. io.js, newMessage');
