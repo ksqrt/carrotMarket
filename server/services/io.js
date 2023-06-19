@@ -1,6 +1,6 @@
 const Server = require('socket.io').Server;
 const ChatRoom = require('../models/ChatRoom') // 채팅방 id, buyer, seller, conversation DB 연결
-
+const mongoose = require('mongoose');
 
 let io;
 function Io(server) {
