@@ -46,6 +46,10 @@ export async function getUserArchivedSells() {
     return (await fetch(`${baseUrl}/products/sells/archived`, {credentials: 'include'})).json();
 }
 
+export async function getUserSoldoutSells() {
+    return (await fetch(`${baseUrl}/products/sells/soldout`, {credentials: 'include'})).json();
+}
+
 export async function getUserWishlist() {
     return (await fetch(`${baseUrl}/products/wishlist/getWishlist`, {credentials: 'include'})).json();
 }

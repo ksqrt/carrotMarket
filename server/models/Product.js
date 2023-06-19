@@ -60,6 +60,10 @@ const productSchema = new mongoose.Schema({
         type: Boolean,
         default: true
     },
+    soldout: {
+        type: Boolean,
+        default: false
+    },
     // 조회수 추가  
     views:[
         {
