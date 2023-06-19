@@ -23,7 +23,7 @@ export async function registerUser(userData) { //Register.js에서 userData 받�
     })).json(); //서버의 응답을 JSON형식으로 파싱하여 반환. /await - 비동기 작업의 완료를 기다림
 }
 
-export async function loginUser(userData) { //Login.js에서 userData 받음???
+export async function loginUser(userData) {
     return (await fetch(`${baseUrl}/auth/login`, {
         method: 'POST',
         headers: {
