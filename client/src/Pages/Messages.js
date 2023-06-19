@@ -16,9 +16,15 @@ import settings from 'react-useanimations/lib/settings';
 import '../components/Messages/Aside.css'
 import '../components/Messages/Article.css'
 import styles from '../components/Messages/flower.module.css'
+import KakaoMapAPI from '../components/KakaoMapAPI/KakaoMapAPI';
 
 
 function Messages({ match }) { // match = Router 제공 객체, url을 매개변수로 사용. ex) 경로 : /messages/123  => match.params.id = "123" // app.js 참고 : <Route path="/messages" exact component={Messages} />;
+    const [isOpen, setIsOpen] = useState(false)
+    const onOpen = () => {
+        setIsOpen(true)
+    }
+
     const github = settings;
     let chatId = match.params.id; // 선택된 채팅방의 id
     const { userData } = useContext(Context); // 사용자 id 가져오기
@@ -269,7 +275,10 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
                                             <button className={`${styles['menu-item']} ${styles.red}`}> <div style={{fontSize:'16px', marginBottom:'7px'}} >🤗</div> </button>
                                             <button className={`${styles['menu-item']} ${styles.purple}`}> </button>
                                             <button className={`${styles['menu-item']} ${styles.orange}`}>  </button>
-                                            <button className={`${styles['menu-item']} ${styles.lightblue}`}> <FaMapMarkedAlt className="upload-icon" size={20} style={{marginBottom:'8px'}} /> </button>
+                                            <button className={`${styles['menu-item']} ${styles.lightblue}`} onClick={ onOpen }> <FaMapMarkedAlt className="upload-icon" size={20} style={{marginBottom:'8px'}} /> </button>
+                                            {
+                                                isOpen && <KakaoMapAPI />       
+                                            }
                                             </nav>
                                                 {/* <input type="file" id="file-upload" style={{ display: 'none' }}/> */}
                                                 {/* <label className="label-no-margin" htmlFor="file-upload"><UseAnimations className="plusToX" animation={plusToX} size={40} /></label> */}
