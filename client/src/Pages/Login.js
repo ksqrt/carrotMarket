@@ -27,6 +27,8 @@ function Login({ history }) {
             .then(res => {
                 if (!res.error) {
                     setUserData(res.user)
+                    // 로컬 스토리지에 토큰 값을 저장
+                    localStorage.setItem('user', JSON.stringify(res.user))
                     history.push('/')
                 } else {
                     setLoading(false);
