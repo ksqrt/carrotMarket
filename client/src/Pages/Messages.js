@@ -17,9 +17,18 @@ import plusToX from "react-useanimations/lib/plusToX";
 import '../components/Messages/Aside.css'
 import '../components/Messages/Article.css'
 import styles from '../components/Messages/flower.module.css'
+import KakaoMapAPI from '../components/KakaoMapAPI/KakaoMapAPI';
 
 
 function Messages({ match }) { // match = Router 제공 객체, url을 매개변수로 사용. ex) 경로 : /messages/123  => match.params.id = "123" // app.js 참고 : <Route path="/messages" exact component={Messages} />;
+    const [isOpen, setIsOpen] = useState(false)
+    const onOpen = () => {
+        setIsOpen(true)
+    }
+    const onClose = () => {
+        setIsOpen(false)
+    }
+
     const github = settings;
     let chatId = match.params.id; // 선택된 채팅방의 id
     const { userData } = useContext(Context); // 사용자 id 가져오기
