@@ -15,8 +15,8 @@ function Io(server) {
     console.log("socket.io connected");
 
     
-    socket.on("startChat", async ({buyerId, sellerId}) => { // 클라이언트에서 받을 내용 buyerId = buyer._id 될듯.
-      let chatRoom = buyerId !== sellerId && await ChatRoom.findOne({ buyer: buyerId, seller: sellerId }) || new ChatRoom({ buyer: buyerId, seller: sellerId });
+    socket.on("startChat", async ({buyerId, sellerId, productId}) => { // 클라이언트에서 받을 내용 buyerId = buyer._id 될듯.
+      let chatRoom = buyerId !== sellerId && await ChatRoom.findOne({ buyer: buyerId, seller: sellerId, product: productId }) || new ChatRoom({ buyer: buyerId, seller: sellerId, product: productId });
       await chatRoom.save();
       socket.join(chatRoom._id.toString());
       socket.emit('startChat', { chatId: chatRoom._id.toString() });
@@ -34,7 +34,7 @@ function Io(server) {
 
     socket.on("getUserConversations", async ({ userId }) => {
       // $or : 주어진 배열 내의 조건 중 하나라도 참이면 참으로 간주 buyer 또는 seller에 userId가 있는 경우에 참. 전부 가져옴.
-      let userChats = await ChatRoom.find({ $or: [ { 'buyer': userId }, { 'seller': userId } ] }).populate("buyer").populate("seller").populate("conversation");
+      let userChats = await ChatRoom.find({ $or: [ { 'buyer': userId }, { 'seller': userId } ] }).populate("buyer").populate("seller").populate("conversation").populate("product");
       socket.emit('userConversations', userChats.map(x => ({ chats: x, isBuyer: (x.buyer._id == userId), myId: userId })));
     });
   

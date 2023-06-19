@@ -29,7 +29,8 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
             _id: 0,
             seller: { _id: "", avatar: "", name: "" },
             buyer: { _id: "", avatar: "", name: "" },
-            conversation: []
+            conversation: [],
+            product: ""
         },
         isBuyer: null,
         myId: 0
@@ -108,6 +109,7 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
     console.log("1. messages.js, getUserConversations ");
     getUserConversations(socket, userData._id) // 현재 사용자와 관련된 모든 채팅방 목록을 가져옴
         .then(res => {
+        console.log("채팅방 가져오기 : ",res);
         setChatroomList(res); // 가져온 채팅방 목록을 상태 변수에 저장.
         if (isSelected) { // 채팅방이 선택되었다면 현재 선택된 채팅방의 정보를 selected 상태 변수에 저장
             setSelected(res.find(x => x.chats._id === chatId))
@@ -152,16 +154,7 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
 
     const handleMsgSubmit = async event => { // 채팅 보내기, 파일 업로드
         event.preventDefault();
-        // let base64File = null;
-        // if(file) {
-        //     const reader = new FileReader();
-        //     reader.readAsDataURL(file);
-        //     await new Promise((resolve) => {
-        //         reader.onload = resolve;
-        //     });
-        //     base64File = reader.result;
-        // }
-        sendMessage(socket, { chatId: selected.chats._id, senderId: userData._id, message });
+        sendMessage(socket, { chatId: selected.chats._id, senderId: userData._id, message});
         setMessage("");
         console.log('2. messages.js, sendmessage');
     };
@@ -178,7 +171,7 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
         <Container>
             <Row>
                 <aside className="col-lg-4 col-md-4">
-                    <h3>Conversations</h3>
+                    <h3>채팅방 목록 폰트 왜 이래 </h3>
                     <div className="chatlist_scroll">
                     {chatroomList.length >= 1 ?
                         <>
@@ -186,9 +179,9 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
                                 <div className="chat-connections" key={x.chats._id}>
                                     <Link onClick={() => setIsSelected(true)} to={`/messages/${x.chats._id}`}>
                                         {x.isBuyer ?
-                                            <><img src={x.chats.seller.avatar} alt="user-avatar" /> <span>{x.chats.seller.name}</span></>
+                                            <><img src={x.chats.seller.avatar} alt="user-avatar" /> <span>{x.chats.seller.name}</span>{x.chats.product?.title && <span>{x.chats.product.title}</span>}</>
                                             :
-                                            <><img src={x.chats.buyer.avatar} alt="user-avatar" /> <span>{x.chats.buyer.name}</span></>
+                                            <><img src={x.chats.buyer.avatar} alt="user-avatar" /> <span>{x.chats.buyer.name}</span>{x.chats.product?.title && <span>{x.chats.product.title}</span>}</>
                                         }
                                     </Link>
                                     {/* 내가 isbuyer라면 표시할 아바타는 seller.avatar*/}

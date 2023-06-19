@@ -15,9 +15,9 @@ export const initializeSocket = async () => {
 };
 
 //startChat: 채팅을 시작하는 함수입니다. socket.emit을 사용하여 startChat 이벤트와 buyerId, sellerId 정보를 서버로 전송합니다.
-export const startChat = (socket, { buyerId, sellerId}) => {
+export const startChat = (socket, { buyerId, sellerId, productId}) => {
     console.log('StartChat function execution');
-    socket.emit('startChat', { buyerId, sellerId });
+    socket.emit('startChat', { buyerId, sellerId, productId });
 };
 
 //sendMessage: 메시지를 전송하는 함수입니다. socket.emit을 사용하여 sendMessage 이벤트와 chatId, senderId, message 정보를 서버로 전송합니다.
