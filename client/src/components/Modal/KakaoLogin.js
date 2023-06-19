@@ -69,7 +69,7 @@ const KakaoLogin = () => {
             <a href="#" onClick={kakaoLogin}>
                 <div className='modal-path'>
                     <img src='https://m.bunjang.co.kr/pc-static/resource/7bf83f72cf54461af573.png' width="30" alt="카카오"/>
-                    &nbsp;&nbsp;카카오로 이용하기
+                    &nbsp;&nbsp;Kakao 계정으로 로그인
                 </div>
             </a>
             }

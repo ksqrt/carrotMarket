@@ -18,7 +18,9 @@ const LoginModal = ({ onClose}) => {
     const history = useHistory();
     const [user, setUser] = useState({
         email: "",
-        password: ""
+        password: "",
+        repeatPassword: "",
+        provider: 'local',
     });
 
 
@@ -31,19 +33,16 @@ const LoginModal = ({ onClose}) => {
         e.preventDefault();
         setLoading(true);
         console.log(user)
-        loginUser(user)
-            .then(res => {
-                if (!res.error) {
-                    setUserData(res.user)
-                    // 로컬 스토리지에 토큰 값을 저장
-                    localStorage.setItem('user', JSON.stringify(res.user))
-                    history.push('/')
-                } else {
-                    setLoading(false);
-                    setError(res.error.message);
-                    setAlertShow(true);
+        registerUser(userData) //registerUser 함수를 호출하여 userData 값 전달 ('../services/userData')
+            .then(res => { //호출 성공
+                if (!res.error) { //오류 없으면,
+                    history.push('/auth/login') //로그인 페이지로 이동
+                } else { //오류 있으면,
+                    setLoading(false); //로딩 상태를 false로 설정
+                    setError(res.error); //오류 메시지 설정
+                    setAlertShow(true); //경고창 표시
                 }
-            }).catch(err => console.error('error from login: ', err))
+            }).catch(err => console.error('error from register: ', err))
     }
 
 
@@ -72,13 +71,14 @@ const LoginModal = ({ onClose}) => {
                         <div className='forms' style={{paddingLeft: 20}}>
                             <input className='emailForm' type="email" name="email" placeholder="이메일" onChange={handleChanges} required/>
                             <input className='pwdForm' type="password" name="password" placeholder="비밀번호" onChange={handleChanges} required/>
+                            <input className='pwdForm' type="password" name="repeatPassword" placeholder="비밀번호 확인" onChange={handleChanges} required/>
                         </div>
                         {loading ?
                             <Button className="loginBtn btnAuth" variant="dark" disabled >
                                 Please wait... <Spinner animation="border" />
                             </Button>
                             :
-                            <Button variant="dark" className="loginBtn btnAuth" type="submit" >당근마켓 계정으로 로그인</Button>
+                            <Button variant="dark" className="loginBtn btnAuth" type="submit" >당근마켓 계정으로 회원가입</Button>
 
                         }
                         </Form>
@@ -92,7 +92,7 @@ const LoginModal = ({ onClose}) => {
                     </div>
 
                     <div>
-                        <p className="bottom-msg-paragraph"><Link to="/auth/login">회원가입</Link>!</p> 
+                        <p className="bottom-msg-paragraph"><Link to="/auth/login">로그인</Link>!</p> 
                     </div>
                     
                 </div>
