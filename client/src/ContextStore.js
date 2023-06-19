@@ -9,9 +9,7 @@
     
 //     useEffect(() => {
 //         if (cookies.USER_SESSION) {
-//             const userSession = cookies.USER_SESSION;
-//             console.log(userSession);
-//             fetch(`http://localhost:5000/auth/getUser`).then(res => res.json())
+//             fetch(`/auth/getUser`).then(res => res.json())
 //                 .then(res => {
 //                     return setUserData(res.user)
 //                 })
@@ -45,9 +43,16 @@ export const ContextStore = ({ children }) => {
                     return setUserData(res.user)
                 })
         }
+        if (!userData) {
+            const localStorageData = localStorage.getItem('user');
+            const parsedData = JSON.parse(localStorageData);
+            setUserData(parsedData);
+        }
     }, [])
 
     console.log(userData);
+    //const providerValue = useMemo(() => ({ userData, setUserData }), [userData, setUserData]);
+
     const providerValue = useMemo(() => ({ userData, setUserData, query, setQuery }), [userData, setUserData, query, setQuery]);
 
     return (

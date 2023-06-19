@@ -7,18 +7,13 @@ import { loginUser } from '../../services/userData';
 import { snsUser } from '../../services/userData';
 import { useHistory } from 'react-router-dom';
 import GoogleLogin from './GoogleLogin';
+import NaverLogin from './NaverLogin';
 
 const LoginModal = ({ onClose }) => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
-    const [user, setUser] = useState({
-        email: "",
-        name: "",
-        provider: ""
-    },[]);
     const { setUserData } = useContext(Context)
     const history = useHistory();
-    console.log(process.env.REACT_APP_KAKAO_API)
 
     useEffect(() => {
         const script = document.createElement('script');
@@ -27,8 +22,9 @@ const LoginModal = ({ onClose }) => {
         document.body.appendChild(script);
         
         script.onload = () => {
-            //src/config/config.js 에 있음
-            window.Kakao.init(process.env.REACT_APP_KAKAO_API);
+            //src/config/config.js 에 있음   
+            window.Kakao.init('7286bd8c9d717d7ebd38369e55aa226e');
+            // window.Kakao.init(process.env.REACT_APP_KAKAO_API);
         };
 
         return () => {
@@ -36,44 +32,30 @@ const LoginModal = ({ onClose }) => {
         };
     }, []);
 
-
-
-
-    useEffect(() => {
-        console.log(user.email);
-
-    }, [user]);
-
-
-
     const kakaoLogin = () => {
         window.Kakao.Auth.login({
             scope: 'profile_nickname,account_email, gender',
             success: function(authObj) {
                 //console.log(authObj); //토큰             
-                const {access_token} = authObj
                 window.Kakao.API.request({
                     url: '/v2/user/me',
                     success: res => {
-                        const kakao_account = res.kakao_account;     
-                        
-                        console.log(kakao_account.profile.nickname);
-
-
-                        setUser({
+                        const kakao_account = res.kakao_account;                  
+                        const user = ({
                             email: kakao_account.email,
                             name: kakao_account.profile.nickname,
                             provider: 'kakao',
                         });
 
 
-                       
-
+                        console.log(user); //계정정보
                         setLoading(true);
                         snsUser(user)
                             .then(res => {
                                 if (!res.error) {        
                                     setUserData(res.user)
+                                    // 로컬 스토리지에 토큰 값을 저장
+                                    localStorage.setItem('user', JSON.stringify(res.user))
                                     history.push('/') 
                                     } else {
                                     setLoading(false);
@@ -109,9 +91,7 @@ const LoginModal = ({ onClose }) => {
                             </div>
                         </a>     
                         <GoogleLogin/>
-                        
-                                                        
-
+                        {/* <NaverLogin/> */}
                         
                     </div>
                     }

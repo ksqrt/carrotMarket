@@ -1,14 +1,14 @@
 const baseUrl = 'http://localhost:5000';
 // const baseUrl = 'http://101.79.11.48:5000';
 
-export async function snsUser(userData) {
+export async function snsUser(user) {
     return (await fetch(`${baseUrl}/auth/snsLogin`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
         },
         credentials: 'include',
-        body: JSON.stringify(userData)
+        body: JSON.stringify(user)
     })).json();
 }
 
