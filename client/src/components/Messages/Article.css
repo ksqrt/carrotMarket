@@ -1,4 +1,4 @@
- .chatlist_scroll {
+.chatlist_scroll {
     overflow-y: auto; 
     max-height: 600px; 
 } 
@@ -137,12 +137,6 @@ article img {
     cursor: pointer;
     background-color: white;
   }
-  
-.img-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
 
 .BeSend_chat_button { /* 보내기 버튼 */
     background-color: transparent;
@@ -179,5 +173,4 @@ article img {
     align-self: center;
     width: 40px;
     height: 40px;
-}
-
+}  

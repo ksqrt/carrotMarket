@@ -3,17 +3,16 @@ import {sendMessage, disconnect, getUserConversations, initializeSocket} from '.
 import { Navbar, NavDropdown, Nav, Container, Row, Form, InputGroup, Button, Alert } from 'react-bootstrap';
 import { Link, NavLink, useHistory } from 'react-router-dom';
 import { Context } from '../ContextStore';
-//import ScrollToBottom, { useScrollToBottom, useSticky, } from 'react-scroll-to-bottom';
-import InfiniteScroll from 'react-infinite-scroll-component';
-import UseAnimations from "react-useanimations";
-import settings from 'react-useanimations/lib/settings';
 import { animateScroll } from 'react-scroll';
-import { AiOutlineAlert } from 'react-icons/ai';
+import { AiOutlineAlert, AiOutlineUpload, AiOutlineSchedule } from 'react-icons/ai';
 import { ImBlocked } from 'react-icons/im';
 import { IoIosArrowBack } from 'react-icons/io';
+import {FaMapMarkedAlt} from 'react-icons/fa'
 import Linkify from 'react-linkify'; // url 주소 링크 처리하는 라이브러리
 import { BsSend } from "react-icons/bs";
+import UseAnimations from "react-useanimations";
 import plusToX from "react-useanimations/lib/plusToX";
+import settings from 'react-useanimations/lib/settings';
 import '../components/Messages/Aside.css'
 import '../components/Messages/Article.css'
 import styles from '../components/Messages/flower.module.css'
@@ -55,7 +54,8 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
             smooth: false
         });
     }
-    
+    const [file, setFile] = useState(null);
+
     // 위로 스크롤 시 추가 로딩 구현
     const [showMessagesCount, setShowMessagesCount] = useState(15);
     const chatContainerRef = useRef(null);
@@ -159,9 +159,17 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
         };
       }, [socket]);
 
-
-    const handleMsgSubmit = event => { // 채팅 보내기
+    const handleMsgSubmit = async event => { // 채팅 보내기, 파일 업로드
         event.preventDefault();
+        // let base64File = null;
+        // if(file) {
+        //     const reader = new FileReader();
+        //     reader.readAsDataURL(file);
+        //     await new Promise((resolve) => {
+        //         reader.onload = resolve;
+        //     });
+        //     base64File = reader.result;
+        // }
         sendMessage(socket, { chatId: selected.chats._id, senderId: userData._id, message });
         setMessage("");
         console.log('2. messages.js, sendmessage');
@@ -210,17 +218,15 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
                                 </button>
                                 {selected.isBuyer ?
                                     <Link to={`/profile/${selected.chats.seller._id}`}>
-                                        <div>
                                         <img src={selected.chats.seller.avatar} alt="user-avatar" />
-                                        <span>{selected.chats.seller.name}</span> 
-                                        </div>   
+                                        <span>{selected.chats.seller.name}</span>    
                                     </Link>
                                     :
                                     <Link to={`/profile/${selected.chats.buyer._id}`}>
-                                        <div>
+
                                         <img src={selected.chats.buyer.avatar} alt="user-avatar" />
                                         <span>{selected.chats.buyer.name}</span>
-                                        </div>  
+                                        
                                     </Link>
                                 }
 
@@ -266,17 +272,20 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
                                         <InputGroup style={{ display: 'flex', alignItems: 'center' }}>
                                             <InputGroup.Append>
                                             <nav className={styles.menu}>
-                                            <input type="checkbox" href="#" className={styles['menu-open']} name="menu-open" id="menu-open" />
+                                            <input type="checkbox" className={styles['menu-open']} name="menu-open" id="menu-open" />
                                             <label className={styles['menu-open-button']} htmlFor="menu-open">
                                                 <UseAnimations className="plusToX" animation={plusToX} size={40} />
                                             </label>
 
-                                            <button className={`${styles['menu-item']} ${styles.blue}`}> <i className="fa fa-anchor"></i> </button>
-                                            <button className={`${styles['menu-item']} ${styles.green}`}> <i className="fa fa-coffee"></i> </button>
-                                            <button className={`${styles['menu-item']} ${styles.red}`}> <i className="fa fa-heart"></i> </button>
-                                            <button className={`${styles['menu-item']} ${styles.purple}`}> <i className="fa fa-microphone"></i> </button>
-                                            <button className={`${styles['menu-item']} ${styles.orange}`}> <i className="fa fa-star"></i> </button>
-                                            <button className={`${styles['menu-item']} ${styles.lightblue}`}> <i className="fa fa-diamond"></i> </button>
+                                            <button type="button" className={`${styles['menu-item']} ${styles.blue}`} onClick={() => document.getElementById("uploadInput").click()}> 
+                                                <input type="file" name='image' id="uploadInput" onChange={e => setFile(e.target.files[0])} style={{display: 'none'}} />
+                                                <AiOutlineUpload className="upload-icon" size={25} style={{marginBottom:'7px'}} /> 
+                                            </button>
+                                            <button className={`${styles['menu-item']} ${styles.green}`}> <AiOutlineSchedule className="upload-icon" size={23} style={{marginBottom:'7px'}} /> </button>
+                                            <button className={`${styles['menu-item']} ${styles.red}`}> <div style={{fontSize:'16px', marginBottom:'7px'}} >🤗</div> </button>
+                                            <button className={`${styles['menu-item']} ${styles.purple}`}> </button>
+                                            <button className={`${styles['menu-item']} ${styles.orange}`}>  </button>
+                                            <button className={`${styles['menu-item']} ${styles.lightblue}`}> <FaMapMarkedAlt className="upload-icon" size={20} style={{marginBottom:'8px'}} /> </button>
                                             </nav>
                                                 {/* <input type="file" id="file-upload" style={{ display: 'none' }}/> */}
                                                 {/* <label className="label-no-margin" htmlFor="file-upload"><UseAnimations className="plusToX" animation={plusToX} size={40} /></label> */}
