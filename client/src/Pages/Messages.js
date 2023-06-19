@@ -3,6 +3,10 @@ import {sendMessage, disconnect, getUserConversations, initializeSocket} from '.
 import { Navbar, NavDropdown, Nav, Container, Row, Form, InputGroup, Button, Alert } from 'react-bootstrap';
 import { Link, NavLink, useHistory } from 'react-router-dom';
 import { Context } from '../ContextStore';
+//import ScrollToBottom, { useScrollToBottom, useSticky, } from 'react-scroll-to-bottom';
+import InfiniteScroll from 'react-infinite-scroll-component';
+import UseAnimations from "react-useanimations";
+import settings from 'react-useanimations/lib/settings';
 import { animateScroll } from 'react-scroll';
 import { AiOutlineAlert, AiOutlineUpload, AiOutlineSchedule } from 'react-icons/ai';
 import { ImBlocked } from 'react-icons/im';
@@ -10,9 +14,7 @@ import { IoIosArrowBack } from 'react-icons/io';
 import {FaMapMarkedAlt} from 'react-icons/fa'
 import Linkify from 'react-linkify'; // url 주소 링크 처리하는 라이브러리
 import { BsSend } from "react-icons/bs";
-import UseAnimations from "react-useanimations";
 import plusToX from "react-useanimations/lib/plusToX";
-import settings from 'react-useanimations/lib/settings';
 import '../components/Messages/Aside.css'
 import '../components/Messages/Article.css'
 import styles from '../components/Messages/flower.module.css'
@@ -209,15 +211,17 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
                                 </button>
                                 {selected.isBuyer ?
                                     <Link to={`/profile/${selected.chats.seller._id}`}>
+                                        <div>
                                         <img src={selected.chats.seller.avatar} alt="user-avatar" />
-                                        <span>{selected.chats.seller.name}</span>    
+                                        <span>{selected.chats.seller.name}</span> 
+                                        </div>   
                                     </Link>
                                     :
                                     <Link to={`/profile/${selected.chats.buyer._id}`}>
-
+                                        <div>
                                         <img src={selected.chats.buyer.avatar} alt="user-avatar" />
                                         <span>{selected.chats.buyer.name}</span>
-                                        
+                                        </div>  
                                     </Link>
                                 }
 

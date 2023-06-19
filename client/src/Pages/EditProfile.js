@@ -1,3 +1,4 @@
+import React from 'react';
 import { useEffect, useState } from 'react';
 import ActiveSells from '../components/Profile/Sells/ActiveSells';
 import { getUser, editUserProfile } from '../services/userData';

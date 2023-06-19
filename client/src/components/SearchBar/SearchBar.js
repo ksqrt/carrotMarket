@@ -1,6 +1,7 @@
 import React from "react";
 
-function SearchBar({ value, onChange }) {
+function SearchBar({ value, onChange,onKeyPress}) {
+
   return (
     <div id="sider">
       <input
@@ -10,6 +11,7 @@ function SearchBar({ value, onChange }) {
         name="search"
         value={value}
         onChange={onChange}
+        onKeyPress={onKeyPress} // Enter 키 누를 때 이벤트 핸들러
       />
     </div>
   );

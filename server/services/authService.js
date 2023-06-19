@@ -5,19 +5,55 @@ const jwt = require('jsonwebtoken');
 //- 사용자 데이터와 비밀키(SECRET)를 기반으로 JWT를 생성
 const { SECRET } = require('../config/config');
 
-async function snsLoginUser({ email, name, provider }) {
-  let user = await User.findOne({ email, name, provider });
+// async function snsLoginUser({ email, name, provider }) {
+//   let users = await User.find({ email }).exec();
 
+//   if (users.length === 0) {
+//     // 사용자가 없는 경우
+//     const user = new User({ email, name, provider });
+//     await user.save();
+
+//     const token = jwt.sign(
+//       { _id: user._id, email: user.email, name: user.name, provider: user.provider },
+//       SECRET
+//     );
+
+//     return token;
+//   }
+
+//   // 동일한 이메일을 가진 사용자들 중에서 공급자(provider)가 일치하는 사용자를 찾습니다.
+//   const matchingUser = users.find(user => user.provider === provider);
+
+//   if (matchingUser) {
+//     // 일치하는 사용자가 이미 존재하는 경우
+//     const token = jwt.sign(
+//       { _id: matchingUser._id, email: matchingUser.email, name: matchingUser.name, provider: matchingUser.provider },
+//       SECRET
+//     );
+
+//     return token;
+//   }
+
+//   // 동일한 이메일을 가진 사용자가 있지만 공급자(provider)가 일치하는 사용자가 없는 경우
+//   const newUser = new User({ email, name, provider });
+//   await newUser.save();
+
+//   const token = jwt.sign(
+//     { _id: newUser._id, email: newUser.email, name: newUser.name, provider: newUser.provider },
+//     SECRET
+//   );
+
+//   return token;
+// }
+
+async function snsLoginUser({ email, name, provider }) {
+  let user = await User.findOne({ email, provider });
   if (!user) {
-    user = new User({ email, name, provider });
-    await user.save();
+    let user = new User({ email, name, provider });
+    return await user.save();
   }
 
-  const token = jwt.sign(
-    {  _id: user._id, email: user.email, name: user.name, provider: user.provider },
-    SECRET
-  );
-
+  let token = jwt.sign({ _id: user._id, email: user.email, name: user.name, provider: user.provider, phoneNumber: user.phoneNumber, createdSells: user.createdSells.length, avatar: user.avatar, role: user.role }, SECRET);
   return token;
 }
 
@@ -45,7 +81,7 @@ async function loginUser({ email, password }) {
   let hasValidPass = await bcrypt.compare(password, user.password);
   if (!hasValidPass) throw { message: "Invalid email or password" }
 
-  let token = jwt.sign({ _id: user._id, email: user.email, phoneNumber: user.phoneNumber, createdSells: user.createdSells.length, avatar: user.avatar }, SECRET);
+  let token = jwt.sign({ _id: user._id, email: user.email, name: user.name, provider: user.provider, phoneNumber: user.phoneNumber, createdSells: user.createdSells.length, avatar: user.avatar, role: user.role }, SECRET);
   return token;
 }
 
@@ -54,20 +90,9 @@ async function getUser(id) {
     return await User.findById(id).lean()
 }
 
-async function getUserByEmail(email) {
-    try {
-      const user = await User.findOne({ email });
-      return user;
-    } catch (error) {
-      // 오류 처리
-      throw new Error('Failed to get user by email');
-    }
-  }
-
 module.exports = {
     snsLoginUser,
     registerUser,
     loginUser,
-    getUser,
-    getUserByEmail
+    getUser
 }

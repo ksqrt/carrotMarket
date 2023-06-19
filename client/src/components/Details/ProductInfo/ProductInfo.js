@@ -4,7 +4,7 @@ import { GrEdit } from 'react-icons/gr';
 import { MdArchive } from 'react-icons/md'
 import { BsHeart, BsHeartFill } from 'react-icons/bs';
 import { Col, Row, Spinner, Tabs, Tab, Image, OverlayTrigger, Tooltip, Modal, Form, Button } from 'react-bootstrap';
-import { getAll, archiveSell, wishProduct } from '../../../services/productData';
+import { getAll, archiveSell, wishProduct, deleteProduct } from '../../../services/productData';
 import ProductCard from "../../../components/ProductCard/ProductCard";
 import Messages from '../../../Pages/Messages';
 import aImage from '../../Profile/profile_images/a.png'; // 이미지 파일 경로
@@ -32,7 +32,6 @@ function ProductInfo({ params }) {
   const handleShowArchive = () => setShowArchive(true);
 
   console.log(params)
-  console.log(history)
 
   const handleSubmit = (e) => {
       e.preventDefault();
@@ -71,6 +70,20 @@ function ProductInfo({ params }) {
         setPage(prevPage => prevPage + 1);
       })
       .catch(err => console.log(err));
+  };
+
+  //상품 삭제
+  const handleDelPro = () => {
+    if (window.confirm('정말로 삭제하시겠습니까?')) {
+      deleteProduct(params._id)
+        .then(res => {
+          alert('상품이 삭제되었습니다.');
+          history.push('/'); // '/'로 이동
+        })
+        .catch(error => {
+          alert('상품 삭제에 실패하였습니다. 다시 시도해주세요.');
+        });
+    }
   };
 
   //매너온도
@@ -183,12 +196,23 @@ function ProductInfo({ params }) {
   
     initSocket();
   }, []);
-  
+
+  useEffect(() => {
+    const script = document.createElement("script");
+    script.src = "https://developers.kakao.com/sdk/js/kakao.js";
+    script.async = true;
+    document.body.appendChild(script);
+    return () => document.body.removeChild(script);
+  }, []);
+
+
   const onChatStart = async (e) => {
     e.preventDefault();
     if (!socket) return;
     startChat(socket, { buyerId: userData._id, sellerId: params.sellerId });
   };
+
+
 
   //{params.title}: 상품 제목
   //{params.addedAt}: 업로드 날짜
@@ -197,7 +221,7 @@ function ProductInfo({ params }) {
 
 
   function sendLinkCustom() {
-    
+
     if (window.Kakao) {
       window.Kakao.Link.sendCustom({
         templateId: 94886
@@ -207,8 +231,12 @@ function ProductInfo({ params }) {
 
 
   function sendLinkDefault() {
-    
     if (window.Kakao) {
+
+      if(!window.Kakao.isInitialized()){
+        window.Kakao.init("8766bf986c048a5e20e2ae4278463a7b");
+      }
+      
       window.Kakao.Link.sendDefault({
         objectType: 'feed',
         content: {
@@ -238,7 +266,6 @@ function ProductInfo({ params }) {
     }
   }//수정
 
-  
 
   return (
     <div className="d-flex flex-column align-items-center">
@@ -273,7 +300,7 @@ function ProductInfo({ params }) {
                     </OverlayTrigger> 
                     <span className="link-spacing"></span>
                     <OverlayTrigger placement="top" overlay={ <Tooltip>상품 삭제하기</Tooltip>} >
-                      <Link to={`/categories/${params.category}/${params._id}/delete`}>게시글 삭제하기</Link>
+                      <button onClick={ handleDelPro }>게시글 삭제하기</button>
                     </OverlayTrigger>
                   </>
                 ) }
@@ -378,7 +405,7 @@ function ProductInfo({ params }) {
 
            <div>
             {/* <button onClick={sendLinkCustom}>Send Custom Link</button> */}
-                <button onClick = {sendLinkDefault}>카카오 공유하기</button>
+                <button class="kakao-button" onClick = {sendLinkDefault}>카카오 공유하기</button>
                  
 
             </div>

@@ -1,3 +1,4 @@
+import React from 'react';
 import { useState } from 'react';
 import { Card, Modal, Button } from 'react-bootstrap';
 import { RiDeviceRecoverFill } from 'react-icons/ri';
