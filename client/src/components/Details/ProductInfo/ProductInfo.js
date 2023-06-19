@@ -24,6 +24,8 @@ function ProductInfo({ params }) {
   const [loading, setLoading] = useState(true);
   const [showMsg, setShowMdg] = useState(false);
   const [showArchive, setShowArchive] = useState(false);
+  const [showArchive2, setShowArchive2] = useState(false);
+  
   const history = useHistory();
 
 
@@ -34,8 +36,8 @@ function ProductInfo({ params }) {
   const handleShowArchive = () => setShowArchive(true);
 
   
-  const handleCloseArchive2 = () => setShowArchive(false);
-  const handleShowArchive2 = () => setShowArchive(true);
+  const handleCloseArchive2 = () => setShowArchive2(false);
+  const handleShowArchive2 = () => setShowArchive2(true);
 
   const handleSubmit = (e) => {
     console.log('handleSubmit called')
@@ -57,7 +59,7 @@ function ProductInfo({ params }) {
       archiveSoldout(params._id)
           .then(res => {
             console.log('handleSubmit called3')
-              setShowArchive(false);
+              setShowArchive2(false);
               history.push(`/profile/${params.seller}`);
           })
           .catch(err => console.log(err))
@@ -303,9 +305,11 @@ function ProductInfo({ params }) {
 
                     <OverlayTrigger placement="top" overlay={<Tooltip>판매 완료</Tooltip>} >
                       <span id="archive-icon" onClick={handleShowArchive2}>
-                        <Link to="/archived-sells">
+                      <Link to={<MdArchive />}>판매 완료</Link>
+                        
+                        {/* <Link to="/archived-sells">
                           &nbsp;&nbsp;판매완료
-                        </Link>
+                        </Link> */}
 
                       </span>
                     </OverlayTrigger>
@@ -339,7 +343,7 @@ function ProductInfo({ params }) {
               </Modal>
 
 
-              <Modal show={ showArchive } onHide={ handleCloseArchive2 }>
+              <Modal show={ showArchive2 } onHide={ handleCloseArchive2 }>
                 <Modal.Header closeButton>
                     <Modal.Title>판매완료 되었습니까???</Modal.Title>
                 </Modal.Header>
