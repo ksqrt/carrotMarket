@@ -79,6 +79,10 @@ export async function createProduct(product) {
     export async function archiveSell(id) {
       return (await fetch(`/products/archive/${id}`)).json();
     }
+
+    export async function archiveSoldout(id) {
+      return (await fetch(`/products/soldout/${id}`)).json();
+    }
     
     export async function wishProduct(id) {
       return (

@@ -4,7 +4,7 @@ import { GrEdit } from 'react-icons/gr';
 import { MdArchive } from 'react-icons/md'
 import { BsHeart, BsHeartFill } from 'react-icons/bs';
 import { Col, Row, Spinner, Tabs, Tab, Image, OverlayTrigger, Tooltip, Modal, Form, Button } from 'react-bootstrap';
-import { getAll, archiveSell, wishProduct, deleteProduct } from '../../../services/productData';
+import { getAll, archiveSell,archiveSoldout, wishProduct, deleteProduct } from '../../../services/productData';
 import ProductCard from "../../../components/ProductCard/ProductCard";
 import Messages from '../../../Pages/Messages';
 import aImage from '../../Profile/profile_images/a.png'; // 이미지 파일 경로
@@ -34,8 +34,8 @@ function ProductInfo({ params }) {
   const handleShowArchive = () => setShowArchive(true);
 
   
-  const handleCloseArchive2 = () => setShowArchive(false);
-  const handleShowArchive2 = () => setShowArchive(true);
+  const handleCloseArchive2 = () => setShowArchive2(false);
+  const handleShowArchive2 = () => setShowArchive2(true);
 
   const handleSubmit = (e) => {
       e.preventDefault();
@@ -340,15 +340,7 @@ function ProductInfo({ params }) {
                     <Modal.Title>보관함으로 이동하시겠습니까???</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <p>
-                        By clicking <strong>Archive</strong>, this sell will change
-                    it's status to <strong>Archived</strong>,
-                    which means that no one but you will be able see it.
-                    You may want to change the status to <strong>Actived</strong> if you have
-                    sold the item or you don't want to sell it anymore.
-                    </p>
-
-                    Don't worry, you can unarchive it at any time from Profile - Sells!
+                  걱정하지 마세요. 언제든지 프로필에서 보관을 취소할 수 있습니다
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={handleCloseArchive}>
