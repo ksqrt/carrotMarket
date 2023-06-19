@@ -14,7 +14,7 @@ async function snsLoginUser({ email, name, provider }) {
     await user.save();
 
     const token = jwt.sign(
-      { _id: user._id, email: user.email, name: user.name, provider: user.provider },
+      { _id: user._id, email: user.email, phoneNumber: user.phoneNumber, createdSells: user.createdSells.length, avatar: user.avatar },
       SECRET
     );
 
@@ -27,7 +27,7 @@ async function snsLoginUser({ email, name, provider }) {
   if (matchingUser) {
     // 일치하는 사용자가 이미 존재하는 경우
     const token = jwt.sign(
-      { _id: matchingUser._id, email: matchingUser.email, name: matchingUser.name, provider: matchingUser.provider },
+      { _id: matchingUser._id, email: matchingUser.email, phoneNumber: matchingUser.phoneNumber, createdSells: matchingUser.createdSells.length, avatar: matchingUser.avatar },
       SECRET
     );
 
@@ -39,7 +39,7 @@ async function snsLoginUser({ email, name, provider }) {
   await newUser.save();
 
   const token = jwt.sign(
-    { _id: newUser._id, email: newUser.email, name: newUser.name, provider: newUser.provider },
+    { _id: newUser._id, email: newUser.email, phoneNumber: newUser.phoneNumber, createdSells: newUser.createdSells.length, avatar: newUser.avatar },
     SECRET
   );
 

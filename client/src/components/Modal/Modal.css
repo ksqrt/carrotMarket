@@ -48,6 +48,22 @@
 .modal-paths {
     padding: 0px 70px;
 }
+.localLogin {
+    text-align: center;
+}
+.loginBtn {
+    width: 200px;
+    height: 38px;
+    background-color: #fff;
+    border: 1px solid #dadce0;
+    border-radius: 4px;
+    font-family: "Google Sans",arial,sans-serif;
+    font-size: 14px;
+    height: 40px;
+    letter-spacing: 0.25px;
+    height: 40px;
+    letter-spacing: 0.25px;
+}
 
 .modal-path {
     width: 100%;
