@@ -209,7 +209,7 @@ function ProductInfo({ params }) {
   const onChatStart = async (e) => {
     e.preventDefault();
     if (!socket) return;
-    startChat(socket, { buyerId: userData._id, sellerId: params.sellerId });
+    startChat(socket, { buyerId: userData._id, sellerId: params.sellerId});
   };
 
 
@@ -406,8 +406,6 @@ function ProductInfo({ params }) {
            <div>
             {/* <button onClick={sendLinkCustom}>Send Custom Link</button> */}
                 <button class="kakao-button" onClick = {sendLinkDefault}>카카오 공유하기</button>
-                 
-
             </div>
 
             </div>

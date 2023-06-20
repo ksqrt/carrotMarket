@@ -90,8 +90,6 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
         setBgUrl(Math.random() < 0.05 ? secondUrl : firstUrl);
     }, [selected]);
 
-
-
     // 페이지 이동 오류 해결용
     useEffect(() => {
         const isOnMessageListPage = window.location.pathname === '/messages';
@@ -101,13 +99,11 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
         }
     }, []);
 
-
     useEffect(() => {
         (async () => {
           setSocket(await initializeSocket());
         })();
     }, []);
-
 
     useEffect(() => { // 대화방 가져오기, 선택시 내용 가져오기
     if (!userData || !socket) return;
