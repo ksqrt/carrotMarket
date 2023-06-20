@@ -33,7 +33,6 @@ export async function getSpecific(id) {
   ).json();
 }
 
-
 export async function createProduct(product) {
   return (
     await fetch(`${baseUrl}/products/create`, {
