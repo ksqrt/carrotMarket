@@ -4,6 +4,7 @@ const productController = require("./controllers/productController");
 const userController = require("./controllers/userController");
 const messageController = require("./controllers/messageController");
 const imageTest = require("./controllers/imageTestController");
+const review = require("./controllers/reviewController");
 const isAuth = require("./middlewares/isAuth");
 
 
@@ -19,5 +20,5 @@ router.use("/user", userController);
 //router.use("/messages", messageController);
 
 router.use("/imageTest",imageTest);
-
+router.use("/review",review);
 module.exports = router;
