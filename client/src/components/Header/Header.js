@@ -118,20 +118,20 @@ function Header() {
                                     isOpen && <LoginModal onClose={onClose}/>
                                 }
                             </div>
-                            {/* <div>
+                            <div>
                                 <button className='nav-item' id="nav-sign-in" onClick={onOpen}>회원가입</button>
                                 {
                                     isOpen && <RegisterModal onClose={onClose}/>
                                 }
-                            </div> */}
+                            </div>
                             {/* 추후 삭제 */}
-                            &nbsp;&nbsp;
+                            {/* &nbsp;&nbsp;
                             <NavLink style={{ backgroundColor: '#FF7E36' }} className="nav-item" id="nav-sign-in" to="/auth/login">
                                 로그인
                             </NavLink>
                             <NavLink className="nav-item " id="nav-sign-up" to="/auth/register">
                                 회원가입
-                            </NavLink>
+                            </NavLink> */}
                         </Nav>)
                     }
                 </Navbar.Collapse>
