@@ -1,5 +1,5 @@
-const baseUrl = 'http://localhost:5000';
-// const baseUrl = 'http://101.79.11.48:5000';
+import url from "../url.js";
+const baseUrl = url;
 
 export async function snsUser(user) {
     return (await fetch(`${baseUrl}/auth/snsLogin`, {
