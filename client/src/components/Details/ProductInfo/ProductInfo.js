@@ -196,6 +196,7 @@ function ProductInfo({ params }) {
   
     initSocket();
   }, []);
+
   
   
   const onChatStart = async (e) => {
