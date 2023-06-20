@@ -16,9 +16,15 @@ import settings from 'react-useanimations/lib/settings';
 import '../components/Messages/Aside.css'
 import '../components/Messages/Article.css'
 import styles from '../components/Messages/flower.module.css'
+import KakaoMapAPI from '../components/KakaoMapAPI/KakaoMapAPI';
 
 
 function Messages({ match }) { // match = Router 제공 객체, url을 매개변수로 사용. ex) 경로 : /messages/123  => match.params.id = "123" // app.js 참고 : <Route path="/messages" exact component={Messages} />;
+    const [isOpen, setIsOpen] = useState(false)
+    const onOpen = () => {
+        setIsOpen(true)
+    }
+
     const github = settings;
     let chatId = match.params.id; // 선택된 채팅방의 id
     const { userData } = useContext(Context); // 사용자 id 가져오기
@@ -29,14 +35,14 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
             _id: 0,
             seller: { _id: "", avatar: "", name: "" },
             buyer: { _id: "", avatar: "", name: "" },
-            conversation: []
+            conversation: [],
+            product: ""
         },
         isBuyer: null,
         myId: 0
     });
     const [message, setMessage] = useState(""); // 내가 입력한 메세지
-    //const [alert, setAlert] = useState(null); // 메세지 전송 성공 메세지
-    //const [alertShow, setAlertShow] = useState(false); // 메세지 전송 성공 메세지 토글
+    const [alertShow, setAlertShow] = useState(true); 
     const [socket, setSocket] = useState(null); // initializeSocket 소켓 초기화
     const scrollToBottom = () => {
         animateScroll.scrollToBottom({
@@ -45,7 +51,9 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
             smooth: false
         });
     }
-    const [file, setFile] = useState(null);
+    const [file, setFile] = useState(null); // 파일 업로드
+    // const location = { lat: 37.497922, lng: 127.027606 };
+    let currentDate = null;
 
     // 위로 스크롤 시 추가 로딩 구현
     const [showMessagesCount, setShowMessagesCount] = useState(15);
@@ -108,6 +116,7 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
     console.log("1. messages.js, getUserConversations ");
     getUserConversations(socket, userData._id) // 현재 사용자와 관련된 모든 채팅방 목록을 가져옴
         .then(res => {
+        // console.log("채팅방 가져오기 : ",res);
         setChatroomList(res); // 가져온 채팅방 목록을 상태 변수에 저장.
         if (isSelected) { // 채팅방이 선택되었다면 현재 선택된 채팅방의 정보를 selected 상태 변수에 저장
             setSelected(res.find(x => x.chats._id === chatId))
@@ -129,6 +138,9 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
                     conversation: [...prevSelected.chats.conversation, newMessage],
                 },
             }));
+            // if (newMessage.location) {
+            //     setLocation(newMessage.location);
+            // }
             scrollToBottom();
         };
         socket.on('newMessage', handleNewMessage);
@@ -140,6 +152,8 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
     
     useEffect(() => {
         console.log("채팅방 전체 로그 : ", selected);
+        // console.log("userdata : ", userData);
+        
       }, [selected]);
 
     useEffect(() => {
@@ -150,18 +164,10 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
         };
       }, [socket]);
 
-    const handleMsgSubmit = async event => { // 채팅 보내기, 파일 업로드
+    const handleMsgSubmit = async event => { // 채팅 보내기, 파일 업로드, 지도 업로드
         event.preventDefault();
-        // let base64File = null;
-        // if(file) {
-        //     const reader = new FileReader();
-        //     reader.readAsDataURL(file);
-        //     await new Promise((resolve) => {
-        //         reader.onload = resolve;
-        //     });
-        //     base64File = reader.result;
-        // }
-        sendMessage(socket, { chatId: selected.chats._id, senderId: userData._id, message });
+        // sendMessage(socket, { chatId: selected.chats._id, senderId: userData._id, message, location});
+        sendMessage(socket, { chatId: selected.chats._id, senderId: userData._id, message});
         setMessage("");
         console.log('2. messages.js, sendmessage');
     };
@@ -178,7 +184,7 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
         <Container>
             <Row>
                 <aside className="col-lg-4 col-md-4">
-                    <h3>Conversations</h3>
+                    <h3>채팅방 목록 </h3>
                     <div className="chatlist_scroll">
                     {chatroomList.length >= 1 ?
                         <>
@@ -186,9 +192,9 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
                                 <div className="chat-connections" key={x.chats._id}>
                                     <Link onClick={() => setIsSelected(true)} to={`/messages/${x.chats._id}`}>
                                         {x.isBuyer ?
-                                            <><img src={x.chats.seller.avatar} alt="user-avatar" /> <span>{x.chats.seller.name}</span></>
+                                            <><img src={x.chats.seller.avatar} alt="user-avatar" /> <span>{x.chats.seller.name}</span>{x.chats.product?.image && <img src={x.chats.product?.image} alt="product" style={{float: 'right', width: '35px', height: '35px', objectFit: 'cover'}}/>}</>
                                             :
-                                            <><img src={x.chats.buyer.avatar} alt="user-avatar" /> <span>{x.chats.buyer.name}</span></>
+                                            <><img src={x.chats.buyer.avatar} alt="user-avatar" /> <span>{x.chats.buyer.name}</span>{x.chats.product?.image && <img src={x.chats.product?.image} alt="product" style={{float: 'right', width: '35px', height: '35px', objectFit: 'cover'}}/>}</>
                                         }
                                     </Link>
                                     {/* 내가 isbuyer라면 표시할 아바타는 seller.avatar*/}
@@ -209,13 +215,13 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
                                 </button>
                                 {selected.isBuyer ?
                                     <Link to={`/profile/${selected.chats.seller._id}`}>
-                                        <img src={selected.chats.seller.avatar} alt="user-avatar" />
+                                        <img src={selected.chats.seller.avatar} alt="user-avatar" />&nbsp;
                                         <span>{selected.chats.seller.name}</span>    
                                     </Link>
                                     :
                                     <Link to={`/profile/${selected.chats.buyer._id}`}>
 
-                                        <img src={selected.chats.buyer.avatar} alt="user-avatar" />
+                                        <img src={selected.chats.buyer.avatar} alt="user-avatar" />&nbsp;
                                         <span>{selected.chats.buyer.name}</span>
                                         
                                     </Link>
@@ -237,25 +243,46 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
                                         </button>
                                     </div>
                                 </div>
-
+                                
                             </div>
-                            {/* {alertShow &&
-                                <Alert variant="success" onClose={() => setAlertShow(false)} dismissible>
-                                    <p>
-                                        {alert}
-                                    </p>
-                                </Alert>
-                            } */}
-                            <div ref={chatContainerRef} id="chat-selected-body" className="chat-selected-body col-lg-12" style={{backgroundImage: `url(${bgUrl})`}}>
-                            {selected.chats.conversation.slice(Math.max(selected.chats.conversation.length - showMessagesCount, 0)).map((x, index) =>
-                                    x ?
-                                    <div className={selected.myId === x.senderId ? 'me' : "not-me"} key={index}>
-                                        <span className="timestamp">{x.sentAt ? new Date(x.sentAt).toLocaleTimeString('ko-KR', { hour: 'numeric', minute: 'numeric', hour12: true }) : ""}</span> &nbsp;
-                                        <span className="message"><Linkify>{x.message}</Linkify></span>
-                                        {selected.myId !== x.senderId && <img className="user-avatar" src={selected.isBuyer ? selected.chats.seller.avatar : selected.chats.buyer.avatar} alt="user-avatar" />}
+                            {alertShow &&
+                                <Alert className="alert-glass" onClose={() => setAlertShow(false)}>
+                                <div className="flex-container">
+                                    <img src={selected.chats.product?.image} alt="product" className="img-style" />
+                                    <div className="text-container">
+                                        <div>
+                                            <span className="text-bold">{selected.chats.product?.soldout ? '거래완료' : '거래중'}</span> &nbsp;&nbsp;
+                                            <span>{selected.chats.product?.title}</span>
+                                        </div>
+                                        <div>
+                                            <span className="text-bold">{Number(selected.chats.product?.price).toLocaleString()}원</span>
+                                        </div>
                                     </div>
-                                    : null
-                                )}
+                                </div>
+                                    <button> 후기 보내기 버튼 </button> {/* 약속 잡기 성공 후 sold out 시 */}
+                                    <button> 약속 잡기 버튼 </button> {/* (다른 사람과 약속 잡기가 되있지 않을 때) */}
+                                </Alert>
+                            }
+                            <div ref={chatContainerRef} id="chat-selected-body" className="chat-selected-body col-lg-12" style={{backgroundImage: `url(${bgUrl})`}}>
+                            {selected.chats.conversation.slice(Math.max(selected.chats.conversation.length - showMessagesCount, 0)).map((x, index) =>{
+                                if (x) {
+                                    const messageDate = new Date(x.sentAt).toLocaleDateString('ko-KR', { year: 'numeric', month: 'long', day: 'numeric'});
+
+                                    return (
+                                        <>
+                                            {messageDate !== currentDate && (currentDate = messageDate) && <p className="dateHeader"><div className="hr-sect" >{currentDate}</div></p>}
+                                            <div className={selected.myId === x.senderId ? 'me' : "not-me"}>
+                                                <span className="timestamp">{x.sentAt ? new Date(x.sentAt).toLocaleTimeString('ko-KR', { hour: 'numeric', minute: 'numeric', hour12: true }) : ""}</span> &nbsp;
+                                                <span className="message"><Linkify>{x.message}</Linkify></span>
+                                                {selected.myId !== x.senderId && <img className="user-avatar" src={selected.isBuyer ? selected.chats.seller.avatar : selected.chats.buyer.avatar} alt="user-avatar" />}
+                                            </div>
+                                        </>
+                                    )
+                                } else {
+                                    return null;
+                                }
+                            })}
+                                {/* {location && <KakaoMapAPI lat='35.92875093345304' lng='126.96316682140936' />} */}
                             </div>
                             <div className="chat-selected-footer col-lg-12" style={{backgroundColor: '#F2F3F7', padding:0, borderRadius:20}}>
                                 <Form onSubmit={handleMsgSubmit}>
@@ -276,7 +303,10 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
                                             <button className={`${styles['menu-item']} ${styles.red}`}> <div style={{fontSize:'16px', marginBottom:'7px'}} >🤗</div> </button>
                                             <button className={`${styles['menu-item']} ${styles.purple}`}> </button>
                                             <button className={`${styles['menu-item']} ${styles.orange}`}>  </button>
-                                            <button className={`${styles['menu-item']} ${styles.lightblue}`}> <FaMapMarkedAlt className="upload-icon" size={20} style={{marginBottom:'8px'}} /> </button>
+                                            <button className={`${styles['menu-item']} ${styles.lightblue}`} onClick={ onOpen }> <FaMapMarkedAlt className="upload-icon" size={20} style={{marginBottom:'8px'}} /> </button>
+                                            {
+                                                isOpen && <KakaoMapAPI />       
+                                            }
                                             </nav>
                                                 {/* <input type="file" id="file-upload" style={{ display: 'none' }}/> */}
                                                 {/* <label className="label-no-margin" htmlFor="file-upload"><UseAnimations className="plusToX" animation={plusToX} size={40} /></label> */}

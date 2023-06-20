@@ -6,13 +6,12 @@ import { BsHeart, BsHeartFill } from 'react-icons/bs';
 import { Col, Row, Spinner, Tabs, Tab, Image, OverlayTrigger, Tooltip, Modal, Form, Button } from 'react-bootstrap';
 import { getAll, archiveSell, wishProduct, archiveSoldout, deleteProduct } from '../../../services/productData';
 import ProductCard from "../../../components/ProductCard/ProductCard";
-import Messages from '../../../Pages/Messages';
 import aImage from '../../Profile/profile_images/a.png'; // 이미지 파일 경로
 import bImage from '../../Profile/profile_images/b.png'; // 이미지 파일 경로
 import cImage from '../../Profile/profile_images/c.png'; // 이미지 파일 경로
 import dImage from '../../Profile/profile_images/d.png'; // 이미지 파일 경로
 import eImage from '../../Profile/profile_images/e.png'; // 이미지 파일 경로
-import { startChat, initializeSocket, getUserConversations } from '../../../services/messagesData'; // startChat 함수와 socket 객체를 import합니다.
+import { startChat, initializeSocket } from '../../../services/messagesData'; // startChat 함수와 socket 객체를 import합니다.
 import { RiMessage3Fill } from 'react-icons/ri';
 import { Context } from '../../../ContextStore'; // Context import
 import { Link, useHistory } from 'react-router-dom';
@@ -38,6 +37,8 @@ function ProductInfo({ params }) {
   
   const handleCloseArchive2 = () => setShowArchive2(false);
   const handleShowArchive2 = () => setShowArchive2(true);
+
+
 
   const handleSubmit = (e) => {
     console.log('handleSubmit called')
@@ -218,12 +219,20 @@ function ProductInfo({ params }) {
   
     initSocket();
   }, []);
-  
   const onChatStart = async (e) => {
     e.preventDefault();
     if (!socket) return;
-    startChat(socket, { buyerId: userData._id, sellerId: params.sellerId });
+    startChat(socket, { buyerId: userData._id, sellerId: params.sellerId, productId: params._id });
   };
+
+  useEffect(() => {
+    const script = document.createElement("script");
+    script.src = "https://developers.kakao.com/sdk/js/kakao.js";
+    script.async = true;
+    document.body.appendChild(script);
+    return () => document.body.removeChild(script);
+  }, []);
+
 
   //{params.title}: 상품 제목
   //{params.addedAt}: 업로드 날짜
