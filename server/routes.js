@@ -5,6 +5,7 @@ const userController = require("./controllers/userController");
 const messageController = require("./controllers/messageController");
 const imageTest = require("./controllers/imageTestController");
 const isAuth = require("./middlewares/isAuth");
+const admin = require("./controllers/adminController.js");
 
 
 router.get("/", (req, res) => {
@@ -16,6 +17,7 @@ router.use('/auth', authController);
 // 카테고리에 사용되는 products를 productController 에서 가지고옵니다.
 router.use("/products", productController);
 router.use("/user", userController);
+router.use("/admin", admin);
 //router.use("/messages", messageController);
 
 router.use("/imageTest",imageTest);

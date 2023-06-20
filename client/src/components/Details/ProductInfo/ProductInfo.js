@@ -294,13 +294,29 @@ function ProductInfo({ params }) {
                         <Link to={<MdArchive />}>보관함으로 이동</Link>
                       </span>
                     </OverlayTrigger>
+
+
                     <span className="link-spacing"></span>
+
+
                     <OverlayTrigger placement="top" overlay={ <Tooltip>상품 수정하기</Tooltip>} >
+
+                      <span id="archive-icon2">
                       <Link to={`/categories/${params.category}/${params._id}/edit`}>게시글 수정하기</Link>
+                      </span>
+
+
                     </OverlayTrigger> 
+
+
                     <span className="link-spacing"></span>
+
+                   
                     <OverlayTrigger placement="top" overlay={ <Tooltip>상품 삭제하기</Tooltip>} >
+
+                    <span id="deleteProduct">
                       <button onClick={ handleDelPro }>게시글 삭제하기</button>
+                     </span>
                     </OverlayTrigger>
                   </>
                 ) }

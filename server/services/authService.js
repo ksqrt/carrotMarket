@@ -52,7 +52,6 @@ async function snsLoginUser({ email, name, provider }) {
     let user = new User({ email, name, provider });
     return await user.save();
   }
-
   let token = jwt.sign({ _id: user._id, email: user.email, name: user.name, provider: user.provider, phoneNumber: user.phoneNumber, createdSells: user.createdSells.length, avatar: user.avatar, role: user.role }, SECRET);
   return token;
 }
