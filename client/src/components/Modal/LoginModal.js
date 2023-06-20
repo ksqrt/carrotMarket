@@ -23,8 +23,7 @@ const LoginModal = ({ onClose }) => {
 
     script.onload = () => {
       //src/config/config.js 에 있음
-      window.Kakao.init("7286bd8c9d717d7ebd38369e55aa226e");
-      // window.Kakao.init(process.env.REACT_APP_KAKAO_API);
+      window.Kakao.init(process.env.REACT_APP_KAKAO_API);
     };
 
     return () => {
