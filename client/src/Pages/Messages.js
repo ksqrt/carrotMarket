@@ -270,7 +270,7 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
 
                                     return (
                                         <>
-                                            {messageDate !== currentDate && (currentDate = messageDate) && <p className="dateHeader"><div className="hr-sect" >{currentDate}</div></p>}
+                                            {messageDate !== currentDate && (currentDate = messageDate) && <div className="hr-sect" >{currentDate}</div>}
                                             <div className={selected.myId === x.senderId ? 'me' : "not-me"}>
                                                 <span className="timestamp">{x.sentAt ? new Date(x.sentAt).toLocaleTimeString('ko-KR', { hour: 'numeric', minute: 'numeric', hour12: true }) : ""}</span> &nbsp;
                                                 <span className="message"><Linkify>{x.message}</Linkify></span>
