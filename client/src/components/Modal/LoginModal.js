@@ -92,7 +92,7 @@ const LoginModal = ({ onClose}) => {
                     </div>
 
                     <div>
-                        <p className="bottom-msg-paragraph"><Link to="/auth/login">회원가입</Link>!</p> 
+                        {/* <p className="bottom-msg-paragraph"><Link to="/auth/login">회원가입</Link>!</p>  */}
                     </div>
                     
                 </div>

@@ -19,6 +19,7 @@ const GoogleLogin = () => {
     const user = ({
       email: userObject.email,
       name: userObject.name,
+      password: 'google',
       provider: 'google',
     });
 
@@ -53,12 +54,6 @@ const GoogleLogin = () => {
 
   return (
     <div>
-      {/* <a href="#">
-          <div className='modal-path'>
-              <img src='https://m.bunjang.co.kr/pc-static/resource/7bf83f72cf54461af573.png' width="30" alt="카카오"/>
-              &nbsp;&nbsp;구글로 이용하기
-          </div>
-      </a>   */}
       {loading ?
       <div>Please wait... <Spinner animation="border" /></div>
       :

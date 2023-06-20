@@ -11,7 +11,7 @@ import SearchBar from "../../components/SearchBar/SearchBar";
 
 import './Header.css';
 import LoginModal from '../Modal/LoginModal';
-import RegisterModal from '../Modal/LoginModal';
+import RegisterModal from '../Modal/RegisterModal';
 
 
 function Header() {

@@ -1,23 +1,25 @@
 import React, { useContext, useEffect, useState } from 'react';
 import './Modal.css';
 import { Context } from '../../ContextStore'; // 컨텍스트 관련 컴포넌트
-import { loginUser } from '../../services/userData';
+import { SimpleSider } from '../../services/userData';
 import { useHistory } from 'react-router-dom';
 import { Form, Button, Spinner, Alert } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import SimpleSider from '../Siders/SimpleSider';
+import { registerUser } from '../../services/userData';
 import GoogleLogin from './GoogleLogin';
 import NaverLogin from './NaverLogin';
 import KakaoLogin from './KakaoLogin';
+import LoginModal from './LoginModal';
 
-const LoginModal = ({ onClose}) => {
+const RegisterModal = ({ onClose}) => {
     const [loading, setLoading] = useState(false);
     const [alertShow, setAlertShow] = useState(false);
     const [error, setError] = useState(null);
-    const { setUserData } = useContext(Context)
+    // const { setUserData } = useContext(Context)
     const history = useHistory();
-    const [user, setUser] = useState({
+    const [userData, setUserData] = useState({
         email: "",
+        name: null,
         password: "",
         repeatPassword: "",
         provider: 'local',
@@ -26,17 +28,17 @@ const LoginModal = ({ onClose}) => {
 
     const handleChanges = (e) => {
         e.preventDefault();
-        setUser({ ...user, [e.target.name]: e.target.value });
+        setUserData({ ...userData, [e.target.name]: e.target.value });
     }
 
     const handleSubmitLogin = (e) => {
         e.preventDefault();
         setLoading(true);
-        console.log(user)
+        console.log(userData)
         registerUser(userData) //registerUser 함수를 호출하여 userData 값 전달 ('../services/userData')
             .then(res => { //호출 성공
                 if (!res.error) { //오류 없으면,
-                    history.push('/auth/login') //로그인 페이지로 이동
+                    history.push('/') 
                 } else { //오류 있으면,
                     setLoading(false); //로딩 상태를 false로 설정
                     setError(res.error); //오류 메시지 설정
@@ -70,6 +72,7 @@ const LoginModal = ({ onClose}) => {
 
                         <div className='forms' style={{paddingLeft: 20}}>
                             <input className='emailForm' type="email" name="email" placeholder="이메일" onChange={handleChanges} required/>
+                            <input className='nameForm' type="text" name="name" placeholder="이름" onChange={handleChanges} required/>
                             <input className='pwdForm' type="password" name="password" placeholder="비밀번호" onChange={handleChanges} required/>
                             <input className='pwdForm' type="password" name="repeatPassword" placeholder="비밀번호 확인" onChange={handleChanges} required/>
                         </div>
@@ -91,9 +94,10 @@ const LoginModal = ({ onClose}) => {
                         
                     </div>
 
-                    <div>
-                        <p className="bottom-msg-paragraph"><Link to="/auth/login">로그인</Link>!</p> 
-                    </div>
+                    {/* <div> */}
+                        {/* <p className="bottom-msg-paragraph"><Link to="/auth/login">회원가입</Link>!</p>  */}
+                        {/* <div className='toLogin'><LoginModal/>로그인</div> */}
+                    {/* </div> */}
                     
                 </div>
             </div>
@@ -101,4 +105,4 @@ const LoginModal = ({ onClose}) => {
     );
 };
 
-export default LoginModal;
+export default RegisterModal;

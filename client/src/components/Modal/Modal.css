@@ -51,7 +51,7 @@
     text-align: center;
     margin-bottom: 15px;
 }
-.emailForm, .pwdForm {
+.emailForm, .nameForm, .pwdForm {
     margin-bottom: 12px;
     padding-top: 5px;
     font-family: "Google Sans",arial,sans-serif;
@@ -77,6 +77,11 @@
     padding-top: 5px;
     position: relative;
 }
+.loginBtn:hover {
+    background: orange;
+    border: 1px solid #dadce0;
+
+}
 
 .modal-path {
     width: 208px;
@@ -96,4 +101,11 @@
 .modal-path:hover {
     background: #F8FAFF;
     border: 1px solid lightblue;
+}
+
+.toLogin {
+    font-family: "Google Sans",arial,sans-serif;
+    font-size: 12px;
+    letter-spacing: 0.25px;
+    text-align: center;
 }
