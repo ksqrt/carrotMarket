@@ -11,7 +11,7 @@ function Login({ history }) {
     const [error, setError] = useState(null);
     const [user, setUser] = useState({
         email: "",
-        password: ""
+        password: ""        
     });
     const { setUserData } = useContext(Context)
 

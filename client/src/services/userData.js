@@ -1,5 +1,5 @@
-const baseUrl = 'http://localhost:5000';
-// const baseUrl = 'http://101.79.11.48:5000';
+import url from "../url.js";
+const baseUrl = url;
 
 export async function snsUser(user) {
     const response = await fetch(`${baseUrl}/auth/snsLogin`, {
@@ -47,6 +47,10 @@ export async function getUserActiveSells(id) {
 
 export async function getUserArchivedSells() {
     return (await fetch(`${baseUrl}/products/sells/archived`, {credentials: 'include'})).json();
+}
+
+export async function getUserSoldoutSells() {
+    return (await fetch(`${baseUrl}/products/sells/soldout`, {credentials: 'include'})).json();
 }
 
 export async function getUserWishlist() {
