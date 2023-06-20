@@ -32,10 +32,10 @@ const chatRoomSchema = new mongoose.Schema({
             type: Date,
             default: Date.now  // 현재 시간을 기본값으로 설정
         },
-        // location: { //위치 정보 필드 추가
-        //     lat: Number,
-        //     lng: Number
-        // },
+        location: { // 위치 정보 필드 추가
+            lat: Number,
+            lng: Number
+        },
     }],
     // Product Id 고유 id
     product:{
