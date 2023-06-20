@@ -58,6 +58,5 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
-  "proxy": "http://101.79.11.48:5000"
+  }
 }
