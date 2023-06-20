@@ -11,6 +11,8 @@ import SearchBar from "../../components/SearchBar/SearchBar";
 
 import './Header.css';
 import LoginModal from '../Modal/LoginModal';
+import RegisterModal from '../Modal/RegisterModal';
+
 
 function Header() {
     const [isSticky, setIsSticky] = useState(false);
@@ -111,11 +113,17 @@ function Header() {
                         :
                         (<Nav>
                             <div>
-                                <button className='nav-item' id="nav-sign-in" onClick={onOpen}>로그인/회원가입</button>
+                                <button className='nav-item' id="nav-sign-in" onClick={onOpen}>로그인</button>
                                 {
                                     isOpen && <LoginModal onClose={onClose}/>
                                 }
                             </div>
+                            {/* <div>
+                                <button className='nav-item' id="nav-sign-in" onClick={onOpen}>회원가입</button>
+                                {
+                                    isOpen && <RegisterModal onClose={onClose}/>
+                                }
+                            </div> */}
                             {/* 추후 삭제 */}
                             &nbsp;&nbsp;
                             <NavLink style={{ backgroundColor: '#FF7E36' }} className="nav-item" id="nav-sign-in" to="/auth/login">
