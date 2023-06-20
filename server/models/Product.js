@@ -60,12 +60,6 @@ const productSchema = new mongoose.Schema({
         type: Boolean,
         default: true
     },
-
-    soldout: {
-        type: Boolean,
-        default: false // 판매중인 상태로 초기화되도록 설정
-    },
-
     // 조회수 추가  
     views:[
         {

@@ -87,7 +87,7 @@ router.post('/create', async (req, res) => {
             title, price, description, city, category,
             image: compressedImg,
             addedAt: new Date(),
-            seller: req.user._id,
+            seller: req.user._id
         })
 
         await product.save()
@@ -154,31 +154,17 @@ router.get('/sells/active/:id', async (req, res) => {
 // 사용자가 등록한 비활성 상품 목록을 가져오는 엔드포인트
 router.get('/sells/archived', async (req, res) => {
     try {
-      let user = await User.findById(req.user._id).populate('createdSells');
-      let sells = user.createdSells.filter(x => x.active === false);
-      res.status(200).json({ sells, user });
+        let user = await (await User.findById(req.user._id).populate('createdSells')).toJSON();
+        res.status(200).json({ sells: user.createdSells.filter(x => x.active == false), user });
     } catch (error) {
-      res.status(500).json({ message: error.message });
+        res.status(500).json({ message: error.message })
     }
-  });
-
-
-  // 판매완료 된 상품 가져오는 엔드포인트
-router.get('/sells/soldout', async (req, res) => {
-    try {
-      let user = await User.findById(req.user._id).populate('createdSells');
-      let sells = user.createdSells.filter(x => x.soldout === true);
-      res.status(200).json({ sells, user });
-    } catch (error) {
-      res.status(500).json({ message: error.message });
-    }
-  });
-  
+});
 
 // 상품을 활성화하는 엔드포인트
 router.get('/enable/:id', async (req, res) => {
     try {
-        await Product.updateOne({ _id: req.params.id }, { active: 'true' });
+        await Product.updateOne({ _id: req.params.id }, { active: true });
         res.status(200).json({ msg: "Activated" });
     } catch (error) {
         res.status(500).json({ message: error.message })
@@ -188,24 +174,12 @@ router.get('/enable/:id', async (req, res) => {
 // 상품을 비활성화하는 엔드포인트
 router.get('/archive/:id', async (req, res) => {
     try {
-        await Product.updateOne({ _id: req.params.id }, { active: 'false' });
+        await Product.updateOne({ _id: req.params.id }, { active: false });
         res.status(200).json({ msg: "Archived" });
     } catch (error) {
         res.status(500).json({ message: error.message })
     }
 });
-
-
-// 상품을 판매완료
-router.get('/soldout/:id', async (req, res) => {
-    try {
-        await Product.updateOne({ _id: req.params.id }, { soldout: true });
-        res.status(200).json({ msg: "Archived" });
-    } catch (error) {
-        res.status(500).json({ message: error.message });
-    }
-});
-
 
 // 상품을 찜하는 엔드포인트
 router.get('/wish/:id', async (req, res) => {
@@ -253,6 +227,7 @@ router.get('/views/:id', async (req, res) => {
     }
 
     } catch(error) {
+        console.log('여기 일단 옴ㅎㅇ');
         console.log(error);
         res.status(500).json({ message: error.message })
     }

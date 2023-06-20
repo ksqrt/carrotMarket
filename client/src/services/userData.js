@@ -1,14 +1,14 @@
 const baseUrl = 'http://localhost:5000';
 // const baseUrl = 'http://101.79.11.48:5000';
 
-export async function kakaoUser(userData) {
+export async function snsUser(user) {
     return (await fetch(`${baseUrl}/auth/snsLogin`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
         },
         credentials: 'include',
-        body: JSON.stringify(userData)
+        body: JSON.stringify(user)
     })).json();
 }
 
@@ -23,7 +23,7 @@ export async function registerUser(userData) { //Register.js에서 userData 받�
     })).json(); //서버의 응답을 JSON형식으로 파싱하여 반환. /await - 비동기 작업의 완료를 기다림
 }
 
-export async function loginUser(userData) { //Login.js에서 userData 받음???
+export async function loginUser(userData) {
     return (await fetch(`${baseUrl}/auth/login`, {
         method: 'POST',
         headers: {
@@ -43,16 +43,8 @@ export async function getUserActiveSells(id) {
 }
 
 export async function getUserArchivedSells() {
-    console.log('첫번째 함수이동')
     return (await fetch(`${baseUrl}/products/sells/archived`, {credentials: 'include'})).json();
 }
-
-export async function getUserSoldoutSells() {
-    console.log('판매 완료 함수 작성')
-    return (await fetch(`${baseUrl}/products/sells/soldout`, {credentials: 'include'})).json();
-}
-
-
 
 export async function getUserWishlist() {
     return (await fetch(`${baseUrl}/products/wishlist/getWishlist`, {credentials: 'include'})).json();

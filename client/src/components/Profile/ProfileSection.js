@@ -1,3 +1,4 @@
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { Col, Row } from 'react-bootstrap';
 import { BsFillPersonFill } from 'react-icons/bs';
