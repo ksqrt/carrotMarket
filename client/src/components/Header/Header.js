@@ -22,12 +22,20 @@ function Header() {
     
     //모달
     const [isOpen, setIsOpen] = useState(false);
+    const [isOpenRegister, setIsOpenRegister] = useState(false);
 
     const onOpen = () => {
         setIsOpen(true);
     }
     const onClose = () => {
         setIsOpen(false);
+    }
+
+    const onOpenRegister = () => {
+        setIsOpenRegister(true);
+    }
+    const onCloseRegister = () => {
+        setIsOpenRegister(false);
     }
 
     const handleSearch = (e) => {
@@ -118,10 +126,11 @@ function Header() {
                                     isOpen && <LoginModal onClose={onClose}/>
                                 }
                             </div>
+                            &nbsp;&nbsp;
                             <div>
-                                <button className='nav-item' id="nav-sign-in" onClick={onOpen}>회원가입</button>
+                                <button className='nav-item' id="nav-sign-in" onClick={onOpenRegister}>회원가입</button>
                                 {
-                                    isOpen && <RegisterModal onClose={onClose}/>
+                                    isOpenRegister && <RegisterModal onCloseRegister={onCloseRegister}/>
                                 }
                             </div>
                             {/* 추후 삭제 */}

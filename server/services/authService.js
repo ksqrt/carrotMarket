@@ -43,7 +43,8 @@ async function findorcreate(user) {
     if (password.length < 8) errors.push("Password should be at least 8 characters long; " );
     if (password.length > 20) errors.push("Password should be at max 20 characters long; " );
     if (errors.length >= 1) throw {message: [errors]}
-    
+
+       
     let user = new User(userData);
     return await user.save();
   }
