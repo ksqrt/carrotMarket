@@ -89,7 +89,7 @@ router.post('/create', async (req, res) => {
             addedAt: new Date(),
             seller: req.user._id
         })
-
+        
         await product.save()
         await productService.userCollectionUpdate(req.user._id, product);
 
