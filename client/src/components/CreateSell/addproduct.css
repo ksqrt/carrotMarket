@@ -1,0 +1,30 @@
+.mainfont {
+  font-size: 28px;
+  font-weight: 400;
+  margin-top: 16px;
+}
+.redfont {
+  color: red;
+}
+.imgbtn {
+  border: none;
+  padding: 0;
+}
+.imginput {
+  display: none;
+}
+.rowinterval {
+  padding: 10px 0px;
+}
+.titleinput {
+  width: 100%;
+  height: 45px;
+}
+.priceinput {
+  width: auto;
+  height: 45px;
+}
+.cateselect {
+  width: auto;
+  height: 45px;
+}
