@@ -16,7 +16,6 @@ import { startChat, initializeSocket, getUserConversations } from '../../../serv
 import { RiMessage3Fill } from 'react-icons/ri';
 import { Context } from '../../../ContextStore'; // Context import
 import { Link, useHistory } from 'react-router-dom';
-import url from "../url.js";
 
 function ProductInfo({ params }) {
   const [products, setProducts] = useState([]);
