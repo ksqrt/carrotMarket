@@ -22,10 +22,10 @@ function Io(server) {
       socket.emit('startChat', { chatId: chatRoom._id.toString() });
     });
 
-    socket.on("sendMessage", async ({chatId, senderId, message}) => { // chatId, senderId, message 인자와 함께 이벤트를 받았을 때 실행됨.
+    socket.on("sendMessage", async ({chatId, senderId, message, location}) => { // chatId, senderId, message 인자와 함께 이벤트를 받았을 때 실행됨.
       const sentAt = new mongoose.Types.ObjectId(); // MongoDB의 ObjectId를 사용하여 서버 시간을 가져옵니다. 
       const _id = new mongoose.Types.ObjectId();
-      const newMessage = { _id, senderId, message, sentAt: sentAt.getTimestamp() };
+      const newMessage = { _id, senderId, message, sentAt: sentAt.getTimestamp(), location };
       await ChatRoom.updateOne({ _id: chatId }, { $push: { conversation: newMessage } });
       
       console.log('3. io.js, sendMessage', newMessage );

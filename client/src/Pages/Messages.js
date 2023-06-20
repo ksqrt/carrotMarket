@@ -52,8 +52,8 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
             smooth: false
         });
     }
-    const [file, setFile] = useState(null);
-
+    const [file, setFile] = useState(null); // 파일 업로드
+    const location = { lat: 37.497922, lng: 127.027606 };
     // 위로 스크롤 시 추가 로딩 구현
     const [showMessagesCount, setShowMessagesCount] = useState(15);
     const chatContainerRef = useRef(null);
@@ -137,6 +137,9 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
                     conversation: [...prevSelected.chats.conversation, newMessage],
                 },
             }));
+            // if (newMessage.location) {
+            //     setLocation(newMessage.location);
+            // }
             scrollToBottom();
         };
         socket.on('newMessage', handleNewMessage);
@@ -158,9 +161,9 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
         };
       }, [socket]);
 
-    const handleMsgSubmit = async event => { // 채팅 보내기, 파일 업로드
+    const handleMsgSubmit = async event => { // 채팅 보내기, 파일 업로드, 지도 업로드
         event.preventDefault();
-        sendMessage(socket, { chatId: selected.chats._id, senderId: userData._id, message});
+        sendMessage(socket, { chatId: selected.chats._id, senderId: userData._id, message, location});
         setMessage("");
         console.log('2. messages.js, sendmessage');
     };
@@ -177,7 +180,7 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
         <Container>
             <Row>
                 <aside className="col-lg-4 col-md-4">
-                    <h3>채팅방 목록 폰트 왜 이래 </h3>
+                    <h3>채팅방 목록 </h3>
                     <div className="chatlist_scroll">
                     {chatroomList.length >= 1 ?
                         <>
@@ -255,6 +258,7 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
                                     </div>
                                     : null
                                 )}
+                                {/* {location && <KakaoMapAPI lat='35.92875093345304' lng='126.96316682140936' />} */}
                             </div>
                             <div className="chat-selected-footer col-lg-12" style={{backgroundColor: '#F2F3F7', padding:0, borderRadius:20}}>
                                 <Form onSubmit={handleMsgSubmit}>
