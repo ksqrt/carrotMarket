@@ -13,22 +13,31 @@ const productService = require('../services/productService');
 
 
 router.post('/create', async (req, res) => {
-  let review = req.body;
-  console.log(review);
-
-  let content = req.body.content;
-    try {
-      let review = new Review({
-            content:content
-      })
-
-      await review.save()
+    const { id, content } = req.body;
   
-    } catch (err) {
-        console.error(err);
-        res.status(404).json({ error: err.message })
+    try {
+      const review = new Review({
+        id,
+        content
+      });
+  
+      await review.save();
+      res.status(201).json(review);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Failed to create review' });
     }
+  });
 
-});
-
-module.exports = router;
+  // Get reviews by ID
+router.get('/find/:id', async (req, res) => {
+    try {
+      const reviews = await Review.find({ id: req.params.id });
+      res.json(reviews);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Failed to fetch reviews.' });
+    }
+  });
+  
+  module.exports = router;
