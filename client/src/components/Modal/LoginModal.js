@@ -57,17 +57,17 @@ const LoginModal = ({ onClose}) => {
                 <div className="modal-div">
                     <img src="https://upload.wikimedia.org/wikipedia/commons/a/ae/DaangnMarket_logo.png" height="40" className="carrot-logo" alt='웹 로고'/>
                     <div className="modal-title">당근마켓으로 중고거래 시작하기</div>
-                    <div className="modal-subtitle">간편하게 가입하고 상품을 확인하세요</div>
+                    <div className="modal-subtitle">간편하게 로그인하고 상품을 확인하세요</div>
                     
-                    <div className="container auth-form" style={{paddingRight: 160}}>
-                        <Form className="col-lg-6" onSubmit={handleSubmitLogin}>
                             {alertShow &&
-                                <Alert variant="danger" onClose={() => setAlertShow(false)} dismissible>
+                                <Alert variant="dark" onClose={() => setAlertShow(false)} dismissible className='authAlert'>
                                     <p>
                                         {error}
                                     </p>
                                 </Alert>
                             }
+                    <div className="container auth-form" style={{paddingRight: 160}}>
+                        <Form className="col-lg-6" onSubmit={handleSubmitLogin}>
 
                         <div className='forms' style={{paddingLeft: 20}}>
                             <input className='emailForm' type="email" name="email" placeholder="이메일" onChange={handleChanges} required/>

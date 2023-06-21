@@ -145,7 +145,7 @@ function Header() {
                             </NavLink>
                             <NavLink className="nav-item " id="nav-sign-up" to="/auth/register">
                                 회원가입
-                            </NavLink> */}
+                            </NavLink>*/} 
                         </Nav>)
                     }
                 </Navbar.Collapse>

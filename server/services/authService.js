@@ -35,14 +35,17 @@ async function findorcreate(user) {
     let { email, name, password, repeatPassword, provider } = userData;
     let errors = [];
     let checkUser = await User.findOne({ email });
-    if (checkUser) errors.push('This email address is already in use; ');
-    if (name.length < 3 || name.length > 50) errors.push('Name should be at least 3 characters long and max 50 characters long; ')
+    if (checkUser) errors.push('이미 사용중인 이메일 입니다.')
+    if (name.length < 2 || name.length > 20) errors.push('이름은 2 ~ 20글자 입니다.')
     // if (/(\+)?(359|0)8[789]\d{1}(|-| )\d{3}(|-| )\d{3}/.test(phoneNumber) == false) errors.push('Phone number should be a valid BG number; ' );
-    if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email) == false) errors.push("Please fill a valid email address; " );
-    if (password !== repeatPassword) errors.push("Passwords should match; " );
-    if (password.length < 8) errors.push("Password should be at least 8 characters long; " );
-    if (password.length > 20) errors.push("Password should be at max 20 characters long; " );
-    if (errors.length >= 1) throw {message: [errors]}
+    if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email) == false) errors.push("주소@이메일 형식입니다." );
+    if (password !== repeatPassword) errors.push("비밀번호가 일치하지 않습니다." );
+    if (password.length < 8) errors.push("비밀번호는 특수문자를 포함한 8 ~ 20글자 입니다." );
+    if (password.length > 20) errors.push("비밀번호는 특수문자를 포함한 8 ~ 20글자 입니다." );
+    if (!/[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]+/.test(password)) {
+      errors.push("비밀번호는 특수문자를 포함한 8 ~ 20글자 입니다.");
+    }
+    if (errors.length >= 1) throw {message: [errors[0]]}
 
        
     let user = new User(userData);
@@ -51,10 +54,10 @@ async function findorcreate(user) {
   
 async function loginUser({ email, password }) {
   let user = await User.findOne({ email });
-  if (!user) throw { message: 'Invalid email or password' };
+  if (!user) throw { message: '이메일과 비밀번호가 일치하지 않습니다' };
 
   let hasValidPass = await bcrypt.compare(password, user.password);
-  if (!hasValidPass) throw { message: "Invalid email or password" }
+  if (!hasValidPass) throw { message: "이메일과 비밀번호가 일치하지 않습니다" }
 
   let token = jwt.sign({ _id: user._id, email: user.email, phoneNumber: user.phoneNumber, createdSells: user.createdSells.length, avatar: user.avatar }, SECRET);
   return token;
