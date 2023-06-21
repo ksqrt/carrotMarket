@@ -45,6 +45,8 @@ router.get('/specific/:id', async (req, res) => {
     try {
         let product = await (await Product.findById(req.params.id)).toJSON()
         let seller = await (await User.findById(product.seller)).toJSON()
+        // let admin = await (await User.findById(req.params.id)).toJSON()
+        console.log(product)
         product.addedAt = moment(product.addedAt).format('d MMM YYYY (dddd) HH:mm')
         let jsonRes = {
             ...product,
@@ -54,13 +56,15 @@ router.get('/specific/:id', async (req, res) => {
             createdSells: seller.createdSells.length,
             avatar: seller.avatar,
             sellerId: seller._id,
-            isAuth: false
+            isAuth: false,
+            // isAdmin: admin.role
         }
         if (req.user) {
             let user = await User.findById(req.user._id)
             jsonRes.isSeller = Boolean(req.user._id == product.seller);
             jsonRes.isWished = user.wishedProducts.includes(req.params.id)
             jsonRes.isAuth = true
+            // jsonRes.isAdmin = admin.role == 'admin'
         }
         res.status(200).json(jsonRes);
     } catch (error) {
@@ -264,6 +268,12 @@ router.delete('/delete/:id', async (req, res) => {
         // 상품이 없는 경우 삭제할 수 없음
         if (!product) {
             return res.status(404).json({ error: '상품을 찾을 수 없습니다.' });
+        }
+
+        //관리자인 경우 삭제할 수 없음
+        if (user.role.toString() == 'admin') {
+            await Product.findOneAndDelete( {_id: req.params.id} );
+            return res.status(200).json({ message: '상품이 성공적으로 삭제되었습니다.' });
         }
 
         // 자신이 등록한 상품이 아닌 경우 삭제할 수 없음
