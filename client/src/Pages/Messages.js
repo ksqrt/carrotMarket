@@ -1,6 +1,6 @@
-import { useState, useEffect, useContext, useRef, React } from 'react';
+import { useState, useEffect, useContext, useRef, React, Fragment } from 'react';
 import {sendMessage, disconnect, getUserConversations, initializeSocket} from '../services/messagesData';
-import { Navbar, NavDropdown, Nav, Container, Row, Form, InputGroup, Button, Alert } from 'react-bootstrap';
+import { Navbar, NavDropdown, Nav, Container, Row, Form, InputGroup, Button, Alert, Modal } from 'react-bootstrap';
 import { Link, NavLink, useHistory } from 'react-router-dom';
 import { Context } from '../ContextStore';
 import { animateScroll } from 'react-scroll';
@@ -17,6 +17,11 @@ import '../components/Messages/Aside.css'
 import '../components/Messages/Article.css'
 import styles from '../components/Messages/flower.module.css'
 import KakaoMapAPI from '../components/KakaoMapAPI/KakaoMapAPI';
+import dayjs from 'dayjs';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { MobileDateTimePicker } from '@mui/x-date-pickers/MobileDateTimePicker';
+
 
 
 function Messages({ match }) { // match = Router 제공 객체, url을 매개변수로 사용. ex) 경로 : /messages/123  => match.params.id = "123" // app.js 참고 : <Route path="/messages" exact component={Messages} />;
@@ -53,7 +58,43 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
     }
     const [file, setFile] = useState(null); // 파일 업로드
     // const location = { lat: 37.497922, lng: 127.027606 };
-    let currentDate = null;
+    let currentDate = null; // 날짜 구분선
+
+    // 약속 잡기 버튼
+    const [modalState, setModalState] = useState({
+        date: null,
+        modalOpen: false,
+        datePickerOpen: false,
+        content: ''
+    });
+
+        // 달력 창 열기
+    const openDateTimePicker = (event) => {
+        event.preventDefault()
+        setModalState({ ...modalState, date: dayjs(), datePickerOpen: true, content: '', modalOpen: false, });
+    };
+
+
+    // 달력 창 ok 버튼 눌렀을 때 && 모달 창 열기
+    const handleDateAccept = (selectedDate) => {
+        setModalState(prevState => ({
+            ...prevState,
+            date: selectedDate,
+            datePickerOpen: false,
+            modalOpen: true,
+            content: `설정한 날짜는 ${dayjs(selectedDate).format('YYYY.MM.DD A h:mm')}입니다. 이 날짜로 약속 시간을 잡을게요.`
+        }));
+    };
+
+    // 달력 cancel 버튼 눌렀을 때 && 다른 곳 클릭했을 때 창닫기
+    const handleDatePickerClose = () => {
+        setModalState(prevState => ({ ...prevState, datePickerOpen: false }));
+    };
+
+        // 모달 창 닫기
+    const handleModalClose = () => {
+        setModalState(prevState => ({ ...prevState, modalOpen: false }));
+    };
 
     // 위로 스크롤 시 추가 로딩 구현
     const [showMessagesCount, setShowMessagesCount] = useState(15);
@@ -269,14 +310,14 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
                                     const messageDate = new Date(x.sentAt).toLocaleDateString('ko-KR', { year: 'numeric', month: 'long', day: 'numeric'});
 
                                     return (
-                                        <>
+                                        <Fragment key={index}>
                                             {messageDate !== currentDate && (currentDate = messageDate) && <div className="hr-sect" >{currentDate}</div>}
                                             <div className={selected.myId === x.senderId ? 'me' : "not-me"}>
                                                 <span className="timestamp">{x.sentAt ? new Date(x.sentAt).toLocaleTimeString('ko-KR', { hour: 'numeric', minute: 'numeric', hour12: true }) : ""}</span> &nbsp;
                                                 <span className="message"><Linkify>{x.message}</Linkify></span>
                                                 {selected.myId !== x.senderId && <img className="user-avatar" src={selected.isBuyer ? selected.chats.seller.avatar : selected.chats.buyer.avatar} alt="user-avatar" />}
                                             </div>
-                                        </>
+                                        </Fragment>
                                     )
                                 } else {
                                     return null;
@@ -299,11 +340,11 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
                                                 <input type="file" name='image' id="uploadInput" onChange={e => setFile(e.target.files[0])} style={{display: 'none'}} />
                                                 <AiOutlineUpload className="upload-icon" size={25} style={{marginBottom:'7px'}} /> 
                                             </button>
-                                            <button className={`${styles['menu-item']} ${styles.green}`}> <AiOutlineSchedule className="upload-icon" size={23} style={{marginBottom:'7px'}} /> </button>
+                                            <button className={`${styles['menu-item']} ${styles.green}`} onClick={openDateTimePicker}> <AiOutlineSchedule size={23} style={{marginBottom:'7px'}} /> </button>
                                             <button className={`${styles['menu-item']} ${styles.red}`}> <div style={{fontSize:'16px', marginBottom:'7px'}} >🤗</div> </button>
                                             <button className={`${styles['menu-item']} ${styles.purple}`}> </button>
                                             <button className={`${styles['menu-item']} ${styles.orange}`}>  </button>
-                                            <button className={`${styles['menu-item']} ${styles.lightblue}`} onClick={ onOpen }> <FaMapMarkedAlt className="upload-icon" size={20} style={{marginBottom:'8px'}} /> </button>
+                                            <button className={`${styles['menu-item']} ${styles.lightblue}`} onClick={ onOpen }> <FaMapMarkedAlt size={20} style={{marginBottom:'8px'}} /> </button>
                                             {
                                                 isOpen && <KakaoMapAPI />       
                                             }
@@ -336,11 +377,31 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
                                         </InputGroup>
                                     </Form.Group>
                                 </Form>
+                                {modalState.datePickerOpen && (
+                                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                                        <MobileDateTimePicker open={modalState.datePickerOpen} onAccept={handleDateAccept} onClose={handleDatePickerClose} value={modalState.date ? modalState.date : new Date()} on/>
+                                    </LocalizationProvider>
+                                )}
+                                {modalState.modalOpen && modalState.content !== '' &&  (
+                                <Modal show={modalState.modalOpen} onHide={handleModalClose}>
+                                    <Modal.Header closeButton>
+                                        <Modal.Title>약속 시간 설정</Modal.Title>
+                                    </Modal.Header>
+                                    <Modal.Body>
+                                        {modalState.content}
+                                    </Modal.Body>
+                                    <Modal.Footer>
+                                        <Button variant="secondary" onClick={handleModalClose}>취소</Button>
+                                        <Button variant="primary" onClick={handleModalClose}>확인</Button>
+                                    </Modal.Footer>
+                                </Modal>
+                                )}
                             </div>
                         </>
                     }
                 </article>
             </Row>
+            
         </Container>
     )
 }

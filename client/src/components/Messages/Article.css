@@ -230,3 +230,9 @@ article img {
     line-height: 0px;
     margin: 0px 16px;
   }
+
+.modal-dialog {
+    display: flex;
+    align-items: center;
+    min-height: calc(100% - 1rem);
+}
