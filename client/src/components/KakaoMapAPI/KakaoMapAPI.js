@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import useDidMountEffect from './useDidMountEffect';
 
 const KakaoMapAPI = () => {
   const [map, setMap] = useState(null);
@@ -18,15 +19,19 @@ const KakaoMapAPI = () => {
   }, []);
 
   const getCurrentPosBtn = () => {
-    navigator.geolocation.getCurrentPosition(
-      getPosSuccess,
-      () => alert('위치 정보를 가져오는데 실패했습니다.'),
-      {
-        enableHighAccuracy: true,
-        maximumAge: 30000,
-        timeout: 27000,
-      }
-    );
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        getPosSuccess,
+        () => alert('위치 정보를 가져오는데 실패했습니다.'),
+        {
+          enableHighAccuracy: true,
+          maximumAge: 30000,
+          timeout: 27000,
+        }
+      );
+    } else {
+      alert('Geolocation을 지원하지 않는 브라우저입니다.');
+    }
   };
 
   const getPosSuccess = (pos) => {
@@ -41,10 +46,35 @@ const KakaoMapAPI = () => {
     marker.setMap(map);
   };
 
+  useDidMountEffect(() => {
+    window.kakao.maps.event.addListener(map, "click", function (mouseEvent) {
+      var geocoder = new window.kakao.maps.services.Geocoder();
+
+      geocoder.coord2Address(
+        mouseEvent.latLng.getLng(),
+        mouseEvent.latLng.getLat(),
+        function (result, status) {
+          if (status === window.kakao.maps.services.Status.OK) {
+            var addr = !!result[0].road_address
+              ? result[0].road_address.address_name
+              : result[0].address.address_name;
+
+            console.log(addr);
+
+            marker.setMap(null);
+            marker.setPosition(mouseEvent.latLng);
+            marker.setMap(map);
+          }
+        }
+      );
+    });
+  }, [map]);
+
   return (
     <div>
       <div id="map" style={{ width: '500px', height: '500px' }}></div>
       <div onClick={getCurrentPosBtn}>현재 위치</div>
+      
     </div>
   );
 };
