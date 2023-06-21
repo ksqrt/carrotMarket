@@ -17,6 +17,7 @@ import EditProfile from "./Pages/EditProfile";
 import Error404 from "./Pages/Error404";
 import Messages from "./Pages/Messages";
 import KakaoMapAPI from "./components/KakaoMapAPI/KakaoMapAPI";
+import Admin from "./Pages/Admin";
 
 function App() {
   
@@ -38,6 +39,7 @@ function App() {
             <Route path="/messages" exact component={Messages} />;
             <Route path="/messages/:id" exact component={Messages} />;
             <Route path="/kakaoMap" exact component={KakaoMapAPI} />;
+            <Route path="/admin" exact component={Admin} />;
             <Route component={Error404} />
           </Switch>   
         <Footer />

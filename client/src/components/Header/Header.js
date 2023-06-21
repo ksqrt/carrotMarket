@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { Context } from '../../ContextStore'; // Context 모듈의 경로를 확인하세요.
 import { Navbar, NavDropdown, Nav, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import { NavLink } from 'react-router-dom';
-import { BsFillPersonFill, BsFillEnvelopeFill, BsFillPlusCircleFill } from 'react-icons/bs';
+import { BsFillPersonFill, BsFillEnvelopeFill, BsFillPlusCircleFill, BsPeopleFill } from 'react-icons/bs';
 import { useHistory } from "react-router-dom";
 import { useNavigate } from 'react-router-dom';
 import { IoLogOut } from 'react-icons/io5'
@@ -110,6 +110,12 @@ function Header() {
                                     <BsFillHeartFill />Wishlist
                             </NavLink> */}
 
+                            {userData.role === "admin" &&
+                                <NavLink className="dropdown-item" to="/admin">
+                                        <BsPeopleFill />Admin
+                                </NavLink>
+                            }
+
                             <NavDropdown.Divider />
                                 <NavLink className="dropdown-item" to="/auth/logout" onClick={() => {
                                     setUserData(null)
@@ -121,14 +127,13 @@ function Header() {
                         :
                         (<Nav>
                             <div>
-                                <button className='nav-item' id="nav-sign-in" onClick={onOpen}>로그인</button>
+                                <button className='nav-item' id="nav-sign-in" onClick={onOpen}>로그인</button>&nbsp;/&nbsp;
                                 {
                                     isOpen && <LoginModal onClose={onClose}/>
                                 }
                             </div>
-                            &nbsp;&nbsp;
                             <div>
-                                <button className='nav-item' id="nav-sign-in" onClick={onOpenRegister}>회원가입</button>
+                            <button className='nav-item' id="nav-sign-in" onClick={onOpenRegister}>회원가입</button>
                                 {
                                     isOpenRegister && <RegisterModal onCloseRegister={onCloseRegister}/>
                                 }
