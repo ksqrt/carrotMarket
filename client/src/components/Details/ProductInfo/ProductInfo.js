@@ -27,18 +27,14 @@ function ProductInfo({ params }) {
   
   const history = useHistory();
 
-
   const handleClose = () => setShowMdg(false);
   const handleShow = () => setShowMdg(true);
 
   const handleCloseArchive = () => setShowArchive(false);
   const handleShowArchive = () => setShowArchive(true);
-
   
   const handleCloseArchive2 = () => setShowArchive2(false);
   const handleShowArchive2 = () => setShowArchive2(true);
-
-
 
   const handleSubmit = (e) => {
     console.log('handleSubmit called')
@@ -282,7 +278,6 @@ function ProductInfo({ params }) {
     }
   }//수정
 
-  
 
   return (
     <div className="d-flex flex-column align-items-center">
@@ -405,7 +400,7 @@ function ProductInfo({ params }) {
         <p id='content_category'>{ params.category } · <time>{displayCreateAt(params.addedAt)}</time></p>
         <p id='content_price'>{params.price ? params.price.toLocaleString() : ''}원</p>
         <p id='content_main'>{ params.description }</p>
-        <p id='content_cnt'> 관심 ♥ · 채팅 갯수 · 조회 수 </p>
+        <p id='content_cnt'> 관심 ♥ { params.likes } · 채팅 갯수 · 조회 수 { params.views } </p>
         <div id='content_button'>
           { params.isAuth ? (
             <>
