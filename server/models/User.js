@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
-const { SALT } = require('../config/config')
+const { SALT } = require('../config/config');
+const findOrCreate = require('find-or-create-mongoose');
 
 const userSchema = new mongoose.Schema({
     id: mongoose.Types.ObjectId,
@@ -13,13 +14,21 @@ const userSchema = new mongoose.Schema({
         type: String,
         trim: true,
         lowercase: true,
-        unique: true,
+        // unique: true,
         //required: 'Email address is required',
         //match: [/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/, 'Please fill a valid email address']
     },
+    //소속 :
     provider: {
         type: String,
-        trim: true
+        trim: true,
+        default: 'local'
+    },
+    //역할
+    role: {
+        type: String,
+        trim: true,
+        default: 'member'
     },
     // password api 연동시 삭제 예정
     password: {
@@ -31,7 +40,7 @@ const userSchema = new mongoose.Schema({
     phoneNumber: {
         type: String,
         trim: true,
-        required: ['Phone number is required']
+        // required: ['Phone number is required']
     },
     gender: {
         type: String,
@@ -81,5 +90,7 @@ userSchema.pre('save', async function (next) {
     this.password = hash;
     next();
 })
+
+userSchema.plugin(findOrCreate);
 
 module.exports = mongoose.model('User', userSchema);
