@@ -7,7 +7,6 @@ module.exports = (app) => {
     [
         'http://localhost:3000',
         'http://localhost:3001',
-        'http://223.130.129.29:3000',
         'http://default-client-service-c63f5-17896865-377617edafd0.kr.lb.naverncp.com'
     ]
     , credentials: true }));

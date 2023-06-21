@@ -27,7 +27,7 @@ function Categories({ match }) {
   const [page, setPage] = useState(1);
   // const [query, setQuery] = useState("");
   const [loading, setLoading] = useState(true);
-  const [sort, setSort] = useState("oldest");
+  const [sort, setSort] = useState("newest");
   
   useEffect(() => {
     setPage(1);
@@ -99,14 +99,14 @@ function Categories({ match }) {
                 setSort("lowerPrice");
               }}
             >
-              가격 낮은 순 <BiSortDown />
+              가격 높은 순 <BiSortUp />
             </Dropdown.Item>
             <Dropdown.Item
               onClick={() => {
                 setSort("biggerPrice");
               }}
             >
-              가격 높은 순 <BiSortUp />{" "}
+              가격 낮은 순 <BiSortDown />{" "}
             </Dropdown.Item>
           </Dropdown.Menu>
         </Dropdown>
