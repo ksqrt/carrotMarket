@@ -8,26 +8,35 @@ const moment = require('moment');
 
 const productService = require('../services/productService');
 
-// 메인 페이지에서 상품 목록을 가져오는 엔드포인트
 router.get('/', async (req, res) => {
-    const { page, search } = req.query;
+    const { page, search } = req.query; // 요청의 쿼리 매개변수에서 'page'와 'search'를 추출합니다.
+
     try {
-        let products;
+        let products; // 물건을 저장할 변수를 선언합니다.
+
         if (search !== '' && search !== undefined) {
-            products = await Product.find();
-            products = products.filter(x => x.active == true)
-            products = products.filter(x => x.title.toLowerCase().includes(search.toLowerCase()) || x.city.toLowerCase().includes(search.toLowerCase()))
+            // 검색어가 존재하는 경우 실행됩니다.
+            products = await Product.find(); // 모든 물건을 검색합니다.
+            products = products.filter(x => x.active == true); // 활성화된 물건만 필터링합니다.
+            products = products.filter(x => x.title.toLowerCase().includes(search.toLowerCase()) || x.city.toLowerCase().includes(search.toLowerCase()));
+            // 검색어를 포함하는 물건만 필터링합니다. 제목(title)이나 도시(city)에서 검색어가 포함된 경우만 포함됩니다.
             res.status(200).json({ products: products, pages: products.pages });
+            // 필터링된 물건과 페이지 수를 JSON 형식으로 응답합니다.
         } else {
-            products = await Product.paginate({}, { page: parseInt(page) || 1, limit: 5 });
-            products.docs = products.docs.filter(x => x.active == true)
+            // 검색어가 없는 경우 실행됩니다.
+            products = await Product.paginate({}, { page: parseInt(page) || 1, limit: 8 });
+            // 모든 물건을 페이지별로 검색합니다. 페이지 번호는 'page' 쿼리 매개변수를 사용하며, 기본값은 1입니다. 한 페이지에 최대 5개의 물건이 표시됩니다.
+            products.docs = products.docs.filter(x => x.active == true);
+            // 검색된 물건 중에서 활성화된 물건만 필터링합니다.
             res.status(200).json({ products: products.docs, pages: products.pages });
+            // 필터링된 물건과 페이지 수를 JSON 형식으로 응답합니다.
         }
     } catch (error) {
-        res.status(500).json({ message: error.message })
+        // 오류가 발생한 경우 실행됩니다.
+        res.status(500).json({ message: error.message });
+        // 500 상태 코드와 오류 메시지를 JSON 형식으로 응답합니다.
     }
-})
-
+});
 
 // 특정 카테고리에 해당하는 상품 목록을 가져오는 엔드포인트
 router.get('/:category', async (req, res) => {
