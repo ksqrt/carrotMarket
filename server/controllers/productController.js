@@ -77,6 +77,15 @@ router.get("/specific/:id", async (req, res) => {
       jsonRes.isWished = user.wishedProducts.includes(req.params.id);
       jsonRes.isAuth = true;
     }
+
+    // 비동기로 params.likes와 params.views의 길이를 얻음
+    // Mongoose의 lean() 메소드는 쿼리 결과를 일반 JavaScript 객체로 변환하는 기능을 제공합니다.
+    // lean() 메소드를 사용하면 Mongoose의 가상 속성(virtuals) 및 훅(hooks)을 사용할 수 없습니다.
+    const likesLength = await Product.findById(req.params.id, 'likes').lean().then((result) => result.likes.length);
+    const viewsLength = await Product.findById(req.params.id, 'views').lean().then((result) => result.views.length);
+    jsonRes.likes = likesLength;
+    jsonRes.views = viewsLength;
+
     res.status(200).json(jsonRes);
   } catch (error) {
     res.status(500).json({ message: error.message });
