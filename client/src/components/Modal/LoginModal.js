@@ -1,70 +1,49 @@
 import React, { useContext, useEffect, useState } from "react";
 import "./Modal.css";
-// import { JAVASCRIPT } from '../../config/config';
 import { Context } from "../../ContextStore"; // 컨텍스트 관련 컴포넌트
-import { Spinner } from "react-bootstrap";
 import { loginUser } from "../../services/userData";
-import { snsUser } from "../../services/userData";
 import { useHistory } from "react-router-dom";
+import { Form, Button, Spinner, Alert } from "react-bootstrap";
+import { Link } from "react-router-dom";
+import SimpleSider from "../Siders/SimpleSider";
 import GoogleLogin from "./GoogleLogin";
 import NaverLogin from "./NaverLogin";
+import KakaoLogin from "./KakaoLogin";
 
 const LoginModal = ({ onClose }) => {
   const [loading, setLoading] = useState(false);
+  const [alertShow, setAlertShow] = useState(false);
   const [error, setError] = useState(null);
   const { setUserData } = useContext(Context);
   const history = useHistory();
+  const [user, setUser] = useState({
+    email: "",
+    password: "",
+  });
 
-  useEffect(() => {
-    const script = document.createElement("script");
-    script.src = "https://developers.kakao.com/sdk/js/kakao.js";
-    script.async = true;
-    document.body.appendChild(script);
+  const handleChanges = (e) => {
+    e.preventDefault();
+    setUser({ ...user, [e.target.name]: e.target.value });
+  };
 
-    script.onload = () => {
-      //src/config/config.js 에 있음
-      window.Kakao.init(process.env.REACT_APP_KAKAO_API);
-    };
-
-    return () => {
-      document.body.removeChild(script);
-    };
-  }, []);
-
-  const kakaoLogin = () => {
-    window.Kakao.Auth.login({
-      scope: "profile_nickname, account_email, gender",
-      success: function (authObj) {
-        //console.log(authObj); //토큰
-        window.Kakao.API.request({
-          url: "/v2/user/me",
-          success: (res) => {
-            const kakao_account = res.kakao_account;
-            const user = {
-              email: kakao_account.email,
-              name: kakao_account.profile.nickname,
-              provider: "kakao",
-            };
-
-            console.log(user); //계정정보
-            setLoading(true);
-            snsUser(kakao_account)
-              .then((res) => {
-                if (!res.error) {
-                  setUserData(res.user);
-                  // 로컬 스토리지에 토큰 값을 저장
-                  localStorage.setItem("user", JSON.stringify(res.user));
-                  history.push("/");
-                } else {
-                  setLoading(false);
-                  setError(res.error.message);
-                }
-              })
-              .catch((err) => console.error("error from login: ", err));
-          },
-        });
-      },
-    });
+  const handleSubmitLogin = (e) => {
+    e.preventDefault();
+    setLoading(true);
+    console.log(user);
+    loginUser(user)
+      .then((res) => {
+        if (!res.error) {
+          setUserData(res.user);
+          // 로컬 스토리지에 토큰 값을 저장
+          localStorage.setItem("user", JSON.stringify(res.user));
+          history.push("/");
+        } else {
+          setLoading(false);
+          setError(res.error.message);
+          setAlertShow(true);
+        }
+      })
+      .catch((err) => console.error("error from login: ", err));
   };
 
   return (
@@ -90,26 +69,62 @@ const LoginModal = ({ onClose }) => {
           <div className="modal-subtitle">
             간편하게 가입하고 상품을 확인하세요
           </div>
-          {loading ? (
-            <div>
-              Please wait... <Spinner animation="border" />
-            </div>
-          ) : (
-            <div className="modal-paths">
-              <a href="#" onClick={kakaoLogin}>
-                <div className="modal-path">
-                  <img
-                    src="https://m.bunjang.co.kr/pc-static/resource/7bf83f72cf54461af573.png"
-                    width="30"
-                    alt="카카오"
-                  />
-                  &nbsp;&nbsp;카카오로 이용하기
-                </div>
-              </a>
-              <GoogleLogin />
-              {/* <NaverLogin/> */}
-            </div>
-          )}
+
+          <div className="container auth-form" style={{ paddingRight: 160 }}>
+            <Form className="col-lg-6" onSubmit={handleSubmitLogin}>
+              {alertShow && (
+                <Alert
+                  variant="danger"
+                  onClose={() => setAlertShow(false)}
+                  dismissible
+                >
+                  <p>{error}</p>
+                </Alert>
+              )}
+
+              <div className="forms" style={{ paddingLeft: 20 }}>
+                <input
+                  className="emailForm"
+                  type="email"
+                  name="email"
+                  placeholder="이메일"
+                  onChange={handleChanges}
+                  required
+                />
+                <input
+                  className="pwdForm"
+                  type="password"
+                  name="password"
+                  placeholder="비밀번호"
+                  onChange={handleChanges}
+                  required
+                />
+              </div>
+              {loading ? (
+                <Button className="loginBtn btnAuth" variant="dark" disabled>
+                  Please wait... <Spinner animation="border" />
+                </Button>
+              ) : (
+                <Button
+                  variant="dark"
+                  className="loginBtn btnAuth"
+                  type="submit"
+                >
+                  당근마켓 계정으로 로그인
+                </Button>
+              )}
+            </Form>
+          </div>
+
+          <div className="modal-paths" style={{ paddingLeft: 75 }}>
+            <KakaoLogin />
+            <GoogleLogin />
+            {/* <NaverLogin/> */}
+          </div>
+
+          <div>
+            {/* <p className="bottom-msg-paragraph"><Link to="/auth/login">회원가입</Link>!</p>  */}
+          </div>
         </div>
       </div>
     </>

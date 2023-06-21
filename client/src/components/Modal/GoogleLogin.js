@@ -11,6 +11,7 @@ const GoogleLogin = () => {
   const { setUserData } = useContext(Context);
   const history = useHistory();
 
+
   function handleCredentialResponse(response) {
     // console.log("Encoded JWT ID token: " + response.credential);
     var userObject = jwt_decode(response.credential); //토큰 디코딩
@@ -18,23 +19,24 @@ const GoogleLogin = () => {
     const user = ({
       email: userObject.email,
       name: userObject.name,
+      password: 'google',
       provider: 'google',
     });
 
     console.log(user); //계정정보
-    setLoading(true);
-    snsUser(user)
-        .then(res => {
-            if (!res.error) {        
-                setUserData(res.user)
-                // 로컬 스토리지에 토큰 값을 저장
-                localStorage.setItem('user', JSON.stringify(res.user))
-                history.push('/') 
-                } else {
-                setLoading(false);
-                setError(res.error.message);
-            }
-        }).catch(err => console.error('error from login: ', err))
+      setLoading(true);
+      snsUser(user)
+          .then(res => {
+              if (!res.error) {        
+                  setUserData(res.user)
+                  // 로컬 스토리지에 토큰 값을 저장
+                  localStorage.setItem('user', JSON.stringify(res.user))
+                  history.push('/') 
+                  } else {
+                  setLoading(false);
+                  setError(res.error.message);
+              }
+          }).catch(err => console.error('error from login: ', err))
   };
 
   useEffect(() => {
@@ -55,7 +57,7 @@ const GoogleLogin = () => {
       {loading ?
       <div>Please wait... <Spinner animation="border" /></div>
       :
-      <div id='buttonDiv'></div>
+      <div id='buttonDiv' ></div>
       }
     </div>
   );

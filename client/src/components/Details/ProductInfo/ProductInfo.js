@@ -4,15 +4,14 @@ import { GrEdit } from 'react-icons/gr';
 import { MdArchive } from 'react-icons/md'
 import { BsHeart, BsHeartFill } from 'react-icons/bs';
 import { Col, Row, Spinner, Tabs, Tab, Image, OverlayTrigger, Tooltip, Modal, Form, Button } from 'react-bootstrap';
-import { getAll, archiveSell, wishProduct, deleteProduct } from '../../../services/productData';
+import { getAll, archiveSell, wishProduct, archiveSoldout, deleteProduct } from '../../../services/productData';
 import ProductCard from "../../../components/ProductCard/ProductCard";
-import Messages from '../../../Pages/Messages';
 import aImage from '../../Profile/profile_images/a.png'; // 이미지 파일 경로
 import bImage from '../../Profile/profile_images/b.png'; // 이미지 파일 경로
 import cImage from '../../Profile/profile_images/c.png'; // 이미지 파일 경로
 import dImage from '../../Profile/profile_images/d.png'; // 이미지 파일 경로
 import eImage from '../../Profile/profile_images/e.png'; // 이미지 파일 경로
-import { startChat, initializeSocket, getUserConversations } from '../../../services/messagesData'; // startChat 함수와 socket 객체를 import합니다.
+import { startChat, initializeSocket } from '../../../services/messagesData'; // startChat 함수와 socket 객체를 import합니다.
 import { RiMessage3Fill } from 'react-icons/ri';
 import { Context } from '../../../ContextStore'; // Context import
 import { Link, useHistory } from 'react-router-dom';
@@ -24,20 +23,44 @@ function ProductInfo({ params }) {
   const [loading, setLoading] = useState(true);
   const [showMsg, setShowMdg] = useState(false);
   const [showArchive, setShowArchive] = useState(false);
+  const [showArchive2, setShowArchive2] = useState(false);
+  
   const history = useHistory();
+
+
   const handleClose = () => setShowMdg(false);
   const handleShow = () => setShowMdg(true);
 
   const handleCloseArchive = () => setShowArchive(false);
   const handleShowArchive = () => setShowArchive(true);
 
-  console.log(params)
+  
+  const handleCloseArchive2 = () => setShowArchive2(false);
+  const handleShowArchive2 = () => setShowArchive2(true);
+
+
 
   const handleSubmit = (e) => {
+    console.log('handleSubmit called')
       e.preventDefault();
+      console.log('handleSubmit called2')
       archiveSell(params._id)
           .then(res => {
+            console.log('handleSubmit called3')
               setShowArchive(false);
+              history.push(`/profile/${params.seller}`);
+          })
+          .catch(err => console.log(err))
+  }
+
+  const handleSubmit2 = (e) => {
+    console.log('handleSubmit2 called')
+      e.preventDefault();
+      console.log('handleSubmit2 called2')
+      archiveSoldout(params._id)
+          .then(res => {
+            console.log('handleSubmit called3')
+              setShowArchive2(false);
               history.push(`/profile/${params.seller}`);
           })
           .catch(err => console.log(err))
@@ -196,6 +219,11 @@ function ProductInfo({ params }) {
   
     initSocket();
   }, []);
+  const onChatStart = async (e) => {
+    e.preventDefault();
+    if (!socket) return;
+    startChat(socket, { buyerId: userData._id, sellerId: params.sellerId, productId: params._id });
+  };
 
   useEffect(() => {
     const script = document.createElement("script");
@@ -206,14 +234,6 @@ function ProductInfo({ params }) {
   }, []);
 
 
-  const onChatStart = async (e) => {
-    e.preventDefault();
-    if (!socket) return;
-    startChat(socket, { buyerId: userData._id, sellerId: params.sellerId });
-  };
-
-
-
   //{params.title}: 상품 제목
   //{params.addedAt}: 업로드 날짜
   //{params.description}: 상품 설명
@@ -221,7 +241,7 @@ function ProductInfo({ params }) {
 
 
   function sendLinkCustom() {
-
+    
     if (window.Kakao) {
       window.Kakao.Link.sendCustom({
         templateId: 94886
@@ -231,12 +251,8 @@ function ProductInfo({ params }) {
 
 
   function sendLinkDefault() {
+    
     if (window.Kakao) {
-
-      if(!window.Kakao.isInitialized()){
-        window.Kakao.init("8766bf986c048a5e20e2ae4278463a7b");
-      }
-      
       window.Kakao.Link.sendDefault({
         objectType: 'feed',
         content: {
@@ -266,6 +282,7 @@ function ProductInfo({ params }) {
     }
   }//수정
 
+  
 
   return (
     <div className="d-flex flex-column align-items-center">
@@ -291,9 +308,22 @@ function ProductInfo({ params }) {
                   <>
                     <OverlayTrigger placement="top" overlay={ <Tooltip>상품 보관함 이동</Tooltip>} >
                       <span id="archive-icon" onClick={handleShowArchive}>
-                        <Link to={<MdArchive />}>보관함으로 이동</Link>
+                        <Link to={<MdArchive />}>보관함</Link>
                       </span>
                     </OverlayTrigger>
+
+                    <OverlayTrigger placement="top" overlay={<Tooltip>판매 완료</Tooltip>} >
+                      <span id="archive-icon" onClick={handleShowArchive2}>
+                      <Link to={<MdArchive />}>판매 완료</Link>
+                        
+                        {/* <Link to="/archived-sells">
+                          &nbsp;&nbsp;판매완료
+                        </Link> */}
+
+                      </span>
+                    </OverlayTrigger>
+
+
                     <span className="link-spacing"></span>
                     <OverlayTrigger placement="top" overlay={ <Tooltip>상품 수정하기</Tooltip>} >
                       <Link to={`/categories/${params.category}/${params._id}/edit`}>게시글 수정하기</Link>
@@ -309,30 +339,36 @@ function ProductInfo({ params }) {
                     <Modal.Title>보관함으로 이동하시겠습니까???</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <p>
-                        By clicking <strong>Archive</strong>, this sell will change
-                    it's status to <strong>Archived</strong>,
-                    which means that no one but you will be able see it.
-                    You may want to change the status to <strong>Actived</strong> if you have
-                    sold the item or you don't want to sell it anymore.
-                    </p>
-
-                    Don't worry, you can unarchive it at any time from Profile - Sells!
+                   보관함에 넣어두어도 언제든 다시 재판매 가능합니다!!
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={handleCloseArchive}>
-                        Close
+                        닫기
                     </Button>
                     <Button variant="success" onClick={handleSubmit}>
-                        Archive
+                        보관함에 보관
                     </Button>
                 </Modal.Footer>
               </Modal>
-                {/* <OverlayTrigger placement="top" overlay={ <Tooltip>상품 활성화하기</Tooltip>} >
-                  <span id="archive-icon" onClick={ handleShowArchive }>
-                    <Link to={<MdArchive />}></Link>
-                  </span>
-                </OverlayTrigger> */}
+
+
+              <Modal show={ showArchive2 } onHide={ handleCloseArchive2 }>
+                <Modal.Header closeButton>
+                    <Modal.Title>판매완료 되었습니까???</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    정말 판매가 완료된 상품인지 확인하시오
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={handleCloseArchive2}>
+                        닫기
+                    </Button>
+                    <Button variant="success" onClick={handleSubmit2}>
+                        판매 완료
+                    </Button>
+                </Modal.Footer>
+              </Modal>
+
               </div>
             </div>
           </div>
@@ -405,7 +441,7 @@ function ProductInfo({ params }) {
 
            <div>
             {/* <button onClick={sendLinkCustom}>Send Custom Link</button> */}
-                <button class="kakao-button" onClick = {sendLinkDefault}>카카오 공유하기</button>
+                <button onClick = {sendLinkDefault}>카카오 공유하기</button>
                  
 
             </div>

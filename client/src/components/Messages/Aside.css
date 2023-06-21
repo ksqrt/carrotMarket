@@ -10,7 +10,7 @@ aside {
 }
 
 aside h3, aside h5 {
-    font-family: serif;
+    /* font-family: serif; */
     text-align: center;
     border-bottom: 1px solid #8080804a;
     padding: 15px

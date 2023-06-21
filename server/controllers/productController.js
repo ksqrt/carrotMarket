@@ -89,7 +89,7 @@ router.post('/create', async (req, res) => {
             addedAt: new Date(),
             seller: req.user._id
         })
-
+        
         await product.save()
         await productService.userCollectionUpdate(req.user._id, product);
 
@@ -161,6 +161,17 @@ router.get('/sells/archived', async (req, res) => {
     }
 });
 
+// 사용자가 판매완료한 상품 목록을 가져오는 엔드포인트
+router.get('/sells/soldout', async (req, res) => {
+    console.log('soldout목록 가져오는 함수옴')
+    try {
+        let user = await (await User.findById(req.user._id).populate('createdSells')).toJSON();
+        res.status(200).json({ sells: user.createdSells.filter(x => x.soldout == true), user });
+    } catch (error) {
+        res.status(500).json({ message: error.message })
+    }
+});
+
 // 상품을 활성화하는 엔드포인트
 router.get('/enable/:id', async (req, res) => {
     try {
@@ -175,6 +186,17 @@ router.get('/enable/:id', async (req, res) => {
 router.get('/archive/:id', async (req, res) => {
     try {
         await Product.updateOne({ _id: req.params.id }, { active: false });
+        res.status(200).json({ msg: "Archived" });
+    } catch (error) {
+        res.status(500).json({ message: error.message })
+    }
+});
+
+// 상품을 판매완료화하는 엔드포인트
+router.get('/soldout/:id', async (req, res) => {
+    console.log('soldout왔음')
+    try {
+        await Product.updateOne({ _id: req.params.id }, { soldout: true });
         res.status(200).json({ msg: "Archived" });
     } catch (error) {
         res.status(500).json({ message: error.message })
