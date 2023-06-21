@@ -2,21 +2,20 @@ const router = require('express').Router();
 const authService = require('../services/authService');
 // const isAuth = require('../middlewares/isAuth');
 // const isGuest = require('../middlewares/isGuest');
-const { SECRET, COOKIE_NAME } = require('../config/config');
 const jwt = require('jsonwebtoken'); 
 
 router.post('/snsLogin', (req, res) => {
     console.log(req.body);
     authService.findorcreate(req.body)
         .then(token => {
-            jwt.verify(token, SECRET, (err, decoded) => {
+            jwt.verify(token, process.env.REACT_APP_SECRET, (err, decoded) => {
                 if (err) {
-                    res.clearCookie(COOKIE_NAME);
+                    res.clearCookie(process.env.REACT_APP_COOKIE_NAME);
                 } else {
                     req.user = decoded;     
                     res
                         .status(200)
-                        .cookie(COOKIE_NAME, token, { sameSite: 'none', secure: true, httpOnly: true })
+                        .cookie(process.env.REACT_APP_COOKIE_NAME, token, { sameSite: 'none', secure: true, httpOnly: true })
                         .json({ user: decoded })
                 }
             })
@@ -37,14 +36,14 @@ router.post('/register', async (req, res) => {
 router.post('/login', (req, res) => {
     authService.loginUser(req.body)
         .then(token => {
-            jwt.verify(token, SECRET, (err, decoded) => {
+            jwt.verify(token, process.env.REACT_APP_SECRET, (err, decoded) => {
                 if (err) {
-                    res.clearCookie(COOKIE_NAME);
+                    res.clearCookie(process.env.REACT_APP_COOKIE_NAME);
                 } else {
                     req.user = decoded;
                     res
                         .status(200)
-                        .cookie(COOKIE_NAME, token, { sameSite: 'none', secure: true, httpOnly: true })
+                        .cookie(process.env.REACT_APP_COOKIE_NAME, token, { sameSite: 'none', secure: true, httpOnly: true })
                         .json({ user: decoded })
                 }
             })
@@ -53,7 +52,7 @@ router.post('/login', (req, res) => {
 });
   
 router.get('/logout', (req, res) => {
-    res.clearCookie(COOKIE_NAME);
+    res.clearCookie(process.env.REACT_APP_COOKIE_NAME);
     res.status(200).json({ message: 'Successfully logged out' });
 });
 

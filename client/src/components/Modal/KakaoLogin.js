@@ -18,7 +18,7 @@ const KakaoLogin = () => {
         document.body.appendChild(script);
 
         script.onload = () => {
-            window.Kakao.init('7286bd8c9d717d7ebd38369e55aa226e');
+            window.Kakao.init(process.env.REACT_APP_KAKAO_API);
 
         };
 

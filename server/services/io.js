@@ -58,16 +58,16 @@ module.exports = Io;
 
     /*
 const jwt = require('jsonwebtoken');
-const { SECRET, COOKIE_NAME } = require('../config/config');
+const { process.env.REACT_APP_SECRET, process.env.REACT_APP_COOKIE_NAME } = require('../config/config');
 
   io.use((socket, next) => { // socket.io의 미들웨어를 등록하는 메서드
     // jwt -> authService.js의 loginUser 참고할 것. authcontroller.js 의 /login 에 쿠키로 저장됨.
     console.log(socket.handshake.query.token); 
     if (socket.handshake.query && socket.handshake.query.token) {
-      jwt.verify(socket.handshake.query.token, SECRET, (err, decoded) => {
+      jwt.verify(socket.handshake.query.token, process.env.REACT_APP_SECRET, (err, decoded) => {
         if (err) {
           console.log(err); // 오류 로깅
-          console.log('SECRET: ', SECRET);
+          console.log('process.env.REACT_APP_SECRET: ', process.env.REACT_APP_SECRET);
           socket.disconnect(); // 연결 종료
           return next(new Error('Authentication error'));
         }

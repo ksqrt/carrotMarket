@@ -6,7 +6,6 @@ const { v4: uuidv4 } = require('uuid');
 const path = require('path');
 
 const { cloudinary } = require('../config/cloudinary');
-const { CLOUDINARY_STORAGE } = require('../config/config');
 const fs = require('fs');
 const { promisify } = require('util');
 
@@ -45,7 +44,7 @@ async function findOneAndDelete(id, userId) {
 
 // async function uploadImage(image) {
 //     const uploadResponse = await cloudinary.uploader.upload(image, {
-//         upload_preset: CLOUDINARY_STORAGE,
+//         upload_preset: process.env.REACT_APP_CLOUDINARY_STORAGE,
 //     }, { quality: "auto" });
 
 //     let imageUrl = uploadResponse.url;

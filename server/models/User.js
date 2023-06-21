@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
-const { SALT } = require('../config/config');
 const findOrCreate = require('find-or-create-mongoose');
 
 const userSchema = new mongoose.Schema({
@@ -85,7 +84,7 @@ const userSchema = new mongoose.Schema({
 });
 
 userSchema.pre('save', async function (next) {
-    let salt = await bcrypt.genSalt(SALT);
+    let salt = await bcrypt.genSalt(process.env.REACT_APP_SALT);
     let hash = await bcrypt.hash(this.password, salt);
     this.password = hash;
     next();
