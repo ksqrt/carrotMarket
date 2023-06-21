@@ -5,6 +5,7 @@ import { createProduct } from "../services/productData";
 import SimpleSider from "../components/Siders/SimpleSider";
 import "../components/CreateSell/CreateSell.css";
 import "../components/CreateSell/addproduct.css";
+import KakaoMapAPI from "../components/KakaoMapAPI/KakaoMapAPI";
 class AddProduct extends Component {
   constructor(props) {
     super(props);
@@ -13,8 +14,9 @@ class AddProduct extends Component {
       price: "",
       description: "",
       city: "",
-      category: "",
+      category: "clothing",
       image: "",
+      previewURL: "",
       loading: false,
       alertShow: false,
       errors: [],
@@ -52,6 +54,22 @@ class AddProduct extends Component {
 
     if (e.target.files) {
       this.setState({ image: e.target.files[0] });
+
+      e.preventDefault();
+      let reader = new FileReader();
+      let image = e.target.files[0];
+      reader.onloadend = () => {
+        this.setState({
+          image: image,
+          previewURL: reader.result,
+        });
+      };
+      reader.readAsDataURL(image);
+    }
+
+    if (e.target.name == "category") {
+      console.log(e.target.name);
+      console.log(value);
     }
   }
 
@@ -88,15 +106,22 @@ class AddProduct extends Component {
       reader.onerror = (error) => reject(error);
     });
   }
+
   fileInput = React.createRef();
 
   handlerButtonClick = (e) => {
     this.fileInput.current.click();
   };
+
   render() {
+    let profile_preview = null;
+    if (this.state.image !== "") {
+      profile_preview = (
+        <img className="imge" src={this.state.previewURL}></img>
+      );
+    }
     return (
       <>
-        {/* <SimpleSider /> */}
         <div className="container">
           <h1 className="heading">Add a Product</h1>
           <Form onSubmit={this.onSubmitHandler}>
@@ -127,14 +152,41 @@ class AddProduct extends Component {
                     }
                   />
                 </button>
+                {profile_preview}
                 <Form.Control
                   name="image"
                   ref={this.fileInput}
                   type="file"
                   className="imginput"
                   required
+                  multiple
                   onChange={this.onChangeHandler}
                 />
+              </Col>
+            </Row>
+            <Row>
+              <Col md="2"></Col>
+              <Col>
+                <div className="imgfont">
+                  <a
+                    style={{
+                      fontWeight: "700",
+                    }}
+                  >
+                    * 상품 이미지는 640x640에 최적화 되어 있습니다.
+                  </a>
+                  <br />- 상품 이미지는 PC에서는 1:1, 모바일에서는 1:1.23 비율로
+                  보여집니다.
+                  <br /> - 이미지는 상품 등록 시 정사각형으로 잘려서 등록됩니다.
+                  <br />- 이미지를 클릭할 경우 원본 이미지를 확인할 수 있습니다.
+                  <br />- 이미지를 클릭 후 이동하여 등록순서를 변경할 수
+                  있습니다.
+                  <br />- 큰 이미지일 경우 이미지가 깨지는 경우가 발생할 수
+                  있습니다.
+                  <br />
+                  최대 지원 사이즈인 640 X 640으로 리사이즈 해서
+                  올려주세요.(개당 이미지 최대 10M)
+                </div>
               </Col>
             </Row>
             <hr />
@@ -185,21 +237,24 @@ class AddProduct extends Component {
                 <Form.Control
                   className="cateselect"
                   as="select"
-                  defaultValue="Choose..."
                   name="category"
                   required
                   onChange={this.onChangeHandler}
                 >
-                  <option>의류</option>
-                  <option>가전제품</option>
-                  <option>가구 및 인테리어</option>
-                  <option>자동차 및 오토바이</option>
-                  <option>스포츠 및 레저용품</option>
-                  <option>아동용품</option>
-                  <option>도서 및 문구용품</option>
-                  <option>신발</option>
-                  <option>악세서리 및 장신구</option>
-                  <option>뷰티 및 화장품</option>
+                  <option selected value="clothing">
+                    의류
+                  </option>
+                  <option value="electronics">가전제품</option>
+                  <option value="furnitureAndInterior">가구 및 인테리어</option>
+                  <option value="automotive">자동차 및 오토바이</option>
+                  <option value="sportsAndLeisure">스포츠 및 레저용품</option>
+                  <option value="kidsItems">아동용품</option>
+                  <option value="booksAndStationery">도서 및 문구용품</option>
+                  <option value="shoes">신발</option>
+                  <option value="accessoriesAndJewelry">
+                    악세서리 및 장신구
+                  </option>
+                  <option value="beautyAndCosmetics">뷰티 및 화장품</option>
                 </Form.Control>
               </Col>
             </Row>
@@ -211,10 +266,35 @@ class AddProduct extends Component {
                   <span className="redfont">*</span>
                 </Form.Label>
               </Col>
+              <Col md="4">
+                <Form.Control
+                  className="cityinput"
+                  name="city"
+                  placeholder="서울"
+                  required
+                  onChange={this.onChangeHandler}
+                />
+              </Col>
+              <Col>
+                <KakaoMapAPI />
+              </Col>
+            </Row>
+            <hr />
+            <Row>
+              <Col md="2">
+                상품 설명
+                <span className="redfont">*</span>
+              </Col>
               <Col>
                 <Form.Control
-                  name="city"
-                  placeholder="Sofia"
+                  style={{
+                    width: "100%",
+                    height: "200px",
+                    resize: "none",
+                  }}
+                  as="textarea"
+                  rows={3}
+                  name="description"
                   required
                   onChange={this.onChangeHandler}
                 />
