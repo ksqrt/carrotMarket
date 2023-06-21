@@ -27,7 +27,7 @@ function Categories({ match }) {
   const [page, setPage] = useState(1);
   // const [query, setQuery] = useState("");
   const [loading, setLoading] = useState(true);
-  const [sort, setSort] = useState("oldest");
+  const [sort, setSort] = useState("newest");
   
   useEffect(() => {
     setPage(1);

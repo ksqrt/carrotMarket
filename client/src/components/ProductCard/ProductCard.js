@@ -34,14 +34,15 @@ function ProductCard({ params }) {
       <Card.Body>
         <Card.Title style={{ fontSize: '16px', fontWeight: 'bold', marginBottom: '8px' }}>
           {params.title.length > 10 ? `${params.title.substring(0, 15)}...` : params.title}
+          <br />
+          <a style={{ color: '#808080', fontSize: '12px' }}>{params.city}</a>
         </Card.Title>
         {/* <Card.Text style={{ color: '#555', fontSize: '14px', marginBottom: '12px' }}>
           {params.description}
         </Card.Text> */}
         {/* 조회수 추가 */}
       </Card.Body>
-   
-    <Card.Footer style={{ backgroundColor: '#f8f9fa', border: 'none' }}>
+    <Card.Footer style={{ backgroundColor: '#f8f9fa', border: 'none' , borderRadius: '10px'  }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <div>
           <strong style={{ color: '#FF7E36', fontSize: '18px' }}>{params.price.toLocaleString()} 원 </strong>
@@ -53,17 +54,17 @@ function ProductCard({ params }) {
                 {params.addedAt}
               </Moment>
             )}
-            <br />
-            {params.city}
+            {/* <br />
+            {params.city} */}
             {/* <Link to="" id="heartIcon"><BsHeart /></Link> */}
           </small>
         </div>
         <div>
           <a style={{ color: '#FF7E36', fontWeight: 'bold', textDecoration: 'none' }}>
-            관심 <span style={{ color: '#FF7E36' }}>♥</span> {like}
+            <span style={{ color: '#FF7E36' }}>♥</span> {like}
           </a>
           <br />
-          <a style={{ color: '#555', fontSize: '14px' }}>조회수 {view}</a>
+          <a style={{ color: '#555', fontSize: '12px' }}>조회 {view}</a>
         </div>
       </div>
     </Card.Footer>

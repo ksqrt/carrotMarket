@@ -34,12 +34,13 @@
 #nav-sign-in {
     color: white;
     padding: 10px;
-    background: #343a40;
+    background: #FF7E36;
     border-radius: 5px;
+    border : none;
 }
 
 #nav-sign-in:hover{
-    background-color: #23272b;
+    background-color: #FF9F40;
 }
 
 .dropdown-toggle::after {
