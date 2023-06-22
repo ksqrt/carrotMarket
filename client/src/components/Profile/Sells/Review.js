@@ -49,6 +49,7 @@ const ReviewForm = () => {
     const fetchReviews = async () => {
       const fetchedReviews = await getReviews(id);
       setReviews(fetchedReviews);
+      console.log(fetchedReviews,'이거확인용@@#!#@$#$!');
     };
 
     fetchReviews();
