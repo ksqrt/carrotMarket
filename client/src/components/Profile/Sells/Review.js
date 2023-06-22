@@ -5,8 +5,8 @@ import './ReviewForm.css';
 import { Context } from "../../../ContextStore";
 
 const ReviewForm = () => {
-  const { userData } = useContext(Context); // 사용자 id 가져오기
-//   const { id } = useParams();
+  const { userData } = useContext(Context);
+  const { id } = useParams();
   const [content, setContent] = useState('');
   const [reviews, setReviews] = useState([]);
   const [error, setError] = useState('');
@@ -16,46 +16,43 @@ const ReviewForm = () => {
     setError('');
   };
 
-    const handleSubmit = async (event) => {
-        event.preventDefault();
+  const handleSubmit = async (event) => {
+    event.preventDefault();
 
-        if (content.length < 10 || content.length > 500) {
-            setError('10글자 이상 500글자 이하');
-            return;
-        }
+    if (content.length < 10 || content.length > 500) {
+      setError('10글자 이상 500글자 이하');
+      return;
+    }
 
-        const reviewData = {
-            id: userData._id,
-            content,
-        };
-
-        console.log(reviewData, '처음 js에서 보내기');
-
-        try {
-            await createReview(reviewData);
-            window.location.reload(); // Refresh the page
-        } catch (error) {
-            console.error('Error creating review:', error);
-        }
+    const userName = await getUserName(userData._id);
+    const reviewData = {
+      id: userData._id,
+      content,
+      seller: id,
+      name: userName,
     };
-  
-  
+
+    console.log(reviewData, '처음 js에서 보내기');
+
+    try {
+      await createReview(reviewData);
+      window.location.reload();
+    } catch (error) {
+      console.error('Error creating review:', error);
+    }
+  };
 
   useEffect(() => {
-    console.log(userData._id)
+    console.log(id, '이것은 판매자 아이디값입니다');
+    console.log(userData._id, '이것은 로그인 아이디값입니다');
+    console.log(userData);
     const fetchReviews = async () => {
-      const fetchedReviews = await getReviews(userData._id);
-      const reviewsWithUserNames = await Promise.all(
-        fetchedReviews.map(async (review) => {
-          const userName = await getUserName(userData._id);
-          return { ...review, userName };
-        })
-      );
-      setReviews(reviewsWithUserNames);
+      const fetchedReviews = await getReviews(id);
+      setReviews(fetchedReviews);
     };
 
     fetchReviews();
-  }, [userData._id]);
+  }, [id, userData._id]);
 
   return (
     <div className="review-page">
@@ -71,7 +68,7 @@ const ReviewForm = () => {
                   {new Date(review.createdAt).toLocaleString()}
                 </p>
                 <div className="review-board__user">
-                  <span className="review-board__username">{review.userName}</span>
+                  <span className="review-board__username">{review.name}</span>
                 </div>
               </div>
             ))}
@@ -82,7 +79,7 @@ const ReviewForm = () => {
         <div className="review-form__content">
           <label htmlFor="content" className="review-form__label">
             <h3>거래 후기</h3>
-          </label> 
+          </label>
           <textarea
             id="content"
             value={content}

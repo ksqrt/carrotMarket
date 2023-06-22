@@ -13,12 +13,14 @@ const productService = require('../services/productService');
 
 
 router.post('/create', async (req, res) => {
-    const { id, content } = req.body;
+    const { id, content, seller, name } = req.body;
   
     try {
       const review = new Review({
         id,
-        content
+        content,
+        name,
+        seller
       });
   
       await review.save();
@@ -28,11 +30,12 @@ router.post('/create', async (req, res) => {
       res.status(500).json({ error: 'Failed to create review' });
     }
   });
+  
 
   // Get reviews by ID
 router.get('/find/:id', async (req, res) => {
     try {
-      const reviews = await Review.find({ id: req.params.id });
+      const reviews = await Review.find({ seller: req.params.id });
       res.json(reviews);
     } catch (error) {
       console.error(error);
