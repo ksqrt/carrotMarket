@@ -3,10 +3,14 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@emotion/react": "^11.11.1",
+    "@emotion/styled": "^11.11.0",
     "@fortawesome/fontawesome-svg-core": "^6.4.0",
     "@fortawesome/free-brands-svg-icons": "^6.4.0",
     "@fortawesome/free-solid-svg-icons": "^6.4.0",
     "@fortawesome/react-fontawesome": "^0.2.0",
+    "@mui/material": "^5.13.5",
+    "@mui/x-date-pickers": "^6.8.0",
     "@react-icons/all-files": "^4.1.0",
     "@testing-library/jest-dom": "^5.11.9",
     "@testing-library/react": "^11.2.5",
@@ -14,6 +18,7 @@
     "axios": "^1.4.0",
     "bootstrap": "^4.6.0",
     "config": "^3.3.9",
+    "dayjs": "^1.11.8",
     "deep-equal": "^2.2.1",
     "jwt-decode": "^3.1.2",
     "kakao-js-sdk": "^1.2.3",
@@ -61,6 +66,5 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
-  "proxy": "http://101.79.11.48:5000"
+  }
 }

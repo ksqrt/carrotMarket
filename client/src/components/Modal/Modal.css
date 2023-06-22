@@ -21,7 +21,7 @@
     top: 50%; 
     padding: 30px;
     box-sizing: border-box;
-    transform: translate(-50%, 80%); 
+    transform: translate(-50%, 40%); 
 }
 .modal-close {
     position: absolute;
@@ -42,21 +42,70 @@
 }
 .modal-subtitle {
     line-height: 1.5;
-    margin-bottom: 35px;
+    margin-bottom: 20px;
     text-align: center;
 }
 .modal-paths {
     padding: 0px 70px;
+    align-items: center;
+    text-align: center;
+    margin-bottom: 15px;
 }
-
-.modal-path {
-    width: 100%;
-    height: 38px;
-    box-shadow: rgba(0, 0, 0, 0.05) 0px 1px 7px 0px;
+.emailForm, .nameForm, .pwdForm {
+    margin-bottom: 12px;
+    padding-top: 5px;
+    font-family: "Google Sans",arial,sans-serif;
+    text-align: center;
+    font-size: 13px;
+    letter-spacing: 0.25px;
+    background: rgb(239, 239, 239);
+    border: white;
+}
+.loginBtn {
+    width: 208px; 
+    height: 40px;
+    border: 1px solid #dadce0;
+    /* box-shadow: rgba(0, 0, 0, 0.05) 0px 1px 7px 0px; */
     background: rgb(255, 255, 255);
+    font-family: "Google Sans",arial,sans-serif;
+    color: black;
+    font-size: 14px;
+    letter-spacing: 0.25px;
     text-align: center;
     border-radius: 4px;
     margin-bottom: 12px;
     padding-top: 5px;
     position: relative;
+}
+.loginBtn:hover {
+    background: orange;
+    border: 1px solid #dadce0;
+
+}
+
+.modal-path {
+    width: 208px;
+    height: 40px;
+    border: 1px solid #dadce0;
+    /* box-shadow: rgba(0, 0, 0, 0.05) 0px 1px 7px 0px; */
+    background: rgb(255, 255, 255);
+    font-family: "Google Sans",arial,sans-serif;
+    font-size: 14px;
+    letter-spacing: 0.25px;
+    text-align: center;
+    border-radius: 4px;
+    margin-bottom: 12px;
+    padding-top: 5px;
+    position: relative;
+}
+.modal-path:hover {
+    background: #F8FAFF;
+    border: 1px solid lightblue;
+}
+
+.toLogin {
+    font-family: "Google Sans",arial,sans-serif;
+    font-size: 12px;
+    letter-spacing: 0.25px;
+    text-align: center;
 }

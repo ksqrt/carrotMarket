@@ -1,9 +1,8 @@
 import { io as IO } from "socket.io-client";
+import url from "../url.js";
 
-//initializeSocket: 소켓을 초기화하고 서버에 연결하는 함수입니다. IO 함수를 사용하여 http://localhost:5000에 소켓을 생성하고 반환합니다.
 export const initializeSocket = async () => {
-  const socket = IO("http://localhost:5000");
-  // const socket = IO("http://101.79.11.48:5000");
+  const socket = IO(url);
 
   socket.on('connect', () => {
     console.log('Socket connected:', socket.id);
