@@ -1,10 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { createReview, getReviews, getUserName } from '../../../services/ReviewData';
 import { useParams } from 'react-router-dom';
 import './ReviewForm.css';
+import { Context } from "../../../ContextStore";
 
 const ReviewForm = () => {
-  const { id } = useParams();
+  const { userData } = useContext(Context); // 사용자 id 가져오기
+//   const { id } = useParams();
   const [content, setContent] = useState('');
   const [reviews, setReviews] = useState([]);
   const [error, setError] = useState('');
@@ -14,30 +16,38 @@ const ReviewForm = () => {
     setError('');
   };
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
+    const handleSubmit = async (event) => {
+        event.preventDefault();
 
-    if (content.length < 10 || content.length > 500) {
-      setError('10글자 이상 500글자 이하');
-      return;
-    }
+        if (content.length < 10 || content.length > 500) {
+            setError('10글자 이상 500글자 이하');
+            return;
+        }
 
-    const reviewData = {
-      id,
-      content,
+        const reviewData = {
+            id: userData._id,
+            content,
+        };
+
+        console.log(reviewData, '처음 js에서 보내기');
+
+        try {
+            await createReview(reviewData);
+            window.location.reload(); // Refresh the page
+        } catch (error) {
+            console.error('Error creating review:', error);
+        }
     };
-
-    console.log(reviewData, '처음 js에서 보내기');
-
-    createReview(reviewData);
-  };
+  
+  
 
   useEffect(() => {
+    console.log(userData._id)
     const fetchReviews = async () => {
-      const fetchedReviews = await getReviews(id);
+      const fetchedReviews = await getReviews(userData._id);
       const reviewsWithUserNames = await Promise.all(
         fetchedReviews.map(async (review) => {
-          const userName = await getUserName(id);
+          const userName = await getUserName(userData._id);
           return { ...review, userName };
         })
       );
@@ -45,7 +55,7 @@ const ReviewForm = () => {
     };
 
     fetchReviews();
-  }, [id]);
+  }, [userData._id]);
 
   return (
     <div className="review-page">

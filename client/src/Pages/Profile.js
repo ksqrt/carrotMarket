@@ -114,7 +114,16 @@ function Profile({ match, history }) {
           </div>
         </>
       ) : (
+        <div>   
         <SellerProfile params={user} history={history} />
+        <button
+                className={`sidebar-button ${review ? 'active' : ''}`}
+                onClick={handleReview}
+              >
+                거래 후기
+              </button>
+        {review && <Review />} {/* Display the Review component when "review" state is true */}
+        </div>
       )}
     </>
   );
