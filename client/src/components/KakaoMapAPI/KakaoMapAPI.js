@@ -39,12 +39,14 @@ const KakaoMapAPI = () => {
       pos.coords.latitude,
       pos.coords.longitude
     );
-    map.panTo(currentPos);
+    if (map && marker) {  // ensure that map and marker are not null
+        map.panTo(currentPos);
 
-    marker.setMap(null);
-    marker.setPosition(currentPos);
-    marker.setMap(map);
-  };
+        marker.setMap(null);
+        marker.setPosition(currentPos);
+        marker.setMap(map);
+    }
+};
 
   useDidMountEffect(() => {
     window.kakao.maps.event.addListener(map, "click", function (mouseEvent) {
@@ -61,9 +63,11 @@ const KakaoMapAPI = () => {
 
             console.log(addr);
 
-            marker.setMap(null);
-            marker.setPosition(mouseEvent.latLng);
-            marker.setMap(map);
+            if (marker) {  // ensure that marker is not null
+                marker.setMap(null);
+                marker.setPosition(mouseEvent.latLng);
+                marker.setMap(map);
+            }
           }
         }
       );

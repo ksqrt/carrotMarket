@@ -227,7 +227,6 @@ router.get('/views/:id', async (req, res) => {
     }
 
     } catch(error) {
-        console.log('여기 일단 옴ㅎㅇ');
         console.log(error);
         res.status(500).json({ message: error.message })
     }

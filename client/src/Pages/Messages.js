@@ -61,6 +61,42 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
     let currentDate = null; // 날짜 구분선
 
     // 약속 잡기 버튼
+    const tempAppointment = () => {
+        setModalState(prevState => ({ ...prevState, modalOpen: false }));
+        // dayjs를 사용해서 날짜 객체를 만들어주기
+        const date = dayjs(modalState.date);
+
+        // 날짜 정보를 얻기
+        const year = date.year(); // 년도
+        const month = date.month() + 1; // 월 (dayjs는 0-11 사이의 값을 반환하므로 1을 더해줍니다)
+        const day = date.date(); // 일
+
+        // 요일 정보를 얻기
+        const weekdays = ["일", "월", "화", "수", "목", "금", "토"];
+        const weekday = weekdays[date.day()]; // 요일
+
+        // 시간 정보를 얻기
+        let hour = date.hour();
+        let meridiem = "오전";
+
+        // 24시간제를 12시간제로 변환하고, 오전/오후를 설정
+        if(hour >= 12) {
+            meridiem = "오후";
+            hour -= 12;
+        }
+
+        if(hour === 0) { // 12시 처리
+            hour = 12;
+        }
+
+        // 분 정보를 얻기
+        const minute = date.minute();
+
+        const message = `상대방이 ${year}년 ${month}월 ${day}일 (${weekday}) ${meridiem} ${hour}:${minute < 10 ? '0' : ''}${minute}에 \n 약속을 만들었어요. 약속은 꼭 지켜주세요!`;
+
+       // const message = ` 상대방이 ${dayjs(modalState.date).format('YYYY.MM.DD ddd A h:mm')}에 약속을 만들었어요. \n 약속은 꼭 지켜주세요!`;
+        sendMessage(socket, { chatId: selected.chats._id, senderId: null, message});
+    };
     const [modalState, setModalState] = useState({
         date: null,
         modalOpen: false,
@@ -68,7 +104,7 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
         content: ''
     });
 
-        // 달력 창 열기
+        // 달력 창 열릴 때 실행
     const openDateTimePicker = (event) => {
         event.preventDefault()
         setModalState({ ...modalState, date: dayjs(), datePickerOpen: true, content: '', modalOpen: false, });
@@ -86,7 +122,7 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
         }));
     };
 
-    // 달력 cancel 버튼 눌렀을 때 && 다른 곳 클릭했을 때 창닫기
+    // 달력 창이 닫힐 때 실행
     const handleDatePickerClose = () => {
         setModalState(prevState => ({ ...prevState, datePickerOpen: false }));
     };
@@ -297,7 +333,7 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
                                     </div>
                                 </div>
                                     <button> 후기 보내기 버튼 </button> {/* 약속 잡기 성공 후 sold out 시 */}
-                                    <button> 약속 잡기 버튼 </button> {/* (다른 사람과 약속 잡기가 되있지 않을 때) */}
+                                    <button onClick={openDateTimePicker}> 약속 잡기 버튼 </button> {/* (다른 사람과 약속 잡기가 되있지 않을 때) */}
                                 </Alert>
                             }
                             <div ref={chatContainerRef} id="chat-selected-body" className="chat-selected-body col-lg-12" style={{backgroundImage: `url(${bgUrl})`}}>
@@ -308,11 +344,18 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
                                     return (
                                         <Fragment key={index}>
                                             {messageDate !== currentDate && (currentDate = messageDate) && <div className="hr-sect" >{currentDate}</div>}
-                                            <div className={selected.myId === x.senderId ? 'me' : "not-me"}>
-                                                <span className="timestamp">{x.sentAt ? new Date(x.sentAt).toLocaleTimeString('ko-KR', { hour: 'numeric', minute: 'numeric', hour12: true }) : ""}</span> &nbsp;
-                                                <span className="message"><Linkify>{x.message}</Linkify></span>
-                                                {selected.myId !== x.senderId && <img className="user-avatar" src={selected.isBuyer ? selected.chats.seller.avatar : selected.chats.buyer.avatar} alt="user-avatar" />}
-                                            </div>
+                                            {x.senderId === null ? (
+                                                // This is a system message
+                                                <div className="system-message-div">
+                                                    <span className="system-message" style={{ whiteSpace: 'pre-wrap' }} ><Linkify>{x.message}</Linkify></span>
+                                                </div>
+                                            ) : (
+                                                <div className={selected.myId === x.senderId ? 'me' : "not-me"}>
+                                                    <span className="timestamp">{x.sentAt ? new Date(x.sentAt).toLocaleTimeString('ko-KR', { hour: 'numeric', minute: 'numeric', hour12: true }) : ""}</span> &nbsp;
+                                                    <span className="message"><Linkify>{x.message}</Linkify></span>
+                                                    {selected.myId !== x.senderId && <img className="user-avatar" src={selected.isBuyer ? selected.chats.seller.avatar : selected.chats.buyer.avatar} alt="user-avatar" />}
+                                                </div>
+                                            )}
                                         </Fragment>
                                     )
                                 } else {
@@ -340,7 +383,7 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
                                             <button className={`${styles['menu-item']} ${styles.red}`}> <div style={{fontSize:'16px', marginBottom:'7px'}} >🤗</div> </button>
                                             <button className={`${styles['menu-item']} ${styles.purple}`}> </button>
                                             <button className={`${styles['menu-item']} ${styles.orange}`}>  </button>
-                                            <button className={`${styles['menu-item']} ${styles.lightblue}`} onClick={ onOpen }> <FaMapMarkedAlt size={20} style={{marginBottom:'8px'}} /> </button>
+                                            <button className={`${styles['menu-item']} ${styles.lightblue}`} onClick={ onOpen }> <FaMapMarkedAlt size={20} style={{marginBottom:'8px'}} /> {/*{console.log('modalstate 값 확인 : ',modalState)}*/} </button>
                                             {
                                                 isOpen && <KakaoMapAPI />       
                                             }
@@ -388,7 +431,7 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
                                     </Modal.Body>
                                     <Modal.Footer>
                                         <Button variant="secondary" onClick={handleModalClose}>취소</Button>
-                                        <Button variant="primary" onClick={handleModalClose}>확인</Button>
+                                        <Button variant="primary" onClick={tempAppointment}>확인</Button>
                                     </Modal.Footer>
                                 </Modal>
                                 )}

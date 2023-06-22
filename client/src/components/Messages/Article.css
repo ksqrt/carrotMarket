@@ -6,7 +6,7 @@
 article img {
     width: 50px;
     height: 50px;
-    border-radius: 100px;
+    /* border-radius: 100px; */
     object-fit: cover;
 }
 
@@ -66,9 +66,9 @@ article img {
     resize: none;
 }
 
-.form-control{
+/* .form-control{
     width: 150px;
-}
+} */
 
 .chat-selected-body {
     overflow-y: auto;
@@ -235,4 +235,18 @@ article img {
     display: flex;
     align-items: center;
     min-height: calc(100% - 1rem);
+}
+
+.system-message-div{
+    display: flex;
+    justify-content: center;
+    margin: auto;
+    margin-top: 50px;
+    margin-bottom: 50px;
+}
+
+.system-message{
+    font-size: 13px;
+    font-weight: bold;
+    color: #222521;
 }
