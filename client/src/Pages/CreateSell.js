@@ -134,7 +134,10 @@ class AddProduct extends Component {
                 <p>{this.state.errors}</p>
               </Alert>
             )}
-            <h3 className="mainfont">기본 정보</h3>
+            <h2 className="mainfont">
+              판매 정보 &nbsp;
+              <a className="mainsubfont">*필수항목</a>
+            </h2>
             <hr />
             {/* 이미지 추가 */}
             <Row className="rowinterval">
@@ -152,7 +155,14 @@ class AddProduct extends Component {
                     }
                   />
                 </button>
-                {profile_preview}
+                <button
+                  style={{
+                    border: "none",
+                    backgroundColor: "white",
+                  }}
+                >
+                  {profile_preview}
+                </button>
                 <Form.Control
                   name="image"
                   ref={this.fileInput}
@@ -173,25 +183,24 @@ class AddProduct extends Component {
                       fontWeight: "700",
                     }}
                   >
-                    * 상품 이미지는 640x640에 최적화 되어 있습니다.
+                    * 상품 이미지는 700x500에 최적화 되어 있습니다.
                   </a>
                   <br />- 상품 이미지는 PC에서는 1:1, 모바일에서는 1:1.23 비율로
                   보여집니다.
-                  <br /> - 이미지는 상품 등록 시 정사각형으로 잘려서 등록됩니다.
                   <br />- 이미지를 클릭할 경우 원본 이미지를 확인할 수 있습니다.
                   <br />- 이미지를 클릭 후 이동하여 등록순서를 변경할 수
                   있습니다.
                   <br />- 큰 이미지일 경우 이미지가 깨지는 경우가 발생할 수
                   있습니다.
                   <br />
-                  최대 지원 사이즈인 640 X 640으로 리사이즈 해서
-                  올려주세요.(개당 이미지 최대 10M)
+                  최대 지원 사이즈인 700 X 500으로 리사이즈 해서 올려주세요.
+                  (이미지 최대 10M)
                 </div>
               </Col>
             </Row>
             <hr />
             <Row className="rowinterval">
-              <Col md="2">
+              <Col className="itemscenter" md="2">
                 <Form.Label>
                   제목
                   <span className="redfont">*</span>
@@ -199,7 +208,7 @@ class AddProduct extends Component {
               </Col>
               <Col>
                 <Form.Control
-                  className="titleinput"
+                  className="titleinput,itemscenter"
                   type="text"
                   placeholder="제목을 입력해주세요"
                   name="title"

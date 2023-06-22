@@ -1,232 +1,229 @@
 .chatlist_scroll {
-    overflow-y: auto; 
-    max-height: 850px; 
-} 
+  overflow-y: auto;
+  max-height: 850px;
+}
 
 article img {
-    width: 50px;
-    height: 50px;
-    border-radius: 100px;
-    object-fit: cover;
+  width: 50px;
+  height: 50px;
+  border-radius: 100px;
+  object-fit: cover;
 }
 
 .chat-selected-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    border-bottom: 1px solid #8080804a;
-    padding: 4px 25px;
-    margin: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid #8080804a;
+  padding: 4px 25px;
+  margin: auto;
 }
 
 .me {
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-end;
-    align-items: flex-end;
-    margin: 15px 0px;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: flex-end;
+  margin: 15px 0px;
 }
 
 .me .message {
-    text-align: left;
-    width: fit-content;
-    max-width: 50%;
-    font-size: 9pt;
-    background: #FF7E36;
-    padding: 10px;
-    border-radius: 20px;
-    color: white;
-    white-space: pre-wrap;
-    display: inline-block;
-    overflow-wrap: break-word;
+  text-align: left;
+  width: fit-content;
+  max-width: 50%;
+  font-size: 9pt;
+  background: #ff7e36;
+  padding: 10px;
+  border-radius: 20px;
+  color: white;
+  white-space: pre-wrap;
+  display: inline-block;
+  overflow-wrap: break-word;
 }
 
 .not-me {
-    display: flex;
-    flex-direction: row-reverse;
-    justify-content: flex-end;
-    align-items: flex-end;
-    margin: 15px 0px;
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: flex-end;
+  align-items: flex-end;
+  margin: 15px 0px;
 }
 
 .not-me .message {
-    width: fit-content;
-    max-width: 50%;
-    font-size: 9pt;
-    background: #F2F3F7;
-    padding: 10px;
-    border-radius: 20px;
-    white-space: pre-wrap;
-    display: inline-block;
-    overflow-wrap: break-word;
+  width: fit-content;
+  max-width: 50%;
+  font-size: 9pt;
+  background: #f2f3f7;
+  padding: 10px;
+  border-radius: 20px;
+  white-space: pre-wrap;
+  display: inline-block;
+  overflow-wrap: break-word;
 }
 
 .chat-selected-footer textarea {
-    height: 40px;
-    resize: none;
-}
-
-.form-control{
-    width: 150px;
+  height: 40px;
+  resize: none;
 }
 
 .chat-selected-body {
-    overflow-y: auto;
-    height: 600px; /* 스크롤이 보일 최대 높이 */
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size:20%;
+  overflow-y: auto;
+  height: 600px; /* 스크롤이 보일 최대 높이 */
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 20%;
 }
 
-.chat-selected-body::-webkit-scrollbar { /* 스크롤 숨김 */
-    background-color: transparent;
+.chat-selected-body::-webkit-scrollbar {
+  /* 스크롤 숨김 */
+  background-color: transparent;
 }
 
-  .dropdown {
-    position: relative;
-    display: inline-block;
-  }
-  
-   .dropdown-button {
-    border: none;
-    cursor: pointer;
-    background-color: white;
-    }
-
-  .dropdown-content {
-    display: none;
-    font-size: 13px;
-    position: absolute;
-    border-radius: 10px;
-    background-color: #ffb091;
-    color: #ffffff;
-    min-width: 130px;
-    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
-    z-index: 1;
-    text-align: center;
-    transition: background-color 0.3s ease;
-  }
-  
-  .dropdown-content button {
-    width: 100%;
-    border: 1px solid transparent;
-    background-color: #ffb091;
-    border-radius: 10px;
-    color: #ffffff;
-    padding: 12px 16px;
-    text-decoration: none;
-    text-align: center;
-    display: block;
-  }
-
-  .dropdown-content button:hover{
-    font-size: 15px;
-    font-weight: bold;
-    padding: 12px 16px;
-    border-radius: 10px;
-    background-color: #ff7e36;
-    text-align: center;
-  }
-  
-  .dropdown:hover .dropdown-content {
-    display: block;
-  }
-
-  .out{
-    border: none;
-    cursor: pointer;
-    background-color: white;
-  }
-
-.BeSend_chat_button { /* 보내기 버튼 */
-    background-color: transparent;
-    text-align: center;
-    border-radius: 20px !important;
+.dropdown {
+  position: relative;
+  display: inline-block;
 }
 
+.dropdown-button {
+  border: none;
+  cursor: pointer;
+  background-color: white;
+}
 
-.plusToX{ /* 업로드 버튼 */
-    cursor:pointer;
-    border-radius: 20px;
+.dropdown-content {
+  display: none;
+  font-size: 13px;
+  position: absolute;
+  border-radius: 10px;
+  background-color: #ffb091;
+  color: #ffffff;
+  min-width: 130px;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+  text-align: center;
+  transition: background-color 0.3s ease;
+}
+
+.dropdown-content button {
+  width: 100%;
+  border: 1px solid transparent;
+  background-color: #ffb091;
+  border-radius: 10px;
+  color: #ffffff;
+  padding: 12px 16px;
+  text-decoration: none;
+  text-align: center;
+  display: block;
+}
+
+.dropdown-content button:hover {
+  font-size: 15px;
+  font-weight: bold;
+  padding: 12px 16px;
+  border-radius: 10px;
+  background-color: #ff7e36;
+  text-align: center;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+.out {
+  border: none;
+  cursor: pointer;
+  background-color: white;
+}
+
+.BeSend_chat_button {
+  /* 보내기 버튼 */
+  background-color: transparent;
+  text-align: center;
+  border-radius: 20px !important;
+}
+
+.plusToX {
+  /* 업로드 버튼 */
+  cursor: pointer;
+  border-radius: 20px;
 }
 
 .plusToX:hover {
-    background-color: #e2e6ea;
+  background-color: #e2e6ea;
 }
 
-.label-no-margin{
-    margin: 0;
+.label-no-margin {
+  margin: 0;
 }
 
-.me .timestamp{ /* 채팅 보낸 시간 표시 */
-    font-size: 0.7em;
-    color: #aaa;
-
+.me .timestamp {
+  /* 채팅 보낸 시간 표시 */
+  font-size: 0.7em;
+  color: #aaa;
 }
 
-.not-me .timestamp{
-    font-size: 0.7em;
-    color: #aaa;
+.not-me .timestamp {
+  font-size: 0.7em;
+  color: #aaa;
 }
 
 .not-me .user-avatar {
-    align-self: center;
-    width: 40px;
-    height: 40px;
-}  
-
-.alert-glass {
-    /* background-color: rgba(255, 255, 255, 0.1);  */
-    /* border: 0px solid rgba(255, 255, 255, 0.18);  */
-    /* backdrop-filter: blur(10px); Blur effect */
-    color: #000000;
-    /* box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37); */
-    border-bottom: 1px solid #8080804a;
-    text-align: start;
+  align-self: center;
+  width: 40px;
+  height: 40px;
 }
 
+.alert-glass {
+  /* background-color: rgba(255, 255, 255, 0.1);  */
+  /* border: 0px solid rgba(255, 255, 255, 0.18);  */
+  /* backdrop-filter: blur(10px); Blur effect */
+  color: #000000;
+  /* box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37); */
+  border-bottom: 1px solid #8080804a;
+  text-align: start;
+}
 
 .img-style {
-    border-radius: 10%;
-    width: 75px;
-    height: 75px;
-    object-fit: cover;
+  border-radius: 10%;
+  width: 75px;
+  height: 75px;
+  object-fit: cover;
 }
 
 .flex-container {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    margin-bottom: 8px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 8px;
 }
 
 .text-container {
-    margin-left: 10px;
+  margin-left: 10px;
 }
 
 .text-bold {
-    font-weight: bold;
+  font-weight: bold;
 }
 
 .hr-sect {
-    display: flex;
-    flex-basis: 100%;
-    align-items: center;
-    color: #40463d;
-    font-size: 11px;
-    font-weight: bold;
-    margin: auto;
-    margin-top: 30px;
-    margin-bottom: 30px;
-    width: 90%;
-  }
-  .hr-sect::before,
-  .hr-sect::after {
-    content: "";
-    flex-grow: 1;
-    background: rgba(0, 0, 0, 0.35);
-    height: 1px;
-    font-size: 0px;
-    line-height: 0px;
-    margin: 0px 16px;
-  }
+  display: flex;
+  flex-basis: 100%;
+  align-items: center;
+  color: #40463d;
+  font-size: 11px;
+  font-weight: bold;
+  margin: auto;
+  margin-top: 30px;
+  margin-bottom: 30px;
+  width: 90%;
+}
+.hr-sect::before,
+.hr-sect::after {
+  content: "";
+  flex-grow: 1;
+  background: rgba(0, 0, 0, 0.35);
+  height: 1px;
+  font-size: 0px;
+  line-height: 0px;
+  margin: 0px 16px;
+}
