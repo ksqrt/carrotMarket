@@ -1,0 +1,25 @@
+# kubectl apply -f deployment.yaml
+# kubectl delete -f deployment.yaml
+
+# 1. NODE 서버 배포 + LB 
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: server
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: server
+  template:
+    metadata:
+      labels:
+        app: server
+    spec:
+      containers:
+        - name: server
+          image: ksqrt/server:latest
+          ports:
+            - containerPort: 5000
+              protocol: TCP
+

@@ -4,7 +4,7 @@ import { GrEdit } from 'react-icons/gr';
 import { MdArchive } from 'react-icons/md'
 import { BsHeart, BsHeartFill } from 'react-icons/bs';
 import { Col, Row, Spinner, Tabs, Tab, Image, OverlayTrigger, Tooltip, Modal, Form, Button } from 'react-bootstrap';
-import { getAll, archiveSell, wishProduct, deleteProduct } from '../../../services/productData';
+import { getAll, archiveSell, wishProduct, archiveSoldout, deleteProduct } from '../../../services/productData';
 import ProductCard from "../../../components/ProductCard/ProductCard";
 import aImage from '../../Profile/profile_images/a.png'; // 이미지 파일 경로
 import bImage from '../../Profile/profile_images/b.png'; // 이미지 파일 경로
@@ -23,21 +23,40 @@ function ProductInfo({ params }) {
   const [loading, setLoading] = useState(true);
   const [showMsg, setShowMdg] = useState(false);
   const [showArchive, setShowArchive] = useState(false);
+  const [showArchive2, setShowArchive2] = useState(false);
+  
   const history = useHistory();
+
   const handleClose = () => setShowMdg(false);
   const handleShow = () => setShowMdg(true);
 
   const handleCloseArchive = () => setShowArchive(false);
   const handleShowArchive = () => setShowArchive(true);
-
-  console.log(params)
-
+  
+  const handleCloseArchive2 = () => setShowArchive2(false);
+  const handleShowArchive2 = () => setShowArchive2(true);
 
   const handleSubmit = (e) => {
+    console.log('handleSubmit called')
       e.preventDefault();
+      console.log('handleSubmit called2')
       archiveSell(params._id)
           .then(res => {
+            console.log('handleSubmit called3')
               setShowArchive(false);
+              history.push(`/profile/${params.seller}`);
+          })
+          .catch(err => console.log(err))
+  }
+
+  const handleSubmit2 = (e) => {
+    console.log('handleSubmit2 called')
+      e.preventDefault();
+      console.log('handleSubmit2 called2')
+      archiveSoldout(params._id)
+          .then(res => {
+            console.log('handleSubmit called3')
+              setShowArchive2(false);
               history.push(`/profile/${params.seller}`);
           })
           .catch(err => console.log(err))
@@ -115,15 +134,15 @@ function ProductInfo({ params }) {
 
   const getMannerTemperatureImage = (temperature) => {
     if (temperature >= 0 && temperature < 21) {
-      return aImage;
+      return "https://kr.object.ncloudstorage.com/ncp3/ncp3/2.png";
     } else if (temperature >= 21 && temperature < 36.5) {
-      return bImage;
+      return "https://kr.object.ncloudstorage.com/ncp3/ncp3/3.png";
     } else if (temperature >= 36.5 && temperature < 40) {
-      return cImage;
+      return "https://kr.object.ncloudstorage.com/ncp3/ncp3/4.png";
     } else if (temperature >= 40 && temperature < 50) {
-      return dImage;
+      return "https://kr.object.ncloudstorage.com/ncp3/ncp3/5.png";
     } else if (temperature >= 50 && temperature < 60) {
-      return eImage;
+      return "https://kr.object.ncloudstorage.com/ncp3/ncp3/5.png";
     } else {
       return null;
     }
@@ -196,16 +215,12 @@ function ProductInfo({ params }) {
   
     initSocket();
   }, []);
-
-  
-  
   const onChatStart = async (e) => {
     e.preventDefault();
     if (!socket) return;
     startChat(socket, { buyerId: userData._id, sellerId: params.sellerId, productId: params._id });
   };
-  
-  
+
   useEffect(() => {
     const script = document.createElement("script");
     script.src = "https://developers.kakao.com/sdk/js/kakao.js";
@@ -214,6 +229,7 @@ function ProductInfo({ params }) {
     return () => document.body.removeChild(script);
   }, []);
 
+
   //{params.title}: 상품 제목
   //{params.addedAt}: 업로드 날짜
   //{params.description}: 상품 설명
@@ -221,7 +237,7 @@ function ProductInfo({ params }) {
 
 
   function sendLinkCustom() {
-
+    
     if (window.Kakao) {
       window.Kakao.Link.sendCustom({
         templateId: 94886
@@ -231,12 +247,8 @@ function ProductInfo({ params }) {
 
 
   function sendLinkDefault() {
+    
     if (window.Kakao) {
-
-      if(!window.Kakao.isInitialized()){
-        window.Kakao.init("8766bf986c048a5e20e2ae4278463a7b");
-      }
-      
       window.Kakao.Link.sendDefault({
         objectType: 'feed',
         content: {
@@ -291,9 +303,22 @@ function ProductInfo({ params }) {
                   <>
                     <OverlayTrigger placement="top" overlay={ <Tooltip>상품 보관함 이동</Tooltip>} >
                       <span id="archive-icon" onClick={handleShowArchive}>
-                        <Link to={<MdArchive />}>보관함으로 이동</Link>
+                        <Link to={<MdArchive />}>보관함</Link>
                       </span>
                     </OverlayTrigger>
+
+                    <OverlayTrigger placement="top" overlay={<Tooltip>판매 완료</Tooltip>} >
+                      <span id="archive-icon" onClick={handleShowArchive2}>
+                      <Link to={<MdArchive />}>판매 완료</Link>
+                        
+                        {/* <Link to="/archived-sells">
+                          &nbsp;&nbsp;판매완료
+                        </Link> */}
+
+                      </span>
+                    </OverlayTrigger>
+
+
                     <span className="link-spacing"></span>
                     <OverlayTrigger placement="top" overlay={ <Tooltip>상품 수정하기</Tooltip>} >
                       <Link to={`/categories/${params.category}/${params._id}/edit`}>게시글 수정하기</Link>
@@ -309,30 +334,36 @@ function ProductInfo({ params }) {
                     <Modal.Title>보관함으로 이동하시겠습니까???</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <p>
-                        By clicking <strong>Archive</strong>, this sell will change
-                    it's status to <strong>Archived</strong>,
-                    which means that no one but you will be able see it.
-                    You may want to change the status to <strong>Actived</strong> if you have
-                    sold the item or you don't want to sell it anymore.
-                    </p>
-
-                    Don't worry, you can unarchive it at any time from Profile - Sells!
+                   보관함에 넣어두어도 언제든 다시 재판매 가능합니다!!
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={handleCloseArchive}>
-                        Close
+                        닫기
                     </Button>
                     <Button variant="success" onClick={handleSubmit}>
-                        Archive
+                        보관함에 보관
                     </Button>
                 </Modal.Footer>
               </Modal>
-                {/* <OverlayTrigger placement="top" overlay={ <Tooltip>상품 활성화하기</Tooltip>} >
-                  <span id="archive-icon" onClick={ handleShowArchive }>
-                    <Link to={<MdArchive />}></Link>
-                  </span>
-                </OverlayTrigger> */}
+
+
+              <Modal show={ showArchive2 } onHide={ handleCloseArchive2 }>
+                <Modal.Header closeButton>
+                    <Modal.Title>판매완료 되었습니까???</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    정말 판매가 완료된 상품인지 확인하시오
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={handleCloseArchive2}>
+                        닫기
+                    </Button>
+                    <Button variant="success" onClick={handleSubmit2}>
+                        판매 완료
+                    </Button>
+                </Modal.Footer>
+              </Modal>
+
               </div>
             </div>
           </div>
@@ -340,11 +371,11 @@ function ProductInfo({ params }) {
           <div id="profile_right">
             <div id="tem_total">
               <p style={{ float: 'left', fontWeight: 'bold', textDecoration: 'underline' }}>매너온도</p>
-              <p style={{ marginBottom: '-1px', float: 'right', color: getFontColor(36.5) }}>{36.5}°C
+              <p style={{ marginBottom: '-1px', float: 'right', color: getFontColor(36.5) }}>{36.5}°C&nbsp;&nbsp;
                 <img
                   src={getMannerTemperatureImage(36.5)}
                   alt="이미지 사진"
-                  style={{ width: '50px', height: '50px' }}
+                  style={{ width: '25px', height: '25px' }}
                 />
               </p>
               <div className="manner-thermometer" style={{ marginBottom: '10px' }}>
@@ -369,7 +400,7 @@ function ProductInfo({ params }) {
         <p id='content_category'>{ params.category } · <time>{displayCreateAt(params.addedAt)}</time></p>
         <p id='content_price'>{params.price ? params.price.toLocaleString() : ''}원</p>
         <p id='content_main'>{ params.description }</p>
-        <p id='content_cnt'> 관심 ♥ · 채팅 갯수 · 조회 수 </p>
+        <p id='content_cnt'> 관심 ♥ { params.likes } · 채팅 갯수 · 조회 수 { params.views } </p>
         <div id='content_button'>
           { params.isAuth ? (
             <>
@@ -405,7 +436,7 @@ function ProductInfo({ params }) {
 
            <div>
             {/* <button onClick={sendLinkCustom}>Send Custom Link</button> */}
-                <button class="kakao-button" onClick = {sendLinkDefault}>카카오 공유하기</button>
+                <button className="kakao-button" onClick = {sendLinkDefault}>카카오 공유하기</button>
             </div>
 
             </div>

@@ -23,6 +23,7 @@ function Login({ history }) {
     const handleSubmitLogin = (e) => {
         e.preventDefault();
         setLoading(true);
+        console.log(user)
         loginUser(user)
             .then(res => {
                 if (!res.error) {

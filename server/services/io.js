@@ -6,10 +6,14 @@ let io;
 function Io(server) {
   io = new Server(server, {
     cors: {
-      origin: "http://localhost:3000", 
+      origin: [
+        "http://localhost:3000",
+        "http://default-client-service-c63f5-17896865-377617edafd0.kr.lb.naverncp.com"
+      ],
       methods: ["GET", "POST"],
     }
   });
+  
 
   io.on("connection", (socket) => { //socket 변수 = socket.io에서 제공하는 것 
     console.log("socket.io connected");
