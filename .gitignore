@@ -33,3 +33,4 @@ client/public/logo_white.webpZone.Identifier
 client/package-lock.json
 client/configmap.yaml
 server/package-lock.json
+client/deployment.yaml
