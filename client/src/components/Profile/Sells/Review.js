@@ -7,13 +7,20 @@ const ReviewForm = () => {
   const { id } = useParams();
   const [content, setContent] = useState('');
   const [reviews, setReviews] = useState([]);
+  const [error, setError] = useState('');
 
   const handleContentChange = (event) => {
     setContent(event.target.value);
+    setError('');
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+
+    if (content.length < 10 || content.length > 500) {
+      setError('10글자 이상 500글자 이하');
+      return;
+    }
 
     const reviewData = {
       id,
@@ -72,6 +79,7 @@ const ReviewForm = () => {
             onChange={handleContentChange}
             className="review-form__textarea"
           ></textarea>
+          {error && <p className="review-form__error" style={{ color: 'red' }}>{error}</p>}
         </div>
         <button type="submit" className="review-form__submit-btn">
           리뷰 작성
