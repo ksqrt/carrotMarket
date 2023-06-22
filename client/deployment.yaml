@@ -1,0 +1,24 @@
+# kubectl apply -f deployment.yaml
+# kubectl delete -f deployment.yaml
+# 2. React 서버 배포 + LB 
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: client
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: client
+  template:
+    metadata:
+      labels:
+        app: client
+    spec:
+      containers:
+        - name: client
+          image: ksqrt/client:latest
+          ports:
+            - containerPort: 3000
+              protocol: TCP

@@ -1,3 +1,8 @@
+.chatlist_scroll {
+    overflow-y: auto; 
+    max-height: 850px; 
+} 
+
 article img {
     width: 50px;
     height: 50px;
@@ -11,47 +16,61 @@ article img {
     justify-content: space-between;
     border-bottom: 1px solid #8080804a;
     padding: 4px 25px;
-    margin: 6px 10px;
+    margin: auto;
 }
 
 .me {
-    text-align: right;
-    margin: 20px 0px;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: flex-end;
+    margin: 15px 0px;
 }
 
 .me .message {
-    text-align: right;
-    width: 50%;
+    text-align: left;
+    width: fit-content;
+    max-width: 50%;
     font-size: 9pt;
-    background: #5d5d5d;
+    background: #FF7E36;
     padding: 10px;
-    border-radius: 100px;
+    border-radius: 20px;
     color: white;
+    white-space: pre-wrap;
+    display: inline-block;
+    overflow-wrap: break-word;
 }
 
 .not-me {
-    text-align: left;
-    margin: 20px 0px;
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: flex-end;
+    align-items: flex-end;
+    margin: 15px 0px;
 }
 
 .not-me .message {
-    text-align: left;
-    width: 50%;
+    width: fit-content;
+    max-width: 50%;
     font-size: 9pt;
-    background: #ffffff;
+    background: #F2F3F7;
     padding: 10px;
-    border-radius: 100px;
-    border: 1px solid #8080804a;
+    border-radius: 20px;
+    white-space: pre-wrap;
+    display: inline-block;
+    overflow-wrap: break-word;
 }
 
 .chat-selected-footer textarea {
-    height: 65px;
+    height: 40px;
     resize: none;
 }
 
+.form-control{
+    width: 150px;
+}
+
 .chat-selected-body {
-    display: flex;
-    flex-direction: column-reverse;
     overflow-y: auto;
     height: 600px; /* 스크롤이 보일 최대 높이 */
     background-repeat: no-repeat;
@@ -118,12 +137,6 @@ article img {
     cursor: pointer;
     background-color: white;
   }
-  
-.img-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
 
 .BeSend_chat_button { /* 보내기 버튼 */
     background-color: transparent;
@@ -160,5 +173,60 @@ article img {
     align-self: center;
     width: 40px;
     height: 40px;
+}  
+
+.alert-glass {
+    /* background-color: rgba(255, 255, 255, 0.1);  */
+    /* border: 0px solid rgba(255, 255, 255, 0.18);  */
+    /* backdrop-filter: blur(10px); Blur effect */
+    color: #000000;
+    /* box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37); */
+    border-bottom: 1px solid #8080804a;
+    text-align: start;
 }
 
+
+.img-style {
+    border-radius: 10%;
+    width: 75px;
+    height: 75px;
+    object-fit: cover;
+}
+
+.flex-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.text-container {
+    margin-left: 10px;
+}
+
+.text-bold {
+    font-weight: bold;
+}
+
+.hr-sect {
+    display: flex;
+    flex-basis: 100%;
+    align-items: center;
+    color: #40463d;
+    font-size: 11px;
+    font-weight: bold;
+    margin: auto;
+    margin-top: 30px;
+    margin-bottom: 30px;
+    width: 90%;
+  }
+  .hr-sect::before,
+  .hr-sect::after {
+    content: "";
+    flex-grow: 1;
+    background: rgba(0, 0, 0, 0.35);
+    height: 1px;
+    font-size: 0px;
+    line-height: 0px;
+    margin: 0px 16px;
+  }

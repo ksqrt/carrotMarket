@@ -23,6 +23,7 @@
     "express": "^4.17.1",
     "express-session": "^1.17.3",
     "file-type": "^18.5.0",
+    "find-or-create-mongoose": "^0.1.2",
     "jsonwebtoken": "^9.0.0",
     "moment": "^2.29.1",
     "mongoose": "^5.12.1",
