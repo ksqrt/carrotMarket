@@ -60,7 +60,7 @@ const KakaoMapAPI = () => {
 				>
 				{isOpen && (
 				<div style={{ minWidth: "150px" }}>
-					<img
+					{/* <img
 					alt="close"
 					width="20px"
 					height="20px"
@@ -72,7 +72,7 @@ const KakaoMapAPI = () => {
 						cursor: "pointer",
 					}}
 					onClick={() => setIsOpen(false)}
-					/>
+					/> */}
 					<div style={{ padding: "10px", color: "#000"}}>
 					{address && (
 						<div style={{ fontSize: "12px", fontWeight: "bold"}}>
