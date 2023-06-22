@@ -301,7 +301,7 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
                                             <button className={`${styles['menu-item']} ${styles.orange}`}>  </button>
                                             <button className={`${styles['menu-item']} ${styles.lightblue}`} onClick={ onOpen }> <FaMapMarkedAlt className="upload-icon" size={20} style={{marginBottom:'8px'}} /> </button>
                                             {
-                                                isOpen && <KakaoMapAPI />       
+                                                isOpen && <KakaoMapAPI key={Date.now()} />       
                                             }
                                             </nav>
                                                 {/* <input type="file" id="file-upload" style={{ display: 'none' }}/> */}
