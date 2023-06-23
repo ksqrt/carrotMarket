@@ -36,6 +36,10 @@ export const deleteAppointment = (socket, {chatId}) => {
   socket.emit('deleteAppointment',{chatId});
 };
 
+export const ReportMessage = (socket, { reportedUserId, reason }) => {
+  socket.emit('ReportMessage', { reportedUserId, reason });
+};
+
 //getMessage: 새로운 메시지를 받는 함수입니다. socket.on을 사용하여 서버로부터 newMessage 이벤트를 수신하면 콜백 함수를 호출하여 메시지를 처리합니다. 이 함수는 서버로부터 전달된 메시지를 인자로 콜백 함수를 실행합니다.
 export const getMessage = (socket, callback) => {
   socket.on('newMessage', (message) => {

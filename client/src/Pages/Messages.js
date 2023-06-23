@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext, useRef, React, Fragment } from 'react';
-import {sendMessage, disconnect, getUserConversations, initializeSocket, setAppointment, deleteAppointment, appointmentCheck} from '../services/messagesData';
+import {sendMessage, disconnect, getUserConversations, initializeSocket, setAppointment, deleteAppointment, appointmentCheck, ReportMessage} from '../services/messagesData';
 import { Navbar, NavDropdown, Nav, Container, Row, Form, InputGroup, Button, Alert, Modal } from 'react-bootstrap';
 import { Link, NavLink, useHistory } from 'react-router-dom';
 import { Context } from '../ContextStore';
@@ -158,7 +158,15 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
 
     // 신고하기 버튼
     const [reportModalShow, setReportModalShow] = useState();
-    const [reportModalReason, setReportModalReason] = useState("");
+    const reportedUserId = selected.isBuyer ? selected.chats.seller._id : selected.chats.buyer._id;
+    const handleShowReportModal = () => {
+        setReportModalShow(true);
+      };
+    const handleReport = (reason) => {
+    // 서버에 신고 메시지 전송
+    ReportMessage(socket, { reportedUserId, reason });
+    setReportModalShow(false);
+    };
 
 
 
@@ -344,7 +352,7 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
                                         <button className="dropdown-content-block"> 
                                             <ImBlocked size={20} /> 차단하기  
                                         </button>
-                                        <button className="dropdown-content-declare" onClick={() => setReportModalShow(true)}>
+                                        <button className="dropdown-content-declare" onClick={handleShowReportModal}>
                                             <AiOutlineAlert size={20} /> 신고하기 
                                         </button>
                                     </div>
@@ -471,7 +479,7 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
                                 </Modal>
                                 )}
                                 <AppointmentModal show={currentAppointment !== null && selected.chats.appointmentCheck === false} selected={selected} appointmentModalAccept={appointmentModalAccept} appointmentModalReject={appointmentModalReject} myName={myName}  />
-                                <ReportModal show={reportModalShow} onHide={() => setReportModalShow(false)} onReport={(reason) => {setReportModalReason(reason);}}/>
+                                <ReportModal show={reportModalShow} onHide={() => setReportModalShow(false)} onReport={handleReport}/>
                             </div>
                         </>
                     }

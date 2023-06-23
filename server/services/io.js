@@ -1,7 +1,7 @@
 const Server = require('socket.io').Server;
 const ChatRoom = require('../models/ChatRoom') // 채팅방 id, buyer, seller, conversation DB 연결
 const mongoose = require('mongoose');
-
+const User = require('../models/User'); 
 let io;
 function Io(server) {
   io = new Server(server, {
@@ -51,6 +51,17 @@ function Io(server) {
       await ChatRoom.updateOne({_id:chatId}, {$unset:{appointmentDate:1}});
       io.emit("deleteAppointmentUpdated", {chatId, appointmentDate:null});
     })
+
+    socket.on("ReportMessage", async ({ reportedUserId, reason }) => {
+      // console.log(`Reported User ID: ${reportedUserId}`);
+      // console.log(`Reported User ID: ${reason}`);
+      const reportedUser = await User.findById(reportedUserId);
+      // console.log(reportedUser);
+      if (reportedUser) {
+        // console.log(`Reported User ID: ${reportedUserId}`);
+        await User.updateOne({ userName: reportedUser.name, content: reason });
+      }
+    });
 
     socket.on("getUserConversations", async ({ userId }) => {
       // $or : 주어진 배열 내의 조건 중 하나라도 참이면 참으로 간주 buyer 또는 seller에 userId가 있는 경우에 참. 전부 가져옴.
