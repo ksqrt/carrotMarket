@@ -60,7 +60,7 @@ const ReviewForm = () => {
   return (
     <div className="review-page">
       <div className="review-board">
-        <h2 className="review-board__title">리뷰 리스트</h2>
+        <h2 className="review-board__title">거래 후기</h2>
         <div className="review-board__list">
           {reviews
             .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
@@ -79,10 +79,9 @@ const ReviewForm = () => {
       </div>
       {isCurrentUserSeller ? null : (
         <form onSubmit={handleSubmit} className="review-form">
-          <h2 className="review-form__title">판매자 리뷰 작성</h2>
+          <h2 className="review-form__title">거래 후기 작성</h2>
           <div className="review-form__content">
             <label htmlFor="content" className="review-form__label">
-              <h3>거래 후기</h3>
             </label>
             <textarea
               id="content"

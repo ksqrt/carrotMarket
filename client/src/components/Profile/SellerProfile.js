@@ -77,19 +77,19 @@ function SellerProfile({ params, history }) {
 
     const getFontColor = (temperature) => {
         if (temperature >= 0 && temperature < 21) {
-          return "black";
+            return "black";
         } else if (temperature >= 21 && temperature < 36.5) {
-          return "darkblue";
+            return "darkblue";
         } else if (temperature >= 36.5 && temperature < 40) {
-          return "royalblue";
+            return "royalblue";
         } else if (temperature >= 40 && temperature < 50) {
-          return "green";
+            return "green";
         } else if (temperature >= 50 && temperature < 60) {
-          return "#f9bc28";
+            return "#f9bc28";
         } else {
-          return "#ff6f31";
+            return "#ff6f31";
         }
-      };
+    };
 
 
 
@@ -116,17 +116,18 @@ function SellerProfile({ params, history }) {
                                 <div className="manner-thermometer" style={{ marginBottom: '10px' }}>
                                     <div className="manner-thermometer-fill" style={getMannerTemperatureStyle(36.5)}></div>
                                 </div>
-                                
+
+                                <div className='sellcount'>
+                                    <FaShoppingCart className="section-icon" /> {/* Change the icon to FaShoppingCart */}
+                                    <p className="section-title">판매상품 <span className="item-count">{params.totalSells}</span>개</p>
+                                </div>
                             </div>
                             <br /><br /><br /><br />
-                          
+
                         </Col>
 
                         <div id="profile_infobtn">
-                        <div className='sellcount'>
-                            <FaShoppingCart className="section-icon" /> {/* Change the icon to FaShoppingCart */}
-                            <p className="section-title">판매상품 <span className="item-count">{params.totalSells}</span>개</p>
-                            </div>
+
                             <button className="custom-button">매너 칭찬하기</button>
                         </div>
 
