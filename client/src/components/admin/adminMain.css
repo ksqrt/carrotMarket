@@ -62,8 +62,35 @@ footer {
   text-align: center;
 }
 
+#categori{
+  padding-left:400px;
+  padding-top:10px;
+  padding-bottom:40px;
+}
 
 
 
+.button {
+  background-color: #FFA500;
+  border-color: #FFA500;
+  color: #FFFFFF;
+  padding: 10px 20px;
+  margin-right: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.button:hover {
+  background-color: #FFA500;
+  border-color: #FFA500;
+}
+
+.button.active {
+  background-color: #FF984D;
+  border-color: #FF984D;
+}
 
 
+#AdminContent{
+  padding-left:400px;
+}

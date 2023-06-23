@@ -8,7 +8,13 @@ function ProductCard({ params }) {
   const like = params.likes.length
   const view = params.views.length
 
+
+  console.log('ProductCard' + params.category);
+
+
   return (
+
+    
     <Card>
       <Link to={`/categories/${params.category}/${params._id}/details`}>
         <Card.Img variant="top " style={{ borderRadius: '10px' }} src={params.image} />

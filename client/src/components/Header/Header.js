@@ -38,7 +38,7 @@ function Header() {
             setQuery(e.target.value);
             console.log("타겟" + e.target.value)
             console.log("쿼리값" + query)
-            history.push("/categories/all");
+            history.push(""/categories/all);
         }
     }
 

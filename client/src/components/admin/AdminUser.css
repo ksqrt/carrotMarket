@@ -1,0 +1,25 @@
+#Username{
+    color:#ffA500;
+    font-weight:bold;
+}
+
+
+.button {
+    background-color: #FFA500;
+    border-color: #FFA500;
+    color: #FFFFFF;
+    padding: 10px 20px;
+    margin-right: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .button:hover {
+    background-color: #FFA500;
+    border-color: #FFA500;
+  }
+  
+  .button.active {
+    background-color: #FF984D;
+    border-color: #FF984D;
+  }

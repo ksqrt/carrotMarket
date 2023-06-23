@@ -17,10 +17,9 @@ import { BiBasketball } from "react-icons/bi"
 import { TbMoodKid } from "react-icons/tb"
 import { SiNike } from "react-icons/si"
 
-
-
 function CategoriesNav() {
   return (
+    
     <div className="container" id="categories">
       
       <Link to="/categories/all">
@@ -116,6 +115,7 @@ function CategoriesNav() {
         </Button>{" "}
       </Link> */}
     </div>
+
   );
 }
 

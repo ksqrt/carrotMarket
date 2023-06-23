@@ -46,6 +46,7 @@ class AddProduct extends Component {
       };
 
     onSubmitHandler(e) {
+        
         e.preventDefault();
         let { title, price, description, city, category, image } = this.state;
         let obj = { title, price, description, city, category }

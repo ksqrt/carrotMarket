@@ -1,43 +1,66 @@
-import React from 'react';
+import React, { useState } from 'react';
 import "./adminMain.css";
-import { Link } from "react-router-dom";
+import { Button } from 'react-bootstrap';
+import AdminProduct from './AdminProduct';
+import AdminUser from './AdminUser';
+import { getadminUser } from '../../services/adminData';
 
+const AdminMain = () => {
+  const [adminUser, setAdminUser] = useState(true);
+  const [adminProduct, setAdminProduct] = useState(false);
+  const [users , setUsers] = useState([]);
 
+  const handleAdminUser = () => {
+    setAdminUser(true);
+    setAdminProduct(false);
 
-const adminMain = () => {
-    return (
-        <div>
+    getadminUser().then(data =>{
+      //console.log(data);
+      setUsers(data);
+    }).catch(error =>{
+      console.log(error);
+    })
+
+    // console.log(getadminUser());
+    // setUsers(getadminUser());
+
+   
+
+  };
+
+  const handleAdminProduct = () => {
+    setAdminUser(false);
+    setAdminProduct(true);
+  
+  };
+
+   return (
+   <div>
   <header>
     <h1>당근마켓 어드민 페이지</h1>
   </header>
 
-  <nav>
-    <ul>
-    <Link to="/admin/all">
-      <li><a href="#">대시보드</a></li>
-    </Link>
+   <div id ="categori">
+      
+      <button className='button'
+                onClick={handleAdminUser}  
+              >유저관리
+             
+      </button>
 
-    <Link to="/admin/user">
-      <li><a href="#">사용자 관리</a></li>
-    </Link>
+      <button  className='button'
+                onClick={handleAdminProduct}
+                >제품관리
+      </button>
+    </div>  
+           <div id ="AdminContent">
+              {adminUser && <AdminUser params={users}/>}
 
-    <Link to = "/admin/product">
-      <li><a href="#">상품 관리</a></li>
-    </Link>
+              {adminProduct && <AdminProduct/>}
 
-    <Link to = "/admin/declare">
-      <li><a href="#">신고 관리</a></li>
-    </Link> 
-    </ul>
-  </nav>
+            </div>
 
-  <section>
-    <h2>대시보드</h2>
-    <p>대시보드 내용이 여기에 들어갑니다.</p>
-  </section>
-
- </div>
+      </div>
     );
-};
-
-export default adminMain;
+}
+export default AdminMain;
