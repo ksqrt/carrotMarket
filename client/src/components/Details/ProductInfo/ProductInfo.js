@@ -24,7 +24,11 @@ function ProductInfo({ params }) {
   const [showMsg, setShowMdg] = useState(false);
   const [showArchive, setShowArchive] = useState(false);
   const [showArchive2, setShowArchive2] = useState(false);
-  
+  const [socket, setSocket] = useState(null);
+  const { userData } = useContext(Context);
+  let userId = userData._id;
+  // startchat 이벤트 실행
+  // const history = useHistory();
   const history = useHistory();
 
   const handleClose = () => setShowMdg(false);
@@ -40,7 +44,7 @@ function ProductInfo({ params }) {
     console.log('handleSubmit called')
       e.preventDefault();
       console.log('handleSubmit called2')
-      archiveSell(params._id)
+      archiveSell(params._id,userId)
           .then(res => {
             console.log('handleSubmit called3')
               setShowArchive(false);
@@ -198,10 +202,6 @@ function ProductInfo({ params }) {
     }
   };
 
-  // startchat 이벤트 실행
-  // const history = useHistory();
-  const { userData } = useContext(Context);
-  const [socket, setSocket] = useState(null);
   
   useEffect(() => {
     const initSocket = async () => {

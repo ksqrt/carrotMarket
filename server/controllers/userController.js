@@ -51,9 +51,9 @@ router.get('/getUserById/:id', async (req, res) => {
             // isMe: req.user._id == req.params.id
         }
 
-        console.log("2번: " +jsonRes)
+        // console.log("2번: " +jsonRes)
         res.status(200).json({user: jsonRes});
-        console.log("3번: " +user)
+        // console.log("3번: " +user)
     } catch (error) {
         res.status(500).json({ error });
     }
