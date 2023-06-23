@@ -5,7 +5,6 @@ import { Link, NavLink, useHistory } from 'react-router-dom';
 import { Context } from '../ContextStore';
 import { animateScroll } from 'react-scroll';
 import { AiOutlineAlert, AiOutlineUpload, AiOutlineSchedule, AiOutlineClose } from 'react-icons/ai';
-import { FaRegWindowClose } from 'react-icons/fa';
 import { ImBlocked } from 'react-icons/im';
 import { IoIosArrowBack } from 'react-icons/io';
 import {FaMapMarkedAlt} from 'react-icons/fa'
@@ -24,17 +23,11 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { MobileDateTimePicker } from '@mui/x-date-pickers/MobileDateTimePicker';
 
 
-
 function Messages({ match }) { // match = Router 제공 객체, url을 매개변수로 사용. ex) 경로 : /messages/123  => match.params.id = "123" // app.js 참고 : <Route path="/messages" exact component={Messages} />;
-    const [isModalOpen, setIsModalOpen] = useState(false);
-
-    const openModal = () => {
-        setIsModalOpen(true);
-    };
-      
-    const closeModal = () => {
-        setIsModalOpen(false);
-    };
+    //map modal
+    const [show, setShow] = useState(false);
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
 
     const github = settings;
     let chatId = match.params.id; // 선택된 채팅방의 id
@@ -389,31 +382,13 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
                                             <button className={`${styles['menu-item']} ${styles.red}`}> <div style={{fontSize:'16px', marginBottom:'7px'}} >🤗</div> </button>
                                             <button className={`${styles['menu-item']} ${styles.purple}`}> </button>
                                             <button className={`${styles['menu-item']} ${styles.orange}`}>  </button>
-                                            <button type="button" className={`${styles['menu-item']} ${styles.lightblue}`} onClick={ openModal }> <FaMapMarkedAlt size={20} style={{marginBottom:'8px'}} /> {/*{console.log('modalstate 값 확인 : ',modalState)}*/} </button>
-                                            {isModalOpen && (
-                                                <div style={{ position: "fixed",
-                                                top: "50%",
-                                                left: "50%",
-                                                transform: "translate(-50%, -50%)",
-                                                width: "500px",
-                                                height: "500px",
-                                                backgroundColor: "white",
-                                                borderRadius: "10px",
-                                                padding: "20px",
-                                                boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.3)", }} >
-                                                <KakaoMapAPI />
-                                                <div onClick={closeModal} style={{
-                                                    position: "absolute",
-                                                    top: "10px",
-                                                    right: "10px",
-                                                    cursor: "pointer",
-                                                    border: "none",
-                                                    background: "",
-                                                    
-                                                }}>
-                                                <FaRegWindowClose size={35} color='black'/>
+                                            <button type="button" className={`${styles['menu-item']} ${styles.lightblue}`} onClick={ handleShow }> <FaMapMarkedAlt size={20} style={{marginBottom:'8px'}} /> {/*{console.log('modalstate 값 확인 : ',modalState)}*/} </button>
+                                            {handleShow && (
+                                                <Modal show={show} onHide={handleClose}>
+                                                <div>
+                                                    <KakaoMapAPI />
                                                 </div>
-                                                </div>
+                                                </Modal>
                                             )}
                                             
 

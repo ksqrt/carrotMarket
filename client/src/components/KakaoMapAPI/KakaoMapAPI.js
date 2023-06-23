@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Map, MapMarker } from 'react-kakao-maps-sdk';
+import { CustomOverlayMap, Map, MapMarker } from 'react-kakao-maps-sdk';
+import { FaRegWindowClose } from 'react-icons/fa';
 
 const KakaoMapAPI = () => {
 	const { kakao } = window;
@@ -8,7 +9,6 @@ const KakaoMapAPI = () => {
 	const [position, setPosition] = useState(null) // 마커 이동시 좌표 저장
 	const [isOpen, setIsOpen] = useState(false)
 	const [addressConfirmed, setAddressConfirmed] = useState(false)
-
 
 	//현재 위치를 불러옴(geolocation)
 	useEffect(() => {
@@ -42,20 +42,20 @@ const KakaoMapAPI = () => {
 	};
 
 	return (
-		<>
-			<Map center={{ lat: location.latitude, lng: location.longitude }} 
-				 style={{ position: "fixed",
-						top: "50%",
-						left: "50%",
-						transform: "translate(-50%, -50%)",
-						width: "500px",
-						height: "500px",
-						backgroundColor: "white",
-						borderRadius: "10px",
-						padding: "20px",
-						boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.3)",
-						}}
+		<>	
+			<Map center={{ lat: location.latitude, lng: location.longitude }} 	
 				 level={4}
+				 style={{ position: "fixed",
+				 top: "50%",
+				 left: "50%",
+				 transform: "translate(-50%, -50%)",
+				 width: "500px",
+				 height: "500px",
+				 backgroundColor: "white",
+				 borderRadius: "10px",
+				 padding: "20px",
+				 boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.3)",
+				 zIndex: "999" }}
 				 onClick={(_t, mouseEvent) => {
 					setPosition({
 					  lat: mouseEvent.latLng.getLat(),
@@ -64,31 +64,41 @@ const KakaoMapAPI = () => {
 					setIsOpen(false);
 				  }}
 			>
+
 				{position && <MapMarker position={position} 
-				//clickable={true} // 마커를 클릭했을 때 지도의 클릭 이벤트가 발생하지 않도록 설정합니다
 				onClick={() => {setIsOpen(true); getAddress();}}
-				>
+				/>}
 				{isOpen && (
-				<div style={{ minWidth: "180px" }}>
-					<div style={{ padding: "5px", 
-								  color: "#000",
-								  
-								  }}>
-					{address && (
-						<div style={{ fontSize: "15px", 
+				<CustomOverlayMap position={position} yAnchor={1.3}>
+				 <div style={{ minWidth: "180px", minHeight: "70px"}}>
+				 	<div style={{ padding: "2px", 
+				 				  color: "#000",
+				 				  }}>
+				 	{address && (
+				 		<div style={{ fontSize: "12px", 
 									  fontWeight: "bold",
-									  }}>
-							{address.address_name}
-						</div>
-					)}
-					</div>
-					<div>
-					<button disabled={!addressConfirmed} style={{fontSize: "15px",
-																	}}>현재위치 공유하기</button>
-					</div>
-				</div>
+				 					  border: "3px solid orange", 
+				 				  	  borderRadius: "10px",
+									  backgroundColor: "white",
+									  textAlign: "center"
+				 					  }}>
+				 			{address.address_name}
+				 		<div>
+				 			<button disabled={!addressConfirmed} 
+				 			style={{fontSize: "12px", 
+				 					border: "none", 
+				 					background: "orange", 
+				 					borderRadius: "10px",
+				 					color: "white"}}>
+							현재위치 공유하기
+							</button>
+				 		</div>
+				 		</div>
+				 	)}
+				 	</div>
+				 </div>
+          	</CustomOverlayMap>
 				)}
-				</MapMarker>}
 			</Map>
 		</>
 	);
