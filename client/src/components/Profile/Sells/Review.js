@@ -20,7 +20,7 @@ const ReviewForm = () => {
     event.preventDefault();
 
     if (content.length < 10 || content.length > 500) {
-      setError('10글자 이상 500글자 이하');
+      setError('3글자 이상 100글자 이하');
       return;
     }
 

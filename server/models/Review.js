@@ -8,8 +8,8 @@ const reviewSchema = new mongoose.Schema({
         type: String,
         required: true,
         trim: true,
-        minlength: [10, 'Content should be at least 10 characters long'],
-        maxlength: [500, 'Content should be max 500 characters long']
+        minlength: [5, 'Content should be at least 10 characters long'],
+        maxlength: [50, 'Content should be max 500 characters long']
     },
     seller: {
         type: mongoose.Schema.Types.ObjectId,
