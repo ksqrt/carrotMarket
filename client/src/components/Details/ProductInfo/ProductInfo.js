@@ -331,7 +331,7 @@ function ProductInfo({ params }) {
                   </>
                 ) }
 
-                {(params.isSeller || userData.role === "admin") && (
+                {(params.isSeller || (userData && userData.role === "admin")) && (
                   <>
                     <span className="link-spacing"></span>
                     <OverlayTrigger placement="top" overlay={<Tooltip>상품 삭제하기</Tooltip>}>

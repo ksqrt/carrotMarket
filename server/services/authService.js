@@ -20,9 +20,12 @@ async function findorcreate(user) {
   
   if (!checkUser) {
     const onCreate = { email: user.email, name: user.name, password: user.password, provider: user.provider };
-  
+    console.log(onCreate);
+
     let newUser = await new User(onCreate).save();
     // await newUser.save();
+    console.log(newUser);
+
     
     let token = jwt.sign({ _id: newUser._id, email: newUser.email, name: newUser.name, provider: user.provider, role: newUser.role, createdSells: newUser.createdSells.length, avatar: newUser.avatar }, process.env.REACT_APP_SECRET);
     return token;
@@ -54,9 +57,9 @@ async function loginUser({ email, password }) {
   let user = await User.findOne({ email });
   if (!user) throw { message: '이메일과 비밀번호가 일치하지 않습니다' };
 
-  if (!/[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]+/.test(password)) {
-    errors.push("이메일과 비밀번호가 일치하지 않습니다");
-  }
+  // if (!/[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]+/.test(password)) {
+  //   errors.push("이메일과 비밀번호가 일치하지 않습니다");
+  // }
 
   let hasValidPass = await bcrypt.compare(password, user.password);
   if (!hasValidPass) throw { message: "이메일과 비밀번호가 일치하지 않습니다" }

@@ -5,7 +5,7 @@ const authService = require('../services/authService');
 const jwt = require('jsonwebtoken'); 
 
 router.post('/snsLogin', (req, res) => {
-    console.log(req.body);
+    // console.log(req.body);
     authService.findorcreate(req.body)
         .then(token => {
             jwt.verify(token, process.env.REACT_APP_SECRET, (err, decoded) => {
