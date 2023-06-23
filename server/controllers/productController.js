@@ -84,9 +84,6 @@ router.get("/specific/:id", async (req, res) => {
 // 새로운 상품을 생성하는 엔드포인트
 router.post('/create', async (req, res) => {
     let { title, price, description, city, category, image } = req.body;
-    console.log('ttoto'+image);
-    console.log();
-    console.log();
     try {
         let errors = [];
         if (title.length < 3 || title.length > 50) errors.push('Title should be at least 3 characters long and max 50 characters long; ');
@@ -98,9 +95,11 @@ router.post('/create', async (req, res) => {
 
         if (errors.length >= 1) throw { message: [errors] };
         let compressedImg = [];
+        
         for (let index = 0; index < image.length; index++) {
             compressedImg[index] = await productService.uploadImage(image[index]);
         }
+
         let product = new Product({
             title, price, description, city, category,
             image: compressedImg,

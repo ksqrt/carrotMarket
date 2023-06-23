@@ -30,7 +30,6 @@ const AddProduct = ({ history }) => {
   const onCity= (e) => {
     setCity(e.target.value);
   };
-
   const fileInput = useRef(null);
   let tmp = 0;
   const onChangeHandler = (e) => {
@@ -59,8 +58,7 @@ const AddProduct = ({ history }) => {
     }
 
     if (e.target.name === "category") {
-      console.log(e.target.name);
-      console.log(value);
+      setCategory(value);
     }
 
     if (e.target.files) {
@@ -77,8 +75,6 @@ const AddProduct = ({ history }) => {
         setImage([...image,data]);
       });
         tmp = tmp + 1;
-      console.log('pre'+previewURL);
-      console.log('image'+image);
     }
   };
   // useEffect(()=>{

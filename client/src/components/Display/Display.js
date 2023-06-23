@@ -2,7 +2,6 @@ import React from 'react';
 import '../CreateSell/addproduct.css';
 
 const Display = ({image}) => {
-    console.log('durl');
     return (
         <>
         {
