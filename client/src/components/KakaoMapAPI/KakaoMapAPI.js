@@ -44,7 +44,17 @@ const KakaoMapAPI = () => {
 	return (
 		<>
 			<Map center={{ lat: location.latitude, lng: location.longitude }} 
-				 style={{ width: '500px', height: '500px' }} 
+				 style={{ position: "fixed",
+						top: "50%",
+						left: "50%",
+						transform: "translate(-50%, -50%)",
+						width: "500px",
+						height: "500px",
+						backgroundColor: "white",
+						borderRadius: "10px",
+						padding: "20px",
+						boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.3)",
+						}}
 				 level={4}
 				 onClick={(_t, mouseEvent) => {
 					setPosition({
@@ -53,35 +63,28 @@ const KakaoMapAPI = () => {
 					});
 					setIsOpen(false);
 				  }}
-				>
+			>
 				{position && <MapMarker position={position} 
 				//clickable={true} // 마커를 클릭했을 때 지도의 클릭 이벤트가 발생하지 않도록 설정합니다
 				onClick={() => {setIsOpen(true); getAddress();}}
 				>
 				{isOpen && (
-				<div style={{ minWidth: "150px" }}>
-					{/* <img
-					alt="close"
-					width="20px"
-					height="20px"
-					src="https://t1.daumcdn.net/localimg/localimages/07/mapjsapi/2x/bt_close.gif"
-					style={{
-						position: "absolute",
-						right: "5px",
-						top: "5px",
-						cursor: "pointer",
-					}}
-					onClick={() => setIsOpen(false)}
-					/> */}
-					<div style={{ padding: "10px", color: "#000"}}>
+				<div style={{ minWidth: "180px" }}>
+					<div style={{ padding: "5px", 
+								  color: "#000",
+								  
+								  }}>
 					{address && (
-						<div style={{ fontSize: "12px", fontWeight: "bold"}}>
+						<div style={{ fontSize: "15px", 
+									  fontWeight: "bold",
+									  }}>
 							{address.address_name}
 						</div>
 					)}
 					</div>
 					<div>
-					<button disabled={!addressConfirmed}>주소 보내기</button>
+					<button disabled={!addressConfirmed} style={{fontSize: "15px",
+																	}}>현재위치 공유하기</button>
 					</div>
 				</div>
 				)}
