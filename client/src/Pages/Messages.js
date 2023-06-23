@@ -4,7 +4,7 @@ import { Navbar, NavDropdown, Nav, Container, Row, Form, InputGroup, Button, Ale
 import { Link, NavLink, useHistory } from 'react-router-dom';
 import { Context } from '../ContextStore';
 import { animateScroll } from 'react-scroll';
-import { AiOutlineAlert, AiOutlineUpload, AiOutlineSchedule } from 'react-icons/ai';
+import { AiOutlineAlert, AiOutlineUpload, AiOutlineSchedule, AiOutlineClose } from 'react-icons/ai';
 import { ImBlocked } from 'react-icons/im';
 import { IoIosArrowBack } from 'react-icons/io';
 import {FaMapMarkedAlt} from 'react-icons/fa'
@@ -24,12 +24,11 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { MobileDateTimePicker } from '@mui/x-date-pickers/MobileDateTimePicker';
 
 
-
 function Messages({ match }) { // match = Router 제공 객체, url을 매개변수로 사용. ex) 경로 : /messages/123  => match.params.id = "123" // app.js 참고 : <Route path="/messages" exact component={Messages} />;
-    const [isOpen, setIsOpen] = useState(false)
-    const onOpen = () => {
-        setIsOpen(true)
-    }
+    //map modal
+    const [show, setShow] = useState(false);
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
 
     const github = settings;
     let chatId = match.params.id; // 선택된 채팅방의 id
@@ -427,10 +426,16 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
                                             <button className={`${styles['menu-item']} ${styles.red}`}> <div style={{fontSize:'16px', marginBottom:'7px'}} >🤗</div> </button>
                                             <button className={`${styles['menu-item']} ${styles.purple}`}> </button>
                                             <button className={`${styles['menu-item']} ${styles.orange}`}>  </button>
-                                            <button className={`${styles['menu-item']} ${styles.lightblue}`} onClick={ onOpen }> <FaMapMarkedAlt size={20} style={{marginBottom:'8px'}} /> {/*{console.log('modalstate 값 확인 : ',modalState)}*/} </button>
-                                            {
-                                                isOpen && <KakaoMapAPI />       
-                                            }
+                                            <button type="button" className={`${styles['menu-item']} ${styles.lightblue}`} onClick={ handleShow }> <FaMapMarkedAlt size={20} style={{marginBottom:'8px'}} /> {/*{console.log('modalstate 값 확인 : ',modalState)}*/} </button>
+                                            {handleShow && (
+                                                <Modal show={show} onHide={handleClose}>
+                                                <div>
+                                                    <KakaoMapAPI />
+                                                </div>
+                                                </Modal>
+                                            )}
+                                            
+
                                             </nav>
                                                 {/* <input type="file" id="file-upload" style={{ display: 'none' }}/> */}
                                                 {/* <label className="label-no-margin" htmlFor="file-upload"><UseAnimations className="plusToX" animation={plusToX} size={40} /></label> */}
