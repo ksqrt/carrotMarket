@@ -152,12 +152,18 @@ function SellerProfile({ params, history }) {
                 </div>
             </div>
 
+            
+
+
+
+
             <div className="container">
                 {/* <Row>
           <Col lg={12}>
             <ActiveSells params={params} />
           </Col>
         </Row> */}
+
             </div>
 
             <Modal show={showMsg} onHide={handleClose}>
