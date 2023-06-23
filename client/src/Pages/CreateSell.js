@@ -123,7 +123,6 @@ class AddProduct extends Component {
     return (
       <>
         <div className="container">
-          <h1 className="heading">Add a Product</h1>
           <Form onSubmit={this.onSubmitHandler}>
             {this.state.alertShow && (
               <Alert
