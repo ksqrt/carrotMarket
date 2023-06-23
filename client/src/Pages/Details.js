@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useContext} from 'react';
 import { useEffect, useState } from 'react';
 import { Col, Row, Spinner } from 'react-bootstrap';
 import SimpleSider from '../components/Siders/SimpleSider';
@@ -6,12 +6,14 @@ import Breadcrumb from '../components/Details/Breadcrumb'
 import ProductInfo from '../components/Details/ProductInfo/ProductInfo';
 import Aside from '../components/Details/Aside/Aside';
 import { getSpecific, views } from '../services/productData'
-
 import '../components/Details/ProductInfo/ProductInfo.css';
 import '../components/Details/Aside/Aside.css';
 import KakaoShare from '../components/Kakao/KakaoShare';
+import { Context } from '../ContextStore';
 
 function Details({ match, history }) {
+    const { userData } = useContext(Context);
+    let userId = userData._id;
     let productId = match.params.id;
     let [product, setProduct] = useState([])
     let [loading, setLoading] = useState(true);
@@ -19,7 +21,7 @@ function Details({ match, history }) {
    
     useEffect(() => {
         window.scrollTo(0, 0)
-        getSpecific(productId)
+        getSpecific(productId,userId)
             .then(res => setProduct(res), setLoading(false))
             .catch(err => console.log(err));
         

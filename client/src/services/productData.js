@@ -25,7 +25,8 @@ export async function getAll(page, category, query) {
   }
 }
 
-export async function getSpecific(id) {
+export async function getSpecific(id,userId) {
+  console.log(userId)
   return (
     await fetch(`${baseUrl}/products/specific/${id}`, {
       credentials: "include",
