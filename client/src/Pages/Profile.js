@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext  } from 'react';
 import ProfileSection from '../components/Profile/ProfileSection';
 import Wishlist from '../components/Profile/Wishlist/Wishlist';
 import ActiveSells from '../components/Profile/Sells/ActiveSells';
@@ -7,16 +7,24 @@ import Soldout from '../components/Profile/Sells/Soldout';
 import Review from '../components/Profile/Sells/Review';
 import SellerProfile from '../components/Profile/SellerProfile';
 import { getUserById } from '../services/userData';
+import { useParams } from 'react-router-dom';
+import { Context } from '../ContextStore';
 
 import '../components/Profile/Profile.css';
 
+
+
 function Profile({ match, history }) {
+  const { userData } = useContext(Context);
+  const { id } = useParams();
   const [active, setActive] = useState(true);
   const [archived, setArchived] = useState(false);
   const [wishlist, setWishlist] = useState(false);
   const [soldout, setSoldout] = useState(false);
   const [review, setReview] = useState(false);
   const [user, setUser] = useState([]);
+
+  const isCurrentUserSeller = id === userData._id;
 
   const handleActive = () => {
     setActive(true);
@@ -67,7 +75,7 @@ function Profile({ match, history }) {
 
   return (
     <>
-      {user.isMe ? (
+        {isCurrentUserSeller ? (
         <>
           <ProfileSection params={user} />
           <div className="container">

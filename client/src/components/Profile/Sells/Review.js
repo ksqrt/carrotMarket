@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import { createReview, getReviews, getUserName } from '../../../services/ReviewData';
 import { useParams } from 'react-router-dom';
 import './ReviewForm.css';
-import { Context } from "../../../ContextStore";
+import { Context } from '../../../ContextStore';
 
 const ReviewForm = () => {
   const { userData } = useContext(Context);
@@ -49,16 +49,18 @@ const ReviewForm = () => {
     const fetchReviews = async () => {
       const fetchedReviews = await getReviews(id);
       setReviews(fetchedReviews);
-      console.log(fetchedReviews,'이거확인용@@#!#@$#$!');
+      console.log(fetchedReviews, '이거확인용@@#!#@$#$!');
     };
 
     fetchReviews();
   }, [id, userData._id]);
 
+  const isCurrentUserSeller = id === userData._id;
+
   return (
     <div className="review-page">
       <div className="review-board">
-        <h2 className="review-board__title">리뷰 리스트</h2>
+        <h2 className="review-board__title">거래 후기</h2>
         <div className="review-board__list">
           {reviews
             .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
@@ -75,24 +77,29 @@ const ReviewForm = () => {
             ))}
         </div>
       </div>
-      <form onSubmit={handleSubmit} className="review-form">
-        <h2 className="review-form__title">판매자 리뷰 작성</h2>
-        <div className="review-form__content">
-          <label htmlFor="content" className="review-form__label">
-            <h3>거래 후기</h3>
-          </label>
-          <textarea
-            id="content"
-            value={content}
-            onChange={handleContentChange}
-            className="review-form__textarea"
-          ></textarea>
-          {error && <p className="review-form__error" style={{ color: 'red' }}>{error}</p>}
-        </div>
-        <button type="submit" className="review-form__submit-btn">
-          리뷰 작성
-        </button>
-      </form>
+      {isCurrentUserSeller ? null : (
+        <form onSubmit={handleSubmit} className="review-form">
+          <h2 className="review-form__title">거래 후기 작성</h2>
+          <div className="review-form__content">
+            <label htmlFor="content" className="review-form__label">
+            </label>
+            <textarea
+              id="content"
+              value={content}
+              onChange={handleContentChange}
+              className="review-form__textarea"
+            ></textarea>
+            {error && (
+              <p className="review-form__error" style={{ color: 'red' }}>
+                {error}
+              </p>
+            )}
+          </div>
+          <button type="submit" className="review-form__submit-btn">
+            리뷰 작성
+          </button>
+        </form>
+      )}
     </div>
   );
 };

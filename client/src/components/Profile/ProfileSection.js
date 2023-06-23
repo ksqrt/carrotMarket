@@ -5,11 +5,7 @@ import { BsFillPersonFill } from 'react-icons/bs';
 import { MdEmail, MdPhoneAndroid } from 'react-icons/md'
 import { FaSellsy } from 'react-icons/fa'
 import { GrEdit } from 'react-icons/gr';
-import aImage from './profile_images/a.png'; // 이미지 파일 경로
-import bImage from './profile_images/b.png'; // 이미지 파일 경로
-import cImage from './profile_images/c.png'; // 이미지 파일 경로
-import dImage from './profile_images/d.png'; // 이미지 파일 경로
-import eImage from './profile_images/e.png'; // 이미지 파일 경로
+
 
 const getMannerTemperatureStyle = (temperature) => {
     const width = temperature + "%";
@@ -93,15 +89,16 @@ function ProfileSection({ params }) {
                             </div>
                         <div id="tem_total">
                             <p style={{ float: 'left', fontWeight: 'bold', textDecoration: 'underline' }}>매너온도</p>
-                            <p style={{ marginBottom: '-1px', float: 'right', color: getFontColor(36.5) }}>{36.5}°C&nbsp;&nbsp;
+                            <p style={{ marginBottom: '-1px', float: 'right', color: getFontColor(parseInt(params.mannertmp) + 0) }}>{(params.mannertmp)}°C&nbsp;&nbsp;
+
                                 <img
-                                    src={getMannerTemperatureImage(36.5)}
+                                    src={getMannerTemperatureImage(params.mannertmp)}
                                     alt="이미지 사진"
                                     style={{ width: '25px', height: '25px' }}
                                 />
                             </p>
                             <div className="manner-thermometer" style={{ marginBottom: '10px' }}>
-                                <div className="manner-thermometer-fill" style={getMannerTemperatureStyle(36.5)}></div>
+                                <div className="manner-thermometer-fill" style={getMannerTemperatureStyle(params.mannertmp)}></div>
                             </div>
                         </div>
                         <br></br>

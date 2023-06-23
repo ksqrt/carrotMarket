@@ -1,142 +1,110 @@
 .review-page {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  .review-board__list {
-    max-height: 300px; /* Adjust the height as needed */
-    overflow: auto;
-  }
-  
-  
-  .review-board {
-    margin-bottom: 20px;
-  }
-  
-  .review-board__title {
-    font-size: 24px;
-    font-weight: bold;
-    margin-bottom: 10px;
-  }
-  
-  .review-board__list {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
-  
-  .review-board__item {
-    background-color: #f5f5f5;
-    padding: 10px;
-    border-radius: 8px;
-  }
-  
-  .review-board__content {
-    margin-bottom: 5px;
-  }
-  
-  .review-board__timestamp {
-    color: #888;
-    font-size: 12px;
-  }
-  
-  .review-board__user {
-    margin-top: 10px;
-  }
-  
-  .review-board__username {
-    font-weight: bold;
-    color: #333;
-  }
-  
-  .review-form {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  
-  .review-form__title {
-    font-size: 24px;
-    font-weight: bold;
-    margin-bottom: 10px;
-  }
-  
-  .review-form__content {
-    margin-bottom: 10px;
-  }
-  
-  .review-form__label {
-    font-size: 14px;
-    margin-bottom: 5px;
-  }
-  
-  .review-form__textarea {
-    width: 300px;
-    height: 100px;
-    resize: none;
-    padding: 5px;
-    border-radius: 4px;
-    border: 1px solid #ccc;
-  }
-  
-  .review-form__submit-btn {
-    padding: 8px 16px;
-    font-size: 16px;
-    font-weight: bold;
-    background-color: #fca311;
-    color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.review-board__list {
+  max-height: 300px; /* Adjust the height as needed */
+  overflow: auto;
+}
+
+.review-board {
+  width: 85%;
+  margin-bottom: 20px;
+}
+
+.review-board__title {
+  text-align: center;
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.review-board__list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.review-board__item {
+  background-color: #f5f5f5;
+  padding: 10px;
+  border-radius: 8px;
+}
+
+.review-board__content {
+  margin-bottom: 5px;
+}
+
+.review-board__timestamp {
+  color: #888;
+  font-size: 12px;
+}
+
+.review-board__user {
+  margin-top: 10px;
+}
+
+.review-board__username {
+  font-weight: bold;
+  color: #333;
+}
+
+.review-form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); */
+}
+
+.review-form__title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: #ff7e36;
+}
+
+.review-form__content {
+  margin-bottom: 10px;
+}
+
+.review-form__label {
+  font-size: 14px;
+  margin-bottom: 5px;
+  color: #333;
+}
+
+.review-form__textarea {
+  width: 100%;
+  height: 100px;
+  resize: none;
+  padding: 5px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
+
+.review-form__submit-btn {
     border: none;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-  
-  .review-form__submit-btn:hover {
-    background-color: #e69500;
-  }
-  
-  /* Updated review form styles */
-  
-  .review-form {
-    background-color: #f5f5f5;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  }
-  
-  .review-form__title {
-    color: #fca311;
-    margin-bottom: 15px;
-  }
-  
-  .review-form__content {
-    margin-bottom: 15px;
-  }
-  
-  .review-form__label {
-    color: #333;
-    margin-bottom: 5px;
-  }
-  
-  .review-form__textarea {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-  }
-  
-  .review-form__submit-btn {
-    width: 100%;
-    padding: 10px;
-    font-size: 16px;
-    background-color: #fca311;
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-  
-  .review-form__submit-btn:hover {
-    background-color: #e69500;
-  }
-  
+    justify-content: center;
+    background-color: #ff7e36;
+    border-radius: 50px; /* 당근 모양을 위한 border-radius 설정 */
+    padding: 10px 20px; /* 버튼 내용물의 padding 조정 */
+    font-weight: bold; /* 텍스트 굵기 설정 */
+    color: #ffffff; /* 텍스트 색상 설정 */
+    text-transform: uppercase; /* 텍스트 대문자 변환 */
+    text-decoration: none; /* 텍스트에 밑줄 제거 */
+    transition: background-color 0.3s ease; /* 호버 시 배경색 변화를 위한 트랜지션 설정 */
+}
+
+.review-form__submit-btn:hover {
+  background-color: #ffb091;
+}
