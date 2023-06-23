@@ -12,6 +12,7 @@ import SearchBar from "../../components/SearchBar/SearchBar";
 import './Header.css';
 import LoginModal from '../Modal/LoginModal';
 import RegisterModal from '../Modal/RegisterModal';
+import Register from '../../Pages/Register';
 
 
 function Header() {
@@ -28,6 +29,21 @@ function Header() {
     }
     const onClose = () => {
         setIsOpen(false);
+    }
+
+    //회원가입 모달
+    const [register, setRegister] = useState(false);
+
+    const registerOpen = () => {
+        setRegister(true);
+    }
+    const registerClose = () => {
+        setRegister(false);
+    }
+
+    const loginModalOpen = () => {
+        setRegister(false);
+        setIsOpen(true);
     }
 
     const handleSearch = (e) => {
@@ -76,7 +92,7 @@ function Header() {
                                 <OverlayTrigger key="bottom" placement="bottom"
                                     overlay={
                                         <Tooltip id={`tooltip-bottom`}>
-                                            <strong>Add</strong> a sell.
+                                            <strong>상품등록</strong>
                                         </Tooltip>
                                     }
                                 >
@@ -129,9 +145,15 @@ function Header() {
                             {/* <NavLink style={{ backgroundColor: '#FF7E36' }} className="nav-item" id="nav-sign-in" to="/auth/login">
                                 로그인
                             </NavLink> */}
-                            <NavLink className="nav-item " id="nav-sign-up" to="/auth/register">
+                            {/* <NavLink className="nav-item " id="nav-sign-up" to="/auth/register">
                                 회원가입
-                            </NavLink>
+                            </NavLink> */}
+                            <div>
+                                <button className="nav-item " id="nav-sign-up" onClick={registerOpen}>회원가입</button>
+                                {
+                                    register && <Register registerClose={registerClose} loginModalOpen={loginModalOpen}/>
+                                }
+                            </div>
                         </Nav>)
                     }
                 </Navbar.Collapse>

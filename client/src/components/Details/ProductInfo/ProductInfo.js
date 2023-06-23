@@ -436,9 +436,7 @@ function ProductInfo({ params }) {
 
            <div>
             {/* <button onClick={sendLinkCustom}>Send Custom Link</button> */}
-                <button onClick = {sendLinkDefault}>카카오 공유하기</button>
-                 
-
+                <button className="kakao-button" onClick = {sendLinkDefault}>카카오 공유하기</button>
             </div>
 
             </div>
