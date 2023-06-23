@@ -45,8 +45,8 @@ router.get('/getUserById/:id', async (req, res) => {
         let jsonRes = {
             _id: user._id, name: user.name, email: user.email, phoneNumber: user.phoneNumber,
             totalSells: user.createdSells.length, avatar: user.avatar,
-            mannertmp: user.mannertmp,
-            isMe: req.user._id == req.params.id
+            mannertmp: user.mannertmp
+            // isMe: req.user._id == req.params.id
         }
         res.status(200).json({user: jsonRes});
     } catch (error) {
