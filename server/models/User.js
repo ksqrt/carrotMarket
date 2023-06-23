@@ -77,11 +77,11 @@ const userSchema = new mongoose.Schema({
         }
     ],
     // 매너 온도 기본 36.5
-    mannertmp:{
-            type:String,
-            trim: true,
-            default: 36.5
-    }
+    mannertmp: {
+        type: Number,
+        default: 36.5
+      }
+      
 });
 
 userSchema.pre('save', async function (next) {
