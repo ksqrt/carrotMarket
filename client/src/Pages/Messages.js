@@ -158,7 +158,7 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
 
     // 신고하기 버튼
     const [reportModalShow, setReportModalShow] = useState();
-    const reportedUserId = selected.isBuyer ? selected.chats.seller._id : selected.chats.buyer._id;
+    const reportedUserId = selected.isBuyer ? selected.chats.seller._id : selected.chats.buyer?._id;
     const handleShowReportModal = () => {
         setReportModalShow(true);
       };
@@ -230,7 +230,7 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
         // console.log("채팅방 가져오기 : ",res);
         setChatroomList(res); // 가져온 채팅방 목록을 상태 변수에 저장.
         if (isSelected) { // 채팅방이 선택되었다면 현재 선택된 채팅방의 정보를 selected 상태 변수에 저장
-            setSelected(res.find(x => x.chats._id === chatId))
+            setSelected(res.find(x => x.chats?._id === chatId))
             scrollToBottom();
         }
         })
@@ -303,9 +303,9 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
                                 <div className="chat-connections" key={x.chats._id}>
                                     <Link onClick={() => setIsSelected(true)} to={`/messages/${x.chats._id}`}>
                                         {x.isBuyer ?
-                                            <><img src={x.chats.seller.avatar} alt="user-avatar" /> <span>{x.chats.seller.name}</span>{x.chats.product?.image && <img src={x.chats.product?.image} alt="product" style={{float: 'right', width: '35px', height: '35px', objectFit: 'cover'}}/>}</>
+                                            <><img src={x.chats.seller?.avatar} alt="user-avatar" /> <span>{x.chats.seller?.name}</span>{x.chats.product?.image && <img src={x.chats.product?.image} alt="product" style={{float: 'right', width: '35px', height: '35px', objectFit: 'cover'}}/>}</>
                                             :
-                                            <><img src={x.chats.buyer.avatar} alt="user-avatar" /> <span>{x.chats.buyer.name}</span>{x.chats.product?.image && <img src={x.chats.product?.image} alt="product" style={{float: 'right', width: '35px', height: '35px', objectFit: 'cover'}}/>}</>
+                                            <><img src={x.chats.buyer?.avatar} alt="user-avatar" /> <span>{x.chats.buyer?.name}</span>{x.chats.product?.image && <img src={x.chats.product?.image} alt="product" style={{float: 'right', width: '35px', height: '35px', objectFit: 'cover'}}/>}</>
                                         }
                                     </Link>
                                     {/* 내가 isbuyer라면 표시할 아바타는 seller.avatar*/}
@@ -326,17 +326,17 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
                                 </button>
                                 {selected.isBuyer ?
                                     <Link to={`/profile/${selected.chats.seller._id}`}>
-                                        <img className='messageAvatar' src={selected.chats.seller.avatar} alt="user-avatar" />&nbsp;
+                                        <img className='messageAvatar' src={selected.chats.seller?.avatar} alt="user-avatar" />&nbsp;
                                         <span>{selected.chats.seller.name} </span>
-                                        <span className='message_mannertmp'>{selected.chats.seller.mannertmp}°C</span>
+                                        <span className='message_mannertmp'>{selected.chats.seller?.mannertmp}°C</span>
 
                                     </Link>
                                     :
-                                    <Link to={`/profile/${selected.chats.buyer._id}`}>
+                                    <Link to={`/profile/${selected.chats.buyer?._id}`}>
 
-                                        <img className='messageAvatar' src={selected.chats.buyer.avatar} alt="user-avatar" />&nbsp;
-                                        <span>{selected.chats.buyer.name} </span> 
-                                        <span className='message_mannertmp'>{selected.chats.buyer.mannertmp}°C</span>
+                                        <img className='messageAvatar' src={selected.chats.buyer?.avatar} alt="user-avatar" />&nbsp;
+                                        <span>{selected.chats.buyer?.name} </span> 
+                                        <span className='message_mannertmp'>{selected.chats.buyer?.mannertmp}°C</span>
                                         
                                     </Link>
                                 }
@@ -396,7 +396,7 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
                                                 <div className={selected.myId === x.senderId ? 'me' : "not-me"}>
                                                     <span className="timestamp">{x.sentAt ? new Date(x.sentAt).toLocaleTimeString('ko-KR', { hour: 'numeric', minute: 'numeric', hour12: true }) : ""}</span> &nbsp;
                                                     <span className="message"><Linkify>{x.message}</Linkify></span>
-                                                    {selected.myId !== x.senderId && <img className="user-avatar" src={selected.isBuyer ? selected.chats.seller.avatar : selected.chats.buyer.avatar} alt="user-avatar" />}
+                                                    {selected.myId !== x.senderId && <img className="user-avatar" src={selected.isBuyer ? selected.chats.seller?.avatar : selected.chats.buyer?.avatar} alt="user-avatar" />}
                                                 </div>
                                             )}
                                         </Fragment>
