@@ -42,12 +42,27 @@ router.patch('/edit-profile/:id', async (req, res) => {
 router.get('/getUserById/:id', async (req, res) => {
     try {
         let user = await userService.getUserById(req.params.id);
+        console.log("1번: " +user._id)
+        console.log("1번: " +user.name)
+        console.log("1번: " +user.email)
+        console.log("1번: " +user.totalSells)
+        console.log("1번: " +user.isMe)
+        console.log("1번: " +user.avatar)
+        console.log("req2:" + req.params.id)
+        // req.user._id 가 범인입니다.
+        // 로그인한 아이디가 범임임
+        console.log("req1:" + req.user._id)
+        console.log("req2:" + req.params.id)
+
         let jsonRes = {
             _id: user._id, name: user.name, email: user.email, phoneNumber: user.phoneNumber,
             totalSells: user.createdSells.length, avatar: user.avatar,
-            isMe: req.user._id == req.params.id
+            isMe: req.user._id === req.params.id
         }
+
+        console.log("2번: " +jsonRes)
         res.status(200).json({user: jsonRes});
+        console.log("3번: " +user)
     } catch (error) {
         res.status(500).json({ error });
     }
