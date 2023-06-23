@@ -6,8 +6,11 @@ import { RiMessage3Fill } from 'react-icons/ri';
 import { FaShoppingCart } from 'react-icons/fa';
 import { getUserById } from '../../services/userData';
 import MannerModal from './MannerModal';
+import { useParams } from 'react-router-dom';
 
 function SellerProfile({ params, history }) {
+    const { id } = useParams();
+
     const [showMsg, setShowMdg] = useState(false);
     const [message, setMessage] = useState("");
 
@@ -25,7 +28,7 @@ function SellerProfile({ params, history }) {
             const user = await getUserById(params._id); // 사용자 정보를 가져오는 API 호출 (예시)
             const mannerTemp = parseFloat(user.mannertmp);
             setMannerTemperature(mannerTemp);
-            console.log(user.mannertmp, '매너온도');
+            console.log(params.mannertmp, '매너온도');
             console.log(params.mannertmp, '매너온도');
         } catch (error) {
             console.error('Failed to fetch user data:', error);
@@ -141,7 +144,7 @@ function SellerProfile({ params, history }) {
 
                             {/* ... rest of the code ... */}
 
-                            {showCpt && <MannerModal onClose={handlecloseCpt} />}
+                            {showCpt && <MannerModal onClose={handlecloseCpt} id={id} />}
                         </>
 
 
