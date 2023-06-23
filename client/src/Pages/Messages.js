@@ -10,6 +10,7 @@ import { IoIosArrowBack } from 'react-icons/io';
 import {FaMapMarkedAlt} from 'react-icons/fa'
 import Linkify from 'react-linkify'; // url 주소 링크 처리하는 라이브러리
 import { BsSend } from "react-icons/bs";
+import { CiImageOff } from "react-icons/ci";
 import UseAnimations from "react-useanimations";
 import plusToX from "react-useanimations/lib/plusToX";
 import settings from 'react-useanimations/lib/settings';
@@ -303,9 +304,9 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
                                 <div className="chat-connections" key={x.chats._id}>
                                     <Link onClick={() => setIsSelected(true)} to={`/messages/${x.chats._id}`}>
                                         {x.isBuyer ?
-                                            <><img src={x.chats.seller?.avatar} alt="user-avatar" /> <span>{x.chats.seller?.name}</span>{x.chats.product?.image && <img src={x.chats.product?.image} alt="product" style={{float: 'right', width: '35px', height: '35px', objectFit: 'cover'}}/>}</>
+                                            <><img src={x.chats.seller?.avatar} alt="user-avatar" /> <span>{x.chats.seller?.name}</span>{x.chats.product?.image ? <img src={x.chats.product?.image} alt="product" style={{float: 'right', width: '35px', height: '35px', objectFit: 'cover'}}/> : <CiImageOff size={20}  />}</>
                                             :
-                                            <><img src={x.chats.buyer?.avatar} alt="user-avatar" /> <span>{x.chats.buyer?.name}</span>{x.chats.product?.image && <img src={x.chats.product?.image} alt="product" style={{float: 'right', width: '35px', height: '35px', objectFit: 'cover'}}/>}</>
+                                            <><img src={x.chats.buyer?.avatar} alt="user-avatar" /> <span>{x.chats.buyer?.name}</span>{x.chats.product?.image ? <img src={x.chats.product?.image} alt="product" style={{float: 'right', width: '35px', height: '35px', objectFit: 'cover'}}/> : <CiImageOff size={20}  />}</>
                                         }
                                     </Link>
                                     {/* 내가 isbuyer라면 표시할 아바타는 seller.avatar*/}
@@ -362,7 +363,7 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
                             {alertShow &&
                                 <Alert className="alert-glass" onClose={() => setAlertShow(false)}>
                                 <div className="flex-container">
-                                    <img src={selected.chats.product?.image} alt="product" className="img-style" />
+                                    {selected.chats.product?.image ? <img src={selected.chats.product?.image} alt="product" className="img-style" /> :  <CiImageOff size={20}  /> }
                                     <div className="text-container">
                                         <div>
                                             <span className="text-bold">{selected.chats.product?.soldout ? '거래완료' : (selected.chats.appointmentCheck ? '예약중' : '거래중')}</span> &nbsp;&nbsp;
@@ -379,7 +380,7 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
                                     <Button className='messageButton' onClick={ onOpen }> <FaMapMarkedAlt size={20}/> 장소 공유 </Button>
                                 </Alert>
                             }
-                            <div ref={chatContainerRef} id="chat-selected-body" className="chat-selected-body col-lg-12" style={{backgroundImage: `url(${bgUrl})`}}>
+                            <div ref={chatContainerRef} id="chat-selected-body" className="chat-selected-body col-lg-12" style={{ backgroundImage: `linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)), url(${bgUrl})`}}>
                             {selected.chats.conversation.slice(Math.max(selected.chats.conversation.length - showMessagesCount, 0)).map((x, index) =>{
                                 if (x) {
                                     const messageDate = new Date(x.sentAt).toLocaleDateString('ko-KR', { year: 'numeric', month: 'long', day: 'numeric'});

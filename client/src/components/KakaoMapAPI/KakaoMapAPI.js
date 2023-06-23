@@ -48,31 +48,31 @@ const KakaoMapAPI = () => {
     }
 };
 
-  useDidMountEffect(() => {
-    window.kakao.maps.event.addListener(map, "click", function (mouseEvent) {
-      var geocoder = new window.kakao.maps.services.Geocoder();
+  // useDidMountEffect(() => {
+  //   window.kakao.maps.event.addListener(map, "click", function (mouseEvent) {
+  //     var geocoder = new window.kakao.maps.services.Geocoder();
 
-      geocoder.coord2Address(
-        mouseEvent.latLng.getLng(),
-        mouseEvent.latLng.getLat(),
-        function (result, status) {
-          if (status === window.kakao.maps.services.Status.OK) {
-            var addr = !!result[0].road_address
-              ? result[0].road_address.address_name
-              : result[0].address.address_name;
+  //     geocoder.coord2Address(
+  //       mouseEvent.latLng.getLng(),
+  //       mouseEvent.latLng.getLat(),
+  //       function (result, status) {
+  //         if (status === window.kakao.maps.services.Status.OK) {
+  //           var addr = !!result[0].road_address
+  //             ? result[0].road_address.address_name
+  //             : result[0].address.address_name;
 
-            console.log(addr);
+  //           console.log(addr);
 
-            if (marker) {  // ensure that marker is not null
-                marker.setMap(null);
-                marker.setPosition(mouseEvent.latLng);
-                marker.setMap(map);
-            }
-          }
-        }
-      );
-    });
-  }, [map]);
+  //           if (marker) {  // ensure that marker is not null
+  //               marker.setMap(null);
+  //               marker.setPosition(mouseEvent.latLng);
+  //               marker.setMap(map);
+  //           }
+  //         }
+  //       }
+  //     );
+  //   });
+  // }, [map]);
 
   return (
     <div>

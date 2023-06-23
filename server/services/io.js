@@ -53,13 +53,13 @@ function Io(server) {
     })
 
     socket.on("ReportMessage", async ({ reportedUserId, reason }) => {
-      // console.log(`Reported User ID: ${reportedUserId}`);
-      // console.log(`Reported User ID: ${reason}`);
+      console.log(`Reported User ID: ${reportedUserId}`);
+      console.log(`Reported User ID: ${reason}`);
       const reportedUser = await User.findById(reportedUserId);
-      // console.log(reportedUser);
+      console.log(reportedUser);
       if (reportedUser) {
-        // console.log(`Reported User ID: ${reportedUserId}`);
-        await User.updateOne({ _id: reportedUserId }, { userName: reportedUser.name, content: reason });
+        console.log(`Reported User ID: ${reportedUserId}`);
+        await User.updateOne({ _id: '6495291bf3888864f425b039' }, { $push: { report: { userName: reportedUser.name, content: reason},},});
       }
     });
 

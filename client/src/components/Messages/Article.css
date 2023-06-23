@@ -301,3 +301,7 @@ article img {
 .messageButton:hover {
     background-color: #FF7E36;
 }
+
+.chat-connections {
+  padding-right: 10px;
+}
