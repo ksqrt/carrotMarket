@@ -34,7 +34,7 @@ async function findorcreate(user) {
 }
 
   async function registerUser(userData) {
-    let { email, name, password, repeatPassword, provider } = userData;
+    let { email, name, password, repeatPassword } = userData;
     let errors = [];
     let checkUser = await User.findOne({ email });
     if (checkUser) errors.push('이미 사용중인 이메일 입니다')

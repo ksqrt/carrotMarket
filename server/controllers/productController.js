@@ -5,29 +5,42 @@ const isAuth = require('../middlewares/isAuth')
 const Product = require('../models/Product');
 const User = require('../models/User');
 const moment = require('moment');
-
 const productService = require('../services/productService');
 
-// 메인 페이지에서 상품 목록을 가져오는 엔드포인트
 router.get('/', async (req, res) => {
     const { page, search } = req.query;
+  
     try {
-        let products;
-        if (search !== '' && search !== undefined) {
-            products = await Product.find();
-            products = products.filter(x => x.active == true)
-            products = products.filter(x => x.title.toLowerCase().includes(search.toLowerCase()) || x.city.toLowerCase().includes(search.toLowerCase()))
-            res.status(200).json({ products: products, pages: products.pages });
-        } else {
-            products = await Product.paginate({}, { page: parseInt(page) || 1, limit: 5 });
-            products.docs = products.docs.filter(x => x.active == true)
-            res.status(200).json({ products: products.docs, pages: products.pages });
-        }
+      let products;
+  
+      if (search !== '' && search !== undefined) {
+        products = await Product.find();
+        products = products.filter(x => x.active == true);
+        products = products.filter(x => x.title.toLowerCase().includes(search.toLowerCase()) || x.city.toLowerCase().includes(search.toLowerCase()));
+        products = products.sort((a, b) => new Date(b.addedAt) - new Date(a.addedAt));
+        res.status(200).json({ products: products, pages: products.pages });
+      } else {
+        const perPage = 8; // 한 페이지에 표시할 물건 수
+        const currentPage = parseInt(page) || 1; // 현재 페이지
+  
+        const totalProducts = await Product.find({ active: true }).countDocuments(); // 전체 활성화된 물건 수를 가져옵니다.
+        const totalPages = Math.ceil(totalProducts / perPage); // 전체 페이지 수
+  
+        const skipCount = (currentPage - 1) * perPage; // 건너뛸 물건 수
+  
+        products = await Product.find({ active: true })
+          .sort({ addedAt: -1 }) // addedAt 필드를 기준으로 내림차순으로 정렬합니다.
+          .skip(skipCount) // 건너뛸 물건 수만큼 건너뜁니다.
+          .limit(perPage); // 페이지당 물건 수를 제한합니다.
+  
+        res.status(200).json({ products: products, pages: totalPages });
+      }
     } catch (error) {
-        res.status(500).json({ message: error.message })
+      res.status(500).json({ message: error.message });
     }
-})
-
+  });
+  
+  
 
 // 특정 카테고리에 해당하는 상품 목록을 가져오는 엔드포인트
 router.get('/:category', async (req, res) => {
@@ -41,35 +54,31 @@ router.get('/:category', async (req, res) => {
 });
 
 // 특정 상품의 상세 정보를 가져오는 엔드포인트
-router.get('/specific/:id', async (req, res) => {
-    try {
-        let product = await (await Product.findById(req.params.id)).toJSON()
-        let seller = await (await User.findById(product.seller)).toJSON()
-        // let admin = await (await User.findById(req.params.id)).toJSON()
-        console.log(product)
-        product.addedAt = moment(product.addedAt).format('d MMM YYYY (dddd) HH:mm')
-        let jsonRes = {
-            ...product,
-            name: seller.name,
-            phoneNumber: seller.phoneNumber,
-            email: seller.email,
-            createdSells: seller.createdSells.length,
-            avatar: seller.avatar,
-            sellerId: seller._id,
-            isAuth: false,
-            // isAdmin: admin.role
-        }
-        if (req.user) {
-            let user = await User.findById(req.user._id)
-            jsonRes.isSeller = Boolean(req.user._id == product.seller);
-            jsonRes.isWished = user.wishedProducts.includes(req.params.id)
-            jsonRes.isAuth = true
-            // jsonRes.isAdmin = admin.role == 'admin'
-        }
-        res.status(200).json(jsonRes);
-    } catch (error) {
-        res.status(500).json({ message: error.message })
+router.get("/specific/:id", async (req, res) => {
+  try {
+    let product = await (await Product.findById(req.params.id)).toJSON();
+    let seller = await (await User.findById(product.seller)).toJSON();
+    product.addedAt = moment(product.addedAt).format("d MMM YYYY (dddd) HH:mm");
+    let jsonRes = {
+      ...product,
+      name: seller.name,
+      phoneNumber: seller.phoneNumber,
+      email: seller.email,
+      createdSells: seller.createdSells.length,
+      avatar: seller.avatar,
+      sellerId: seller._id,
+      isAuth: false,
+    };
+    if (req.user) {
+      let user = await User.findById(req.user._id);
+      jsonRes.isSeller = Boolean(req.user._id == product.seller);
+      jsonRes.isWished = user.wishedProducts.includes(req.params.id);
+      jsonRes.isAuth = true;
     }
+    res.status(200).json(jsonRes);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 });
 
 // 새로운 상품을 생성하는 엔드포인트
@@ -251,13 +260,11 @@ router.get('/views/:id', async (req, res) => {
 
         res.status(200).json({ msg: "dlal" });
     }
-
-    } catch(error) {
-        console.log('여기 일단 옴ㅎㅇ');
-        console.log(error);
-        res.status(500).json({ message: error.message })
-    }
-})
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: error.message });
+  }
+});
 
 // 상품을 삭제하는 코드
 router.delete('/delete/:id', async (req, res) => {

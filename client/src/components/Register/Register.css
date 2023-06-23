@@ -1,26 +1,66 @@
 form {
-    margin: 0 auto;
+  margin: 0 auto;
 }
 
 .auth-heading {
-    text-align: center;
-    font-family: serif;
-    padding-bottom: 20px;
+  text-align: center;
+  padding-bottom: 20px;
 }
 
 .btnAuth {
-    margin-top: 3%;
+  margin-top: 3%;
 }
 
 .bottom-msg-paragraph {
-    text-align: center;
-    padding-top: 20px;
+  text-align: center;
+  padding-top: 20px;
 }
 
 .bottom-msg-paragraph a:hover {
-    text-decoration: underline;
+  text-decoration: underline;
 }
 
 .form-text {
-    margin-left: 4px;
+  margin-left: 4px;
+}
+/*  */
+.register-bg {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 900;
+  background: #000;
+  opacity: 0.6;
+}
+.register-popup {
+  width: auto;
+  /* height: 500px; */
+  background: #f8f9fa;
+  border-radius: 4px;
+  overflow: hidden;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 6px 50px 0px;
+  position: absolute;
+  z-index: 1000;
+  left: 50%;
+  top: 50%;
+  padding: 30px 10px 30px 10px;
+  box-sizing: border-box;
+  transform: translate(-50%, 40%);
+}
+.register-close {
+  position: absolute;
+  background-color: #f8f9fa;
+  right: 20px;
+  top: 20px;
+  border: none;
+}
+.carrot-logo {
+  display: block;
+  margin: auto auto 20px;
+}
+.loginbtn{
+    border: none;
+    background-color: #f8f9fa;
 }

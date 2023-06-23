@@ -1,6 +1,6 @@
-import { useState, useEffect, useContext, useRef, React } from 'react';
+import { useState, useEffect, useContext, useRef, React, Fragment } from 'react';
 import {sendMessage, disconnect, getUserConversations, initializeSocket} from '../services/messagesData';
-import { Navbar, NavDropdown, Nav, Container, Row, Form, InputGroup, Button, Alert } from 'react-bootstrap';
+import { Navbar, NavDropdown, Nav, Container, Row, Form, InputGroup, Button, Alert, Modal } from 'react-bootstrap';
 import { Link, NavLink, useHistory } from 'react-router-dom';
 import { Context } from '../ContextStore';
 import { animateScroll } from 'react-scroll';
@@ -17,6 +17,11 @@ import '../components/Messages/Aside.css'
 import '../components/Messages/Article.css'
 import styles from '../components/Messages/flower.module.css'
 import KakaoMapAPI from '../components/KakaoMapAPI/KakaoMapAPI';
+import dayjs from 'dayjs';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { MobileDateTimePicker } from '@mui/x-date-pickers/MobileDateTimePicker';
+
 
 
 function Messages({ match }) { // match = Router 제공 객체, url을 매개변수로 사용. ex) 경로 : /messages/123  => match.params.id = "123" // app.js 참고 : <Route path="/messages" exact component={Messages} />;
@@ -53,7 +58,79 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
     }
     const [file, setFile] = useState(null); // 파일 업로드
     // const location = { lat: 37.497922, lng: 127.027606 };
-    let currentDate = null;
+    let currentDate = null; // 날짜 구분선
+
+    // 약속 잡기 버튼
+    const tempAppointment = () => {
+        setModalState(prevState => ({ ...prevState, modalOpen: false }));
+        // dayjs를 사용해서 날짜 객체를 만들어주기
+        const date = dayjs(modalState.date);
+
+        // 날짜 정보를 얻기
+        const year = date.year(); // 년도
+        const month = date.month() + 1; // 월 (dayjs는 0-11 사이의 값을 반환하므로 1을 더해줍니다)
+        const day = date.date(); // 일
+
+        // 요일 정보를 얻기
+        const weekdays = ["일", "월", "화", "수", "목", "금", "토"];
+        const weekday = weekdays[date.day()]; // 요일
+
+        // 시간 정보를 얻기
+        let hour = date.hour();
+        let meridiem = "오전";
+
+        // 24시간제를 12시간제로 변환하고, 오전/오후를 설정
+        if(hour >= 12) {
+            meridiem = "오후";
+            hour -= 12;
+        }
+
+        if(hour === 0) { // 12시 처리
+            hour = 12;
+        }
+
+        // 분 정보를 얻기
+        const minute = date.minute();
+
+        const message = `상대방이 ${year}년 ${month}월 ${day}일 (${weekday}) ${meridiem} ${hour}:${minute < 10 ? '0' : ''}${minute}에 \n 약속을 만들었어요. 약속은 꼭 지켜주세요!`;
+
+       // const message = ` 상대방이 ${dayjs(modalState.date).format('YYYY.MM.DD ddd A h:mm')}에 약속을 만들었어요. \n 약속은 꼭 지켜주세요!`;
+        sendMessage(socket, { chatId: selected.chats._id, senderId: null, message});
+    };
+    const [modalState, setModalState] = useState({
+        date: null,
+        modalOpen: false,
+        datePickerOpen: false,
+        content: ''
+    });
+
+        // 달력 창 열릴 때 실행
+    const openDateTimePicker = (event) => {
+        event.preventDefault()
+        setModalState({ ...modalState, date: dayjs(), datePickerOpen: true, content: '', modalOpen: false, });
+    };
+
+
+    // 달력 창 ok 버튼 눌렀을 때 && 모달 창 열기
+    const handleDateAccept = (selectedDate) => {
+        setModalState(prevState => ({
+            ...prevState,
+            date: selectedDate,
+            datePickerOpen: false,
+            modalOpen: true,
+            content: `설정한 날짜는 ${dayjs(selectedDate).format('YYYY.MM.DD A h:mm')}입니다. 이 날짜로 약속 시간을 잡을게요.`
+        }));
+    };
+
+    // 달력 창이 닫힐 때 실행
+    const handleDatePickerClose = () => {
+        setModalState(prevState => ({ ...prevState, datePickerOpen: false }));
+    };
+
+        // 모달 창 닫기
+    const handleModalClose = () => {
+        setModalState(prevState => ({ ...prevState, modalOpen: false }));
+    };
 
     // 위로 스크롤 시 추가 로딩 구현
     const [showMessagesCount, setShowMessagesCount] = useState(15);
@@ -92,8 +169,6 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
         setBgUrl(Math.random() < 0.05 ? secondUrl : firstUrl);
     }, [selected]);
 
-
-
     // 페이지 이동 오류 해결용
     useEffect(() => {
         const isOnMessageListPage = window.location.pathname === '/messages';
@@ -103,13 +178,11 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
         }
     }, []);
 
-
     useEffect(() => {
         (async () => {
           setSocket(await initializeSocket());
         })();
     }, []);
-
 
     useEffect(() => { // 대화방 가져오기, 선택시 내용 가져오기
     if (!userData || !socket) return;
@@ -260,7 +333,7 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
                                     </div>
                                 </div>
                                     <button> 후기 보내기 버튼 </button> {/* 약속 잡기 성공 후 sold out 시 */}
-                                    <button> 약속 잡기 버튼 </button> {/* (다른 사람과 약속 잡기가 되있지 않을 때) */}
+                                    <button onClick={openDateTimePicker}> 약속 잡기 버튼 </button> {/* (다른 사람과 약속 잡기가 되있지 않을 때) */}
                                 </Alert>
                             }
                             <div ref={chatContainerRef} id="chat-selected-body" className="chat-selected-body col-lg-12" style={{backgroundImage: `url(${bgUrl})`}}>
@@ -269,14 +342,21 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
                                     const messageDate = new Date(x.sentAt).toLocaleDateString('ko-KR', { year: 'numeric', month: 'long', day: 'numeric'});
 
                                     return (
-                                        <>
-                                            {messageDate !== currentDate && (currentDate = messageDate) && <p className="dateHeader"><div className="hr-sect" >{currentDate}</div></p>}
-                                            <div className={selected.myId === x.senderId ? 'me' : "not-me"}>
-                                                <span className="timestamp">{x.sentAt ? new Date(x.sentAt).toLocaleTimeString('ko-KR', { hour: 'numeric', minute: 'numeric', hour12: true }) : ""}</span> &nbsp;
-                                                <span className="message"><Linkify>{x.message}</Linkify></span>
-                                                {selected.myId !== x.senderId && <img className="user-avatar" src={selected.isBuyer ? selected.chats.seller.avatar : selected.chats.buyer.avatar} alt="user-avatar" />}
-                                            </div>
-                                        </>
+                                        <Fragment key={index}>
+                                            {messageDate !== currentDate && (currentDate = messageDate) && <div className="hr-sect" >{currentDate}</div>}
+                                            {x.senderId === null ? (
+                                                // This is a system message
+                                                <div className="system-message-div">
+                                                    <span className="system-message" style={{ whiteSpace: 'pre-wrap' }} ><Linkify>{x.message}</Linkify></span>
+                                                </div>
+                                            ) : (
+                                                <div className={selected.myId === x.senderId ? 'me' : "not-me"}>
+                                                    <span className="timestamp">{x.sentAt ? new Date(x.sentAt).toLocaleTimeString('ko-KR', { hour: 'numeric', minute: 'numeric', hour12: true }) : ""}</span> &nbsp;
+                                                    <span className="message"><Linkify>{x.message}</Linkify></span>
+                                                    {selected.myId !== x.senderId && <img className="user-avatar" src={selected.isBuyer ? selected.chats.seller.avatar : selected.chats.buyer.avatar} alt="user-avatar" />}
+                                                </div>
+                                            )}
+                                        </Fragment>
                                     )
                                 } else {
                                     return null;
@@ -299,11 +379,11 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
                                                 <input type="file" name='image' id="uploadInput" onChange={e => setFile(e.target.files[0])} style={{display: 'none'}} />
                                                 <AiOutlineUpload className="upload-icon" size={25} style={{marginBottom:'7px'}} /> 
                                             </button>
-                                            <button className={`${styles['menu-item']} ${styles.green}`}> <AiOutlineSchedule className="upload-icon" size={23} style={{marginBottom:'7px'}} /> </button>
+                                            <button className={`${styles['menu-item']} ${styles.green}`} onClick={openDateTimePicker}> <AiOutlineSchedule size={23} style={{marginBottom:'7px'}} /> </button>
                                             <button className={`${styles['menu-item']} ${styles.red}`}> <div style={{fontSize:'16px', marginBottom:'7px'}} >🤗</div> </button>
                                             <button className={`${styles['menu-item']} ${styles.purple}`}> </button>
                                             <button className={`${styles['menu-item']} ${styles.orange}`}>  </button>
-                                            <button className={`${styles['menu-item']} ${styles.lightblue}`} onClick={ onOpen }> <FaMapMarkedAlt className="upload-icon" size={20} style={{marginBottom:'8px'}} /> </button>
+                                            <button className={`${styles['menu-item']} ${styles.lightblue}`} onClick={ onOpen }> <FaMapMarkedAlt size={20} style={{marginBottom:'8px'}} /> {/*{console.log('modalstate 값 확인 : ',modalState)}*/} </button>
                                             {
                                                 isOpen && <KakaoMapAPI />       
                                             }
@@ -336,11 +416,31 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
                                         </InputGroup>
                                     </Form.Group>
                                 </Form>
+                                {modalState.datePickerOpen && (
+                                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                                        <MobileDateTimePicker open={modalState.datePickerOpen} onAccept={handleDateAccept} onClose={handleDatePickerClose} value={modalState.date ? modalState.date : new Date()} on/>
+                                    </LocalizationProvider>
+                                )}
+                                {modalState.modalOpen && modalState.content !== '' &&  (
+                                <Modal show={modalState.modalOpen} onHide={handleModalClose}>
+                                    <Modal.Header closeButton>
+                                        <Modal.Title>약속 시간 설정</Modal.Title>
+                                    </Modal.Header>
+                                    <Modal.Body>
+                                        {modalState.content}
+                                    </Modal.Body>
+                                    <Modal.Footer>
+                                        <Button variant="secondary" onClick={handleModalClose}>취소</Button>
+                                        <Button variant="primary" onClick={tempAppointment}>확인</Button>
+                                    </Modal.Footer>
+                                </Modal>
+                                )}
                             </div>
                         </>
                     }
                 </article>
             </Row>
+            
         </Container>
     )
 }

@@ -6,11 +6,9 @@ import { BsFillPersonFill } from 'react-icons/bs';
 import { MdEmail, MdPhoneAndroid } from 'react-icons/md'
 import { FaSellsy } from 'react-icons/fa'
 import { RiMessage3Fill } from 'react-icons/ri';
-import aImage from './profile_images/a.png'; // 이미지 파일 경로
-import bImage from './profile_images/b.png'; // 이미지 파일 경로
-import cImage from './profile_images/c.png'; // 이미지 파일 경로
-import dImage from './profile_images/d.png'; // 이미지 파일 경로
-import eImage from './profile_images/e.png'; // 이미지 파일 경로
+import { FaShoppingCart } from 'react-icons/fa'; // Import a different icon from react-icons library
+
+
 // import { createChatRoom } from '../../services/messagesData'
 
 function SellerProfile({ params, history }) {
@@ -63,15 +61,15 @@ function SellerProfile({ params, history }) {
 
     const getMannerTemperatureImage = (temperature) => {
         if (temperature >= 0 && temperature < 21) {
-            return aImage;
+            return "https://kr.object.ncloudstorage.com/ncp3/ncp3/2.png";
         } else if (temperature >= 21 && temperature < 36.5) {
-            return bImage;
+            return "https://kr.object.ncloudstorage.com/ncp3/ncp3/3.png";
         } else if (temperature >= 36.5 && temperature < 40) {
-            return cImage;
+            return "https://kr.object.ncloudstorage.com/ncp3/ncp3/4.png";
         } else if (temperature >= 40 && temperature < 50) {
-            return dImage;
+            return "https://kr.object.ncloudstorage.com/ncp3/ncp3/5.png";
         } else if (temperature >= 50 && temperature < 60) {
-            return eImage;
+            return "https://kr.object.ncloudstorage.com/ncp3/ncp3/5.png";
         } else {
             return null;
         }
@@ -108,22 +106,27 @@ function SellerProfile({ params, history }) {
                             <p><BsFillPersonFill /> {params.name}</p>
                             <div id="tem_total">
                                 <p style={{ float: 'left', fontWeight: 'bold', textDecoration: 'underline' }}>매너온도</p>
-                                <p style={{ marginBottom: '-1px', float: 'right', color: getFontColor(36.5) }}>{36.5}%
+                                <p style={{ marginBottom: '-1px', float: 'right', color: getFontColor(36.5) }}>{36.5}°C&nbsp;&nbsp;
                                     <img
                                         src={getMannerTemperatureImage(36.5)}
                                         alt="이미지 사진"
-                                        style={{ width: '50px', height: '50px' }}
+                                        style={{ width: '25px', height: '25px' }}
                                     />
                                 </p>
                                 <div className="manner-thermometer" style={{ marginBottom: '10px' }}>
                                     <div className="manner-thermometer-fill" style={getMannerTemperatureStyle(36.5)}></div>
                                 </div>
+                                
                             </div>
                             <br /><br /><br /><br />
-                            <p><FaSellsy /> {params.totalSells} sells in total</p>
+                          
                         </Col>
 
                         <div id="profile_infobtn">
+                        <div className='sellcount'>
+                            <FaShoppingCart className="section-icon" /> {/* Change the icon to FaShoppingCart */}
+                            <p className="section-title">판매상품 <span className="item-count">{params.totalSells}</span>개</p>
+                            </div>
                             <button className="custom-button">매너 칭찬하기</button>
                         </div>
 
@@ -138,13 +141,16 @@ function SellerProfile({ params, history }) {
                     </Row>
                 </div>
             </div>
+
             <div className="container">
-                <Row>
+                {/* <Row>
                     <Col lg={12}>
                         <ActiveSells params={params} />
                     </Col>
-                </Row>
+                </Row> */}
             </div>
+
+
             <Modal show={showMsg} onHide={handleClose}>
                 <Modal.Header closeButton>
                     <Modal.Title>Message</Modal.Title>

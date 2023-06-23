@@ -27,18 +27,14 @@ function ProductInfo({ params }) {
   
   const history = useHistory();
 
-
   const handleClose = () => setShowMdg(false);
   const handleShow = () => setShowMdg(true);
 
   const handleCloseArchive = () => setShowArchive(false);
   const handleShowArchive = () => setShowArchive(true);
-
   
   const handleCloseArchive2 = () => setShowArchive2(false);
   const handleShowArchive2 = () => setShowArchive2(true);
-
-
 
   const handleSubmit = (e) => {
     console.log('handleSubmit called')
@@ -138,15 +134,15 @@ function ProductInfo({ params }) {
 
   const getMannerTemperatureImage = (temperature) => {
     if (temperature >= 0 && temperature < 21) {
-      return aImage;
+      return "https://kr.object.ncloudstorage.com/ncp3/ncp3/2.png";
     } else if (temperature >= 21 && temperature < 36.5) {
-      return bImage;
+      return "https://kr.object.ncloudstorage.com/ncp3/ncp3/3.png";
     } else if (temperature >= 36.5 && temperature < 40) {
-      return cImage;
+      return "https://kr.object.ncloudstorage.com/ncp3/ncp3/4.png";
     } else if (temperature >= 40 && temperature < 50) {
-      return dImage;
+      return "https://kr.object.ncloudstorage.com/ncp3/ncp3/5.png";
     } else if (temperature >= 50 && temperature < 60) {
-      return eImage;
+      return "https://kr.object.ncloudstorage.com/ncp3/ncp3/5.png";
     } else {
       return null;
     }
@@ -382,11 +378,11 @@ function ProductInfo({ params }) {
           <div id="profile_right">
             <div id="tem_total">
               <p style={{ float: 'left', fontWeight: 'bold', textDecoration: 'underline' }}>매너온도</p>
-              <p style={{ marginBottom: '-1px', float: 'right', color: getFontColor(36.5) }}>{36.5}°C
+              <p style={{ marginBottom: '-1px', float: 'right', color: getFontColor(36.5) }}>{36.5}°C&nbsp;&nbsp;
                 <img
                   src={getMannerTemperatureImage(36.5)}
                   alt="이미지 사진"
-                  style={{ width: '50px', height: '50px' }}
+                  style={{ width: '25px', height: '25px' }}
                 />
               </p>
               <div className="manner-thermometer" style={{ marginBottom: '10px' }}>
@@ -411,7 +407,7 @@ function ProductInfo({ params }) {
         <p id='content_category'>{ params.category } · <time>{displayCreateAt(params.addedAt)}</time></p>
         <p id='content_price'>{params.price ? params.price.toLocaleString() : ''}원</p>
         <p id='content_main'>{ params.description }</p>
-        <p id='content_cnt'> 관심 ♥ · 채팅 갯수 · 조회 수 </p>
+        <p id='content_cnt'> 관심 ♥ { params.likes } · 채팅 갯수 · 조회 수 { params.views } </p>
         <div id='content_button'>
           { params.isAuth ? (
             <>
@@ -447,9 +443,7 @@ function ProductInfo({ params }) {
 
            <div>
             {/* <button onClick={sendLinkCustom}>Send Custom Link</button> */}
-                <button onClick = {sendLinkDefault}>카카오 공유하기</button>
-                 
-
+                <button className="kakao-button" onClick = {sendLinkDefault}>카카오 공유하기</button>
             </div>
 
             </div>
