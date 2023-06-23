@@ -243,10 +243,27 @@ article img {
     margin: auto;
     margin-top: 50px;
     margin-bottom: 50px;
+    text-align: center;
 }
 
 .system-message{
     font-size: 13px;
     font-weight: bold;
     color: #222521;
+}
+
+.appointmentModal .modal-dialog {
+ width: 440px;
+}
+
+.appointmentModalButton {
+    background-color: #FF7E36;
+    border-color: #FF7E36;
+    /* color: white; */
+}
+
+
+.appointmentModalFooter {
+    display:flex;
+    justify-content:center;
 }

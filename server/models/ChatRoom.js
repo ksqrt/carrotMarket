@@ -42,6 +42,15 @@ const chatRoomSchema = new mongoose.Schema({
     product:{
         type: mongoose.Types.ObjectId,
         ref: 'Product'
+    },
+
+    appointmentDate: {
+        type: Date, // 약속 잡기
+        required: false
+    },
+    appointmentCheck: {
+        type:Boolean,
+        default:false
     }
 })
 

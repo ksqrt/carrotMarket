@@ -26,7 +26,7 @@ function Io(server) {
       socket.emit('startChat', { chatId: chatRoom._id.toString() });
     });
 
-    socket.on("sendMessage", async ({chatId, senderId, message, location}) => { // chatId, senderId, message 인자와 함께 이벤트를 받았을 때 실행됨.
+    socket.on("sendMessage", async ({chatId, senderId, message, location }) => { // chatId, senderId, message 인자와 함께 이벤트를 받았을 때 실행됨.
       const sentAt = new mongoose.Types.ObjectId(); // MongoDB의 ObjectId를 사용하여 서버 시간을 가져옵니다. 
       const _id = new mongoose.Types.ObjectId();
       const newMessage = { _id, senderId, message, sentAt: sentAt.getTimestamp(), location };
@@ -36,6 +36,21 @@ function Io(server) {
       io.emit("newMessage", newMessage); // senderId, message, sentAt 인자 제공 필요
       console.log('4. io.js, newMessage');
     });
+
+    socket.on("setAppointment", async ({chatId, appointmentDate }) => {
+      await ChatRoom.updateOne({ _id: chatId }, { appointmentDate, appointmentCheck: false });
+      io.emit("appointmentUpdated", { chatId, appointmentDate });
+  });
+
+    socket.on("appointmentCheck", async ({chatId, appointmentCheck }) => {
+      await ChatRoom.updateOne({ _id: chatId }, { appointmentCheck });
+      io.emit("appointmentChecked", { chatId, appointmentCheck });
+  });
+
+    socket.on("deleteAppointment", async ({chatId}) => {
+      await ChatRoom.updateOne({_id:chatId}, {$unset:{appointmentDate:1}});
+      io.emit("deleteAppointmentUpdated", {chatId, appointmentDate:null});
+    })
 
     socket.on("getUserConversations", async ({ userId }) => {
       // $or : 주어진 배열 내의 조건 중 하나라도 참이면 참으로 간주 buyer 또는 seller에 userId가 있는 경우에 참. 전부 가져옴.

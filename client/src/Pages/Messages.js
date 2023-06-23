@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext, useRef, React, Fragment } from 'react';
-import {sendMessage, disconnect, getUserConversations, initializeSocket} from '../services/messagesData';
+import {sendMessage, disconnect, getUserConversations, initializeSocket, setAppointment, deleteAppointment, appointmentCheck} from '../services/messagesData';
 import { Navbar, NavDropdown, Nav, Container, Row, Form, InputGroup, Button, Alert, Modal } from 'react-bootstrap';
 import { Link, NavLink, useHistory } from 'react-router-dom';
 import { Context } from '../ContextStore';
@@ -46,6 +46,7 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
         isBuyer: null,
         myId: 0
     });
+    const myName = selected.isBuyer ? selected.chats.buyer.name : selected.chats.seller.name;
     const [message, setMessage] = useState(""); // 내가 입력한 메세지
     const [alertShow, setAlertShow] = useState(true); 
     const [socket, setSocket] = useState(null); // initializeSocket 소켓 초기화
@@ -65,37 +66,11 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
         setModalState(prevState => ({ ...prevState, modalOpen: false }));
         // dayjs를 사용해서 날짜 객체를 만들어주기
         const date = dayjs(modalState.date);
-
-        // 날짜 정보를 얻기
-        const year = date.year(); // 년도
-        const month = date.month() + 1; // 월 (dayjs는 0-11 사이의 값을 반환하므로 1을 더해줍니다)
-        const day = date.date(); // 일
-
-        // 요일 정보를 얻기
         const weekdays = ["일", "월", "화", "수", "목", "금", "토"];
-        const weekday = weekdays[date.day()]; // 요일
+        const message = `${myName}님이 ${date.format('YYYY년 MM월 DD일')} (${weekdays[date.day()]}) ${date.format('A h:mm')}에 \n 약속을 만들었어요. 약속은 꼭 지켜주세요!`;
 
-        // 시간 정보를 얻기
-        let hour = date.hour();
-        let meridiem = "오전";
-
-        // 24시간제를 12시간제로 변환하고, 오전/오후를 설정
-        if(hour >= 12) {
-            meridiem = "오후";
-            hour -= 12;
-        }
-
-        if(hour === 0) { // 12시 처리
-            hour = 12;
-        }
-
-        // 분 정보를 얻기
-        const minute = date.minute();
-
-        const message = `상대방이 ${year}년 ${month}월 ${day}일 (${weekday}) ${meridiem} ${hour}:${minute < 10 ? '0' : ''}${minute}에 \n 약속을 만들었어요. 약속은 꼭 지켜주세요!`;
-
-       // const message = ` 상대방이 ${dayjs(modalState.date).format('YYYY.MM.DD ddd A h:mm')}에 약속을 만들었어요. \n 약속은 꼭 지켜주세요!`;
         sendMessage(socket, { chatId: selected.chats._id, senderId: null, message});
+        setAppointment(socket, { chatId: selected.chats._id, appointmentDate: date.toISOString(), appointmentCheck:false });
     };
     const [modalState, setModalState] = useState({
         date: null,
@@ -131,6 +106,56 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
     const handleModalClose = () => {
         setModalState(prevState => ({ ...prevState, modalOpen: false }));
     };
+
+
+    const [currentAppointment, setCurrentAppointment] = useState(null);
+    
+    useEffect(()=> { 
+        if (selected.chats.appointmentDate && !selected.isBuyer && !selected.chats.appointmentCheck){
+            setCurrentAppointment(selected.chats.appointmentDate);
+        } else {
+            setCurrentAppointment(null);
+        }
+    },[selected]);
+
+    useEffect(() => { // 클라이언트에서 약속 삭제 유무 실시간 확인용
+        if (!socket) return;
+        console.log('deleteAppointmentUpdated event listener attached');
+        const handleDeleteAppointment = ({chatId}) => {
+            if (chatId === selected.chats._id) {
+                setSelected(prevSelected => ({
+                    ...prevSelected,
+                    chats: {
+                        ...prevSelected.chats,
+                        appointmentDate: null,
+                    },
+                }));
+            }
+        };
+        socket.on('deleteAppointmentUpdated', handleDeleteAppointment);
+        
+        return () => {
+            socket.off('deleteAppointmentUpdated', handleDeleteAppointment);
+        };
+    }, [socket, selected]);
+
+    const appointmentModalAccept = () => {
+        // 약속 수락 시 system에 추가 메세지 보내기 -> 거래 팁을 알려드려요! , 0월0일에 거래 약속이 있나요? 따뜻한 거래를 위한 팁을 알려드릴게요!
+        // 지도 위치 다시 보여주기
+        appointmentCheck(socket, {chatId:selected.chats._id, appointmentCheck : true})
+        const message = `${dayjs(selected.chats.appointmentDate).format('MM월 DD일')}에 거래 약속이 있나요? 따뜻한 거래를 위한 팁을 알려드릴게요! ☺️ 미구현`;
+        sendMessage(socket, { chatId: selected.chats._id, senderId: null, message});
+        setCurrentAppointment(null);
+    }
+
+    const appointmentModalReject = () => {
+        deleteAppointment(socket, { chatId: selected.chats._id});
+        const weekdays = ["일", "월", "화", "수", "목", "금", "토"];
+        const message = `${myName}님이 ${dayjs(selected.chats.appointmentDate).format('YYYY년 MM월 DD일')} (${weekdays[dayjs(selected.chats.appointmentDate).day()]}) ${dayjs(selected.chats.appointmentDate).format('A h:mm')}에 시간이 안된다고 하셨어요. 😣 \n 다른 시간으로 약속을 잡아볼까요?`;
+        sendMessage(socket, { chatId: selected.chats._id, senderId: null, message});
+        setCurrentAppointment(null);
+    }
+
 
     // 위로 스크롤 시 추가 로딩 구현
     const [showMessagesCount, setShowMessagesCount] = useState(15);
@@ -221,7 +246,7 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
         return () => {
             socket.off('newMessage', handleNewMessage);
         };
-    }, [socket]);
+    }, [socket, selected]);
     
     useEffect(() => {
         console.log("채팅방 전체 로그 : ", selected);
@@ -324,7 +349,7 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
                                     <img src={selected.chats.product?.image} alt="product" className="img-style" />
                                     <div className="text-container">
                                         <div>
-                                            <span className="text-bold">{selected.chats.product?.soldout ? '거래완료' : '거래중'}</span> &nbsp;&nbsp;
+                                            <span className="text-bold">{selected.chats.product?.soldout ? '거래완료' : (selected.chats.appointmentCheck ? '예약중' : '거래중')}</span> &nbsp;&nbsp;
                                             <span>{selected.chats.product?.title}</span>
                                         </div>
                                         <div>
@@ -435,6 +460,7 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
                                     </Modal.Footer>
                                 </Modal>
                                 )}
+                                <AppointmentModal show={currentAppointment !== null && selected.chats.appointmentCheck === false} selected={selected} appointmentModalAccept={appointmentModalAccept} appointmentModalReject={appointmentModalReject} myName={myName}  />
                             </div>
                         </>
                     }
@@ -444,5 +470,33 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
         </Container>
     )
 }
+// 약속을 db가 존재할 때 처음 한번만 떠야 함. 그러면 결국 약속 상태 db를 만들어야 함.
+function AppointmentModal({ show, selected, appointmentModalAccept, appointmentModalReject, myName }) {
+    const weekdays = ["일", "월", "화", "수", "목", "금", "토"];
+    const AppointmentDate = selected.chats.appointmentDate ? `${dayjs(selected.chats.appointmentDate).format('YYYY년 MM월 DD일')} (${weekdays[dayjs(selected.chats.appointmentDate).day()]}) ${dayjs(selected.chats.appointmentDate).format('A h:mm')}` : null;
+
+    return (
+        <Modal className='appointmentModal'  show={show}>
+            <Modal.Header><img src='https://kr.object.ncloudstorage.com/ncp3/ncp3/logo_main_row.webp'/></Modal.Header>
+            <Modal.Body className="appointmentModalBody" >
+                <p><strong>{myName}님이 약속을 만들었어요. 약속을 수락하시겠어요?</strong></p>
+                <p>약속 일자 : {AppointmentDate}</p>
+                {/* <p>수락 시 게시글이 예약중으로 변경됩니다.</p> */}
+            </Modal.Body>
+            <Modal.Footer className="appointmentModalFooter">
+                <Button variant="secondary" onClick={appointmentModalReject}>
+                    거절
+                </Button>
+                &emsp;&emsp;
+                <Button className="appointmentModalButton" onClick={appointmentModalAccept}>
+                    수락
+                </Button>
+            </Modal.Footer>
+        </Modal>
+    );
+}
+
+
+
 
 export default Messages;
