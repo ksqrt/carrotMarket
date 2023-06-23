@@ -57,9 +57,9 @@ async function loginUser({ email, password }) {
   let user = await User.findOne({ email });
   if (!user) throw { message: '이메일과 비밀번호가 일치하지 않습니다' };
 
-  // if (!/[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]+/.test(password)) {
-  //   errors.push("이메일과 비밀번호가 일치하지 않습니다");
-  // }
+  if (!/[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]+/.test(password)) {
+    errors.push("이메일과 비밀번호가 일치하지 않습니다");
+  }
 
   let hasValidPass = await bcrypt.compare(password, user.password);
   if (!hasValidPass) throw { message: "이메일과 비밀번호가 일치하지 않습니다" }
