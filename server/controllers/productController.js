@@ -71,9 +71,9 @@ router.post("/specific/:id", async (req, res) => {
       sellerId: seller._id,
       isAuth: false,
     };
-    if ( user_id) {
-      let user = await User.findById( user_id);
-      jsonRes.isSeller = Boolean( user_id == product.seller);
+    if (user_id) {
+      let user = await User.findById(user_id);
+      jsonRes.isSeller = Boolean(user_id == product.seller);
       jsonRes.isWished = user.wishedProducts.includes(req.params.id);
       jsonRes.isAuth = true;
     }
