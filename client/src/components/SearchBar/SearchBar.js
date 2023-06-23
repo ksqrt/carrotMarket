@@ -13,6 +13,7 @@ function SearchBar({ value, onChange,onKeyPress}) {
         onChange={onChange}
         onKeyPress={onKeyPress} // Enter 키 누를 때 이벤트 핸들러
       />
+
     </div>
   );
 }

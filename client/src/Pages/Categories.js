@@ -16,7 +16,6 @@ import {
 import "../components/Siders/SearchSider.css";
 import "../components/Categories/Categories.css";
 import "../components/ProductCard/ProductCard.css";
-import { SearchContext } from '../ContextAPI/SearchContext';
 import { Context } from "../ContextStore.js";
 
 function Categories({ match }) {
