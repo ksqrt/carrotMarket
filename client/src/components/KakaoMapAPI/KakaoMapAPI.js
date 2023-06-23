@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { CustomOverlayMap, Map, MapMarker } from 'react-kakao-maps-sdk';
-import { FaRegWindowClose } from 'react-icons/fa';
+import { GrMapLocation } from 'react-icons/gr';
 
 const KakaoMapAPI = () => {
 	const { kakao } = window;
@@ -90,7 +90,7 @@ const KakaoMapAPI = () => {
 				 					background: "orange", 
 				 					borderRadius: "10px",
 				 					color: "white"}}>
-							현재위치 공유하기
+									현재위치 공유하기
 							</button>
 				 		</div>
 				 		</div>
