@@ -173,6 +173,7 @@ article img {
     align-self: center;
     width: 40px;
     height: 40px;
+    border-radius: 100px;
 }  
 
 .alert-glass {
@@ -266,4 +267,36 @@ article img {
 .appointmentModalFooter {
     display:flex;
     justify-content:center;
+}
+
+.message_mannertmp {
+    border-radius: 100px;
+    border: 1px solid #45ce4c;
+    padding-left: 5px;
+    padding-right: 5px;
+    color: #45ce4c;
+    font-size: 13px;
+}
+
+
+.messageAvatar {
+    border-radius: 100px;
+}
+
+
+.messageButton {
+    border-radius: 5px;
+    border: 1px solid rgb(177, 173, 173);
+    background-color: transparent;
+    color: #000000;
+    padding-left: 7px;
+    padding-right: 7px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    font-weight: bold;
+    font-size: 11px;
+}
+
+.messageButton:hover {
+    background-color: #FF7E36;
 }

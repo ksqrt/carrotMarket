@@ -156,6 +156,11 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
         setCurrentAppointment(null);
     }
 
+    // 신고하기 버튼
+    const [reportModalShow, setReportModalShow] = useState();
+    const [reportModalReason, setReportModalReason] = useState("");
+
+
 
     // 위로 스크롤 시 추가 로딩 구현
     const [showMessagesCount, setShowMessagesCount] = useState(15);
@@ -313,14 +318,17 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
                                 </button>
                                 {selected.isBuyer ?
                                     <Link to={`/profile/${selected.chats.seller._id}`}>
-                                        <img src={selected.chats.seller.avatar} alt="user-avatar" />&nbsp;
-                                        <span>{selected.chats.seller.name}</span>    
+                                        <img className='messageAvatar' src={selected.chats.seller.avatar} alt="user-avatar" />&nbsp;
+                                        <span>{selected.chats.seller.name} </span>
+                                        <span className='message_mannertmp'>{selected.chats.seller.mannertmp}°C</span>
+
                                     </Link>
                                     :
                                     <Link to={`/profile/${selected.chats.buyer._id}`}>
 
-                                        <img src={selected.chats.buyer.avatar} alt="user-avatar" />&nbsp;
-                                        <span>{selected.chats.buyer.name}</span>
+                                        <img className='messageAvatar' src={selected.chats.buyer.avatar} alt="user-avatar" />&nbsp;
+                                        <span>{selected.chats.buyer.name} </span> 
+                                        <span className='message_mannertmp'>{selected.chats.buyer.mannertmp}°C</span>
                                         
                                     </Link>
                                 }
@@ -336,7 +344,7 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
                                         <button className="dropdown-content-block"> 
                                             <ImBlocked size={20} /> 차단하기  
                                         </button>
-                                        <button className="dropdown-content-declare">
+                                        <button className="dropdown-content-declare" onClick={() => setReportModalShow(true)}>
                                             <AiOutlineAlert size={20} /> 신고하기 
                                         </button>
                                     </div>
@@ -356,9 +364,11 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
                                             <span className="text-bold">{Number(selected.chats.product?.price).toLocaleString()}원</span>
                                         </div>
                                     </div>
-                                </div>
-                                    <button> 후기 보내기 버튼 </button> {/* 약속 잡기 성공 후 sold out 시 */}
-                                    <button onClick={openDateTimePicker}> 약속 잡기 버튼 </button> {/* (다른 사람과 약속 잡기가 되있지 않을 때) */}
+                                </div> 
+                                    <Button className='messageButton'> 후기 보내기 버튼 </Button>&nbsp; {/* 약속 잡기 성공 후 sold out 시 */}
+                                    
+                                    {!selected.chats.product?.soldout && <Button className='messageButton' onClick={openDateTimePicker}> <AiOutlineSchedule size={20}/> 약속 잡기 </Button>}&nbsp; {/* (다른 사람과 약속 잡기가 되있지 않을 때) */}
+                                    <Button className='messageButton' onClick={ onOpen }> <FaMapMarkedAlt size={20}/> 장소 공유 </Button>
                                 </Alert>
                             }
                             <div ref={chatContainerRef} id="chat-selected-body" className="chat-selected-body col-lg-12" style={{backgroundImage: `url(${bgUrl})`}}>
@@ -461,6 +471,7 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
                                 </Modal>
                                 )}
                                 <AppointmentModal show={currentAppointment !== null && selected.chats.appointmentCheck === false} selected={selected} appointmentModalAccept={appointmentModalAccept} appointmentModalReject={appointmentModalReject} myName={myName}  />
+                                <ReportModal show={reportModalShow} onHide={() => setReportModalShow(false)} onReport={(reason) => {setReportModalReason(reason);}}/>
                             </div>
                         </>
                     }
@@ -490,6 +501,34 @@ function AppointmentModal({ show, selected, appointmentModalAccept, appointmentM
                 &emsp;&emsp;
                 <Button className="appointmentModalButton" onClick={appointmentModalAccept}>
                     수락
+                </Button>
+            </Modal.Footer>
+        </Modal>
+    );
+}
+
+function ReportModal({show, onHide, onReport}) {
+    
+    const [reason, setReason] = useState("");
+    
+    const handleReport = () => {
+        onReport(reason);
+        onHide();
+    };
+
+    return (
+        <Modal className='ReportModal'  show={show}>
+            <Modal.Header><img src='https://kr.object.ncloudstorage.com/ncp3/ncp3/logo_main_row.webp'/></Modal.Header>
+            <Modal.Body className="ReportModalBody" >
+                <textarea onChange={(e) => setReason(e.target.value)} />
+            </Modal.Body>
+            <Modal.Footer className="ReportModalFooter">
+                <Button variant="secondary" onClick={onHide}>
+                    취소
+                </Button>
+                &emsp;&emsp;
+                <Button className="ReportModalButton" onClick={handleReport}>
+                    신고
                 </Button>
             </Modal.Footer>
         </Modal>
