@@ -24,7 +24,7 @@ function Profile({ match, history }) {
   const [review, setReview] = useState(false);
   const [user, setUser] = useState([]);
 
-  const isCurrentUserSeller = id === userData._id;
+  const isCurrentUserSeller = userData && id === userData._id;
 
   const handleActive = () => {
     setActive(true);
@@ -75,7 +75,7 @@ function Profile({ match, history }) {
 
   return (
     <>
-        {isCurrentUserSeller ? (
+        {userData && (isCurrentUserSeller ? (
         <>
           <ProfileSection params={user} />
           <div className="container">
@@ -151,7 +151,7 @@ function Profile({ match, history }) {
             </div>
           </div>
         </>
-      )}
+      ))}
     </>
   );
 }

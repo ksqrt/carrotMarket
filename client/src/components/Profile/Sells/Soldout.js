@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import DisabledCard from '../../DisabledProductCard/DisabledCard';
 import { Col, Row, Spinner } from 'react-bootstrap';
 import { getUserSoldoutSells } from '../../../services/userData';
+import { useParams } from 'react-router-dom';
 
 import './Sells.css';
 import '../../DisabledProductCard/DisabledCard.css'
@@ -11,6 +12,7 @@ import '../../DisabledProductCard/DisabledCard.css'
 function ArchivedSells({ history }) {
     //useState를 빈 배열로 설정
     const [products, setProduct] = useState([])
+    const { id } = useParams();
     //useState를 써서 로딩의 변수 초기값을 참으로 설정
     let [loading, setLoading] = useState(true);
 
@@ -18,7 +20,8 @@ function ArchivedSells({ history }) {
         //처음 로드 도리 때 스크롤을 페이지 상단으로 이동시키는 역할
         window.scrollTo(0, 0);
         //사용자의 판매 이력을 가져오는 비동기 함수
-        getUserSoldoutSells()
+        console.log(id,'id+이동시작')
+        getUserSoldoutSells(id)
             .then(res => {
                 //products 상태를 업데이트를 하고 loding을 false로 설정
                 setProduct(res.sells);
