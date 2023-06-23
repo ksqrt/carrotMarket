@@ -58,12 +58,39 @@
   }
   
   
-  
+    /* 판매자 css */
     #profile_infobtn {
-      margin-top:20px;
+      margin-top: 20px;
     }
   
+    .sellcount {
+      display: flex;
+      float: left;
+      align-items: center;
+      margin-top: 10px;
+      /* Adjust the margin as needed */
+      margin-right: 20px;
+    }
   
+    .section-icon {
+      margin-right: 5px;
+      /* Add some spacing between the icon and text */
+    }
+  
+    .section-title {
+      font-weight: bold;
+      margin: 0;
+      /* Reset the default margin */
+    }
+  
+    .item-count {
+      font-weight: normal;
+      color: #555;
+    }
+  
+    /* 여기까지 */
+
+
     #edit-profile-icons {
       text-align: center;
       font-size: 30pt;
@@ -184,3 +211,12 @@
     padding-right: 5px;
   }
   
+
+
+
+
+
+
+
+
+
