@@ -54,7 +54,9 @@ router.get('/:category', async (req, res) => {
 });
 
 // 특정 상품의 상세 정보를 가져오는 엔드포인트
-router.get("/specific/:id", async (req, res) => {
+router.post("/specific/:id", async (req, res) => {
+    let user_id = req.body.user_id;
+    console.log(user_id)
   try {
     let product = await (await Product.findById(req.params.id)).toJSON();
     let seller = await (await User.findById(product.seller)).toJSON();
@@ -69,9 +71,9 @@ router.get("/specific/:id", async (req, res) => {
       sellerId: seller._id,
       isAuth: false,
     };
-    if (req.user) {
-      let user = await User.findById(req.user._id);
-      jsonRes.isSeller = Boolean(req.user._id == product.seller);
+    if ( user_id) {
+      let user = await User.findById( user_id);
+      jsonRes.isSeller = Boolean( user_id == product.seller);
       jsonRes.isWished = user.wishedProducts.includes(req.params.id);
       jsonRes.isAuth = true;
     }

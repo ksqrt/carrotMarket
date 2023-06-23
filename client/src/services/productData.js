@@ -25,14 +25,19 @@ export async function getAll(page, category, query) {
   }
 }
 
-export async function getSpecific(id,userId) {
-  console.log(userId)
+export async function getSpecific(id, user_id) {
   return (
     await fetch(`${baseUrl}/products/specific/${id}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
       credentials: "include",
+      body: JSON.stringify({ user_id: user_id }),
     })
   ).json();
 }
+
 
 export async function createProduct(product) {
   return (
