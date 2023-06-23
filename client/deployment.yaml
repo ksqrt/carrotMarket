@@ -7,7 +7,7 @@ kind: Deployment
 metadata:
   name: client
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
       app: client
