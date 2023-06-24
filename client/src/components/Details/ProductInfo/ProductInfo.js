@@ -440,10 +440,6 @@ function ProductInfo({ params }) {
             </div>
 
             </div>
-
-
-
-
       </section>
 
       <section id="product_more">
