@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { CustomOverlayMap, Map, MapMarker } from 'react-kakao-maps-sdk';
-import { GrMapLocation } from 'react-icons/gr';
 
 const KakaoMapAPI = () => {
 	const { kakao } = window;
