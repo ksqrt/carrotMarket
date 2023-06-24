@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext, useRef, React, Fragment } from 'react';
-import {sendMessage, disconnect, getUserConversations, initializeSocket, setAppointment, deleteAppointment, appointmentCheck, ReportMessage} from '../services/messagesData';
+import { UserBlock, sendMessage, disconnect, getUserConversations, initializeSocket, setAppointment, deleteAppointment, appointmentCheck, ReportMessage} from '../services/messagesData';
 import { Navbar, NavDropdown, Nav, Container, Row, Form, InputGroup, Button, Alert, Modal } from 'react-bootstrap';
 import { Link, NavLink, useHistory } from 'react-router-dom';
 import { Context } from '../ContextStore';
@@ -21,7 +21,6 @@ import dayjs from 'dayjs';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { MobileDateTimePicker } from '@mui/x-date-pickers/MobileDateTimePicker';
-
 
 function Messages({ match }) { // match = Router 제공 객체, url을 매개변수로 사용. ex) 경로 : /messages/123  => match.params.id = "123" // app.js 참고 : <Route path="/messages" exact component={Messages} />;
     //map modal
@@ -46,6 +45,20 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
         myId: 0
     });
     const myName = selected.isBuyer ? selected.chats.buyer.name : selected.chats.seller.name;
+
+    //차단하기
+    const blockName1 = selected.isBuyer ? selected.chats.seller._id : selected.chats.buyer?._id
+    const blockName2 = selected.isBuyer ? selected.chats.buyer._id : selected.chats.seller._id;
+
+    const blockHandle = () => {
+        const blockId = blockName1
+        const myId99 = blockName2
+        console.log(blockId + 'blockId')
+        console.log(myId99 + 'myId99')
+        UserBlock(socket, {blockId, myId99})
+
+    }
+
     const [message, setMessage] = useState(""); // 내가 입력한 메세지
     const [alertShow, setAlertShow] = useState(true); 
     const [socket, setSocket] = useState(null); // initializeSocket 소켓 초기화
@@ -166,8 +179,6 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
     ReportMessage(socket, { reportedUserId, reason });
     setReportModalShow(false);
     };
-
-
 
     // 위로 스크롤 시 추가 로딩 구현
     const [showMessagesCount, setShowMessagesCount] = useState(15);
@@ -348,7 +359,7 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
                                         <button className="dropdown-content-out" onClick={handleLeaveChat}>
                                             채팅방 나가기
                                         </button>
-                                        <button className="dropdown-content-block"> 
+                                        <button className="dropdown-content-block" onClick={blockHandle}> 
                                             <ImBlocked size={20} /> 차단하기  
                                         </button>
                                         <button className="dropdown-content-declare" onClick={handleShowReportModal}>
@@ -375,7 +386,7 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
                                     <Button className='messageButton'> 후기 보내기 버튼 </Button>&nbsp; {/* 약속 잡기 성공 후 sold out 시 */}
                                     
                                     {!selected.chats.product?.soldout && <Button className='messageButton' onClick={openDateTimePicker}> <AiOutlineSchedule size={20}/> 약속 잡기 </Button>}&nbsp; {/* (다른 사람과 약속 잡기가 되있지 않을 때) */}
-                                    <Button className='messageButton' onClick={ onOpen }> <FaMapMarkedAlt size={20}/> 장소 공유 </Button>
+                                    <Button className='messageButton' onClick={ handleShow }> <FaMapMarkedAlt size={20}/> 장소 공유 </Button>
                                 </Alert>
                             }
                             <div ref={chatContainerRef} id="chat-selected-body" className="chat-selected-body col-lg-12" style={{backgroundImage: `url(${bgUrl})`}}>

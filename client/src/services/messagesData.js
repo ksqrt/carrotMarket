@@ -24,6 +24,13 @@ export const sendMessage = (socket, { chatId, senderId, message, location }) => 
     socket.emit('sendMessage', { chatId, senderId, message, location });
 };
 
+//차단하기
+export const UserBlock = (socket, {blockId, myId99}) => {
+  console.log(blockId + 'blockIdData');
+  console.log(myId99 + 'myId99Data');
+  socket.emit('UserBlock', { blockId, myId99 });
+};
+
 export const setAppointment = (socket, { chatId, appointmentDate, appointmentCheck }) => {
   socket.emit('setAppointment', { chatId, appointmentDate, appointmentCheck });
 };
@@ -70,6 +77,7 @@ export const disconnect = (socket, callback) => {
     socket.disconnect();
     if (callback) callback();
 };
+
 
 /*
 const baseUrl = 'http://localhost:5000';

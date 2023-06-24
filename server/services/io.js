@@ -18,7 +18,6 @@ function Io(server) {
   io.on("connection", (socket) => { //socket 변수 = socket.io에서 제공하는 것 
     console.log("socket.io connected");
 
-    
     socket.on("startChat", async ({buyerId, sellerId, productId}) => { // 클라이언트에서 받을 내용 buyerId = buyer._id 될듯.
       let chatRoom = buyerId !== sellerId && await ChatRoom.findOne({ buyer: buyerId, seller: sellerId, product: productId }) || new ChatRoom({ buyer: buyerId, seller: sellerId, product: productId });
       await chatRoom.save();
@@ -69,6 +68,13 @@ function Io(server) {
       socket.emit('userConversations', userChats.map(x => ({ chats: x, isBuyer: (x.buyer?._id == userId), myId: userId })));
     });
   
+    //차단하기
+    socket.on("UserBlock", async ({blockId, myId99}) => {
+      console.log(blockId + 'blockIdsocket');
+      console.log(myId99 + 'myId99socket');
+      await User.updateOne({ _id: myId99 }, { blacklist: blockId });
+    });
+
     socket.on("disconnect", () => console.log("disconnected"));
   });
   return io;

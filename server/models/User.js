@@ -87,7 +87,7 @@ const userSchema = new mongoose.Schema({
     //     userName : String,
     //     content : String
     // }
-
+    
     userName:{
         type:String,
         trim:true
