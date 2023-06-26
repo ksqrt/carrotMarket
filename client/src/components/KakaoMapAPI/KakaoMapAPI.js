@@ -81,7 +81,7 @@ const KakaoMapAPI = () => {
 					)}
 					</div>
 					<div>
-					<button disabled={!addressConfirmed}>주소 보내기</button>
+						<button disabled={!addressConfirmed}>주소 보내기</button>
 					</div>
 				</div>
 				)}

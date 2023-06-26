@@ -76,6 +76,15 @@ router.get("/specific/:id", async (req, res) => {
       jsonRes.isWished = user.wishedProducts.includes(req.params.id);
       jsonRes.isAuth = true;
     }
+
+    // 비동기로 params.likes와 params.views의 길이를 얻음
+    // Mongoose의 lean() 메소드는 쿼리 결과를 일반 JavaScript 객체로 변환하는 기능을 제공합니다.
+    // lean() 메소드를 사용하면 Mongoose의 가상 속성(virtuals) 및 훅(hooks)을 사용할 수 없습니다.
+    const likesLength = await Product.findById(req.params.id, 'likes').lean().then((result) => result.likes.length);
+    const viewsLength = await Product.findById(req.params.id, 'views').lean().then((result) => result.views.length);
+    jsonRes.likes = likesLength;
+    jsonRes.views = viewsLength;
+
     res.status(200).json(jsonRes);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -85,18 +94,23 @@ router.get("/specific/:id", async (req, res) => {
 // 새로운 상품을 생성하는 엔드포인트
 router.post('/create', async (req, res) => {
     let { title, price, description, city, category, image } = req.body;
+    console.log('ttoto'+image);
+    console.log();
+    console.log();
     try {
         let errors = [];
         if (title.length < 3 || title.length > 50) errors.push('Title should be at least 3 characters long and max 50 characters long; ');
         if (isNaN(Number(price))) errors.push('Price should be a number; ');
         if (description.length < 10 || description.length > 1000) errors.push('Description should be at least 10 characters long and max 1000 characters long; ');
-        if (/^[A-Za-z]+$/.test(city) == false) errors.push('City should contains only english letters; ')
-        if (!image.includes('image')) errors.push('The uploaded file should be an image; ');
+        if ((city) == false) errors.push('City should contains only english letters; ')
+        // if (!image.includes('image')) errors.push('The uploaded file should be an image; ');
         if (!category) errors.push('Category is required; ');
 
         if (errors.length >= 1) throw { message: [errors] };
-
-        let compressedImg = await productService.uploadImage(image);
+        let compressedImg = [];
+        for (let index = 0; index < image.length; index++) {
+            compressedImg[index] = await productService.uploadImage(image[index]);
+        }
         let product = new Product({
             title, price, description, city, category,
             image: compressedImg,

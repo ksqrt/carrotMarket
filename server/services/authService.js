@@ -35,7 +35,6 @@ async function findorcreate(user) {
     let { email, name, password, repeatPassword } = userData;
     let errors = [];
     let checkUser = await User.findOne({ email });
-    console.log(userData);
     if (checkUser) errors.push('이미 사용중인 이메일입니다.');
     if (name.length < 2 || name.length > 10) errors.push('이름은 최소 2자에서 최대 10자입니다.')
     // if (/(\+)?(359|0)8[789]\d{1}(|-| )\d{3}(|-| )\d{3}/.test(phoneNumber) == false) errors.push('Phone number should be a valid BG number; ' );
