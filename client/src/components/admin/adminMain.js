@@ -23,6 +23,7 @@ const AdminMain = () => {
   const handleAdminUser = () => {
     setAdminUser(true);
     setAdminProduct(false);
+    setAdminDashboard(false);
 
     getadminUser().then(data =>{
       console.log('유저목록',data);

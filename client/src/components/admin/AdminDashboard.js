@@ -5,8 +5,6 @@ import { ResponsiveBar } from '@nivo/bar';
 
 const AdminDashboard = (props) => {
 
-  
-
 //수정
 
 const handle = {
@@ -23,11 +21,11 @@ const handle = {
 
 //수정2
 const handle2 = {
-  barClick: (data: any) => {
+  barClick: (data) => {
       console.log(data);
   },
 
-  legendClick: (data: any) => {
+  legendClick: (data) => {
       console.log(data);
   },
 }
@@ -56,7 +54,94 @@ const {params} = props;
   console.log(categoryCounts);
 
 
+// 각 카테고리별 active 값 계산
+const categoryActiveCounts = Products.reduce((counts, product) => {
+    const { category, soldout } = product;
+    if (counts[category]) {
+      counts[category].trueCount += soldout ? 1 : 0;
+      counts[category].falseCount += soldout ? 0 : 1;
+    } else {
+      counts[category] = {
+        trueCount: soldout ? 1 : 0,
+        falseCount: soldout ? 0 : 1,
+      };
+    }
+    return counts;
+  }, {});
+  
+  console.log(categoryActiveCounts);
+  
+  // clothing 카테고리의 trueCount 값 출력
 
+ //의류 카테고리 판매중 판매완료갯수
+  const clothingTrue = categoryActiveCounts.clothing ? categoryActiveCounts.clothing.trueCount : 0
+  const clothingFalse = categoryActiveCounts.clothing ? categoryActiveCounts.clothing.falseCount : 0
+
+  console.log('의류true'+clothingTrue);
+  console.log('의류false'+clothingFalse);
+
+   //가전제품 카테고리 판매중 판매완료갯수
+   const electronicsTrue = categoryActiveCounts.electronics ? categoryActiveCounts.electronics.trueCount : 0
+   const electronicsFalse = categoryActiveCounts.electronics ? categoryActiveCounts.electronics.falseCount : 0
+ 
+   console.log('가전제품true'+electronicsTrue);
+   console.log('가전제품false'+electronicsFalse);
+
+    //의류 카테고리 판매중 판매완료갯수
+  const furnitureAndInteriorTrue = categoryActiveCounts.furnitureAndInterior ? categoryActiveCounts.furnitureAndInterior.trueCount : 0
+  const furnitureAndInteriorFalse = categoryActiveCounts.furnitureAndInterior ? categoryActiveCounts.furnitureAndInterior.falseCount : 0
+
+  console.log('가구true'+furnitureAndInteriorTrue);
+  console.log('가구false'+furnitureAndInteriorFalse);
+
+   //자동차 카테고리 판매중 판매완료갯수
+   const automotiveTrue = categoryActiveCounts.automotive ? categoryActiveCounts.automotive.trueCount : 0
+   const automotiveFalse = categoryActiveCounts.automotive ? categoryActiveCounts.automotive.falseCount : 0
+ 
+   console.log('자동차true'+automotiveTrue);
+   console.log('자동차false'+automotiveFalse);
+
+    //스포츠 카테고리 판매중 판매완료갯수
+  const sportsAndLeisureTrue = categoryActiveCounts.sportsAndLeisure ? categoryActiveCounts.sportsAndLeisure.trueCount : 0
+  const sportsAndLeisureFalse = categoryActiveCounts.sportsAndLeisure ? categoryActiveCounts.sportsAndLeisure.falseCount : 0
+
+  console.log('스포츠true'+sportsAndLeisureTrue);
+  console.log('스포츠false'+sportsAndLeisureFalse);
+
+   //아동용품 카테고리 판매중 판매완료갯수
+   const kidsItemsTrue = categoryActiveCounts.kidsItems ? categoryActiveCounts.kidsItems.trueCount : 0
+   const kidsItemsFalse = categoryActiveCounts.kidsItems ? categoryActiveCounts.kidsItems.falseCount : 0
+ 
+   console.log('아동용품true'+kidsItemsTrue);
+   console.log('아동용품false'+kidsItemsFalse);
+
+    //도서 카테고리 판매중 판매완료갯수
+  const booksAndStationeryTrue = categoryActiveCounts.booksAndStationery ? categoryActiveCounts.booksAndStationery.trueCount : 0
+  const booksAndStationeryFalse = categoryActiveCounts.booksAndStationery ? categoryActiveCounts.booksAndStationery.falseCount : 0
+
+  console.log('도서true'+booksAndStationeryTrue);
+  console.log('도서false'+booksAndStationeryFalse);
+
+   //신발 카테고리 판매중 판매완료갯수
+   const shoesTrue = categoryActiveCounts.shoes ? categoryActiveCounts.shoes.trueCount : 0
+   const shoesFalse = categoryActiveCounts.shoes ? categoryActiveCounts.shoes.falseCount : 0
+ 
+   console.log('신발true'+shoesTrue);
+   console.log('신발false'+shoesFalse);
+
+    //악세서리 카테고리 판매중 판매완료갯수
+  const accessoriesAndJewelryTrue = categoryActiveCounts.accessoriesAndJewelry ? categoryActiveCounts.accessoriesAndJewelry.trueCount : 0
+  const accessoriesAndJewelryFalse = categoryActiveCounts.accessoriesAndJewelry ? categoryActiveCounts.accessoriesAndJewelry.falseCount : 0
+
+  console.log('악세서리true'+accessoriesAndJewelryTrue);
+  console.log('악세서리false'+accessoriesAndJewelryFalse);
+
+   //화장품 카테고리 판매중 판매완료갯수
+   const beautyAndCosmeticsTrue = categoryActiveCounts.beautyAndCosmetics ? categoryActiveCounts.beautyAndCosmetics.trueCount : 0
+   const beautyAndCosmeticsFalse = categoryActiveCounts.beautyAndCosmetics ? categoryActiveCounts.beautyAndCosmetics.falseCount : 0
+ 
+   console.log('화장품true'+beautyAndCosmeticsTrue);
+   console.log('화장품false'+beautyAndCosmeticsFalse);
 
     return (
         <div id="totalDashboard">
@@ -79,31 +164,31 @@ const {params} = props;
                 /**
                  * chart에 사용될 데이터
                  */
-                // data={[
-                //     { id: '의류', value: categoryCounts.clothing },
-                //     { id: '가전제품', value: categoryCounts.electronics },
-                //     { id: '가구/인테리어', value:categoryCounts.furnitureAndInterior },
-                //     { id: '자동차', value:categoryCounts.automotive  },
-                //     { id: '스포츠용품', value: categoryCounts.sportsAndLeisure},
-                //     { id: '아동용품', value: categoryCounts.kidsItems },
-                //     { id: '도서및 문구용품', value: categoryCounts.booksAndStationery },
-                //     { id: '신발', value: categoryCounts.shoes },
-                //     { id: '악세서리', value:categoryCounts.accessoriesAndJewelry },
-                //     { id: '화장품', value: categoryCounts.beautyAndCosmetics},
-                // ]}
-
                 data={[
-                  { id: '의류', value: 200 },
-                  { id: '가전제품', value: 150 },
-                  { id: '가구/인테리어', value:100 },
-                  { id: '자동차', value:50 },
-                  { id: '스포츠용품', value:80},
-                  { id: '아동용품', value: 150},
-                  { id: '도서및 문구용품', value: 100},
-                  { id: '신발', value:120 },
-                  { id: '악세서리', value:110 },
-                  { id: '화장품', value: 50},
-              ]}
+                    { id: '의류', value: categoryCounts.clothing },
+                    { id: '가전제품', value: categoryCounts.electronics },
+                    { id: '가구/인테리어', value:categoryCounts.furnitureAndInterior },
+                    { id: '자동차', value:categoryCounts.automotive  },
+                    { id: '스포츠용품', value: categoryCounts.sportsAndLeisure},
+                    { id: '아동용품', value: categoryCounts.kidsItems },
+                    { id: '도서및 문구용품', value: categoryCounts.booksAndStationery },
+                    { id: '신발', value: categoryCounts.shoes },
+                    { id: '악세서리', value:categoryCounts.accessoriesAndJewelry },
+                    { id: '화장품', value: categoryCounts.beautyAndCosmetics},
+                ]}
+
+            //     data={[
+            //       { id: '의류', value: 200 },
+            //       { id: '가전제품', value: 150 },
+            //       { id: '가구/인테리어', value:100 },
+            //       { id: '자동차', value:50 },
+            //       { id: '스포츠용품', value:80},
+            //       { id: '아동용품', value: 150},
+            //       { id: '도서및 문구용품', value: 100},
+            //       { id: '신발', value:120 },
+            //       { id: '악세서리', value:110 },
+            //       { id: '화장품', value: 50},
+            //   ]}
                 /**
                  * chart margin
                  */
@@ -123,7 +208,7 @@ const {params} = props;
                 /**
                  * chart 색상
                  */
-                colors={['olive', 'brown', 'orange']} // 커스터하여 사용할 때
+                colors={['#FF8A3D', '#368AFF', 'violet']} // 커스터하여 사용할 때
                 // colors={{ scheme: 'nivo' }} // nivo에서 제공해주는 색상 조합 사용할 때
                 /**
                  * pad border 두께 설정
@@ -181,20 +266,28 @@ const {params} = props;
         </div>
 
 
-
-        <div style={{ width: '800px', height: '400px', margin: '0 auto' }}>
+        <div style={{ width: '1000px', height: '400px', margin: '0 auto' }}>
             <ResponsiveBar
                 /**
                  * chart에 사용될 데이터
                  */
                 data={[
-                    { bottle:'성별유저수', 여성: 1200, 남성: 1000},
-                   
+                    { bottle:'의류', 거래중: clothingFalse, 거래완료: clothingTrue},
+                    { bottle:'가전제품', 거래중: electronicsFalse, 거래완료: electronicsTrue},
+                    { bottle:'가구', 거래중:furnitureAndInteriorFalse , 거래완료: furnitureAndInteriorTrue},
+                    { bottle:'자동차', 거래중: automotiveFalse, 거래완료: automotiveTrue},
+                    { bottle:'스포츠', 거래중: sportsAndLeisureFalse, 거래완료: sportsAndLeisureTrue},
+                    { bottle:'아동용품', 거래중: kidsItemsFalse, 거래완료: kidsItemsTrue},
+                    { bottle:'도서', 거래중: booksAndStationeryFalse, 거래완료: booksAndStationeryTrue},
+                    { bottle:'신발', 거래중: shoesFalse, 거래완료: shoesTrue},
+                    { bottle:'악세서리', 거래중: accessoriesAndJewelryFalse, 거래완료: accessoriesAndJewelryTrue},
+                    { bottle:'화장품', 거래중: beautyAndCosmeticsFalse, 거래완료: beautyAndCosmeticsTrue},
+
                 ]}
                 /**
                  * chart에 보여질 데이터 key (측정되는 값)
                  */
-                keys={['여성', '남성']}
+                keys={['거래중', '거래완료']}
                 /**
                  * keys들을 그룹화하는 index key (분류하는 값)
                  */
@@ -210,7 +303,7 @@ const {params} = props;
                 /**
                  * chart 색상
                  */
-                colors={['olive', 'brown', 'orange']} // 커스터하여 사용할 때
+                colors={['#FF8A3D', '#368AFF', 'violet']} // 커스터하여 사용할 때
                 // colors={{ scheme: 'nivo' }} // nivo에서 제공해주는 색상 조합 사용할 때
                 /**
                  * color 적용 방식
@@ -325,31 +418,7 @@ const {params} = props;
       
 
 
-
-
-
-
-
-
-
-
         </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

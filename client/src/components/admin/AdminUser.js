@@ -7,10 +7,10 @@ const AdminUser = (props) => {
   const [userCount, setUserCount] = useState(5); // 현재 보여지는 유저 수 상태
 
   const deleteHandler = (e) => {
-    const name = e.target.value;
-    console.log('delete', name);
-    deleteadminUser(name);
-    // window.location.reload();
+    const id = e.target.value;
+    console.log('delete', id);
+    deleteadminUser(id);
+    window.location.reload();
   };
 
   const users = props.params.filter(item => item.name=='이정규'); // report가 존재하는 유저 필터링
@@ -47,7 +47,7 @@ const AdminUser = (props) => {
             {user.report.map((report,index)=>(
               <div key={index}>
                 {report.userName} :{report.content}
-              <button className="useroutBtn" onClick={deleteHandler} value={report.userName}>
+              <button className="useroutBtn" onClick={deleteHandler} value={report._id}>
               회원탈퇴
             </button>
             <hr/>

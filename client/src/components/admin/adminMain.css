@@ -5,7 +5,7 @@ body {
 }
 
 header {
-  background-color: #ffa500;
+  background-color:#FF8A3D;
   padding: 20px;
   padding-left:400px;
 }
@@ -94,4 +94,5 @@ footer {
   padding-left:400px;
   padding-top:10px;
   padding-bottom:40px;
+ 
 } 
