@@ -326,17 +326,22 @@ function ProductInfo({ params }) {
                       </Button>
                     </OverlayTrigger>
                     <span className="link-spacing"></span>
-                    <OverlayTrigger placement="top" overlay={<Tooltip>상품 수정하기</Tooltip>}>
-                      <Button variant="primary" size="sm" style={{ backgroundColor: '#FF7E36', borderColor: 'orange', color: 'white' }}>
-                        <Link to={`/categories/${params.category}/${params._id}/edit`}>게시글 수정하기</Link>
-                      </Button>
-                    </OverlayTrigger>
-                    <span className="link-spacing"></span>
-                    <OverlayTrigger placement="top" overlay={ <Tooltip>상품 삭제하기</Tooltip>} >
-                      <Button variant='outline-danger' size='sm' onClick={ handleDelPro }>게시글 삭제하기</Button>
-                    </OverlayTrigger>
+                    <OverlayTrigger placement="top" overlay={ <Tooltip>상품 수정하기</Tooltip>} >
+                      <Link to={`/categories/${params.category}/${params._id}/edit`}>게시글 수정하기</Link>
+                    </OverlayTrigger> 
+
                   </>
                 ) }
+
+                {(params.isSeller || (userData && userData.role === "admin")) && (
+                  <>
+                    <span className="link-spacing"></span>
+                    <OverlayTrigger placement="top" overlay={<Tooltip>상품 삭제하기</Tooltip>}>
+                      <button onClick={handleDelPro}>게시글 삭제하기</button>
+                    </OverlayTrigger>
+                  </>
+                )}
+                
                 <Modal show={ showArchive } onHide={ handleCloseArchive }>
                 <Modal.Header closeButton>
                     <Modal.Title>보관함으로 이동하시겠습니까???</Modal.Title>
