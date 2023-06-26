@@ -65,7 +65,18 @@ export async function createProduct(product) {
       ).json();
     }
 
-    export async function deleteProduct(id) {
+    // export async function deleteProduct(id) {
+    //   return (
+    //     await fetch(`${baseUrl}/products/delete/${id}`, {
+    //       method: "DELETE",
+    //       headers: {
+    //         "Content-Type": "application/json",
+    //       },
+    //       credentials: "include",
+    //     })
+    //   ).json();
+    // }
+    export async function deleteProduct(id,user_id) {
       return (
         await fetch(`${baseUrl}/products/delete/${id}`, {
           method: "DELETE",
@@ -73,9 +84,11 @@ export async function createProduct(product) {
             "Content-Type": "application/json",
           },
           credentials: "include",
+          body: JSON.stringify({ user_id: user_id }),
         })
       ).json();
     }
+    
     
     export async function activateSell(id) {
       return (await fetch(`${baseUrl}/products/enable/${id}`)).json();

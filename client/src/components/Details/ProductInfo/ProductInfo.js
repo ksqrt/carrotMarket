@@ -85,6 +85,7 @@ function ProductInfo({ params }) {
     setWish(params.isWished === true);
   }, [params.isWished]);
 
+  // 물건 찜하기
   const onHearthClick = () => {
     if (wish === false) {
       wishProduct(params._id,userId)
@@ -113,7 +114,7 @@ function ProductInfo({ params }) {
   //상품 삭제
   const handleDelPro = () => {
     if (window.confirm('정말로 삭제하시겠습니까?')) {
-      deleteProduct(params._id)
+      deleteProduct(params._id,userId)
         .then(res => {
           alert('상품이 삭제되었습니다.');
           history.push('/'); // '/'로 이동

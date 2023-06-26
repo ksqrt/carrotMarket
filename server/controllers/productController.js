@@ -273,8 +273,10 @@ router.get('/views/:id', async (req, res) => {
 
 // 상품을 삭제하는 코드
 router.delete('/delete/:id', async (req, res) => {
+    let user_id = req.body.user_id;
+    console.log(user_id)
     try {
-        let user = await User.findById(req.user._id);
+        let user = await User.findById(user_id);
         let product = await Product.findById(req.params.id)
         
         // 상품이 없는 경우 삭제할 수 없음
