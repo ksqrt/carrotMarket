@@ -13,12 +13,17 @@ import { Context } from '../ContextStore';
 
 function Details({ match, history }) {
     const { userData } = useContext(Context);
-    let userId = userData._id;
+    
     let productId = match.params.id;
     let [product, setProduct] = useState([])
     let [loading, setLoading] = useState(true);
     let [viewc, setViewc] = useState();
    
+    let userId = null 
+    if(userData != null){
+        userId = userData._id;
+    }
+
     useEffect(() => {
         window.scrollTo(0, 0)
         getSpecific(productId,userId)
