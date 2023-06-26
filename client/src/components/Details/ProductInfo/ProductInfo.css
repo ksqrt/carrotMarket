@@ -20,6 +20,7 @@
     color:#81002c;
 }
 
+
 .product-info-heading {
     margin-left: 19px;
     padding-top: 20px;
@@ -123,28 +124,27 @@
     color: #212529;
 }
 
+/* Profile section */
 #profile #profile_right {
-    position: absolute;
+    position: relative;
     right: 0;
-    padding-right: 36px;
-}
-
-#profile_right dl {
+    padding-left: 40px;
+  }
+  
+  /* Manner temperature block */
+  #tem_total {
+    float: right;
     display: block;
-    width: 100px;
-}
-
-#profile_right dl dt {
-    position: absolute;
-    top: 36px;
-    right: 0px;
-    font-size: 12px;
-    line-height: 1;
-    letter-spacing: -0.6px;
-    color: #868e96;
-}
-
-#profile_right dl dd {
+    width: 180px;
+    border: 1px solid rgb(219, 219, 219);
+    border-radius: 10px;
+    padding: 15px 20px;
+    background: linear-gradient(270deg, rgba(255,255,255,0.9) 0%, rgb(248, 255, 255) 100%);
+    box-shadow: 0px 3px 16px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Manner temperature text */
+  #tem_total_cnt {
     position: absolute;
     font-size: 16px;
     font-weight: bold;
@@ -154,24 +154,56 @@
     margin-top: 1px;
     width: 100px;
     text-align: right;
+    animation: textColorChange 4s infinite alternate;
+  }
+  
+  /* Temperature text label */
+  #tem_total_txt {
+    float: left;
+    top: 36px;
+    right: 0px;
+    font-size: 12px;
+    line-height: 1;
+    letter-spacing: -0.6px;
+    color: #868e96;
+  }
+  
+  /* Temperature image */
+  #tem_total_img {
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+
+.meters {
+    margin-Bottom: '-1px';
+    margin-left: 35px; 
 }
+  
+  /* Animate text color */
+  @keyframes textColorChange {
+    0% {color: #212529;}
+    50% {color: #5BC0DE;}
+    100% {color: #212529;}
+  }
+  
+  /* Thermometer */
+  .manner-thermometer {
+    width: 100%;
+    background-color: rgb(240, 240, 240);
+    border-radius: 50px;
+    box-shadow: inset 0px 1px 3px rgba(0, 0, 0, 0.2);
+  }
+  
+  /* Thermometer fill */
+  .manner-thermometer-fill {
+    border-radius: 50px;
+    height: 12px;
+    background: linear-gradient(90deg, rgb(43, 207, 255) 0%, rgb(117, 117, 241) 100%);
+  }
 
 .text-color {
     color: #FF7E36;
-}
-
-#profile_right .meters {
-    clear: both;
-    display: block;
-    width: 100px;
-    background-color: #e9ecef;
-    height: 4px;
-    border-radius: 100px;
-    -webkit-border-radius: 100px;
-    -moz-border-radius: 100px;
-    position: relative;
-    vertical-align: middle;
-    margin-top: 24px;
 }
 
 #face {

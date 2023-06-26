@@ -15,6 +15,7 @@ import { startChat, initializeSocket } from '../../../services/messagesData'; //
 import { RiMessage3Fill } from 'react-icons/ri';
 import { Context } from '../../../ContextStore'; // Context import
 import { Link, useHistory } from 'react-router-dom';
+import Carousel from 'react-bootstrap/Carousel'
 
 function ProductInfo({ params }) {
   const [products, setProducts] = useState([]);
@@ -24,6 +25,7 @@ function ProductInfo({ params }) {
   const [showMsg, setShowMdg] = useState(false);
   const [showArchive, setShowArchive] = useState(false);
   const [showArchive2, setShowArchive2] = useState(false);
+  const images = params && params.image ? params.image : [];
   
   const history = useHistory();
 
@@ -245,25 +247,18 @@ function ProductInfo({ params }) {
     }
   }
 
-
   function sendLinkDefault() {
-    
     if (window.Kakao) {
       window.Kakao.Link.sendDefault({
         objectType: 'feed',
         content: {
-          title:params && params.title ? params.title : '호랑이',
+          title: params && params.title ? params.title : '호랑이',
           description: params.description,
           imageUrl: params.image,
           link: {
             mobileWebUrl: 'https://developers.kakao.com',
-            webUrl: 'https://developers.kakao.com',
+            webUrl: `http://localhost:3000/categories/auto/${params._id}/details`,
           },
-        },
-        social: {
-          likeCount: 286,
-          commentCount: 45,
-          sharedCount: 845,
         },
         buttons: [
           {
@@ -281,9 +276,24 @@ function ProductInfo({ params }) {
 
   return (
     <div className="d-flex flex-column align-items-center">
-      <section id='images'>
-        <Image className="col-lg-12" src={ params.image } rounded />
-      </section>
+    <Carousel style={{ transition: 'transform 0.5s ease-in-out' }}>
+      {images.map((img, index) => (
+        <Carousel.Item key={index}>
+          <div style={{ display: 'flex', justifyContent: 'center' }}>
+          <img
+            className="d-block"
+            style={{
+              objectFit: "cover",
+              maxWidth: "700px", // Set the desired maximum width
+              maxHeight: "500px", // Set the desired maximum height
+            }}
+            src={img}
+            alt={`Slide ${index + 1}`}
+            />
+          </div>
+        </Carousel.Item>
+      ))}
+    </Carousel>
 
       <section id="profile">
         <div id="space-between">
@@ -301,34 +311,37 @@ function ProductInfo({ params }) {
               <div id="content_UpDel">
                 { params.isSeller && (
                   <>
-                    <OverlayTrigger placement="top" overlay={ <Tooltip>상품 보관함 이동</Tooltip>} >
-                      <span id="archive-icon" onClick={handleShowArchive}>
-                        <Link to={<MdArchive />}>보관함</Link>
-                      </span>
+                    <OverlayTrigger placement="top" overlay={<Tooltip>상품 보관함 이동</Tooltip>}>
+                    <Button variant="primary" size="sm" style={{ backgroundColor: '#FF7E36', borderColor: 'orange', color: 'white' }} onClick={handleShowArchive}>
+                      <Link to={<MdArchive />}>보관함</Link>
+                    </Button>
                     </OverlayTrigger>
-
+                    <span className="link-spacing"></span>
                     <OverlayTrigger placement="top" overlay={<Tooltip>판매 완료</Tooltip>} >
-                      <span id="archive-icon" onClick={handleShowArchive2}>
+                      <Button variant="primary" size="sm" style={{ backgroundColor: '#FF7E36', borderColor: 'orange', color: 'white' }} onClick={ handleShowArchive2 }>
                       <Link to={<MdArchive />}>판매 완료</Link>
-                        
                         {/* <Link to="/archived-sells">
                           &nbsp;&nbsp;판매완료
                         </Link> */}
-
-                      </span>
+                      </Button>
                     </OverlayTrigger>
-
-
                     <span className="link-spacing"></span>
                     <OverlayTrigger placement="top" overlay={ <Tooltip>상품 수정하기</Tooltip>} >
                       <Link to={`/categories/${params.category}/${params._id}/edit`}>게시글 수정하기</Link>
                     </OverlayTrigger> 
-                    <span className="link-spacing"></span>
-                    <OverlayTrigger placement="top" overlay={ <Tooltip>상품 삭제하기</Tooltip>} >
-                      <button onClick={ handleDelPro }>게시글 삭제하기</button>
-                    </OverlayTrigger>
+
                   </>
                 ) }
+
+                {(params.isSeller || (userData && userData.role === "admin")) && (
+                  <>
+                    <span className="link-spacing"></span>
+                    <OverlayTrigger placement="top" overlay={<Tooltip>상품 삭제하기</Tooltip>}>
+                      <button onClick={handleDelPro}>게시글 삭제하기</button>
+                    </OverlayTrigger>
+                  </>
+                )}
+                
                 <Modal show={ showArchive } onHide={ handleCloseArchive }>
                 <Modal.Header closeButton>
                     <Modal.Title>보관함으로 이동하시겠습니까???</Modal.Title>
@@ -370,28 +383,33 @@ function ProductInfo({ params }) {
 
           <div id="profile_right">
             <div id="tem_total">
-              <p style={{ float: 'left', fontWeight: 'bold', textDecoration: 'underline' }}>매너온도</p>
-              <p style={{ marginBottom: '-1px', float: 'right', color: getFontColor(36.5) }}>{36.5}°C&nbsp;&nbsp;
-                <img
-                  src={getMannerTemperatureImage(36.5)}
-                  alt="이미지 사진"
-                  style={{ width: '25px', height: '25px' }}
-                />
-              </p>
-              <div className="manner-thermometer" style={{ marginBottom: '10px' }}>
+              <p id="tem_total_txt">매너온도</p>
+              <div className='meters'>
+                <p id="tem_total_cnt" style={{ marginBottom: '-1px', float: 'right', color: getFontColor(36.5) }}>
+                  {36.5}°C
+                </p>
+                {/* <p id="tem_total_img">
+                  <img
+                    src={getMannerTemperatureImage(36.5)}
+                    alt="이미지 사진"
+                    style={{ width: '25px', height: '25px' }}
+                  />
+                </p> */}
+              </div>
+              <div className="manner-thermometer" style={{ width: '100%' }}>
                 <div className="manner-thermometer-fill" style={getMannerTemperatureStyle(36.5)}></div>
               </div>
             </div>
-
-            {/* <dl id="manner_temper">
-                      <dt>매너온도</dt>
-                      <dd className="text-color">75<span>°C</span></dd>
-                  </dl>
-                  <div className="meters">
-                      <div id="bar" className="bar-color-06" style={{ width: '75%' }}></div>
-                      <div id="face" className="face-06">페이스</div>
-                  </div> */}
           </div>
+
+        {/* <dl id="manner_temper">
+          <dt>매너온도</dt>
+          <dd className="text-color">75<span>°C</span></dd>
+        </dl>
+        <div className="meters">
+          <div id="bar" className="bar-color-06" style={{ width: '75%' }}></div>
+          <div id="face" className="face-06">페이스</div>
+        </div> */}
         </div>
       </section>
 
@@ -402,21 +420,30 @@ function ProductInfo({ params }) {
         <p id='content_main'>{ params.description }</p>
         <p id='content_cnt'> 관심 ♥ { params.likes } · 채팅 갯수 · 조회 수 { params.views } </p>
         <div id='content_button'>
-          { params.isAuth ? (
+          {params.isAuth ? (
             <>
-              { !params.isSeller && (
-                <Button variant="dark" className="col-lg-10" id="btnContact" onClick={onChatStart}>
-                  <RiMessage3Fill />채팅으로 거래하기
+              {!params.isSeller && (
+                <Button variant="primary" style={{ backgroundColor: 'orange', borderColor: 'orange', color: 'white' }} className="col-lg-9" id="btnContact" onClick={ onChatStart }>
+                  <RiMessage3Fill />채팅하기
                 </Button>
               )}
             </>
           ) : (
             <p id="guest-msg">
-              <Link to="/auth/login">Sign In</Link> now to contact the seller!
+              판매자와 연락하기 위해 지금!<Link to="/auth/login">로그인</Link>하세요!
             </p>
           )}
-          { !params.isSeller && (
-            <span id="heartIconDetails" className="col-lg-1 col-sm-1" onClick={ onHearthClick }>
+          <span>
+            <a id="kakaotalk-sharing-btn" href="javascript:;" onClick={sendLinkDefault}>
+              <img
+                  src="https://developers.kakao.com/assets/img/about/logos/kakaotalksharing/kakaotalk_sharing_btn_medium.png"
+                  style={{ width: "50px", height: "50px", marginLeft: '15px', marginBottom: '45px' }}
+                  alt="카카오톡 공유 보내기 버튼"
+                />
+            </a>
+          </span>
+          {!params.isSeller && (
+            <span id="heartIconDetails" className="col-lg-1 col-sm-1" onClick={onHearthClick}>
               {params.isAuth && (
                 <>
                   {!wish ? (
@@ -432,18 +459,7 @@ function ProductInfo({ params }) {
               )}
             </span>
           )}
-
-
-           <div>
-            {/* <button onClick={sendLinkCustom}>Send Custom Link</button> */}
-                <button className="kakao-button" onClick = {sendLinkDefault}>카카오 공유하기</button>
-            </div>
-
-            </div>
-
-
-
-
+        </div>
       </section>
 
       <section id="product_more">

@@ -128,6 +128,8 @@ function SellerProfile({ params, history }) {
                             <p className="section-title">판매상품 <span className="item-count">{params.totalSells}</span>개</p>
                             </div>
                             <button className="custom-button">매너 칭찬하기</button>
+                            <span></span>
+                            <button className="block-button">차단하기</button>
                         </div>
 
 

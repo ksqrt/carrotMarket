@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { Context } from '../../ContextStore';
 import { Navbar, NavDropdown, Nav, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import { NavLink } from 'react-router-dom';
-import { BsFillPersonFill, BsFillEnvelopeFill, BsFillPlusCircleFill } from 'react-icons/bs';
+import { BsFillPersonFill, BsFillEnvelopeFill, BsFillPlusCircleFill, BsPeopleFill } from 'react-icons/bs';
 import { useHistory } from "react-router-dom";
 import { IoLogOut } from 'react-icons/io5'
 import SearchBar from "../../components/SearchBar/SearchBar";
@@ -18,6 +18,7 @@ function Header() {
     const history = useHistory();
 
     const [isOpen, setIsOpen] = useState(false);
+    const [isOpenRegister, setIsOpenRegister] = useState(false);
 
     const onOpen = () => {
         setIsOpen(true);
@@ -26,19 +27,11 @@ function Header() {
         setIsOpen(false);
     }
 
-    //회원가입 모달
-    const [register, setRegister] = useState(false);
-
-    const registerOpen = () => {
-        setRegister(true);
+    const onOpenRegister = () => {
+        setIsOpenRegister(true);
     }
-    const registerClose = () => {
-        setRegister(false);
-    }
-
-    const loginModalOpen = () => {
-        setRegister(false);
-        setIsOpen(true);
+    const onCloseRegister = () => {
+        setIsOpenRegister(false);
     }
 
     const handleSearch = (e) => {
@@ -179,7 +172,13 @@ function Header() {
                                     <BsFillEnvelopeFill />Messages
                                 </NavLink>
 
-                                <NavDropdown.Divider />
+                            {userData.role === "admin" &&
+                                <NavLink className="dropdown-item" to="/admin">
+                                        <BsPeopleFill />Admin
+                                </NavLink>
+                            }
+
+                            <NavDropdown.Divider />
                                 <NavLink className="dropdown-item" to="/auth/logout" onClick={() => {
                                     setUserData(null)
                                 }}>
@@ -190,18 +189,25 @@ function Header() {
                         :
                         (<Nav>
                             <div>
-                                <button className='nav-item' id="nav-sign-in" onClick={onOpen}>로그인</button>
+                                <button className='nav-item' id="nav-sign-in" onClick={onOpen}>로그인</button>&nbsp;/&nbsp;
                                 {
                                     isOpen && <LoginModal onClose={onClose} />
                                 }
                             </div>
-                            
                             <div>
-                                <button className="nav-item " id="nav-sign-up" onClick={registerOpen}>회원가입</button>
+                            <button className='nav-item' id="nav-sign-in" onClick={onOpenRegister}>회원가입</button>
                                 {
-                                    register && <Register registerClose={registerClose} loginModalOpen={loginModalOpen}/>
+                                    isOpenRegister && <RegisterModal onCloseRegister={onCloseRegister}/>
                                 }
                             </div>
+                            {/* 추후 삭제 */}
+                            {/* &nbsp;&nbsp;
+                            <NavLink style={{ backgroundColor: '#FF7E36' }} className="nav-item" id="nav-sign-in" to="/auth/login">
+                                로그인
+                            </NavLink>
+                            <NavLink className="nav-item " id="nav-sign-up" to="/auth/register">
+                                회원가입
+                            </NavLink>*/} 
                         </Nav>)
                     }
                 </Navbar.Collapse>
