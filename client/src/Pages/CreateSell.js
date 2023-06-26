@@ -3,8 +3,8 @@ import { createProduct } from "../services/productData";
 import { Form, Button, Col, Spinner, Alert, Row } from "react-bootstrap";
 import "../components/CreateSell/CreateSell.css";
 import "../components/CreateSell/addproduct.css";
-import KakaoMapAPI from "../components/KakaoMapAPI/KakaoMapAPI";
 import Display from "../components/Display/Display";
+import { KakaoMapAPI } from "../components/KakaoMapAPI/KakaoMapAPI";
 
 const AddProduct = ({ history }) => {
   const [title, setTitle] = useState("");
