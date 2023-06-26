@@ -2,6 +2,8 @@ const Server = require('socket.io').Server;
 const ChatRoom = require('../models/ChatRoom') // 채팅방 id, buyer, seller, conversation DB 연결
 const mongoose = require('mongoose');
 const User = require('../models/User'); 
+const Product = require('../models/Product'); 
+
 let io;
 function Io(server) {
   io = new Server(server, {
@@ -30,12 +32,14 @@ function Io(server) {
       const sentAt = new mongoose.Types.ObjectId(); // MongoDB의 ObjectId를 사용하여 서버 시간을 가져옵니다. 
       const _id = new mongoose.Types.ObjectId();
       const newMessage = { _id, senderId, message, sentAt: sentAt.getTimestamp(), location };
-      await ChatRoom.updateOne({ _id: chatId }, { $push: { conversation: newMessage } });
+      await ChatRoom.updateOne({ _id: chatId }, { $push: { conversation: newMessage }, $inc: { unreadMessages: 1 } });
       
       console.log('3. io.js, sendMessage', newMessage );
       io.emit("newMessage", newMessage); // senderId, message, sentAt 인자 제공 필요
       console.log('4. io.js, newMessage');
+
     });
+
 
     socket.on("setAppointment", async ({chatId, appointmentDate }) => {
       await ChatRoom.updateOne({ _id: chatId }, { appointmentDate, appointmentCheck: false });
@@ -81,13 +85,21 @@ function Io(server) {
 
     });
 
+
+    socket.on("TradeComplete", async ({chatId, productId }) => {
+      await Product.updateOne({ _id: productId }, { $set: { soldout: 'true' },});
+      io.emit("TradeCompleted", { chatId, productId });
+    });
+
+
+
     socket.on("getUserConversations", async ({ userId }) => {
       // $or : 주어진 배열 내의 조건 중 하나라도 참이면 참으로 간주 buyer 또는 seller에 userId가 있는 경우에 참. 전부 가져옴.
       let userChats = await ChatRoom.find({ $or: [ { 'buyer': userId }, { 'seller': userId } ] }).populate("buyer").populate("seller").populate("conversation").populate("product");
       socket.emit('userConversations', userChats.map(x => ({ chats: x, isBuyer: (x.buyer?._id == userId), myId: userId })));
     });
   
-    socket.on("disconnect", () => console.log(""));
+    socket.on("disconnect", () => console.log("socket disconnected"));
   });
   return io;
 }

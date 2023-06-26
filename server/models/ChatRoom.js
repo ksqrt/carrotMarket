@@ -52,8 +52,12 @@ const chatRoomSchema = new mongoose.Schema({
     appointmentCheck: {
         type:Boolean,
         default:false
-    }
-})
+    },
+    notificationMessages: {
+        type: Number,
+        default:0
+    },
+});
 
 // chatRoomSchema를 기반으로 ChatRoom 모델을 생성 후 export
 module.exports = mongoose.model('ChatRoom', chatRoomSchema);

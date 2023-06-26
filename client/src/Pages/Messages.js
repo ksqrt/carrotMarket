@@ -1,16 +1,16 @@
 import { useState, useEffect, useContext, useRef, React, Fragment } from 'react';
-import {sendMessage, disconnect, getUserConversations, initializeSocket, setAppointment, deleteAppointment, appointmentCheck, ReportMessage, ExitRoom} from '../services/messagesData';
+import {sendMessage, disconnect, getUserConversations, initializeSocket, setAppointment, deleteAppointment, appointmentCheck, ReportMessage, ExitRoom, TradeComplete} from '../services/messagesData';
 import { Navbar, NavDropdown, Nav, Container, Row, Form, InputGroup, Button, Alert, Modal } from 'react-bootstrap';
 import { Link, NavLink, useHistory, } from 'react-router-dom';
 import { Context } from '../ContextStore';
 import { animateScroll } from 'react-scroll';
-import { AiOutlineAlert, AiOutlineUpload, AiOutlineSchedule, AiOutlineClose } from 'react-icons/ai';
+import { AiOutlineAlert, AiOutlineUpload, AiOutlineSchedule } from 'react-icons/ai';
 import { ImBlocked } from 'react-icons/im';
 import { IoIosArrowBack } from 'react-icons/io';
-import { FaMapMarkedAlt, FaUserAlt } from 'react-icons/fa'
+import { FaMapMarkedAlt, FaRegHandshake } from 'react-icons/fa'
+import { MdOutlineRateReview } from 'react-icons/md'
 import Linkify from 'react-linkify'; // url 주소 링크 처리하는 라이브러리
 import { BsSend, BsDoorOpen } from "react-icons/bs";
-import { TbFaceIdError } from "react-icons/tb";
 import { CiImageOff } from "react-icons/ci";
 import UseAnimations from "react-useanimations";
 import plusToX from "react-useanimations/lib/plusToX";
@@ -24,6 +24,8 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { MobileDateTimePicker } from '@mui/x-date-pickers/MobileDateTimePicker';
 import { faLastfmSquare } from '@fortawesome/free-brands-svg-icons';
+import moment from "moment";
+import 'moment-timezone';
 
 
 function Messages({ match }) { // match = Router 제공 객체, url을 매개변수로 사용. ex) 경로 : /messages/123  => match.params.id = "123" // app.js 참고 : <Route path="/messages" exact component={Messages} />;
@@ -72,6 +74,7 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
     const [message, setMessage] = useState(""); // 내가 입력한 메세지
     const [alertShow, setAlertShow] = useState(true); 
     const [socket, setSocket] = useState(null); // initializeSocket 소켓 초기화
+    const [newMessageCount, setNewMessageCount] = useState(0); // 새 메세지 개수 알림
     const scrollToBottom = () => {
         animateScroll.scrollToBottom({
             containerId: "chat-selected-body",
@@ -141,7 +144,7 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
 
     useEffect(() => { // 클라이언트에서 약속 삭제 유무 실시간 확인용
         if (!socket) return;
-        console.log('약속 삭제 감시용');
+        // console.log('약속 삭제 감시용');
         const handleDeleteAppointment = ({chatId}) => {
             if (chatId === selected.chats._id) {
                 setSelected(prevSelected => ({
@@ -160,11 +163,32 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
         };
     }, [socket, selected]);
 
+    useEffect(() => { // 
+        if (!socket) return;
+         console.log('약속 확인 감시용');
+        const handleAcceptAppointment = ({chatId, appointmentCheck}) => {
+            if (chatId === selected.chats._id) {
+                setSelected(prevSelected => ({
+                    ...prevSelected,
+                    chats: {
+                        ...prevSelected.chats,
+                        appointmentCheck,
+                    },
+                }));
+            }
+        };
+        socket.on('appointmentChecked', handleAcceptAppointment);
+        
+        return () => {
+            socket.off('appointmentChecked', handleAcceptAppointment);
+        };
+    }, [socket, selected]);
+
     const appointmentModalAccept = () => {
         // 약속 수락 시 system에 추가 메세지 보내기 -> 거래 팁을 알려드려요! , 0월0일에 거래 약속이 있나요? 따뜻한 거래를 위한 팁을 알려드릴게요!
         // 지도 위치 다시 보여주기
         appointmentCheck(socket, {chatId:selected.chats._id, appointmentCheck : true})
-        const message = `${dayjs(selected.chats.appointmentDate).format('MM월 DD일')}에 거래 약속이 있나요? 따뜻한 거래를 위한 팁을 알려드릴게요! ☺️ 미구현`;
+        const message = `${dayjs(selected.chats.appointmentDate).format('MM월 DD일')}에 거래 약속이 있나요? 안전하고 따뜻한 거래 부탁드려요 ☺️`;
         sendMessage(socket, { chatId: selected.chats._id, senderId: null, message});
         setCurrentAppointment(null);
     }
@@ -176,6 +200,33 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
         sendMessage(socket, { chatId: selected.chats._id, senderId: null, message});
         setCurrentAppointment(null);
     }
+
+    // 후기 & 거래 완료 버튼 활성화
+    const [reviewButtonOn, setReviewButtonOn] = useState(false);
+    
+    useEffect(() => {
+        const currentTime = moment().tz("Asia/Seoul");
+        const appointmentTime = moment(selected.chats.appointmentDate);
+        if (currentTime.isSameOrAfter(appointmentTime)) {
+            setReviewButtonOn(true);
+        } else {
+            setReviewButtonOn(false);
+        }
+
+    },[selected.chats.appointmentDate]);
+
+
+    const handleTradeComplete = () => {
+        const message = `거래가 성공적으로 완료되었어요!`;
+        sendMessage(socket, { chatId: selected.chats._id, senderId: null, message}); 
+        console.log('거래완료 테스트 : ',selected.chats._id)
+        TradeComplete(socket, {chatId: selected.chats._id, productId: selected.chats.product._id })
+        
+    }
+
+    
+
+
 
     // 신고하기 버튼
     const [reportModalShow, setReportModalShow] = useState();
@@ -263,6 +314,7 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
         })();
     }, []);
 
+
     useEffect(() => { // 대화방 가져오기, 선택시 내용 가져오기
     if (!userData || !socket) return;
     console.log("1. messages.js, getUserConversations ");
@@ -296,16 +348,15 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
             scrollToBottom();
         };
         socket.on('newMessage', handleNewMessage);
-    
+
         return () => {
             socket.off('newMessage', handleNewMessage);
         };
     }, [socket, selected]);
-    
+
+
     useEffect(() => {
         console.log("채팅방 전체 로그 : ", selected);
-        // console.log("userdata : ", userData);
-        
       }, [selected]);
 
     useEffect(() => {
@@ -338,12 +389,16 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
                                         {x.isBuyer ?
                                             <>
                                                 {x.chats.seller?.avatar ? <img src={x.chats.seller?.avatar} alt="user-avatar" /> : <img src='https://kr.object.ncloudstorage.com/ncp3/ghuPttFw_400x400.jpg' />}  
-                                                <span> {x.chats.seller?.name  || '(알 수 없음)'}</span>{x.chats.product?.image ? <img src={x.chats.product?.image} alt="product" style={{float: 'right', width: '35px', height: '35px', objectFit: 'cover'}}/> : <CiImageOff size={20}  />}
+                                                <span> {x.chats.seller?.name  || '(알 수 없음)'}</span>
+                                                {x.chats.product?.image ? <img src={x.chats.product?.image} alt="product" style={{float: 'right', width: '35px', height: '35px', objectFit: 'cover'}}/> : 
+                                                <CiImageOff size={20} style={{float: 'right', width: '35px', height: '35px', objectFit: 'cover'}} />}
                                             </>
                                             :
                                             <>
                                                 {x.chats.buyer?.avatar ? <img src={x.chats.buyer?.avatar} alt="user-avatar" /> : <img src='https://kr.object.ncloudstorage.com/ncp3/ghuPttFw_400x400.jpg' />}
-                                                <span> {x.chats.buyer?.name  || '(알 수 없음)'}</span>{x.chats.product?.image ? <img src={x.chats.product?.image} alt="product" style={{float: 'right', width: '35px', height: '35px', objectFit: 'cover'}}/> : <CiImageOff size={20}  />}
+                                                <span> {x.chats.buyer?.name  || '(알 수 없음)'}</span>
+                                                {x.chats.product?.image ? <img src={x.chats.product?.image} alt="product" style={{float: 'right', width: '35px', height: '35px', objectFit: 'cover'}}/> : 
+                                                <CiImageOff size={20} style={{float: 'right', width: '35px', height: '35px', objectFit: 'cover'}} />}
                                             </>
                                         }
                                     </Link>
@@ -400,7 +455,7 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
                             {alertShow &&
                                 <Alert className="alert-glass" onClose={() => setAlertShow(false)}>
                                 <div className="flex-container">
-                                    {selected.chats.product?.image ? <img src={selected.chats.product?.image} alt="product" className="img-style" /> :  <CiImageOff size={20}  /> }
+                                    {selected.chats.product?.image ? <img src={selected.chats.product?.image} alt="product" className="img-style" /> :  <CiImageOff size={40}  /> }
                                     <div className="text-container">
                                         <div>
                                             <span className="text-bold">{selected.chats.product?.soldout ? '거래완료' : (selected.chats.appointmentCheck ? '예약중' : '거래중')}</span> &nbsp;&nbsp;
@@ -411,8 +466,9 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
                                         </div>
                                     </div>
                                 </div> 
-                                    <Button className='messageButton'> 후기 보내기 버튼 </Button>&nbsp; {/* 약속 잡기 성공 후 sold out 시 */}
-                                    
+                                    <Button className='messageButton'>  <MdOutlineRateReview size={20}/> 후기 보내기 </Button>&nbsp;&nbsp;  {/* 약속 잡기 성공 후 sold out(거래 완료) 시 */}
+                                    {/* <Button className='messageButton'>  <FaRegHandshake size={20}/> 거래 완료 </Button>&nbsp; 버튼 누르면 sold out(거래 완료)으로 변경 + 후기 보내기 버튼 나타남 */}
+                                    {reviewButtonOn && <Button className='messageButton' onClick={handleTradeComplete} disabled={selected.chats.product?.soldout}> <FaRegHandshake size={20}/> 거래 완료 </Button>}&nbsp;
                                     {!selected.chats.product?.soldout && <Button className='messageButton' onClick={openDateTimePicker}> <AiOutlineSchedule size={20}/> 약속 잡기 </Button>}&nbsp; {/* (다른 사람과 약속 잡기가 되있지 않을 때) */}
                                     <Button className='messageButton' onClick={ handleShow }> <FaMapMarkedAlt size={20}/> 장소 공유 </Button>
                                 </Alert>
@@ -426,7 +482,7 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
                                         <Fragment key={index}>
                                             {messageDate !== currentDate && (currentDate = messageDate) && <div className="hr-sect" >{currentDate}</div>}
                                             {x.senderId === null ? (
-                                                // 시스템 메세지 ver1
+                                                // 시스템 메세지 1
                                                 <div className="system-message-div">
                                                     <span className="system-message" style={{ whiteSpace: 'pre-wrap' }} ><Linkify>{x.message}</Linkify></span>
                                                 </div>
@@ -434,6 +490,7 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
                                                 <div className={selected.myId === x.senderId ? 'me' : "not-me"}>
                                                     <span className="timestamp">{x.sentAt ? new Date(x.sentAt).toLocaleTimeString('ko-KR', { hour: 'numeric', minute: 'numeric', hour12: true }) : ""}</span> &nbsp;
                                                     {x.location ? (
+                                                        // map 전용 메세지 2
                                                         <div className="message with-map" style={{backgroundColor:'white', border: '1px solid gray', color:'black', padding: '0px', textAlign: 'center', minWidth:'300px'}}>
                                                                 <MapMessage lat={x.location.lat} lng={x.location.lng}/>
                                                                 <div style={{height:'110px'}}> </div>
@@ -442,7 +499,7 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
                                                                 <Button className='messageInButton' onClick={() => window.open(`http://map.kakao.com/link/map/${x.location.lat},${x.location.lng}`, "_blank")} >장소 보기</Button>
                                                             </div>
                                                         </div>
-                                                    ) : (
+                                                    ) : ( // 그냥 메세지 3
                                                         <div className="message">
                                                         <Linkify>{x.message}</Linkify>
                                                         </div>
@@ -591,7 +648,7 @@ function ReportModal({show, onHide, onReport}) {
         <Modal className='ReportModal'  show={show}>
             <Modal.Header><img src='https://kr.object.ncloudstorage.com/ncp3/ncp3/logo_main_row.webp' alt='logo'/></Modal.Header>
             <Modal.Body className="ReportModalBody" >
-                <textarea></textarea>
+                <textarea onChange={(e) => setReason(e.target.value)} />
             </Modal.Body>
             <Modal.Footer className="ReportModalFooter">
                 <Button variant="secondary" onClick={onHide}>

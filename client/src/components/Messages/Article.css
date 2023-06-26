@@ -258,7 +258,7 @@ article img {
 }
 
 .appointmentModal .modal-dialog {
- width: 440px;
+ width: 450px;
 }
 
 .appointmentModalButton {
@@ -305,8 +305,15 @@ article img {
     background-color: #FF7E36;
 }
 
+.messageButton:disabled {
+    background-color: gray;
+    border-color: gray;
+}
+
+
 .chat-connections {
   padding-right: 10px;
+  padding-left: 0px;
 }
 
 
