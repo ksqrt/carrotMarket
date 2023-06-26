@@ -22,7 +22,8 @@ const chatRoomSchema = new mongoose.Schema({
     conversation: [{
         senderId: {
             type: mongoose.Types.ObjectId,
-            ref: 'User'
+            ref: 'User',
+            required: false // senderId가 없는 경우 system으로 표시
         },
         message: {
             type: String,

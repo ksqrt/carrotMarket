@@ -53,4 +53,18 @@ router.get('/getUserById/:id', async (req, res) => {
     }
 })
 
+// 사용자 ID로 사용자 정보를 가져오는 엔드포인트
+router.get('/getUserName/:id', async (req, res) => {
+    try {
+        let user = await userService.getUserById(req.params.id);
+        let jsonRes = {
+            name: user.name
+        }
+        res.status(200).json({ user: jsonRes });
+    } catch (error) {
+        res.status(500).json({ error });
+    }
+});
+
+
 module.exports = router;
