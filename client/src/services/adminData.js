@@ -28,25 +28,74 @@ export async function deleteadminUser(deleteUser) {
         console.log(error);
     }
 }
+
+
+
+export async function getUserCount() {
+    try{
+        const userCount = await fetch(`${baseUrl}/admin/userCount`);
+        console.log('Client UserCount',userCount);
+        return userCount.json();
+    }catch(error){
+        console.log(error);
+    }
+
+    }
+
+
+    export async function getProductCount() {
+        try{
+            const productCount = await fetch(`${baseUrl}/admin/productCount`);
+            console.log('Client ProductCount',productCount);
+            return productCount.json();
+        }catch(error){
+            console.log(error);
+        }
+    
+        }
+
+
+        
+    export async function getAdminProduct() {
+        try{
+            const adminProducts = await fetch(`${baseUrl}/admin/adminProduct`);
+            console.log('Client ProductCount',adminProducts);
+            return adminProducts.json();
+        }catch(error){
+            console.log(error);
+        }
+    
+        }
         
 
+        export async function deleteProduct(productId) {
+            try {
+              console.log('값 넘기냐', productId);
+              await fetch(`${baseUrl}/admin/deleteProduct/${productId}`, {
+                method: 'DELETE',
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+              });
+            } catch (error) {
+              console.log(error);
+            }
+          }
+        
+    
 
-//   if (query !== "" && query !== undefined) {
-//     return (
-//       await fetch(`${baseUrl}/products?page=${page}&search=${query}`, {
-//         credentials: "include",
-//       })
-//     ).json();
-//   } else if (category && category !== "all") {
-//     return (
-//       await fetch(`${baseUrl}/products/${category}?page=${page}`, {
-//         credentials: "include",
-//       })
-//     ).json();
-//   } else {
-//     return (
-//       await fetch(`${baseUrl}/products?page=${page}`, {
-//         credentials: "include",
-//       })
-//     ).json();
-// }
+          export async function getAllProducts() {
+            try {
+              console.log('값 넘기냐');
+              const adminProduct = await fetch(`${baseUrl}/admin/adminProduct`)
+              console.log('dashboard getAdmin ' ,adminProduct);
+              }
+               catch (error) {
+              console.log(error);
+            }
+        }
+
+
+        
+
+         

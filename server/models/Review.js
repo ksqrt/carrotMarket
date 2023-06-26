@@ -1,23 +1,33 @@
 const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
+const mongoosePaginate = require('mongoose-paginate-v2');
 
-const ReviewSchema = mongoose.Schema({
-   id: {
-       type : String,
-       required : true
-   },
-   content : {
-       type : String,
-       required : true
-   },
-   createdAt:{ // 글을 생성한 날짜 
-       type : Date,
-       default : Date.now
-   }
-},{timestamps:true})
+const reviewSchema = new mongoose.Schema({
+    id: mongoose.Types.ObjectId,
 
+    content: {
+        type: String,
+        required: true,
+        trim: true,
+        minlength: [10, 'Content should be at least 10 characters long'],
+        maxlength: [500, 'Content should be max 500 characters long']
+    },
+    seller: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Seller',
+        required: true
+      },
+      name: {
+        type: String,
+        required: true,
+        trim: true
+      },
+    createdAt: {
+        type: Date,
+        default: Date.now
+      }
+});
 
+// Review 모델 생성
+const Review = mongoose.model('Review', reviewSchema);
 
-const Review = mongoose.model('Review', ReviewSchema);
-
-module.exports = { Review }
+module.exports = mongoose.model('Review', reviewSchema);

@@ -31,3 +31,8 @@ client/public/fonts/BMHANNAAir_ttf.ttfZone.Identifier
 client/public/logo_main_row.webpZone.Identifier
 client/public/logo_white.webpZone.Identifier
 client/package-lock.json
+client/configmap.yaml
+server/package-lock.json
+client/deployment.yaml
+client/deployment.yaml
+client/deployment.yaml

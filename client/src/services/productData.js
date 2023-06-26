@@ -1,5 +1,5 @@
-const baseUrl = "http://localhost:5000";
-// const baseUrl = "http://101.79.11.48:5000";
+import url from "../url.js";
+const baseUrl = url;
 
 export async function getAll(page, category, query) {
   // 쿼리문이 공백이면 node js 가 돌아가고있는 http://localhost:5000 포트에서 데이터를 가지고옴
@@ -26,13 +26,13 @@ export async function getAll(page, category, query) {
 }
 
 export async function getSpecific(id) {
+  
   return (
     await fetch(`${baseUrl}/products/specific/${id}`, {
       credentials: "include",
     })
   ).json();
 }
-
 
 export async function createProduct(product) {
   return (
@@ -77,8 +77,11 @@ export async function createProduct(product) {
     }
     
     export async function archiveSell(id) {
-      console.log(id+ '님')
       return (await fetch(`${baseUrl}/products/archive/${id}`)).json();
+    }
+
+    export async function archiveSoldout(id) {
+      return (await fetch(`${baseUrl}/products/soldout/${id}`)).json();
     }
     
     export async function wishProduct(id) {
@@ -94,3 +97,22 @@ export async function createProduct(product) {
         })
       ).json();
     }
+
+
+
+    export async function declareProduct(declareproduct) {
+
+      console.log('ProductDataController',declareproduct);
+
+      await fetch(`${baseUrl}/products/declare/${declareproduct}`, {
+        credentials: "include"
+      })
+  
+  }
+
+
+
+    
+
+
+  

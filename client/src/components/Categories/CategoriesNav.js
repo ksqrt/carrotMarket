@@ -50,6 +50,7 @@ function CategoriesNav() {
           가구/인테리어
         </Button>{" "}
       </Link>
+      
       <Link to="/categories/automotive">
         <Button variant="dark" id="automotive">
           <AiFillCar />

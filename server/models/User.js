@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
-const { SALT } = require('../config/config')
+const { SALT } = require('../config/config');
+const findOrCreate = require('find-or-create-mongoose');
 
 const userSchema = new mongoose.Schema({
     id: mongoose.Types.ObjectId,
@@ -39,7 +40,7 @@ const userSchema = new mongoose.Schema({
     phoneNumber: {
         type: String,
         trim: true,
-        required: ['Phone number is required']
+        // required: ['Phone number is required']
     },
     gender: {
         type: String,
@@ -80,7 +81,22 @@ const userSchema = new mongoose.Schema({
             type:String,
             trim: true,
             default: 36.5
-    }
+    },
+    report: [
+        {
+            userName: {
+                type:String,
+                trim:true
+            },
+            content: {
+                type:String,
+                trim:true
+            }
+        }
+    ]
+
+
+
 });
 
 userSchema.pre('save', async function (next) {
@@ -89,5 +105,7 @@ userSchema.pre('save', async function (next) {
     this.password = hash;
     next();
 })
+
+userSchema.plugin(findOrCreate);
 
 module.exports = mongoose.model('User', userSchema);

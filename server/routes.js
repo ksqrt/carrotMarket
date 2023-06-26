@@ -2,8 +2,8 @@ const router = require("express").Router();
 const authController = require("./controllers/authController");
 const productController = require("./controllers/productController");
 const userController = require("./controllers/userController");
-const messageController = require("./controllers/messageController");
 const imageTest = require("./controllers/imageTestController");
+const review = require("./controllers/reviewController");
 const isAuth = require("./middlewares/isAuth");
 const admin = require("./controllers/adminController");
 
@@ -19,7 +19,6 @@ router.use("/products", productController);
 router.use("/user", userController);
 router.use("/admin",admin);
 //router.use("/messages", messageController);
-
 router.use("/imageTest",imageTest);
-
+router.use("/review",review);
 module.exports = router;

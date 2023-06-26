@@ -11,7 +11,7 @@ function Login({ history }) {
     const [error, setError] = useState(null);
     const [user, setUser] = useState({
         email: "",
-        password: ""
+        password: ""        
     });
     const { setUserData } = useContext(Context)
 
@@ -23,6 +23,7 @@ function Login({ history }) {
     const handleSubmitLogin = (e) => {
         e.preventDefault();
         setLoading(true);
+        console.log(user)
         loginUser(user)
             .then(res => {
                 if (!res.error) {

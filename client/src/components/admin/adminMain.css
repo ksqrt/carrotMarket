@@ -61,15 +61,7 @@ footer {
   padding: 10px;
   text-align: center;
 }
-
-#categori{
-  padding-left:400px;
-  padding-top:10px;
-  padding-bottom:40px;
-}
-
-
-
+/* 
 .button {
   background-color: #FFA500;
   border-color: #FFA500;
@@ -88,9 +80,18 @@ footer {
 .button.active {
   background-color: #FF984D;
   border-color: #FF984D;
-}
+} */
+
 
 
 #AdminContent{
   padding-left:400px;
 }
+
+
+
+.categori{
+  padding-left:400px;
+  padding-top:10px;
+  padding-bottom:40px;
+} 

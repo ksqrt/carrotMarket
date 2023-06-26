@@ -22,12 +22,21 @@ const chatRoomSchema = new mongoose.Schema({
     conversation: [{
         senderId: {
             type: mongoose.Types.ObjectId,
-            ref: 'User'
+            ref: 'User',
+            required: false // senderId가 없는 경우 system으로 표시
         },
         message: {
             type: String,
             trim: true
-        }
+        },
+        sentAt: {  // 메시지에 타임스탬프를 추가
+            type: Date,
+            default: Date.now  // 현재 시간을 기본값으로 설정
+        },
+        location: { // 위치 정보 필드 추가
+            lat: Number,
+            lng: Number
+        },
     }],
     // Product Id 고유 id
     product:{

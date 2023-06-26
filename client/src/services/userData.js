@@ -1,16 +1,20 @@
-const baseUrl = 'http://localhost:5000';
-// const baseUrl = 'http://101.79.11.48:5000';
+import url from "../url.js";
+const baseUrl = url;
+
 
 export async function snsUser(user) {
-    return (await fetch(`${baseUrl}/auth/snsLogin`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        credentials: 'include',
-        body: JSON.stringify(user)
-    })).json();
-}
+    const response = await fetch(`${baseUrl}/auth/snsLogin`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      credentials: 'include',
+      body: JSON.stringify(user),
+    });
+  
+    return response.json();
+  }
+  
 
 export async function registerUser(userData) { //Register.js에서 userData 받음
     return (await fetch(`${baseUrl}/auth/register`, { //App.js에 등록된 엔드포인트 URL
@@ -44,6 +48,10 @@ export async function getUserActiveSells(id) {
 
 export async function getUserArchivedSells() {
     return (await fetch(`${baseUrl}/products/sells/archived`, {credentials: 'include'})).json();
+}
+
+export async function getUserSoldoutSells() {
+    return (await fetch(`${baseUrl}/products/sells/soldout`, {credentials: 'include'})).json();
 }
 
 export async function getUserWishlist() {

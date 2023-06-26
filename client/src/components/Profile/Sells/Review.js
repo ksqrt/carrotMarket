@@ -1,91 +1,100 @@
-import React, { useState } from 'react';
-import { Component } from 'react';
-import { Form, Button, Col, Spinner, Alert } from 'react-bootstrap';
-import '../../CreateSell/CreateSell.css';
-import SimpleSider from '../../Siders/SimpleSider';
-import {createReview} from '../../../services/ReviewData';
+import React, { useState, useEffect, useContext } from 'react';
+import { createReview, getReviews, getUserName } from '../../../services/ReviewData';
+import { useParams } from 'react-router-dom';
+import './ReviewForm.css';
+import { Context } from "../../../ContextStore";
 
-class Review extends Component {
-//     const [conversation, setConversation] = useState([]);
-//     let [loading, setLoading] = useState(true);
-//     const history = useHistory();
+const ReviewForm = () => {
+  const { userData } = useContext(Context);
+  const { id } = useParams();
+  const [content, setContent] = useState('');
+  const [reviews, setReviews] = useState([]);
+  const [error, setError] = useState('');
 
-    constructor(props) {
-        super(props);
-        const [state,setState] = useState('');
-        
-        this.onSubmitHandler = this.onSubmitHandler.bind(this);
+  const handleContentChange = (event) => {
+    setContent(event.target.value);
+    setError('');
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    if (content.length < 10 || content.length > 500) {
+      setError('10글자 이상 500글자 이하');
+      return;
     }
 
+    const userName = await getUserName(userData._id);
+    const reviewData = {
+      id: userData._id,
+      content,
+      seller: id,
+      name: userName,
+    };
 
-    onChangeHandler(e) {
-        e.preventDefault();
+    console.log(reviewData, '처음 js에서 보내기');
 
-        let value = e.target.value;
-        
-        setState({ [e.target.name]: value });
-      
-      };
-
-    onSubmitHandler(e) {
-        e.preventDefault();
-        let  content  = this.state;
-        let obj = { content }
-        console.log('이거모냐'+this.state);
-          setState({ loading: true })
-        createReview(content)
-        .then(res => {
-            if (res.error) {
-                setState({ loading: false })
-                setState({ errors: res.error })
-                setState({ alertShow: true })
-            } else {
-                this.props.history.push('/')
-            }
-        })
-        .catch(err => console.error('Creating Review err: ', err))
-
+    try {
+      await createReview(reviewData);
+      window.location.reload();
+    } catch (error) {
+      console.error('Error creating review:', error);
     }
+  };
 
-    render() {
-        return (
-            <>
-                <SimpleSider />
-                <div className='container'>
-                    <h1 className="heading">구매후기추가</h1>
+  useEffect(() => {
+    console.log(id, '이것은 판매자 아이디값입니다');
+    console.log(userData._id, '이것은 로그인 아이디값입니다');
+    console.log(userData);
+    const fetchReviews = async () => {
+      const fetchedReviews = await getReviews(id);
+      setReviews(fetchedReviews);
+      console.log(fetchedReviews,'이거확인용@@#!#@$#$!');
+    };
 
-                    <Form onSubmit={this.onSubmitHandler}>
-                        
-                        {this.state.alertShow &&
-                            <Alert variant="danger" onClose={() => this.setState({ alertShow: false })} dismissible>
-                                <p>
-                                    {this.state.errors}
-                                </p>
-                            </Alert>
-                        }
+    fetchReviews();
+  }, [id, userData._id]);
 
-                        <Form.Row>
-                            <Form.Group as={Col} controlId="content">
-                                <Form.Label>Content</Form.Label>
-                                <Form.Control type="text" placeholder="Enter content" name="content" required onChange={this.onChangeHandler}/>
-                            </Form.Group>
-                        </Form.Row>
-
-                      
-                        {this.state.loading ?
-                            <Button className="col-lg-12" variant="dark" disabled >
-                                Please wait... <Spinner animation="border" />
-                            </Button>
-                            :
-                            <Button className="col-lg-12" variant="dark" type="submit">Add product</Button>
-                        }
-                    </Form>
-                    <br></br>
+  return (
+    <div className="review-page">
+      <div className="review-board">
+        <h2 className="review-board__title">리뷰 리스트</h2>
+        <div className="review-board__list">
+          {reviews
+            .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+            .map((review) => (
+              <div key={review.id} className="review-board__item">
+                <p className="review-board__content">{review.content}</p>
+                <p className="review-board__timestamp">
+                  {new Date(review.createdAt).toLocaleString()}
+                </p>
+                <div className="review-board__user">
+                  <span className="review-board__username">{review.name}</span>
                 </div>
-            </>
-        )
-    }
-}
+              </div>
+            ))}
+        </div>
+      </div>
+      <form onSubmit={handleSubmit} className="review-form">
+        <h2 className="review-form__title">판매자 리뷰 작성</h2>
+        <div className="review-form__content">
+          <label htmlFor="content" className="review-form__label">
+            <h3>거래 후기</h3>
+          </label>
+          <textarea
+            id="content"
+            value={content}
+            onChange={handleContentChange}
+            className="review-form__textarea"
+          ></textarea>
+          {error && <p className="review-form__error" style={{ color: 'red' }}>{error}</p>}
+        </div>
+        <button type="submit" className="review-form__submit-btn">
+          리뷰 작성
+        </button>
+      </form>
+    </div>
+  );
+};
 
-
-export default Review;
+export default ReviewForm;

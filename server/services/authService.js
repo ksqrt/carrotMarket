@@ -5,74 +5,50 @@ const jwt = require('jsonwebtoken');
 //- 사용자 데이터와 비밀키(SECRET)를 기반으로 JWT를 생성
 const { SECRET } = require('../config/config');
 
-// async function snsLoginUser({ email, name, provider }) {
-//   let users = await User.find({ email }).exec();
+async function findorcreate(user) {
 
-//   if (users.length === 0) {
-//     // 사용자가 없는 경우
-//     const user = new User({ email, name, provider });
-//     await user.save();
+  const findBy = { email: user.email, provider: user.provider };
+  console.log(findBy);
 
-//     const token = jwt.sign(
-//       { _id: user._id, email: user.email, name: user.name, provider: user.provider },
-//       SECRET
-//     );
+  let checkUser = await User.findOne(findBy);
+  console.log(checkUser);
 
-//     return token;
-//   }
+  if (checkUser) {
+    let token = jwt.sign({ _id: checkUser._id, email: checkUser.email, name: checkUser.name, provider: checkUser.provider, role: checkUser.role, createdSells: checkUser.createdSells.length, avatar: checkUser.avatar }, SECRET);
+    return token; 
 
-//   // 동일한 이메일을 가진 사용자들 중에서 공급자(provider)가 일치하는 사용자를 찾습니다.
-//   const matchingUser = users.find(user => user.provider === provider);
+  } 
+  
+  if (!checkUser) {
+    const onCreate = { email: user.email, name: user.name, password: user.password, provider: user.provider };
+  
+    let newUser = await new User(onCreate).save();
+    // await newUser.save();
+    
+    let token = jwt.sign({ _id: newUser._id, email: newUser.email, name: newUser.name, provider: user.provider, role: newUser.role, createdSells: newUser.createdSells.length, avatar: newUser.avatar }, SECRET);
+    return token;
 
-//   if (matchingUser) {
-//     // 일치하는 사용자가 이미 존재하는 경우
-//     const token = jwt.sign(
-//       { _id: matchingUser._id, email: matchingUser.email, name: matchingUser.name, provider: matchingUser.provider },
-//       SECRET
-//     );
+  }
+}
 
-//     return token;
-//   }
-
-//   // 동일한 이메일을 가진 사용자가 있지만 공급자(provider)가 일치하는 사용자가 없는 경우
-//   const newUser = new User({ email, name, provider });
-//   await newUser.save();
-
-//   const token = jwt.sign(
-//     { _id: newUser._id, email: newUser.email, name: newUser.name, provider: newUser.provider },
-//     SECRET
-//   );
-
-//   return token;
-// }
-
-async function snsLoginUser({ email, name, provider }) {
-  let user = await User.findOne({ email, provider });
-  if (!user) {
-    let user = new User({ email, name, provider });
+  async function registerUser(userData) {
+    let { email, name, password, repeatPassword } = userData;
+    let errors = [];
+    let checkUser = await User.findOne({ email });
+    console.log(userData);
+    if (checkUser) errors.push('이미 사용중인 이메일입니다.');
+    if (name.length < 2 || name.length > 10) errors.push('이름은 최소 2자에서 최대 10자입니다.')
+    // if (/(\+)?(359|0)8[789]\d{1}(|-| )\d{3}(|-| )\d{3}/.test(phoneNumber) == false) errors.push('Phone number should be a valid BG number; ' );
+    if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email) == false) errors.push("이메일을 입력해주세요." );
+    if (password !== repeatPassword) errors.push("비밀번호가 일치하지 않습니다." );
+    if (password.length < 8) errors.push("비밀번호는 최소 8자이상 입력해주세요. " );
+    if (password.length > 20) errors.push("비밀번호는 최대 20자입니다." );
+    if (errors.length >= 1) throw {message: [errors]}
+    
+    let user = new User(userData);
     return await user.save();
   }
-  let token = jwt.sign({ _id: user._id, email: user.email, name: user.name, provider: user.provider, phoneNumber: user.phoneNumber, createdSells: user.createdSells.length, avatar: user.avatar, role: user.role }, SECRET);
-  return token;
-}
-
-async function registerUser(userData) {
-  let { name, email, gender, phoneNumber, password, repeatPassword } = userData;
-  let errors = [];
-  let checkUser = await User.findOne({ email });
-  if (checkUser) errors.push('This email address is already in use; ');
-  if (name.length < 3 || name.length > 50) errors.push('Name should be at least 3 characters long and max 50 characters long; ')
-  if (/(\+)?(359|0)8[789]\d{1}(|-| )\d{3}(|-| )\d{3}/.test(phoneNumber) == false) errors.push('Phone number should be a valid BG number; ' );
-  if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email) == false) errors.push("Please fill a valid email address; " );
-  if (password !== repeatPassword) errors.push("Passwords should match; " );
-  if (password.length < 8) errors.push("Password should be at least 8 characters long; " );
-  if (password.length > 20) errors.push("Password should be at max 20 characters long; " );
-  if (errors.length >= 1) throw {message: [errors]}
   
-  let user = new User(userData);
-  return await user.save();
-}
-
 async function loginUser({ email, password }) {
   let user = await User.findOne({ email });
   if (!user) throw { message: 'Invalid email or password' };
@@ -80,7 +56,7 @@ async function loginUser({ email, password }) {
   let hasValidPass = await bcrypt.compare(password, user.password);
   if (!hasValidPass) throw { message: "Invalid email or password" }
 
-  let token = jwt.sign({ _id: user._id, email: user.email, name: user.name, provider: user.provider, phoneNumber: user.phoneNumber, createdSells: user.createdSells.length, avatar: user.avatar, role: user.role }, SECRET);
+  let token = jwt.sign({ _id: user._id, email: user.email, phoneNumber: user.phoneNumber, createdSells: user.createdSells.length, avatar: user.avatar }, SECRET);
   return token;
 }
 
@@ -90,8 +66,8 @@ async function getUser(id) {
 }
 
 module.exports = {
-    snsLoginUser,
-    registerUser,
-    loginUser,
-    getUser
+  findorcreate,
+  registerUser,
+  loginUser,
+  getUser
 }

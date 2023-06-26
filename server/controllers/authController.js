@@ -3,10 +3,11 @@ const authService = require('../services/authService');
 // const isAuth = require('../middlewares/isAuth');
 // const isGuest = require('../middlewares/isGuest');
 const { SECRET, COOKIE_NAME } = require('../config/config');
-const jwt = require('jsonwebtoken');
+const jwt = require('jsonwebtoken'); 
 
 router.post('/snsLogin', (req, res) => {
-    authService.snsLoginUser(req.body)
+    console.log(req.body);
+    authService.findorcreate(req.body)
         .then(token => {
             jwt.verify(token, SECRET, (err, decoded) => {
                 if (err) {
@@ -20,7 +21,7 @@ router.post('/snsLogin', (req, res) => {
                 }
             })
         })
-        .catch(error => res.status(500).json({ error: error }))
+        .catch(error => res.status(500).json({ error: error }))     
 });
 
 router.post('/register', async (req, res) => {
