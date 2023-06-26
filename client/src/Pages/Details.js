@@ -18,11 +18,21 @@ function Details({ match, history }) {
     let [product, setProduct] = useState([])
     let [loading, setLoading] = useState(true);
     let [viewc, setViewc] = useState();
-   
-    let userId = null 
-    if(userData != null){
-        userId = userData._id;
+
+    let userId = null;
+    if (userData != null) {
+        if (typeof userData._id !== 'undefined') {
+            userId = userData._id;
+        } else {
+            // userData가 null이지만 _id 속성이 없는 경우에 대한 처리
+            // 예: 기본값 할당 또는 에러 처리 등
+        }
+    } else {
+        // userData가 null인 경우에 대한 처리
+        // 예: 기본값 할당 또는 에러 처리 등
     }
+
+    // userId를 사용하는 나머지 코드 작성
 
     useEffect(() => {
         window.scrollTo(0, 0)

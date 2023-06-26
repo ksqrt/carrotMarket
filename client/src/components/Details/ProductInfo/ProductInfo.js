@@ -26,7 +26,22 @@ function ProductInfo({ params }) {
   const [showArchive2, setShowArchive2] = useState(false);
   const [socket, setSocket] = useState(null);
   const { userData } = useContext(Context);
-  let userId = userData._id;
+  
+  let userId = null;
+    if (userData != null) {
+        if (typeof userData._id !== 'undefined') {
+            userId = userData._id;
+        } else {
+            // userData가 null이지만 _id 속성이 없는 경우에 대한 처리
+            // 예: 기본값 할당 또는 에러 처리 등
+        }
+    } else {
+        // userData가 null인 경우에 대한 처리
+        // 예: 기본값 할당 또는 에러 처리 등
+    }
+
+
+
   // startchat 이벤트 실행
   // const history = useHistory();
   const history = useHistory();
