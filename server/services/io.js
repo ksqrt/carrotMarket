@@ -40,7 +40,8 @@ function Io(server) {
     socket.on("getUserConversations", async ({ userId }) => {
       // $or : 주어진 배열 내의 조건 중 하나라도 참이면 참으로 간주 buyer 또는 seller에 userId가 있는 경우에 참. 전부 가져옴.
       let userChats = await ChatRoom.find({ $or: [ { 'buyer': userId }, { 'seller': userId } ] }).populate("buyer").populate("seller").populate("conversation").populate("product");
-      socket.emit('userConversations', userChats.map(x => ({ chats: x, isBuyer: (x.buyer._id == userId), myId: userId })));
+      // x.buyer가 null이 아닐 때만 _id 프로퍼티를 확인
+      socket.emit('userConversations', userChats.map(x => ({ chats: x, isBuyer: (x.buyer && x.buyer._id == userId), myId: userId })));
     });
   
     socket.on("disconnect", () => console.log("disconnected"));
