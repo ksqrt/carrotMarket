@@ -1,21 +1,23 @@
-import React from 'react';
-import { useState, useEffect } from 'react';
+import React, { useEffect, useState, useContext  } from 'react';
 import { Col, Form, Button, Spinner, Alert } from 'react-bootstrap';
 import SimpleSider from '../components/Siders/SimpleSider';
 import { getSpecific, editProduct } from '../services/productData';
-
+import { Context } from '../ContextStore';
 import '../components/Edit/Edit.css'
 
 function Edit({ match, history }) {
+    const { userData } = useContext(Context);
     const [product, setProduct] = useState({});
     const [loading, setLoading] = useState(false);
     const [alertShow, setAlertShow] = useState(false);
     const [error, setError] = useState(null);
     const productId = match.params.id;
 
+    let userId =  userData._id;
+
     useEffect(() => {
         window.scrollTo(0, 0);
-        getSpecific(productId)
+        getSpecific(productId,userId)
             .then(res => setProduct(res))
             .catch(err => console.log(err));
     }, [productId])
@@ -38,7 +40,7 @@ function Edit({ match, history }) {
             getBase64(image)
                 .then((data) => {
                     obj['image'] = data;
-                    editProduct(_id, obj)
+                    editProduct(_id, obj,userId)
                         .then(res => {
                             if (!res.error) {
                                 history.push(`/categories/${category}/${_id}/details`)
@@ -52,7 +54,7 @@ function Edit({ match, history }) {
                 })
                 .catch(err => console.log('base64 error: ', err));
         } else {
-            editProduct(_id, obj)
+            editProduct(_id, obj,userId)
                 .then(res => {
                     if (!res.error) {
                         history.push(`/categories/${category}/${_id}/details`)

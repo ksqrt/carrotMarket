@@ -52,18 +52,34 @@ export async function createProduct(product) {
     ).json();
   }
   
-  export async function editProduct(id, product) {
+  // export async function editProduct(id, product,user_id) {
+  //   return (
+  //     await fetch(`${baseUrl}/products/edit/${id}`, {
+  //       method: "PATCH",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //       credentials: "include",
+  //       body: JSON.stringify(product),
+  //     })
+  //     ).json();
+  //   }
+  
+  export async function editProduct(id, product, user_id) {
     return (
       await fetch(`${baseUrl}/products/edit/${id}`, {
-        method: "PATCH",
+        method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         credentials: "include",
-        body: JSON.stringify(product),
+        body: JSON.stringify({
+          ...product,
+          user_id: user_id
+        }),
       })
-      ).json();
-    }
+    ).json();
+  }
 
     // export async function deleteProduct(id) {
     //   return (

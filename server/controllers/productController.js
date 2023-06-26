@@ -116,11 +116,13 @@ router.post('/create', async (req, res) => {
 });
 
 // 상품 정보를 수정하는 엔드포인트
-router.patch('/edit/:id', isAuth, async (req, res) => {
+router.post('/edit/:id', isAuth, async (req, res) => {
+    let user_id = req.body.user_id;
+    console.log(req.body)
     //TODO: Rewrite this 
     let { title, price, description, city, category, image } = req.body;
     try {
-        let user = await productService.findUserById(req.user._id);
+        let user = await productService.findUserById(user_id);
         let product = await productService.findById(req.params.id);
         let errors = [];
         if (user._id.toString() !== product.seller.toString()) {
