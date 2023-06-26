@@ -4,7 +4,7 @@ import { GrEdit } from 'react-icons/gr';
 import { MdArchive } from 'react-icons/md'
 import { BsHeart, BsHeartFill } from 'react-icons/bs';
 import { Col, Row, Spinner, Tabs, Tab, Image, OverlayTrigger, Tooltip, Modal, Form, Button } from 'react-bootstrap';
-import { getAll, archiveSell, wishProduct, archiveSoldout, deleteProduct } from '../../../services/productData';
+import { getAll, archiveSell, wishProduct, archiveSoldout, deleteProduct,declareProduct } from '../../../services/productData';
 import ProductCard from "../../../components/ProductCard/ProductCard";
 import aImage from '../../Profile/profile_images/a.png'; // 이미지 파일 경로
 import bImage from '../../Profile/profile_images/b.png'; // 이미지 파일 경로
@@ -15,9 +15,22 @@ import { startChat, initializeSocket } from '../../../services/messagesData'; //
 import { RiMessage3Fill } from 'react-icons/ri';
 import { Context } from '../../../ContextStore'; // Context import
 import { Link, useHistory } from 'react-router-dom';
-import Carousel from 'react-bootstrap/Carousel'
+import './ProductInfo.css';
+import { Carousel } from 'react-bootstrap'
 
 function ProductInfo({ params }) {
+
+  const declareHandler = (e) =>{
+
+    const declareproduct = e.target.value;
+
+    console.log('ProductInfo'+declareproduct);
+
+    declareProduct(declareproduct);
+   
+
+  }
+
   const [products, setProducts] = useState([]);
   const [wish, setWish] = useState(false);
   const [page, setPage] = useState(1);
@@ -217,6 +230,8 @@ function ProductInfo({ params }) {
   
     initSocket();
   }, []);
+
+  
   const onChatStart = async (e) => {
     e.preventDefault();
     if (!socket) return;
@@ -326,18 +341,26 @@ function ProductInfo({ params }) {
                       </Button>
                     </OverlayTrigger>
                     <span className="link-spacing"></span>
+
+
                     <OverlayTrigger placement="top" overlay={ <Tooltip>상품 수정하기</Tooltip>} >
+
+                      <span id="archive-icon2">
                       <Link to={`/categories/${params.category}/${params._id}/edit`}>게시글 수정하기</Link>
+                      </span>
+
+
                     </OverlayTrigger> 
 
-                  </>
-                ) }
 
-                {(params.isSeller || (userData && userData.role === "admin")) && (
-                  <>
                     <span className="link-spacing"></span>
-                    <OverlayTrigger placement="top" overlay={<Tooltip>상품 삭제하기</Tooltip>}>
-                      <button onClick={handleDelPro}>게시글 삭제하기</button>
+
+                   
+                    <OverlayTrigger placement="top" overlay={ <Tooltip>상품 삭제하기</Tooltip>} >
+
+                    <span id="deleteProduct">
+                      <button onClick={ handleDelPro }>게시글 삭제하기</button>
+                     </span>
                     </OverlayTrigger>
                   </>
                 )}
@@ -459,7 +482,21 @@ function ProductInfo({ params }) {
               )}
             </span>
           )}
-        </div>
+
+
+           <div>
+            {/* <button onClick={sendLinkCustom}>Send Custom Link</button> */}
+                <button className="kakao-button" onClick = {sendLinkDefault}>카카오 공유하기</button>
+                <button className='declare-button' value={params._id} onClick={declareHandler} >신고하기</button>
+               
+
+            </div>
+
+            </div>
+
+
+
+
       </section>
 
       <section id="product_more">

@@ -1,0 +1,23 @@
+#card-wrap{
+    text-align:center;
+}
+
+.card {
+    margin-bottom: 15%;
+}
+.card {
+    width:300px;
+
+}
+.card-title {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+  .card-text {
+    display: -webkit-box;
+    -webkit-line-clamp: 1; /* 최대 표시할 줄 수 */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }

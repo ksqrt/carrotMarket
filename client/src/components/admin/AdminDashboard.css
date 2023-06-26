@@ -1,0 +1,44 @@
+/* #totalDashboard{
+    display:flex;
+}
+
+
+#userCount{
+    flex:3;
+
+}
+
+#userCount p {
+    color:blue;
+    font-weight:bold;
+}
+
+#productCount{
+    flex:3;
+}
+
+#productCount p {
+    color:blue;
+    font-weight:bold;
+}
+
+ */
+ #totalDashboard {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+  }
+  
+  #userCount,
+  #productCount {
+    background-color: #f1f1f1;
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+    flex-grow: 1;
+  }
+
+  
+  
+  

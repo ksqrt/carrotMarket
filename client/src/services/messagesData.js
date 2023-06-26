@@ -24,20 +24,19 @@ export const sendMessage = (socket, { chatId, senderId, message, location }) => 
     socket.emit('sendMessage', { chatId, senderId, message, location });
 };
 
+//getMessage: 새로운 메시지를 받는 함수입니다. socket.on을 사용하여 서버로부터 newMessage 이벤트를 수신하면 콜백 함수를 호출하여 메시지를 처리합니다. 이 함수는 서버로부터 전달된 메시지를 인자로 콜백 함수를 실행합니다.
+export const getMessage = (socket, callback) => {
+  socket.on('newMessage', (message) => {
+      callback(message);
+  });
+};
+
 export const setAppointment = (socket, { chatId, appointmentDate, appointmentCheck }) => {
   socket.emit('setAppointment', { chatId, appointmentDate, appointmentCheck });
 };
 
 export const appointmentCheck = (socket, {chatId, appointmentCheck}) => {
   socket.emit('appointmentCheck',{chatId, appointmentCheck});
-};
-
-export const deleteAppointment = (socket, {chatId}) => {
-  socket.emit('deleteAppointment',{chatId});
-};
-
-export const ReportMessage = (socket, { reportedUserId, reason }) => {
-  socket.emit('ReportMessage', { reportedUserId, reason });
 };
 
 export const ExitRoom = (socket, { chatId, userId }) => {
@@ -50,19 +49,19 @@ export const TradeComplete = (socket, { chatId, productId }) => {
   socket.emit('TradeComplete', { chatId, productId });
 };
 
-//getMessage: 새로운 메시지를 받는 함수입니다. socket.on을 사용하여 서버로부터 newMessage 이벤트를 수신하면 콜백 함수를 호출하여 메시지를 처리합니다. 이 함수는 서버로부터 전달된 메시지를 인자로 콜백 함수를 실행합니다.
-export const getMessage = (socket, callback) => {
-  socket.on('newMessage', (message) => {
-      callback(message);
-  });
-};
-
 //   export const getMessage = (socket, callback) => {
 //     socket.on('newMessage', (newmessage) => {
 //         callback(newmessage);
 //     });
 //   };
 
+export const deleteAppointment = (socket, {chatId}) => {
+  socket.emit('deleteAppointment',{chatId});
+};
+
+export const ReportMessage = (socket, { reportedUserId, reason }) => {
+  socket.emit('ReportMessage', { reportedUserId, reason });
+};
 //getUserConversations: 사용자의 대화 목록을 가져오는 함수입니다. socket.emit을 사용하여 getUserConversations 이벤트와 userId 정보를 서버로 전송합니다. 그리고 userConversations 이벤트를 수신하여 대화 목록을 해결된 프로미스로 반환합니다.  
 export const getUserConversations = (socket, userId) => {
   return new Promise((resolve, reject) => {
@@ -81,35 +80,3 @@ export const disconnect = (socket, myId, callback) => {
     socket.disconnect();
     if (callback) callback();
 };
-
-/*
-const baseUrl = 'http://localhost:5000';
-
-// receiver, message를 인자로 받는 채팅방 생성
-export async function createChatRoom(receiver, message) {
-    return (await fetch(`${baseUrl}/messages/createChatRoom`, {
-        method: 'POST',
-        headers: { 
-            'Content-Type': 'application/json',
-        },
-        // 로그인 인증 data도 같이 보냄
-        credentials: 'include',
-        body: JSON.stringify({message: message, receiver: receiver})
-    })).json();
-}
-
-export async function getUserConversations() {
-    return (await fetch(`${baseUrl}/messages/getUserConversations`, { credentials: 'include' })).json();
-}
-
-export async function sendMessage(chatId, message) {
-    return (await fetch(`${baseUrl}/messages/sendMessage`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        credentials: 'include',
-        body: JSON.stringify({chatId, message})
-    })).json();
-}
-*/

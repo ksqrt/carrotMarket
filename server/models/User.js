@@ -83,7 +83,6 @@ const userSchema = new mongoose.Schema({
             trim: true,
             default: 36.5
     },
-
     report: [
         {
             userName: {
@@ -96,6 +95,7 @@ const userSchema = new mongoose.Schema({
             }
         }
     ]
+
 
 
 });

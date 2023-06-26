@@ -56,6 +56,7 @@ router.get('/:category', async (req, res) => {
 // 특정 상품의 상세 정보를 가져오는 엔드포인트
 router.get("/specific/:id", async (req, res) => {
   try {
+    console.log('specific컨트롤러');
     let product = await (await Product.findById(req.params.id)).toJSON();
     let seller = await (await User.findById(product.seller)).toJSON();
     product.addedAt = moment(product.addedAt).format("d MMM YYYY (dddd) HH:mm");
@@ -311,5 +312,20 @@ router.delete('/delete/:id', async (req, res) => {
         return res.status(500).json({ error: '서버 오류로 인해 상품을 삭제할 수 없습니다.' });
     }
 });
+
+
+//신고하면 값 바꿔주는 함수 
+router.get('/declare/:declareproduct', async (req, res) => {
+    try {
+        await Product.updateOne({ _id: req.params.declareproduct }, { declare: true });
+        res.status(200).json({ msg: "Declare" });
+    } catch (error) {
+        res.status(500).json({ message: error.message })
+    }
+});
+
+
+
+
 
 module.exports = router;

@@ -28,6 +28,10 @@ function ProductCard({ params }) {
     formattedDate = `${daysDiff}일 전`;
   }
 
+
+  console.log('ProductCard' + params.category);
+
+
   return (
     <Card style={{ border: 'none' }}>
     <Link to={`/categories/${params.category}/${params._id}/details`} style={{ textDecoration: 'none' }}>
