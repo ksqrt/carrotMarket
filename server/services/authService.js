@@ -32,16 +32,16 @@ async function findorcreate(user) {
 }
 
   async function registerUser(userData) {
-    let { email, name, password, repeatPassword, provider } = userData;
+    let { email, name, password, repeatPassword } = userData;
     let errors = [];
     let checkUser = await User.findOne({ email });
-    if (checkUser) errors.push('This email address is already in use; ');
-    if (name.length < 3 || name.length > 50) errors.push('Name should be at least 3 characters long and max 50 characters long; ')
+    if (checkUser) errors.push('이미 사용중인 이메일입니다.');
+    if (name.length < 2 || name.length > 10) errors.push('이름은 최소 2자에서 최대 10자입니다.')
     // if (/(\+)?(359|0)8[789]\d{1}(|-| )\d{3}(|-| )\d{3}/.test(phoneNumber) == false) errors.push('Phone number should be a valid BG number; ' );
-    if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email) == false) errors.push("Please fill a valid email address; " );
-    if (password !== repeatPassword) errors.push("Passwords should match; " );
-    if (password.length < 8) errors.push("Password should be at least 8 characters long; " );
-    if (password.length > 20) errors.push("Password should be at max 20 characters long; " );
+    if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email) == false) errors.push("이메일을 입력해주세요." );
+    if (password !== repeatPassword) errors.push("비밀번호가 일치하지 않습니다." );
+    if (password.length < 8) errors.push("비밀번호는 최소 8자이상 입력해주세요. " );
+    if (password.length > 20) errors.push("비밀번호는 최대 20자입니다." );
     if (errors.length >= 1) throw {message: [errors]}
     
     let user = new User(userData);

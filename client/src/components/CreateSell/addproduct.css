@@ -1,10 +1,14 @@
 .mainfont {
   font-size: 28px;
-  font-weight: 400;
+  font-weight: 3\400;
   margin-top: 16px;
 }
+.mainsubfont {
+  font-size: 16px;
+  color: rgb(251, 162, 103);
+}
 .redfont {
-  color: red;
+  color: rgb(251, 162, 103);
 }
 .imgbtn {
   border: none;
@@ -41,8 +45,4 @@
 .cityinput {
   width: auto;
   height: 45px;
-}
-.descriptextarea {
-  width: 100%;
-  height: 200px;
 }
