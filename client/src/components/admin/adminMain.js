@@ -88,12 +88,12 @@ const AdminMain = () => {
 
    return (
    <div>
-  <header>
+  <div class="AdminMainHeader">
     <h1>당근마켓 어드민 페이지</h1>
-  </header>
+  </div>
 
 
-   <div class ="categori">
+   <div className="categori">
       
       <button className='button'
                 onClick={handleAdminUser}  

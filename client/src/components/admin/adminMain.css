@@ -1,94 +1,17 @@
-body {
-  font-family: Arial, sans-serif;
-  margin: 0;
-  padding: 0;
-}
-
-header {
+.AdminMainHeader {
   background-color:#FF8A3D;
   padding: 20px;
   padding-left:400px;
 }
 
-header h1 {
+.AdminMainHeader h1 {
   margin: 0;
   color: white;
 }
-
-nav {
-  background-color: #333;
-  padding-left:380px;
-}
-
-nav ul {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-  display: flex; /* Flexbox 설정 */
-}
-
-nav ul li {
-  margin-right: 10px; /* 각 항목 사이의 간격 설정 */
-}
-
-nav ul li:last-child {
-  margin-right: 0; /* 마지막 항목의 간격 제거 */
-}
-
-nav ul li a {
-  display: block;
-  padding: 10px;
-  color: white;
-  text-decoration: none;
-}
-
-nav ul li a:hover {
-  background-color: #555;
-}
-
-section {
-  padding: 20px;
-  padding-left:400px;
-}
-
-section h2 {
-  margin: 0 0 10px 0;
-}
-
-footer {
-  background-color: #333;
-  color: white;
-  padding: 10px;
-  text-align: center;
-}
-/* 
-.button {
-  background-color: #FFA500;
-  border-color: #FFA500;
-  color: #FFFFFF;
-  padding: 10px 20px;
-  margin-right: 10px;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.button:hover {
-  background-color: #FFA500;
-  border-color: #FFA500;
-}
-
-.button.active {
-  background-color: #FF984D;
-  border-color: #FF984D;
-} */
-
-
 
 #AdminContent{
   padding-left:400px;
 }
-
-
 
 .categori{
   padding-left:400px;
