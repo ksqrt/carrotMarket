@@ -1,11 +1,9 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import "./Modal.css";
 import { Context } from "../../ContextStore"; // 컨텍스트 관련 컴포넌트
 import { loginUser } from "../../services/userData";
 import { useHistory } from "react-router-dom";
 import { Form, Button, Spinner, Alert } from "react-bootstrap";
-import { Link } from "react-router-dom";
-import SimpleSider from "../Siders/SimpleSider";
 import GoogleLogin from "./GoogleLogin";
 import NaverLogin from "./NaverLogin";
 import KakaoLogin from "./KakaoLogin";
@@ -29,7 +27,7 @@ const LoginModal = ({ onClose }) => {
   const handleSubmitLogin = (e) => {
     e.preventDefault();
     setLoading(true);
-    console.log(user);
+    // console.log(user);
     loginUser(user)
       .then((res) => {
         if (!res.error) {

@@ -29,8 +29,10 @@ const NaverLogin = () => {
 
   const naverLogin = new window.naver.LoginWithNaverId(
     {
-        clientId: process.env.REACT_APP_NAVER_CLIENT_ID,
-        callbackUrl: process.env.REACT_APP_NAVER_CALLBACK_URL,
+        // clientId: process.env.REACT_APP_NAVER_CLIENT_ID,
+        // callbackUrl: process.env.REACT_APP_NAVER_CALLBACK_URL,
+        clientId: 'a9oKP47JDXAvbgaf2Mg1',
+        callbackUrl: 'http://localhost:3000/naver/callback',
         loginButton: {color: "green", type: 2, height: 40}
     }
   );

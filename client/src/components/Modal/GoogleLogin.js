@@ -23,7 +23,7 @@ const GoogleLogin = () => {
       provider: 'google',
     });
 
-    console.log(user); //계정정보
+    // console.log(user); //계정정보
       setLoading(true);
       snsUser(user)
           .then(res => {

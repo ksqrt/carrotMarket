@@ -3,6 +3,7 @@ const authService = require('../services/authService');
 // const isAuth = require('../middlewares/isAuth');
 // const isGuest = require('../middlewares/isGuest');
 const jwt = require('jsonwebtoken'); 
+const {sendEmail} = require('../middlewares/mail')
 
 router.post('/snsLogin', (req, res) => {
     // console.log(req.body);
@@ -32,6 +33,14 @@ router.post('/register', async (req, res) => {
         res.status(404).json({ error: error.message })
     }
 });
+
+router.post('/sendEmail', (req, res) => {
+    // console.log(req.body)
+    sendEmail(req.body.email, req.body.auth)
+    return res.status(200).json({
+        success: true
+    })
+})
 
 router.post('/login', (req, res) => {
     authService.loginUser(req.body)

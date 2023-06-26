@@ -42,7 +42,7 @@ const KakaoLogin = () => {
                             password: 'kakao',
                             provider: 'kakao',
                         });
-                        console.log(user); //계정정보
+                        // console.log(user); //계정정보
                         setLoading(true);
                         snsUser(user)
                             .then(res => {
