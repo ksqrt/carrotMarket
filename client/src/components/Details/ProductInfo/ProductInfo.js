@@ -87,13 +87,13 @@ function ProductInfo({ params }) {
 
   const onHearthClick = () => {
     if (wish === false) {
-      wishProduct(params._id)
+      wishProduct(params._id,userId)
         .then(res => {
           setWish(true);
         })
         .catch(err => console.log(err))
     } else {
-      wishProduct(params._id)
+      wishProduct(params._id,userId)
         .then(res => {
           setWish(false);
         })

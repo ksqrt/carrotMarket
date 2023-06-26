@@ -89,11 +89,24 @@ export async function createProduct(product) {
       return (await fetch(`${baseUrl}/products/soldout/${id}`)).json();
     }
     
-    export async function wishProduct(id) {
+    // export async function wishProduct(id,user_id) {
+    //   return (
+    //     await fetch(`${baseUrl}/products/wish/${id}`, { credentials: "include" })
+    //     ).json();
+    //   }
+    export async function wishProduct(id,user_id) {
       return (
-        await fetch(`${baseUrl}/products/wish/${id}`, { credentials: "include" })
-        ).json();
-      }
+        await fetch(`${baseUrl}/products/wish/${id}`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+          body: JSON.stringify({ user_id: user_id }),
+        })
+      ).json();
+    }
+    
       
     export async function views(id) {
       return (

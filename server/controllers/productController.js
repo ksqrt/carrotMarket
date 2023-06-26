@@ -220,18 +220,20 @@ router.get('/soldout/:id', async (req, res) => {
 });
 
 // 상품을 찜하는 엔드포인트
-router.get('/wish/:id', async (req, res) => {
+router.post('/wish/:id', async (req, res) => {
+    let user_id = req.body.user_id;
+    console.log(user_id)
     try {
-        let user = await User.findById(req.user._id);
+        let user = await User.findById(user_id);
 
         if (!user.wishedProducts.includes(req.params.id)) {
-            await User.updateOne({ _id: req.user._id }, { $push: { wishedProducts: req.params.id } })
+            await User.updateOne({ _id: user_id }, { $push: { wishedProducts: req.params.id } })
             await Product.updateOne({ _id: req.params.id }, { $push: { likes: user } });
 
             res.status(200).json({ msg: "wished" });
         } else {
-            await User.updateOne({ _id: req.user._id }, { $pull: { wishedProducts: req.params.id } })
-            await Product.updateOne({ _id: req.params.id }, { $pull: { likes: req.user._id } });
+            await User.updateOne({ _id: user_id }, { $pull: { wishedProducts: req.params.id } })
+            await Product.updateOne({ _id: req.params.id }, { $pull: { likes: user_id } });
 
             res.status(200).json({ msg: "unwished" });
         }
