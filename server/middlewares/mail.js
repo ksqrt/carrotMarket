@@ -8,7 +8,7 @@ const getEmailData = (to, authCode) => {
     data = {
         from: "Carrot Market",
         to,
-        subject: "Hello",
+        subject: "당근마켓 회원가입 인증 이메일",
         html: Hello(authCode)
     }
     return data;

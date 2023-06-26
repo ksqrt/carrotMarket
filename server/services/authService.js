@@ -33,9 +33,9 @@ async function findorcreate(user) {
 }
 
   async function registerUser(userData) {
-    let { email, name, password, repeatPassword } = userData;
+    let { email, name, password, repeatPassword, provider } = userData;
     let errors = [];
-    let checkUser = await User.findOne({ email });
+    let checkUser = await User.findOne({ email, provider });
     if (checkUser) errors.push('이미 사용중인 이메일 입니다')
     if (name.length < 2 || name.length > 20) errors.push('이름은 2 ~ 20글자 입니다')
     if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email) == false) errors.push("주소@이메일 형식입니다" );
