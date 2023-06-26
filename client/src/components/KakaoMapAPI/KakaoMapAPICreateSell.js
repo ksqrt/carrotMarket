@@ -40,21 +40,21 @@ const KakaoMapAPI = () => {
 		console.log(address)
 	};
 
+	//현재 위치 공유
+	const locationshare = () => {
+		
+	}
+
 	return (
 		<>	
 			<Map center={{ lat: location.latitude, lng: location.longitude }} 	
 				 level={4}
-				 style={{ position: "fixed",
-				 top: "50%",
-				 left: "50%",
-				 transform: "translate(-50%, -50%)",
-				 width: "500px",
-				 height: "500px",
+				 style={{
+				 width: "auto",
+				 height: "400px",
 				 backgroundColor: "white",
 				 borderRadius: "10px",
-				 padding: "20px",
-				 boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.3)",
-				 zIndex: "999" }}
+				 padding: "20px",}}
 				 onClick={(_t, mouseEvent) => {
 					setPosition({
 					  lat: mouseEvent.latLng.getLat(),
@@ -88,7 +88,9 @@ const KakaoMapAPI = () => {
 				 					border: "none", 
 				 					background: "orange", 
 				 					borderRadius: "10px",
-				 					color: "white"}}>
+				 					color: "white"}}
+							onClick={locationshare}		
+									>
 									현재위치 공유하기
 							</button>
 				 		</div>
