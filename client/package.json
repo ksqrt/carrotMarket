@@ -28,6 +28,8 @@
     "react-bootstrap": "^1.5.2",
     "react-cookie": "^4.0.3",
     "react-dom": "^17.0.1",
+    "react-emoji-picker": "^3.1.6",
+    "react-hotkeys": "^2.0.0",
     "react-icons": "^4.9.0",
     "react-infinite-scroll-component": "^6.0.0",
     "react-kakao-maps": "^0.0.13",

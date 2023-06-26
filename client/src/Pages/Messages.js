@@ -21,12 +21,25 @@ import dayjs from 'dayjs';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { MobileDateTimePicker } from '@mui/x-date-pickers/MobileDateTimePicker';
+import EmojiPicker from 'react-emoji-picker';
 
 function Messages({ match }) { // match = Router 제공 객체, url을 매개변수로 사용. ex) 경로 : /messages/123  => match.params.id = "123" // app.js 참고 : <Route path="/messages" exact component={Messages} />;
     //map modal
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
+
+    //이모티콘
+    const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+
+    const handleEmojiClick = (emoji) => {
+        setMessage(prevMessage => prevMessage + emoji);
+      };
+    
+    const handleToggleEmojiPicker = () => {
+        setShowEmojiPicker(!showEmojiPicker);
+    };
+
 
     const github = settings;
     let chatId = match.params.id; // 선택된 채팅방의 id
@@ -433,7 +446,12 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
                                                 <AiOutlineUpload className="upload-icon" size={25} style={{marginBottom:'7px'}} /> 
                                             </button>
                                             <button className={`${styles['menu-item']} ${styles.green}`} onClick={openDateTimePicker}> <AiOutlineSchedule size={23} style={{marginBottom:'7px'}} /> </button>
-                                            <button className={`${styles['menu-item']} ${styles.red}`}> <div style={{fontSize:'16px', marginBottom:'7px'}} >🤗</div> </button>
+                                            {/* 이모티콘 */}
+                                            <button className={`${styles['menu-item']} ${styles.red}`} onClick={handleToggleEmojiPicker}> <div style={{fontSize:'16px', marginBottom:'7px'}} >🤗</div> </button>
+                                            {showEmojiPicker && (
+                                                <EmojiPicker onEmojiClick={handleEmojiClick} />
+                                            )}
+
                                             <button className={`${styles['menu-item']} ${styles.purple}`}> </button>
                                             <button className={`${styles['menu-item']} ${styles.orange}`}>  </button>
                                             <button type="button" className={`${styles['menu-item']} ${styles.lightblue}`} onClick={ handleShow }> <FaMapMarkedAlt size={20} style={{marginBottom:'8px'}} /> {/*{console.log('modalstate 값 확인 : ',modalState)}*/} </button>
@@ -445,7 +463,6 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
                                                 </Modal>
                                             )}
                                             
-
                                             </nav>
                                                 {/* <input type="file" id="file-upload" style={{ display: 'none' }}/> */}
                                                 {/* <label className="label-no-margin" htmlFor="file-upload"><UseAnimations className="plusToX" animation={plusToX} size={40} /></label> */}
