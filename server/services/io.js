@@ -16,7 +16,7 @@ function Io(server) {
   
 
   io.on("connection", (socket) => { //socket 변수 = socket.io에서 제공하는 것 
-    console.log("socket.io connected");
+    // console.log("socket.io connected");
 
     
     socket.on("startChat", async ({buyerId, sellerId, productId}) => { // 클라이언트에서 받을 내용 buyerId = buyer._id 될듯.
@@ -53,14 +53,32 @@ function Io(server) {
     })
 
     socket.on("ReportMessage", async ({ reportedUserId, reason }) => {
-      console.log(`Reported User ID: ${reportedUserId}`);
-      console.log(`Reported User ID: ${reason}`);
       const reportedUser = await User.findById(reportedUserId);
-      console.log(reportedUser);
       if (reportedUser) {
-        console.log(`Reported User ID: ${reportedUserId}`);
-        await User.updateOne({ _id: '6495291bf3888864f425b039' }, { $push: { report: { userName: reportedUser.name, content: reason},},});
+        // console.log(`Reported User ID: ${reportedUserId}`);
+        await User.updateOne({ _id: '6495291bf3888864f425b039' },  { $push: { report: { userName: reportedUser.name, content: reason},},});
       }
+    });
+
+
+    socket.on("ExitRoom", async ({ chatId, userId }) => {
+      console.log('exitRoom : ', chatId, userId);
+      const chatRoom = await ChatRoom.findById(chatId);
+
+      if (chatRoom.buyer && chatRoom.buyer.equals(userId)) {
+        chatRoom.buyer = null;
+      } else if (chatRoom.seller && chatRoom.seller.equals(userId)) {
+        chatRoom.seller = null;
+      }
+    
+      await chatRoom.save();
+      
+      if (!chatRoom.buyer && !chatRoom.seller) {
+        await chatRoom.remove();
+      }
+    
+      io.emit("userExitRoom", { chatId, userId });
+
     });
 
     socket.on("getUserConversations", async ({ userId }) => {
@@ -69,7 +87,7 @@ function Io(server) {
       socket.emit('userConversations', userChats.map(x => ({ chats: x, isBuyer: (x.buyer?._id == userId), myId: userId })));
     });
   
-    socket.on("disconnect", () => console.log("disconnected"));
+    socket.on("disconnect", () => console.log(""));
   });
   return io;
 }

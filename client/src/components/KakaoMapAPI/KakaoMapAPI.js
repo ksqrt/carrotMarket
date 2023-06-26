@@ -1,124 +1,128 @@
+import zIndex from '@mui/material/styles/zIndex';
 import React, { useState, useEffect } from 'react';
-import { Map, MapMarker } from 'react-kakao-maps-sdk';
+import { CustomOverlayMap, Map, MapMarker } from 'react-kakao-maps-sdk';
 
-const KakaoMapAPI = () => {
-	const { kakao } = window;
-	const [location, setLoacation] = useState({latitude: null, longitude: null}); // 현재 위치
-	const [address, setAddress] = useState({latitude: null, longitude: null}); // 현재 좌표의 주소를 저장할 상태
-	const [position, setPosition] = useState(null) // 마커 이동시 좌표 저장
-	const [isOpen, setIsOpen] = useState(false)
-	const [addressConfirmed, setAddressConfirmed] = useState(false)
+const KakaoMapAPI = ({detailLocation}) => {
+   const { kakao } = window;
+   const [location, setLoacation] = useState({latitude: null, longitude: null}); // 현재 위치
+   const [address, setAddress] = useState({latitude: null, longitude: null}); // 현재 좌표의 주소를 저장할 상태
+   const [position, setPosition] = useState(null) // 마커 이동시 좌표 저장
+   const [isOpen, setIsOpen] = useState(false)
+   const [addressConfirmed, setAddressConfirmed] = useState(false)
 
+   //현재 위치를 불러옴(geolocation)
+   useEffect(() => {
+      navigator.geolocation.getCurrentPosition(successHandler, errorHandler); // 성공시 successHandler, 실패시 errorHandler 함수가 실행된다.
+   }, []);
 
-	//현재 위치를 불러옴(geolocation)
-	useEffect(() => {
-		navigator.geolocation.getCurrentPosition(successHandler, errorHandler); // 성공시 successHandler, 실패시 errorHandler 함수가 실행된다.
-	}, []);
+   const successHandler = (response) => {
+      console.log(response); // coords: GeolocationCoordinates {latitude: 위도, longitude: 경도, …} timestamp: 1673446873903
+      const { latitude, longitude } = response.coords;
+      setLoacation({ latitude, longitude });
+   };
 
-  const getCurrentPosBtn = () => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        getPosSuccess,
-        () => alert('위치 정보를 가져오는데 실패했습니다.'),
-        {
-          enableHighAccuracy: true,
-          maximumAge: 30000,
-          timeout: 27000,
-        }
-      );
-    } else {
-      alert('Geolocation을 지원하지 않는 브라우저입니다.');
-    }
-  };
+   const errorHandler = (error) => {
+      console.log(error);
+   };
 
-  const getPosSuccess = (pos) => {
-    const currentPos = new window.kakao.maps.LatLng(
-      pos.coords.latitude,
-      pos.coords.longitude
-    );
-    if (map && marker) {  // ensure that map and marker are not null
-        map.panTo(currentPos);
+   //현재위치의 위도,경도값을 기반으로 주소값으로 변경
+   const getAddress = (lat, lng) => {
+      const geocoder = new kakao.maps.services.Geocoder(); // 좌표 -> 주소로 변환해주는 객체
+      const coord = new kakao.maps.LatLng(position.lat, position.lng); // 주소로 변환할 좌표 입력
+      const callback = function (result, status) {
+         if (status === kakao.maps.services.Status.OK) {
+            console.log(result[0].address)
+            setAddress(result[0].address);
+            console.log(position)
+            setAddressConfirmed(true);
+         }
+      };
+      geocoder.coord2Address(coord.getLng(), coord.getLat(), callback);
+      console.log(address)
+   };
 
-        marker.setMap(null);
-        marker.setPosition(currentPos);
-        marker.setMap(map);
-    }
+   return (
+      <>   
+         <Map center={{ lat: location.latitude, lng: location.longitude }}    
+             level={4}
+             style={{ position: "fixed",
+             top: "50%",
+             left: "50%",
+             transform: "translate(-50%, -50%)",
+             width: "500px",
+             height: "500px",
+             backgroundColor: "white",
+             borderRadius: "10px",
+             padding: "20px",
+             boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.3)",
+             zIndex: "999" }}
+             onClick={(_t, mouseEvent) => {
+               setPosition({
+                 lat: mouseEvent.latLng.getLat(),
+                 lng: mouseEvent.latLng.getLng(),
+               });
+               
+               if (!isOpen) { // isOpen 상태일 때는 클릭으로 인한 지도 이동을 막음
+                setPosition({
+                  lat: mouseEvent.latLng.getLat(),
+                  lng: mouseEvent.latLng.getLng(),
+                });
+                setIsOpen(false);
+              }
+              }}
+         >
+
+            {position && <MapMarker position={position} 
+            onClick={() => {setIsOpen(true); getAddress();}}
+            />}
+            {isOpen && (
+            <CustomOverlayMap position={position} yAnchor={1.3}>
+             <div style={{ minWidth: "180px", minHeight: "70px"}}>
+                <div style={{ padding: "2px", 
+                           color: "#000",
+                           }}>
+                {address && (
+                   <div style={{ fontSize: "12px", 
+                             fontWeight: "bold",
+                              border: "3px solid orange", 
+                                borderRadius: "10px",
+                             backgroundColor: "white",
+                             textAlign: "center"
+                              }}>
+                      {address.address_name}
+                   <div>
+                      <button disabled={!addressConfirmed} onClick={() => { detailLocation({lat:position.lat, lng:position.lng, address:address.address_name })}} 
+                      style={{fontSize: "12px", 
+                            border: "none", 
+                            background: "orange", 
+                            borderRadius: "10px",
+                            color: "white",
+                            }}>
+                           현재위치 공유하기
+                     </button>
+                   </div>
+                   </div>
+                )}
+                </div>
+             </div>
+             </CustomOverlayMap>
+            )}
+         </Map>
+      </>
+   );
 };
 
-  // useDidMountEffect(() => {
-  //   window.kakao.maps.event.addListener(map, "click", function (mouseEvent) {
-  //     var geocoder = new window.kakao.maps.services.Geocoder();
 
-  //     geocoder.coord2Address(
-  //       mouseEvent.latLng.getLng(),
-  //       mouseEvent.latLng.getLat(),
-  //       function (result, status) {
-  //         if (status === window.kakao.maps.services.Status.OK) {
-  //           var addr = !!result[0].road_address
-  //             ? result[0].road_address.address_name
-  //             : result[0].address.address_name;
-
-  //           console.log(addr);
-
-  //           if (marker) {  // ensure that marker is not null
-  //               marker.setMap(null);
-  //               marker.setPosition(mouseEvent.latLng);
-  //               marker.setMap(map);
-  //           }
-  //         }
-  //       }
-  //     );
-  //   });
-  // }, [map]);
-
-	return (
-		<>
-			<Map center={{ lat: location.latitude, lng: location.longitude }} 
-				 style={{ width: '500px', height: '500px' }} 
-				 level={4}
-				 onClick={(_t, mouseEvent) => {
-					setPosition({
-					  lat: mouseEvent.latLng.getLat(),
-					  lng: mouseEvent.latLng.getLng(),
-					});
-					setIsOpen(false);
-				  }}
-				>
-				{position && <MapMarker position={position} 
-				//clickable={true} // 마커를 클릭했을 때 지도의 클릭 이벤트가 발생하지 않도록 설정합니다
-				onClick={() => {setIsOpen(true); getAddress();}}
-				>
-				{isOpen && (
-				<div style={{ minWidth: "150px" }}>
-					{/* <img
-					alt="close"
-					width="20px"
-					height="20px"
-					src="https://t1.daumcdn.net/localimg/localimages/07/mapjsapi/2x/bt_close.gif"
-					style={{
-						position: "absolute",
-						right: "5px",
-						top: "5px",
-						cursor: "pointer",
-					}}
-					onClick={() => setIsOpen(false)}
-					/> */}
-					<div style={{ padding: "10px", color: "#000"}}>
-					{address && (
-						<div style={{ fontSize: "12px", fontWeight: "bold"}}>
-							{address.address_name}
-						</div>
-					)}
-					</div>
-					<div>
-					<button disabled={!addressConfirmed}>주소 보내기</button>
-					</div>
-				</div>
-				)}
-				</MapMarker>}
-			</Map>
-		</>
-	);
+const MapMessage = ({lat,lng}) => {
+  // console.log('지도 위도,경도 값 확인용',lat, lng);
+  return (
+    <div style={{width: '100px', height: '100px'}}>
+      <Map center={{lat,lng}} level={3} style={{width: "340px", height: "200px", borderRadius: "20px"}}>
+        <MapMarker position={{lat,lng}} />
+      </Map>
+    </div>
+  );
 };
 
-export default KakaoMapAPI;
+
+export {KakaoMapAPI,MapMessage};
