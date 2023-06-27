@@ -67,10 +67,23 @@ export async function getUserArchivedSells(user_id) {
 export async function getUserSoldoutSells(id) {
     return (await fetch(`${baseUrl}/products/sells/soldout/${id}`, {credentials: 'include'})).json();
 }
-
-export async function getUserWishlist() {
-    return (await fetch(`${baseUrl}/products/wishlist/getWishlist`, {credentials: 'include'})).json();
-}
+// 유저 찜목록
+// export async function getUserWishlist(user_id) {
+//     return (await fetch(`${baseUrl}/products/wishlist/getWishlist`, {credentials: 'include'})).json();
+// }
+export async function getUserWishlist(user_id) {
+    return (
+        await fetch(`${baseUrl}/products/wishlist/getWishlis`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+          body: JSON.stringify({ user_id: user_id }),
+        })
+      ).json();
+    }
+    
 
 
 export async function insertConversation(){
