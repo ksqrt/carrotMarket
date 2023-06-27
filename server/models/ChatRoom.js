@@ -35,15 +35,29 @@ const chatRoomSchema = new mongoose.Schema({
         },
         location: { // 위치 정보 필드 추가
             lat: Number,
-            lng: Number
+            lng: Number,
+            address: String
         },
     }],
     // Product Id 고유 id
     product:{
         type: mongoose.Types.ObjectId,
         ref: 'Product'
-    }
-})
+    },
+
+    appointmentDate: {
+        type: Date, // 약속 잡기
+        required: false
+    },
+    appointmentCheck: {
+        type:Boolean,
+        default:false
+    },
+    notificationMessages: {
+        type: Number,
+        default:0
+    },
+});
 
 // chatRoomSchema를 기반으로 ChatRoom 모델을 생성 후 export
 module.exports = mongoose.model('ChatRoom', chatRoomSchema);

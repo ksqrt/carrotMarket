@@ -2,7 +2,7 @@ export const shareKakao = (route, title) => { // url이 id값에 따라 변경�
   if (window.Kakao) {
     const kakao = window.Kakao;
     if (!kakao.isInitialized()) {
-      kakao.init('7286bd8c9d717d7ebd38369e55aa226e'); // 카카오에서 제공받은 javascript key를 넣어줌 -> .env파일에서 호출시킴
+      kakao.init(process.env.REACT_APP_KAKAO_API); // 카카오에서 제공받은 javascript key를 넣어줌 -> .env파일에서 호출시킴
     }
 
     kakao.Link.sendDefault({
@@ -37,7 +37,7 @@ export default function KakaoShare({params}) {
     script.src = "https://developers.kakao.com/sdk/js/kakao.js";
     script.async = true;
     script.onload = () => {
-      Kakao.init('8766bf986c048a5e20e2ae4278463a7b');
+      Kakao.init(process.env.REACT_APP_KAKAO_API);
     };
     document.body.appendChild(script);
 

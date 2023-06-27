@@ -133,20 +133,15 @@ function SellerProfile({ params, history }) {
                             <br /><br /><br /><br />
                         </Col>
 
-                        <>
-                            {/* ... rest of the code ... */}
-
-                            <div id="profile_infobtn">
-                                <button className="custom-button" onClick={handleshowCpt}>
-                                    매너 칭찬하기
-                                </button>
+                        <div id="profile_infobtn">
+                        <div className='sellcount'>
+                            <FaShoppingCart className="section-icon" /> {/* Change the icon to FaShoppingCart */}
+                            <p className="section-title">판매상품 <span className="item-count">{params.totalSells}</span>개</p>
                             </div>
-
-                            {/* ... rest of the code ... */}
-
-                            {showCpt && <MannerModal onClose={handlecloseCpt} id={id} />}
-                        </>
-
+                            <button className="custom-button">매너 칭찬하기</button>
+                            <span></span>
+                            <button className="block-button">차단하기</button>
+                        </div>
 
                     </Row>
                 </div>

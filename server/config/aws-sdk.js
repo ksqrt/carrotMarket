@@ -1,11 +1,10 @@
 const AWS = require('aws-sdk');
-const config = require('./config')
 
 
-const endpoint = config.S3_ENDPOINT
-const region = config.S3_REGION
-const access_key = config.S3_ACCCESS_KEY
-const secret_key = config.S3_SECRET_KEY
+const endpoint = process.env.REACT_APP_S3_ENDPOINT
+const region = process.env.REACT_APP_S3_REGION
+const access_key = process.env.REACT_APP_S3_ACCCESS_KEY
+const secret_key = process.env.REACT_APP_S3_SECRET_KEY
 
 const S3 = new AWS.S3({
     endpoint: endpoint,

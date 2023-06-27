@@ -1,6 +1,8 @@
 const Server = require('socket.io').Server;
 const ChatRoom = require('../models/ChatRoom') // 채팅방 id, buyer, seller, conversation DB 연결
 const mongoose = require('mongoose');
+const User = require('../models/User'); 
+const Product = require('../models/Product'); 
 
 let io;
 function Io(server) {
@@ -16,7 +18,7 @@ function Io(server) {
   
 
   io.on("connection", (socket) => { //socket 변수 = socket.io에서 제공하는 것 
-    console.log("socket.io connected");
+    // console.log("socket.io connected");
 
     
     socket.on("startChat", async ({buyerId, sellerId, productId}) => { // 클라이언트에서 받을 내용 buyerId = buyer._id 될듯.
@@ -26,24 +28,78 @@ function Io(server) {
       socket.emit('startChat', { chatId: chatRoom._id.toString() });
     });
 
-    socket.on("sendMessage", async ({chatId, senderId, message, location}) => { // chatId, senderId, message 인자와 함께 이벤트를 받았을 때 실행됨.
+    socket.on("sendMessage", async ({chatId, senderId, message, location }) => { // chatId, senderId, message 인자와 함께 이벤트를 받았을 때 실행됨.
       const sentAt = new mongoose.Types.ObjectId(); // MongoDB의 ObjectId를 사용하여 서버 시간을 가져옵니다. 
       const _id = new mongoose.Types.ObjectId();
       const newMessage = { _id, senderId, message, sentAt: sentAt.getTimestamp(), location };
-      await ChatRoom.updateOne({ _id: chatId }, { $push: { conversation: newMessage } });
+      await ChatRoom.updateOne({ _id: chatId }, { $push: { conversation: newMessage }, $inc: { unreadMessages: 1 } });
       
       console.log('3. io.js, sendMessage', newMessage );
       io.emit("newMessage", newMessage); // senderId, message, sentAt 인자 제공 필요
       console.log('4. io.js, newMessage');
+
     });
+
+
+    socket.on("setAppointment", async ({chatId, appointmentDate }) => {
+      await ChatRoom.updateOne({ _id: chatId }, { appointmentDate, appointmentCheck: false });
+      io.emit("appointmentUpdated", { chatId, appointmentDate });
+  });
+
+    socket.on("appointmentCheck", async ({chatId, appointmentCheck }) => {
+      await ChatRoom.updateOne({ _id: chatId }, { appointmentCheck });
+      io.emit("appointmentChecked", { chatId, appointmentCheck });
+  });
+
+    socket.on("deleteAppointment", async ({chatId}) => {
+      await ChatRoom.updateOne({_id:chatId}, {$unset:{appointmentDate:1}});
+      io.emit("deleteAppointmentUpdated", {chatId, appointmentDate:null});
+    })
+
+    socket.on("ReportMessage", async ({ reportedUserId, reason }) => {
+      const reportedUser = await User.findById(reportedUserId);
+      if (reportedUser) {
+        // console.log(`Reported User ID: ${reportedUserId}`);
+        await User.updateOne({ _id: '6495291bf3888864f425b039' },  { $push: { report: { userName: reportedUser.name, content: reason},},});
+      }
+    });
+
+
+    socket.on("ExitRoom", async ({ chatId, userId }) => {
+      console.log('exitRoom : ', chatId, userId);
+      const chatRoom = await ChatRoom.findById(chatId);
+
+      if (chatRoom.buyer && chatRoom.buyer.equals(userId)) {
+        chatRoom.buyer = null;
+      } else if (chatRoom.seller && chatRoom.seller.equals(userId)) {
+        chatRoom.seller = null;
+      }
+    
+      await chatRoom.save();
+      
+      if (!chatRoom.buyer && !chatRoom.seller) {
+        await chatRoom.remove();
+      }
+    
+      io.emit("userExitRoom", { chatId, userId });
+
+    });
+
+
+    socket.on("TradeComplete", async ({chatId, productId }) => {
+      await Product.updateOne({ _id: productId }, { $set: { soldout: 'true' },});
+      io.emit("TradeCompleted", { chatId, productId });
+    });
+
+
 
     socket.on("getUserConversations", async ({ userId }) => {
       // $or : 주어진 배열 내의 조건 중 하나라도 참이면 참으로 간주 buyer 또는 seller에 userId가 있는 경우에 참. 전부 가져옴.
       let userChats = await ChatRoom.find({ $or: [ { 'buyer': userId }, { 'seller': userId } ] }).populate("buyer").populate("seller").populate("conversation").populate("product");
-      socket.emit('userConversations', userChats.map(x => ({ chats: x, isBuyer: (x.buyer._id == userId), myId: userId })));
+      socket.emit('userConversations', userChats.map(x => ({ chats: x, isBuyer: (x.buyer?._id == userId), myId: userId })));
     });
   
-    socket.on("disconnect", () => console.log("disconnected"));
+    socket.on("disconnect", () => console.log("socket disconnected"));
   });
   return io;
 }
@@ -58,16 +114,16 @@ module.exports = Io;
 
     /*
 const jwt = require('jsonwebtoken');
-const { SECRET, COOKIE_NAME } = require('../config/config');
+const { process.env.REACT_APP_SECRET, process.env.REACT_APP_COOKIE_NAME } = require('../config/config');
 
   io.use((socket, next) => { // socket.io의 미들웨어를 등록하는 메서드
     // jwt -> authService.js의 loginUser 참고할 것. authcontroller.js 의 /login 에 쿠키로 저장됨.
     console.log(socket.handshake.query.token); 
     if (socket.handshake.query && socket.handshake.query.token) {
-      jwt.verify(socket.handshake.query.token, SECRET, (err, decoded) => {
+      jwt.verify(socket.handshake.query.token, process.env.REACT_APP_SECRET, (err, decoded) => {
         if (err) {
           console.log(err); // 오류 로깅
-          console.log('SECRET: ', SECRET);
+          console.log('process.env.REACT_APP_SECRET: ', process.env.REACT_APP_SECRET);
           socket.disconnect(); // 연결 종료
           return next(new Error('Authentication error'));
         }

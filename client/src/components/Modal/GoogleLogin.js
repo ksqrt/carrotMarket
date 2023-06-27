@@ -23,7 +23,7 @@ const GoogleLogin = () => {
       provider: 'google',
     });
 
-    console.log(user); //계정정보
+    // console.log(user); //계정정보
       setLoading(true);
       snsUser(user)
           .then(res => {
@@ -42,7 +42,7 @@ const GoogleLogin = () => {
   useEffect(() => {
     window.google.accounts.id.initialize({
       // client_id: process.env.REACT_APP_GOOGLE_CLIENT_ID,
-      client_id: '329639666474-vo5t9aio3u6mjivnceifr7dnppkqa2he.apps.googleusercontent.com',
+      client_id: process.env.REACT_APP_GOOGLE_CLIENT_ID,
       callback: handleCredentialResponse
     });
 

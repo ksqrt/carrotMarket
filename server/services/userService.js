@@ -9,22 +9,12 @@ async function getUserById(userId) {
     return await User.findById(userId).populate("createdSells").lean();
 }
 
-async function getUserById2(userId) {
-    try {
-      const user = await User.findById(userId);
-      if (!user) {
-        throw new Error('User not found');
-      }
-      return user;
-    } catch (error) {
-      throw new Error('Failed to get user by ID');
-    }
-  }
+
+
 
 module.exports = {
     edit,
     getUserById,
-    getUserById2
     // userCollectionUpdate,
     // findUserById
 }

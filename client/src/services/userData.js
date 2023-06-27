@@ -2,6 +2,7 @@ import url from "../url.js";
 const baseUrl = url;
 const baseUrl2 = "http://localhost:5000";
 
+
 export async function snsUser(user) {
     const response = await fetch(`${baseUrl}/auth/snsLogin`, {
       method: 'POST',
@@ -56,6 +57,11 @@ export async function getUserSoldoutSells(id) {
 
 export async function getUserWishlist() {
     return (await fetch(`${baseUrl}/products/wishlist/getWishlist`, {credentials: 'include'})).json();
+}
+
+
+export async function insertConversation(){
+    
 }
 
 export async function editUserProfile(id, data) {
