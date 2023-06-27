@@ -50,36 +50,36 @@ router.get('/', async (req, res) => {
 
 // 특정 카테고리에 해당하는 상품 목록을 가져오는 엔드포인트
 router.get('/:category', async (req, res) => {
-    const { page, search } = req.query;
-    try {
-      let products;
-  
-      if (search !== '' && search !== undefined) {
-        products = await Product.find({ category: req.params.category });
-        // 보관함에 넣은건안뜨게
-        products = products.filter(x => x.active == true);
-        // 판매완료된거는 안뜨게
-        products = products.filter(x => x.soldout == false);
-        products = products.filter(x => x.title.toLowerCase().includes(search.toLowerCase()) || x.city.toLowerCase().includes(search.toLowerCase()));
-        products = products.sort((a, b) => new Date(b.addedAt) - new Date(a.addedAt));
-        res.status(200).json({ products: products, pages: products.pages });
-      } else {
-        products = await Product.paginate(
-          {
-            category: req.params.category,
-            active: true,
-            soldout: false
-          },
-          { page: parseInt(page) || 1, limit: 10 }
-        );
-  
-        res.status(200).json({ products: products.docs, pages: products.pages });
-      }
-    } catch (error) {
-      res.status(500).json({ message: error.message })
+  const { page, search } = req.query;
+  try {
+    let products;
+
+    if (search !== '' && search !== undefined) {
+      products = await Product.find({ category: req.params.category });
+      // 보관함에 넣은건안뜨게
+      products = products.filter(x => x.active == true);
+      // 판매완료된거는 안뜨게
+      products = products.filter(x => x.soldout == false);
+      products = products.filter(x => x.title.toLowerCase().includes(search.toLowerCase()) || x.city.toLowerCase().includes(search.toLowerCase()));
+      products = products.sort((a, b) => new Date(b.addedAt) - new Date(a.addedAt));
+      res.status(200).json({ products: products, pages: products.pages });
+    } else {
+      products = await Product.paginate(
+        {
+          category: req.params.category,
+          active: true,
+          soldout: false
+        },
+        { page: parseInt(page) || 1, limit: 10 }
+      );
+
+      res.status(200).json({ products: products.docs, pages: products.pages });
     }
-  });
-  
+  } catch (error) {
+    res.status(500).json({ message: error.message })
+  }
+});
+
 // 특정 상품의 상세 정보를 가져오는 엔드포인트
 router.post("/specific/:id", async (req, res) => {
     let user_id = req.body.user_id;
