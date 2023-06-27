@@ -3,6 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@emotion/react": "^11.11.1",
+    "@emotion/styled": "^11.11.0",
     "@fortawesome/fontawesome-svg-core": "^6.4.0",
     "@fortawesome/free-brands-svg-icons": "^6.4.0",
     "@fortawesome/free-solid-svg-icons": "^6.4.0",
@@ -19,6 +21,7 @@
     "axios": "^1.4.0",
     "bootstrap": "^4.6.0",
     "config": "^3.3.9",
+    "dayjs": "^1.11.8",
     "deep-equal": "^2.2.1",
     "jwt-decode": "^3.1.2",
     "kakao-js-sdk": "^1.2.3",

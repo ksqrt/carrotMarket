@@ -39,22 +39,7 @@ function ProductInfo({ params }) {
   const [showArchive, setShowArchive] = useState(false);
   const [showArchive2, setShowArchive2] = useState(false);
   const images = params && params.image ? params.image : [];
-
-  let userId = null;
-  if (userData != null) {
-      if (typeof userData._id !== 'undefined') {
-          userId = userData._id;
-      } else {
-          // userData가 null이지만 _id 속성이 없는 경우에 대한 처리
-          // 예: 기본값 할당 또는 에러 처리 등
-      }
-  } else {
-      // userData가 null인 경우에 대한 처리
-      // 예: 기본값 할당 또는 에러 처리 등
-  }
   
-  // startchat 이벤트 실행
-  // const history = useHistory();
   const history = useHistory();
 
   const handleClose = () => setShowMdg(false);
@@ -70,7 +55,7 @@ function ProductInfo({ params }) {
     console.log('handleSubmit called')
       e.preventDefault();
       console.log('handleSubmit called2')
-      archiveSell(params._id,userId)
+      archiveSell(params._id)
           .then(res => {
             console.log('handleSubmit called3')
               setShowArchive(false);
@@ -96,16 +81,15 @@ function ProductInfo({ params }) {
     setWish(params.isWished === true);
   }, [params.isWished]);
 
-  // 물건 찜하기
   const onHearthClick = () => {
     if (wish === false) {
-      wishProduct(params._id,userId)
+      wishProduct(params._id)
         .then(res => {
           setWish(true);
         })
         .catch(err => console.log(err))
     } else {
-      wishProduct(params._id,userId)
+      wishProduct(params._id)
         .then(res => {
           setWish(false);
         })
@@ -125,7 +109,7 @@ function ProductInfo({ params }) {
   //상품 삭제
   const handleDelPro = () => {
     if (window.confirm('정말로 삭제하시겠습니까?')) {
-      deleteProduct(params._id,userId)
+      deleteProduct(params._id)
         .then(res => {
           alert('상품이 삭제되었습니다.');
           history.push('/'); // '/'로 이동
@@ -229,6 +213,10 @@ function ProductInfo({ params }) {
     }
   };
 
+  // startchat 이벤트 실행
+  // const history = useHistory();
+  const { userData } = useContext(Context);
+  const [socket, setSocket] = useState(null);
   
   useEffect(() => {
     const initSocket = async () => {
