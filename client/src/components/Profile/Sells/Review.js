@@ -19,8 +19,8 @@ const ReviewForm = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    if (content.length < 10 || content.length > 500) {
-      setError('3글자 이상 100글자 이하');
+    if (content.length < 5 || content.length > 50) {
+      setError('5글자 이상 50글자 이하');
       return;
     }
 
