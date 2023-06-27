@@ -23,7 +23,7 @@
 | [Jenkins](https://www.jenkins.io/)                           | CI/CD 통합 환경 구축도구 
 | [VS Code](https://code.visualstudio.com/)                    | Frontend · Backend 구현 Tool                          |
 | [MongoDB Compass](https://www.mongodb.com/products/compass) | DataBase Tool                                         |
-| Google Chrome                                                | 구현한 화면을 출력하기 위한 브라우저                  |
+| [Google Chrome](https://www.google.com/intl/ko_kr/chrome/)  | 구현한 화면을 출력하기 위한 브라우저                  |
 
 ### :black_medium_small_square: Library
 
