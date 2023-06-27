@@ -1,12 +1,15 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect,useContext} from "react";
 import { createProduct } from "../services/productData";
 import { Form, Button, Col, Spinner, Alert, Row } from "react-bootstrap";
 import "../components/CreateSell/CreateSell.css";
 import "../components/CreateSell/addproduct.css";
 import Display from "../components/Display/Display";
 import { KakaoMapAPI } from "../components/KakaoMapAPI/KakaoMapAPI";
+import { Context } from '../ContextStore'; // Context import
+
 
 const AddProduct = ({ history }) => {
+  const { userData } = useContext(Context);
   const [title, setTitle] = useState("");
   const [price, setPrice] = useState("");
   const [description, setDescription] = useState("");
@@ -17,6 +20,19 @@ const AddProduct = ({ history }) => {
   const [loading, setLoading] = useState(false);
   const [alertShow, setAlertShow] = useState(false);
   const [errors, setErrors] = useState([]);
+
+  let userId = null;
+    if (userData != null) {
+        if (typeof userData._id !== 'undefined') {
+            userId = userData._id;
+        } else {
+            // userData가 null이지만 _id 속성이 없는 경우에 대한 처리
+            // 예: 기본값 할당 또는 에러 처리 등
+        }
+    } else {
+        // userData가 null인 경우에 대한 처리
+        // 예: 기본값 할당 또는 에러 처리 등
+    }
 
   const onTitle= (e) => {
     setTitle(e.target.value);
@@ -95,7 +111,7 @@ const AddProduct = ({ history }) => {
     // getBase64(image)
       // .then((data) => {
         obj["image"] = image;
-        createProduct(obj)
+        createProduct(obj,userId)
           .then((res) => {
             if (res.error) {
               setLoading(false);

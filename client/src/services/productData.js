@@ -39,7 +39,20 @@ export async function getSpecific(id, user_id) {
 }
 
 
-export async function createProduct(product) {
+// export async function createProduct(product) {
+//   return (
+//     await fetch(`${baseUrl}/products/create`, {
+//       method: "POST",
+//       headers: {
+//         "Content-Type": "application/json",
+//       },
+//       credentials: "include",
+//       body: JSON.stringify(product),
+//     })
+//     ).json();
+//   }
+  
+export async function createProduct(product, user_id) {
   return (
     await fetch(`${baseUrl}/products/create`, {
       method: "POST",
@@ -47,11 +60,14 @@ export async function createProduct(product) {
         "Content-Type": "application/json",
       },
       credentials: "include",
-      body: JSON.stringify(product),
+      body: JSON.stringify({
+        ...product,
+        user_id: user_id
+      }),
     })
-    ).json();
-  }
-  
+  ).json();
+}
+
   // export async function editProduct(id, product,user_id) {
   //   return (
   //     await fetch(`${baseUrl}/products/edit/${id}`, {

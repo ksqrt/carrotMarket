@@ -4,7 +4,7 @@
 /server/config/config.js
 /src/config/config.js
 carrotMarket.code-workspace
-deployment.yaml
+/deployment.yaml
 
 .env
 

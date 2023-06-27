@@ -122,6 +122,8 @@ router.post("/specific/:id", async (req, res) => {
 
 // 새로운 상품을 생성하는 엔드포인트
 router.post('/create', async (req, res) => {
+    let user_id = req.body.user_id;
+    console.log(user_id)
     let { title, price, description, city, category, image } = req.body;
     console.log('ttoto'+image);
     console.log();
@@ -144,11 +146,11 @@ router.post('/create', async (req, res) => {
             title, price, description, city, category,
             image: compressedImg,
             addedAt: new Date(),
-            seller: req.user._id
+            seller: user_id
         })
         
         await product.save()
-        await productService.userCollectionUpdate(req.user._id, product);
+        await productService.userCollectionUpdate(user_id, product);
 
         res.status(201).json({ productId: product._id });
     } catch (err) {
