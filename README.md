@@ -35,6 +35,13 @@
 | [React-BootStrap](https://react-bootstrap.netlify.app/) | Frontend 화면 구현을 위한 Library         |
 | [MongoDB](https://www.mongodb.com/)                     | DataBase 구현                             |
 
+### :black_medium_small_square: OpenAPI
+
+| OpenAPI                                               | 기술                                      |
+| ----------------------------------------------------- | ----------------------------------------- |
+| [Kakao API](https://developers.kakao.com/) | 로그인 · 지도 API 사용  |
+| [Google API](https://cloud.google.com/apis?hl=ko) | 로그인 API 사용  |
+
 ### :black_medium_small_square: Software Language
 
 | Language   | 기술                                     |
