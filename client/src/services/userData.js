@@ -46,10 +46,23 @@ export async function getUser() {
 export async function getUserActiveSells(id) {
     return (await fetch(`${baseUrl}/products/sells/active/${id}`, {credentials: 'include'})).json();
 }
-
-export async function getUserArchivedSells() {
-    return (await fetch(`${baseUrl}/products/sells/archived`, {credentials: 'include'})).json();
-}
+// 보관함 불러오기
+// export async function getUserArchivedSells(user_id) {
+//     return (await fetch(`${baseUrl}/products/sells/archived`, {credentials: 'include'})).json();
+// }
+export async function getUserArchivedSells(user_id) {
+    return (
+        await fetch(`${baseUrl}/products/sells/archived`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+          body: JSON.stringify({ user_id: user_id }),
+        })
+      ).json();
+    }
+    
 
 export async function getUserSoldoutSells(id) {
     return (await fetch(`${baseUrl}/products/sells/soldout/${id}`, {credentials: 'include'})).json();

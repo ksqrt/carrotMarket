@@ -211,9 +211,11 @@ router.get('/sells/active/:id', async (req, res) => {
 });
 
 // 사용자가 등록한 비활성 상품 목록을 가져오는 엔드포인트
-router.get('/sells/archived', async (req, res) => {
+router.post('/sells/archived', async (req, res) => {
+    let user_id = req.body.user_id;
+    console.log(user_id)
     try {
-        let user = await (await User.findById(req.user._id).populate('createdSells')).toJSON();
+        let user = await (await User.findById(user_id).populate('createdSells')).toJSON();
         res.status(200).json({ sells: user.createdSells.filter(x => x.active == false), user });
     } catch (error) {
         res.status(500).json({ message: error.message })
