@@ -29,11 +29,20 @@
 
 | Library                                               | 기술                                      |
 | ----------------------------------------------------- | ----------------------------------------- |
-| [node.js](https://spring.io/projects/spring-framework) | Frontend 화면 · Backend 서버 구현을 위한 JavaScript Framework   |
-| [express.js](https://expressjs.com/ko/)                | node.js를 더 안정적으로 사용 가능한 웹 프레임워크 |
-| [JPA](https://spring.io/projects/spring-data-jpa)     | DataBase 구현을 위한 Spring ORM           |
-| [MongoDB](https://mariadb.com/)                       | DataBase 구현                             |
-| [BootStrap](https://bootstrap-vue.org/)               | Frontend 화면 구현을 위한 Library         |
+| [Node.js](https://spring.io/projects/spring-framework) | Frontend 화면 · Backend 서버 구현을 위한 JavaScript Framework   |
+| [Express.js](https://expressjs.com/ko/)                | node.js를 더 안정적으로 사용 가능한 웹 프레임워크 |
+| [React](https://ko.legacy.reactjs.org/)                | Fronted 화면 구현
+| [React-BootStrap](https://react-bootstrap.netlify.app/) | Frontend 화면 구현을 위한 Library         |
+| [MongoDB](https://www.mongodb.com/)                     | DataBase 구현                             |
+
+### :black_medium_small_square: Software Language
+
+| Language   | 기술                                     |
+| ---------- | ---------------------------------------- |
+| JavaScript | Frontend 화면·Backend 서버 구현 언어       |
+|            | Frontend: React / Backend: Node.js + Express.js       |
+| CSS        | Frontend 디자인 구현                      |
+| BSON(NoSQL) | DataBase 구현                            |
 
 # Tech Stack
 
