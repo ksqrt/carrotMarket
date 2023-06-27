@@ -37,3 +37,5 @@ server/package-lock.json
 client/deployment.yaml
 client/deployment.yaml
 client/deployment.yaml
+client/deployment.yaml
+.gitignore

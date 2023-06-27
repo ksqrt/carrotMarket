@@ -30,7 +30,10 @@ function ProductInfo({ params }) {
    
 
   }
-
+  // startchat 이벤트 실행
+  // const history = useHistory();
+  const { userData } = useContext(Context);
+  const [socket, setSocket] = useState(null);
   const [products, setProducts] = useState([]);
   const [wish, setWish] = useState(false);
   const [page, setPage] = useState(1);
@@ -41,6 +44,19 @@ function ProductInfo({ params }) {
   const images = params && params.image ? params.image : [];
   
   const history = useHistory();
+
+  let userId = null;
+    if (userData != null) {
+        if (typeof userData._id !== 'undefined') {
+            userId = userData._id;
+        } else {
+            // userData가 null이지만 _id 속성이 없는 경우에 대한 처리
+            // 예: 기본값 할당 또는 에러 처리 등
+        }
+    } else {
+        // userData가 null인 경우에 대한 처리
+        // 예: 기본값 할당 또는 에러 처리 등
+    }
 
   const handleClose = () => setShowMdg(false);
   const handleShow = () => setShowMdg(true);
@@ -83,13 +99,13 @@ function ProductInfo({ params }) {
 
   const onHearthClick = () => {
     if (wish === false) {
-      wishProduct(params._id)
+      wishProduct(params._id,userId)
         .then(res => {
           setWish(true);
         })
         .catch(err => console.log(err))
     } else {
-      wishProduct(params._id)
+      wishProduct(params._id,userId)
         .then(res => {
           setWish(false);
         })
@@ -213,11 +229,7 @@ function ProductInfo({ params }) {
     }
   };
 
-  // startchat 이벤트 실행
-  // const history = useHistory();
-  const { userData } = useContext(Context);
-  const [socket, setSocket] = useState(null);
-  
+
   useEffect(() => {
     const initSocket = async () => {
       const socket = await initializeSocket();
