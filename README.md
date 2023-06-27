@@ -13,6 +13,28 @@
 
 ![Preview](https://res.cloudinary.com/silenceiv/image/upload/v1617894482/all-for-you-mockup_dafr6c.jpg)
 
+### :black_medium_small_square: Tools
+
+| Tool                                                         | 기술                                                  |
+| ------------------------------------------------------------ | ----------------------------------------------------- |
+| [GitHub](https://github.com/)                                | 각자 맡은 업무를 진행하고 commit · push · merge 작업 |
+| [Jira](https://www.atlassian.com/ko/software/jira)           | Issue 관리를 위해 Git과 연동하여 사용                 |
+| [Docker](https://www.docker.com/)                            | 테스트 및 배포를 위한 컨테이너 기반 가상화 플랫폼 |
+| [Jenkins](https://www.jenkins.io/)                           | CI/CD 통합 환경 구축도구 
+| [VS Code](https://code.visualstudio.com/)                    | Frontend · Backend 구현 Tool                          |
+| [MongoDB Compass](https://www.mongodb.com/products/compass) | DataBase Tool                                         |
+| Google Chrome                                                | 구현한 화면을 출력하기 위한 브라우저                  |
+
+### :black_medium_small_square: Library
+
+| Library                                               | 기술                                      |
+| ----------------------------------------------------- | ----------------------------------------- |
+| [node.js](https://spring.io/projects/spring-framework) | Frontend 화면 · Backend 서버 구현을 위한 JavaScript Framework   |
+| [express.js](https://expressjs.com/ko/)                | node.js를 더 안정적으로 사용 가능한 웹 프레임워크 |
+| [JPA](https://spring.io/projects/spring-data-jpa)     | DataBase 구현을 위한 Spring ORM           |
+| [MongoDB](https://mariadb.com/)                       | DataBase 구현                             |
+| [BootStrap](https://bootstrap-vue.org/)               | Frontend 화면 구현을 위한 Library         |
+
 # Tech Stack
 
 ![MERN stack](https://res.cloudinary.com/silenceiv/image/upload/c_fill,h_205,w_512/v1617484581/mern_sakbwj.png)
