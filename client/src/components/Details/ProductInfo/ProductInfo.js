@@ -353,7 +353,7 @@ function ProductInfo({ params }) {
                     </OverlayTrigger> 
 
 
-                    <span className="link-spacing"></span>
+                    {/* <span className="link-spacing"></span>
 
                    
                     <OverlayTrigger placement="top" overlay={ <Tooltip>상품 삭제하기</Tooltip>} >
@@ -361,6 +361,19 @@ function ProductInfo({ params }) {
                     <span id="deleteProduct">
                       <button onClick={ handleDelPro }>게시글 삭제하기</button>
                      </span>
+                    </OverlayTrigger> */}
+                  </>
+                )}
+                {(params.isSeller || (userData && userData.role === "admin")) && (
+                  <>
+                    <span className="link-spacing"></span>
+
+                   
+                    <OverlayTrigger placement="top" overlay={ <Tooltip>상품 삭제하기</Tooltip>} >
+
+                    <span id="deleteProduct">
+                      <button onClick={ handleDelPro }>게시글 삭제하기</button>
+                    </span>
                     </OverlayTrigger>
                   </>
                 )}
