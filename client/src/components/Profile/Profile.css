@@ -138,7 +138,7 @@
     
   
   
-  
+
     .custom-file-upload {
       cursor: pointer;
     }
@@ -176,7 +176,34 @@
     box-shadow: 0 0 0 2px #ffae00;
   }
   
-  
+  /* 차단하기 버튼 */
+.block-button {
+  background-color: #ff0000; /* 빨간색 바탕으로 설정 */
+  color: #fff;
+  border: none;
+  padding: 8px 20px;
+  font-size: 12px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  height: 36px;
+  font-family: 'Arial', sans-serif;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-left: 10px; /* 여기에 마진 추가 */
+}
+
+.block-button:hover {
+  background-color: #ff4b4b; /* 빨간색의 농도를 낮춤 */
+  color: #fff;
+}
+
+.block-button:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px #ff4b4b; /* 빨간색 바탕에 대한 적절한 색상 설정 */
+}
+
   
   
   
@@ -184,6 +211,7 @@
   #tem_total {
     width: 250px;
     /* border: 1px solid black; */
+    padding-left:20px;
   }
   
   
@@ -196,6 +224,7 @@
     background-color: #f2f2f2;
     border-radius: 10px;
     overflow: hidden;
+    
   }
   
   .manner-thermometer-fill {
@@ -203,12 +232,14 @@
     border-radius: 10px;
     background-color: #ff6f31;
     transition: width 0.3s ease-in-out;
+   
   }
   
   .manner-thermometer-label {
     font-size: 12px;
     text-align: right;
     padding-right: 5px;
+   
   }
   
 

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { CustomOverlayMap, Map, MapMarker } from 'react-kakao-maps-sdk';
 
-const KakaoMapAPI = () => {
+const KakaoMapAPI = ({kakaocity}) => {
 	const { kakao } = window;
 	const [location, setLoacation] = useState({latitude: null, longitude: null}); // 현재 위치
 	const [address, setAddress] = useState({latitude: null, longitude: null}); // 현재 좌표의 주소를 저장할 상태
@@ -42,7 +42,10 @@ const KakaoMapAPI = () => {
 
 	//현재 위치 공유
 	const locationshare = () => {
-		
+		console.log('클릭!')
+		const location = address.address_name;
+		console.log(address.address_name); 
+		kakaocity(address.address_name);
 	}
 
 	return (
@@ -60,6 +63,7 @@ const KakaoMapAPI = () => {
 					  lat: mouseEvent.latLng.getLat(),
 					  lng: mouseEvent.latLng.getLng(),
 					});
+					locationshare()
 					setIsOpen(false);
 				  }}
 			>
@@ -73,7 +77,8 @@ const KakaoMapAPI = () => {
 				 	<div style={{ padding: "2px", 
 				 				  color: "#000",
 				 				  }}>
-				 	{address && (
+				 	{address && 
+					(
 				 		<div style={{ fontSize: "12px", 
 									  fontWeight: "bold",
 				 					  border: "3px solid orange", 
@@ -83,19 +88,21 @@ const KakaoMapAPI = () => {
 				 					  }}>
 				 			{address.address_name}
 				 		<div>
-				 			<button disabled={!addressConfirmed} 
+				 			<button 
 				 			style={{fontSize: "12px", 
 				 					border: "none", 
 				 					background: "orange", 
 				 					borderRadius: "10px",
+									zIndex:"999",
 				 					color: "white"}}
 							onClick={locationshare}		
 									>
-									현재위치 공유하기
+									선택 완료
 							</button>
 				 		</div>
 				 		</div>
-				 	)}
+				 	)
+					}
 				 	</div>
 				 </div>
           	</CustomOverlayMap>

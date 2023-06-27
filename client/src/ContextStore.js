@@ -22,7 +22,7 @@ export const ContextStore = ({ children }) => {
         }
     }, [])
 
-    console.log(userData);
+    // console.log(userData);
 
     const providerValue = useMemo(() => ({ userData, setUserData, query, setQuery }), [userData, setUserData, query, setQuery]);
 

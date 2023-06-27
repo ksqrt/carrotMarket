@@ -56,6 +56,7 @@ router.get('/:category', async (req, res) => {
 // 특정 상품의 상세 정보를 가져오는 엔드포인트
 router.get("/specific/:id", async (req, res) => {
   try {
+    console.log('specific컨트롤러');
     let product = await (await Product.findById(req.params.id)).toJSON();
     let seller = await (await User.findById(product.seller)).toJSON();
     product.addedAt = moment(product.addedAt).format("d MMM YYYY (dddd) HH:mm");
@@ -75,6 +76,15 @@ router.get("/specific/:id", async (req, res) => {
       jsonRes.isWished = user.wishedProducts.includes(req.params.id);
       jsonRes.isAuth = true;
     }
+
+    // 비동기로 params.likes와 params.views의 길이를 얻음
+    // Mongoose의 lean() 메소드는 쿼리 결과를 일반 JavaScript 객체로 변환하는 기능을 제공합니다.
+    // lean() 메소드를 사용하면 Mongoose의 가상 속성(virtuals) 및 훅(hooks)을 사용할 수 없습니다.
+    const likesLength = await Product.findById(req.params.id, 'likes').lean().then((result) => result.likes.length);
+    const viewsLength = await Product.findById(req.params.id, 'views').lean().then((result) => result.views.length);
+    jsonRes.likes = likesLength;
+    jsonRes.views = viewsLength;
+
     res.status(200).json(jsonRes);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -281,6 +291,12 @@ router.delete('/delete/:id', async (req, res) => {
             return res.status(404).json({ error: '상품을 찾을 수 없습니다.' });
         }
 
+        //관리자인 경우 삭제할 수 있음
+        if (user.role.toString() == 'admin') {
+            await Product.findOneAndDelete( {_id: req.params.id} );
+            return res.status(200).json({ message: '상품이 성공적으로 삭제되었습니다.' });
+        }
+
         // 자신이 등록한 상품이 아닌 경우 삭제할 수 없음
         if (product.seller.toString() !== user._id.toString()) {
             return res.status(403).json({ error: '상품 삭제 권한이 없습니다.' });
@@ -295,5 +311,20 @@ router.delete('/delete/:id', async (req, res) => {
         return res.status(500).json({ error: '서버 오류로 인해 상품을 삭제할 수 없습니다.' });
     }
 });
+
+
+//신고하면 값 바꿔주는 함수 
+router.get('/declare/:declareproduct', async (req, res) => {
+    try {
+        await Product.updateOne({ _id: req.params.declareproduct }, { declare: true });
+        res.status(200).json({ msg: "Declare" });
+    } catch (error) {
+        res.status(500).json({ message: error.message })
+    }
+});
+
+
+
+
 
 module.exports = router;

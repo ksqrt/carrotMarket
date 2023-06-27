@@ -1,11 +1,9 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import "./Modal.css";
 import { Context } from "../../ContextStore"; // 컨텍스트 관련 컴포넌트
 import { loginUser } from "../../services/userData";
 import { useHistory } from "react-router-dom";
 import { Form, Button, Spinner, Alert } from "react-bootstrap";
-import { Link } from "react-router-dom";
-import SimpleSider from "../Siders/SimpleSider";
 import GoogleLogin from "./GoogleLogin";
 import NaverLogin from "./NaverLogin";
 import KakaoLogin from "./KakaoLogin";
@@ -29,7 +27,7 @@ const LoginModal = ({ onClose }) => {
   const handleSubmitLogin = (e) => {
     e.preventDefault();
     setLoading(true);
-    console.log(user);
+    // console.log(user);
     loginUser(user)
       .then((res) => {
         if (!res.error) {
@@ -46,42 +44,29 @@ const LoginModal = ({ onClose }) => {
       .catch((err) => console.error("error from login: ", err));
   };
 
-  return (
-    <>
-      <div className="modal-bg"></div>
-      <div className="modal-popup">
-        <button className="modal-close" onClick={onClose}>
-          <img
-            src="https://m.bunjang.co.kr/pc-static/resource/ee442d3dd827628bc5fe.png"
-            width="24"
-            height="24"
-            alt="닫기"
-          />
-        </button>
-        <div className="modal-div">
-          <img
-            src="https://upload.wikimedia.org/wikipedia/commons/a/ae/DaangnMarket_logo.png"
-            height="40"
-            className="carrot-logo"
-            alt="웹 로고"
-          />
-          <div className="modal-title">당근마켓으로 중고거래 시작하기</div>
-          <div className="modal-subtitle">
-            간편하게 가입하고 상품을 확인하세요
-          </div>
+ 
 
-          <div className="container auth-form" style={{ paddingRight: 160 }}>
-            <Form className="col-lg-6" onSubmit={handleSubmitLogin}>
-              {alertShow && (
-                <Alert
-                  variant="danger"
-                  onClose={() => setAlertShow(false)}
-                  dismissible
-                >
-                  <p>{error}</p>
-                </Alert>
-              )}
-
+    return (
+        <>
+            <div className='modal-bg'></div>
+            <div className='modal-popup'>
+                <button className="modal-close" onClick={onClose}>
+                    <img src="https://m.bunjang.co.kr/pc-static/resource/ee442d3dd827628bc5fe.png" width="24" height="24" alt="닫기"/>
+                </button>
+                <div className="modal-div">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/a/ae/DaangnMarket_logo.png" height="40" className="carrot-logo" alt='웹 로고'/>
+                    <div className="modal-title">당근마켓으로 중고거래 시작하기</div>
+                    <div className="modal-subtitle">간편하게 로그인하고 상품을 확인하세요</div>
+                    
+                            {alertShow &&
+                                <Alert variant="dark" onClose={() => setAlertShow(false)} dismissible className='authAlert'>
+                                    <p>
+                                        {error}
+                                    </p>
+                                </Alert>
+                            }
+                    <div className="container auth-form" style={{paddingRight: 160}}>
+                        <Form className="col-lg-6" onSubmit={handleSubmitLogin}>
               <div className="forms" style={{ paddingLeft: 20 }}>
                 <input
                   className="emailForm"

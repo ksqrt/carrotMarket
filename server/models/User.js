@@ -1,7 +1,8 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
-const { SALT } = require('../config/config');
 const findOrCreate = require('find-or-create-mongoose');
+const { SALT } = require('../config/config');
+
 
 const userSchema = new mongoose.Schema({
     id: mongoose.Types.ObjectId,
@@ -82,25 +83,29 @@ const userSchema = new mongoose.Schema({
             trim: true,
             default: 36.5
     },
+    report: [
+        {
+            userName: {
+                type:String,
+                trim:true
+            },
+            content: {
+                type:String,
+                trim:true
+            }
+        }
+    ]
 
-    // report: {
-    //     userName : String,
-    //     content : String
-    // }
-    
-    userName:{
-        type:String,
-        trim:true
-    },
 
-    content:{
-        type:String,
-        trim:true
-    }
+
 });
 
 userSchema.pre('save', async function (next) {
+    // let salt = await bcrypt.genSalt(process.env.REACT_APP_SALT); 
+    //Error: rounds must be a number (bcrypt.js)
     let salt = await bcrypt.genSalt(SALT);
+
+
     let hash = await bcrypt.hash(this.password, salt);
     this.password = hash;
     next();

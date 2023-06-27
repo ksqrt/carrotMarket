@@ -73,6 +73,14 @@ const productSchema = new mongoose.Schema({
             ref: 'User'
         }
     ]
+    ,
+
+    declare:{
+        type:Boolean,
+        default: false
+    }
+
+
     
 });
 
