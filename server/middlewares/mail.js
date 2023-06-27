@@ -2,7 +2,7 @@ require('dotenv').config();
 const mailer = require("nodemailer");
 // const smtpTransport = require('nodemailer-smtp-transport');
 const {Hello} = require("./hello_template");
-const { REACT_APP_NODEMAILER_USER, REACT_APP_NODEMAILER_PASS } = require('../config/config');
+// const { REACT_APP_NODEMAILER_USER, REACT_APP_NODEMAILER_PASS } = require('../config/config');
 
 const getEmailData = (to, authCode) => {
     data = {
@@ -21,10 +21,10 @@ const sendEmail = (to, authCode) => {
         // port: 587,
         // secure: true,
         auth: {
-            user: REACT_APP_NODEMAILER_USER, //본인 이메일 주소 사용하세요
-            pass: REACT_APP_NODEMAILER_PASS //본인 이메일 주소의 비밀번호
-            // user: process.env.REACT_APP_NODEMAILER_USER, //본인 이메일 주소 사용하세요
-            // pass: process.env.REACT_APP_NODEMAILER_PASS //본인 이메일 주소의 비밀번호
+            // user: REACT_APP_NODEMAILER_USER, //본인 이메일 주소 사용하세요
+            // pass: REACT_APP_NODEMAILER_PASS //본인 이메일 주소의 비밀번호
+            user: process.env.REACT_APP_NODEMAILER_USER, //본인 이메일 주소 사용하세요
+            pass: process.env.REACT_APP_NODEMAILER_PASS //본인 이메일 주소의 비밀번호
         }
     })
 
