@@ -26,6 +26,7 @@ export async function getAll(page, category, query) {
 }
 
 export async function getSpecific(id) {
+  
   return (
     await fetch(`${baseUrl}/products/specific/${id}`, {
       credentials: "include",
@@ -96,3 +97,22 @@ export async function createProduct(product) {
         })
       ).json();
     }
+
+
+
+    export async function declareProduct(declareproduct) {
+
+      console.log('ProductDataController',declareproduct);
+
+      await fetch(`${baseUrl}/products/declare/${declareproduct}`, {
+        credentials: "include"
+      })
+  
+  }
+
+
+
+    
+
+
+  

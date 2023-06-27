@@ -1,6 +1,7 @@
 import url from "../url.js";
 const baseUrl = url;
 
+
 export async function snsUser(user) {
     const response = await fetch(`${baseUrl}/auth/snsLogin`, {
       method: 'POST',
@@ -55,6 +56,11 @@ export async function getUserSoldoutSells() {
 
 export async function getUserWishlist() {
     return (await fetch(`${baseUrl}/products/wishlist/getWishlist`, {credentials: 'include'})).json();
+}
+
+
+export async function insertConversation(){
+    
 }
 
 export async function editUserProfile(id, data) {

@@ -82,7 +82,22 @@ const userSchema = new mongoose.Schema({
             type:String,
             trim: true,
             default: 36.5
-    }
+    },
+    report: [
+        {
+            userName: {
+                type:String,
+                trim:true
+            },
+            content: {
+                type:String,
+                trim:true
+            }
+        }
+    ]
+
+
+
 });
 
 userSchema.pre('save', async function (next) {

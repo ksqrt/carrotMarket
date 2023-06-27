@@ -61,7 +61,6 @@ async function findOneAndDelete(id, userId) {
 
 async function uploadImage(image) {
     const bucket_name = 'ncp3';
-
     const base64Data = new Buffer.from(image.replace(/^data:image\/\w+;base64,/, ""), 'base64');
     const type = image.split(';')[0].split('/')[1];
     try {

@@ -1,0 +1,34 @@
+#Username{
+    color:black;
+    font-weight:bold;
+}
+
+.button {
+    background-color: #FFA500;
+    border-color: #FFA500;
+    color: #FFFFFF;
+    padding: 10px 20px;
+    margin-right: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .button:hover {
+    background-color: #FFA500;
+    border-color: #FFA500;
+  }
+  
+  .button.active {
+    background-color: #FF984D;
+    border-color: #FF984D;
+  }
+
+  .useroutBtn{
+    color: #FFFFFF;
+    background-color: skyblue;
+    margin-left:20px;
+    padding: 5px 5px;
+    margin-right: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+  }

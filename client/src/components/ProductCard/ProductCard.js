@@ -14,6 +14,7 @@ function ProductCard({ params }) {
   const addedDate = new Date(params.addedAt); // params.addedAt 값을 Date 객체로 변환합니다.
   const isToday = currentDate.toDateString() === addedDate.toDateString();
   const isYesterday = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate() - 1).toDateString() === addedDate.toDateString();
+  const firstImage = params && params.image && params.image.length > 0 ? params.image[0] : '';
 
   let formattedDate;
 
@@ -27,10 +28,14 @@ function ProductCard({ params }) {
     formattedDate = `${daysDiff}일 전`;
   }
 
+
+  console.log('ProductCard' + params.category);
+
+
   return (
     <Card style={{ border: 'none' }}>
     <Link to={`/categories/${params.category}/${params._id}/details`} style={{ textDecoration: 'none' }}>
-      <Card.Img variant="top" style={{ borderRadius: '10px' }} src={params.image} />
+      <Card.Img variant="top" style={{ borderRadius: '10px' }} src={ firstImage } />
       <Card.Body>
         <Card.Title style={{ fontSize: '16px', fontWeight: 'bold', marginBottom: '8px' }}>
           {params.title.length > 10 ? `${params.title.substring(0, 15)}...` : params.title}

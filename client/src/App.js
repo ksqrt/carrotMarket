@@ -16,8 +16,9 @@ import CreateSell from "./Pages/CreateSell";
 import EditProfile from "./Pages/EditProfile";
 import Error404 from "./Pages/Error404";
 import Messages from "./Pages/Messages";
-import KakaoMapAPI from "./components/KakaoMapAPI/KakaoMapAPI";
-import Admin from "./Pages/Admin";
+import {KakaoMapAPI} from "./components/KakaoMapAPI/KakaoMapAPI";
+import ChatAiTest from "./Pages/ChatAiTest";
+import AdminMain from "./components/admin/adminMain"
 
 function App() {
   
@@ -27,6 +28,7 @@ function App() {
           <Switch>
             {/* 루트주소일때는 카테고리 컴포넌트 */}
             <Route path="/" exact component={Categories} />
+            <Route path="/admin" exact component={AdminMain}/>
             <Route path="/categories/:category" exact component={Categories} />
             <Route path="/categories/:category/:id/details" component={Details} />
             <Route path="/categories/:category/:id/edit" component={Edit} />
@@ -39,7 +41,7 @@ function App() {
             <Route path="/messages" exact component={Messages} />;
             <Route path="/messages/:id" exact component={Messages} />;
             <Route path="/kakaoMap" exact component={KakaoMapAPI} />;
-            <Route path="/admin" exact component={Admin} />;
+            <Route path="/chatAiTest" exact component={ChatAiTest} />;
             <Route component={Error404} />
           </Switch>   
         <Footer />
