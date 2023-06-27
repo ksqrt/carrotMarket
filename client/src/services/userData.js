@@ -77,3 +77,23 @@ export async function editUserProfile(id, data) {
 export async function getUserById(id) {
     return await (await fetch(baseUrl + `/user/getUserById/${id}`, {credentials: 'include'})).json()
 }
+
+
+
+export async function deleteUser(userId) {
+    console.log(userId);
+    return (
+    
+      await fetch(`${baseUrl}/user/delete/${userId}`, {
+        method:'DELETE',
+
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+       
+      })
+    ).json();
+  }
+
+

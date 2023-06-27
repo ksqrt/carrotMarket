@@ -10,6 +10,7 @@ import bImage from './profile_images/b.png'; // 이미지 파일 경로
 import cImage from './profile_images/c.png'; // 이미지 파일 경로
 import dImage from './profile_images/d.png'; // 이미지 파일 경로
 import eImage from './profile_images/e.png'; // 이미지 파일 경로
+import {deleteUser} from '../../services/userData';
 
 const getMannerTemperatureStyle = (temperature) => {
     const width = temperature + "%";
@@ -18,6 +19,23 @@ const getMannerTemperatureStyle = (temperature) => {
       backgroundColor: getBackgroundColor(temperature)
     };
   };
+
+  const deleteUserHandelr = (e) =>{
+    console.log('delete 유저다');
+    const userId = e.target.value;
+
+    if (window.confirm('탈퇴하시겠습니까?')) {
+      deleteUser(userId)
+        .then(res => {
+          alert('당근 마켓에서 탈퇴하셨습니다.');
+          localStorage.removeItem('user');
+          window.location.href = '/';
+        })
+        .catch(error => {
+          alert('탈퇴에 실패하였습니다. 다시 시도해주세요.');
+        });
+    }
+  }
 
   const getBackgroundColor = (temperature) => {
     // 여기에서 매너온도에 따른 배경색을 결정하는 로직을 작성하면 됩니다.
@@ -90,7 +108,13 @@ function ProfileSection({ params }) {
                                         <button className="profile-edit-button">프로필 수정</button>
                                     </Link>
                                 </span>
-                            </div>
+
+                                <span id="edit-icon">
+                                   
+                                        <button value={params._id} className="profile-edit-button" onClick={deleteUserHandelr}>회원탈퇴</button>
+                                    
+                                </span>
+                        </div>
                         <div id="tem_total">
                             <p style={{ float: 'left', fontWeight: 'bold', textDecoration: 'underline' }}>매너온도</p>
                             <p style={{ marginBottom: '-1px', float: 'right', color: getFontColor(36.5) }}>{36.5}°C&nbsp;&nbsp;

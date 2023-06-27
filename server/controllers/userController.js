@@ -67,4 +67,18 @@ router.get('/getUserName/:id', async (req, res) => {
 });
 
 
+// 사용자 ID로 사용자 정보를 가져오는 엔드포인트
+router.delete('/delete/:userId', async (req, res) => {
+    try {
+        console.log(req.params.userId);
+        await User.deleteOne({ _id: req.params.userId });
+        console.log('삭제완료');
+        res.status(200).json({ message: '삭제 완료' });
+    } catch (error) {
+        res.status(500).json({ error });
+    }
+});
 module.exports = router;
+
+
+
