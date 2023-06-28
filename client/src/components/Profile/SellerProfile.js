@@ -140,6 +140,7 @@ function SellerProfile({ params, history }) {
                                 <button className="custom-button" onClick={handleshowCpt}>
                                     매너 칭찬하기
                                 </button>
+                                
                             </div>
 
                             {/* ... rest of the code ... */}
