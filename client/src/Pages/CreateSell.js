@@ -6,6 +6,7 @@ import "../components/CreateSell/addproduct.css";
 // import KakaoMapAPI from "../components/KakaoMapAPI/KakaoMapAPI";
 import Display from "../components/Display/Display";
 import KakaoMapAPI from "../components/KakaoMapAPI/KakaoMapAPICreateSell";
+import Imagemodal from "../components/Display/Imagemodal";
 
 const AddProduct = ({ history }) => {
   const [title, setTitle] = useState("");
@@ -14,10 +15,11 @@ const AddProduct = ({ history }) => {
   const [city, setCity] = useState("");
   const [category, setCategory] = useState("clothing");
   const [image, setImage] = useState([]);
-  const [previewURL, setPreviewURL] = useState([]);
   const [loading, setLoading] = useState(false);
   const [alertShow, setAlertShow] = useState(false);
   const [errors, setErrors] = useState([]);
+  const [imagemodal, setImagemodal] = useState(false);
+  const [checkimgindex, setCheckimgindex] = useState('');
 
   const onTitle= (e) => {
     setTitle(e.target.value);
@@ -31,10 +33,13 @@ const AddProduct = ({ history }) => {
   const onCity= (e) => {
     setCity(e.target.value);
   };
-
   const kakaocity = (a) => {
     setCity(a);
   };
+
+  const closeModal = () => {
+    setImagemodal(false);
+  }
 
   const fileInput = useRef(null);
   const onChangeHandler = (e) => {
@@ -84,6 +89,13 @@ const AddProduct = ({ history }) => {
   const deleteimg = (index) => {
     image.splice(index,1);
     setImage([...image]);
+  }
+
+ 
+
+  const imgboxbtn = (index) => {
+     setCheckimgindex(index);
+     setImagemodal(true);   
   }
   // useEffect(()=>{
   //   for (let index = 0; index < image.length; index++) {
@@ -169,7 +181,7 @@ const AddProduct = ({ history }) => {
                   />
                 </button>
                   
-                <Display image={image} deleteimg={deleteimg} />
+                <Display image={image} imgboxbtn={imgboxbtn} deleteimg={deleteimg} />
 
               </div>    
 
@@ -330,6 +342,10 @@ const AddProduct = ({ history }) => {
             )}
           </Form>
           <br></br>
+          {/* 모달 */}
+          {imagemodal && (
+            <Imagemodal image={image} closeModal={closeModal} checkimgindex={checkimgindex}/>
+          )}
         </div>
   );
 };

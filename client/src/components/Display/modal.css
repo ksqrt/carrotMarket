@@ -1,0 +1,40 @@
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.6); /* 검은색 투명 배경 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+  }
+  
+  .modal {
+    display: grid;
+    position: relative;
+    background-color: rgba(0, 0, 0, 0.6);
+    padding: 20px;
+    max-width: 900px;
+    width: 100%;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  }
+  
+  .close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+    font-size: 24px;
+    color: #888;
+  }
+  .modalimagesize{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .modal-image {
+    max-width: 100%;
+    margin-bottom: 10px;
+  }
