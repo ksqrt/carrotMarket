@@ -1,0 +1,21 @@
+.AdminMainHeader {
+  background-color:#FF8A3D;
+  padding: 20px;
+  padding-left:400px;
+}
+
+.AdminMainHeader h1 {
+  margin: 0;
+  color: white;
+}
+
+#AdminContent{
+  padding-left:400px;
+}
+
+.categori{
+  padding-left:400px;
+  padding-top:10px;
+  padding-bottom:40px;
+ 
+} 

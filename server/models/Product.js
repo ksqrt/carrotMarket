@@ -38,10 +38,12 @@ const productSchema = new mongoose.Schema({
         required: ['City is required'],
         trim: true
     },
-    image: {
-        type: String,
-        required: true
-    },
+    image: [
+        {
+            type: String,
+            required: true
+        }
+    ],
     addedAt: {
         type: Date,
         required: true,
@@ -71,6 +73,14 @@ const productSchema = new mongoose.Schema({
             ref: 'User'
         }
     ]
+    ,
+
+    declare:{
+        type:Boolean,
+        default: false
+    }
+
+
     
 });
 

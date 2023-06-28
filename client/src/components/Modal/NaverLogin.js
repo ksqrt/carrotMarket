@@ -1,3 +1,52 @@
+import React, { useContext, useEffect, useState } from 'react';
+import jwt_decode from 'jwt-decode';
+import { Context } from '../../ContextStore'; 
+import { Spinner } from 'react-bootstrap';
+import { snsUser } from '../../services/userData';
+import { useHistory } from 'react-router-dom';
+
+const NaverLogin = () => {
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const { setUserData } = useContext(Context);
+  const history = useHistory();
+
+  // useEffect(() => {
+  //   const script = document.createElement('script');
+  //   script.src = 'https://static.nid.naver.com/js/naveridlogin_js_sdk_2.0.2.js';
+  //   // script.charset = 'utf-8';
+  //   document.body.appendChild(script);
+
+  //   script.onload = () => {
+  //       window.Kakao.init(process.env.REACT_APP_KAKAO_API);
+
+  //   };
+
+  //   return () => {
+  //       document.body.removeChild(script);
+  //   };
+  // }, []);
+
+  const naverLogin = new window.naver.LoginWithNaverId(
+    {
+        // clientId: process.env.REACT_APP_NAVER_CLIENT_ID,
+        // callbackUrl: process.env.REACT_APP_NAVER_CALLBACK_URL,
+        clientId: 'a9oKP47JDXAvbgaf2Mg1',
+        callbackUrl: 'http://localhost:3000/naver/callback',
+        loginButton: {color: "green", type: 2, height: 40}
+    }
+  );
+  naverLogin.init(); // 로그인 설정
+
+  return (
+    <div>
+      <div id="naverIdLogin"></div>
+    </div>
+  );
+};
+
+export default NaverLogin;
+
 // var express = require('express');
 // var app = express();
 // var client_id = process.env.REACT_APP_NAVER_CLIENT_ID;
@@ -34,36 +83,36 @@
 //    console.log('http://127.0.0.1:3000/naverlogin app listening on port 3000!');
 //  });
 
-import React, { useEffect } from 'react';
+// import React, { useEffect } from 'react';
 
-const NaverLogin = () => {
-  useEffect(() => {
-    const naver_id_login = new window.naver_id_login(process.env.REACT_APP_NAVER_CLIENT_ID, "http://localhost:3000/naver/callback");
-    const state = naver_id_login.getUniqState();
-    naver_id_login.setButton("white", 2, 40);
-    naver_id_login.setDomain("http://localhost:3000");
-    naver_id_login.setState(state);
-    naver_id_login.setPopup();
-    naver_id_login.init_naver_id_login();
-  }, []);
+// const NaverLogin = () => {
+//   useEffect(() => {
+//     const naver_id_login = new window.naver_id_login(process.env.REACT_APP_NAVER_CLIENT_ID, "http://localhost:3000/naver/callback");
+//     const state = naver_id_login.getUniqState();
+//     naver_id_login.setButton("white", 2, 40);
+//     naver_id_login.setDomain("http://localhost:3000");
+//     naver_id_login.setState(state);
+//     naver_id_login.setPopup();
+//     naver_id_login.init_naver_id_login();
+//   }, []);
 
-  const naverSignInCallback = () => {
-    const naver_id_login = new window.naver_id_login(process.env.REACT_APP_NAVER_CLIENT_ID, "http://localhost:3000/naver/callback");
-    alert(naver_id_login.getProfileData('email'));
-    alert(naver_id_login.getProfileData('nickname'));
-    // alert(naver_id_login.getProfileData('age'));
-  };
+//   const naverSignInCallback = () => {
+//     const naver_id_login = new window.naver_id_login(process.env.REACT_APP_NAVER_CLIENT_ID, "http://localhost:3000/naver/callback");
+//     alert(naver_id_login.getProfileData('email'));
+//     alert(naver_id_login.getProfileData('nickname'));
+//     // alert(naver_id_login.getProfileData('age'));
+//   };
 
-  useEffect(() => {
-    const naver_id_login = new window.naver_id_login(process.env.REACT_APP_NAVER_CLIENT_ID, "http://localhost:3000");
-    alert(naver_id_login.oauthParams.access_token);
-    naver_id_login.get_naver_userprofile(naverSignInCallback);
-  }, []);
+//   useEffect(() => {
+//     const naver_id_login = new window.naver_id_login(process.env.REACT_APP_NAVER_CLIENT_ID, "http://localhost:3000");
+//     alert(naver_id_login.oauthParams.access_token);
+//     naver_id_login.get_naver_userprofile(naverSignInCallback);
+//   }, []);
 
-  return <div id="naver_id_login"></div>;
-};
+//   return <div id="naver_id_login"></div>;
+// };
 
-export default NaverLogin;
+// export default NaverLogin;
 
 
 // import React, { useEffect } from 'react';

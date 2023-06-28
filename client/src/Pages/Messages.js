@@ -72,6 +72,7 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
     const myName = selected.isBuyer ? selected.chats.buyer?.name : selected.chats.seller?.name;
 
     const myId = selected.isBuyer ? selected.chats.buyer?._id : selected.chats.seller?._id;
+
     const [message, setMessage] = useState(""); // 내가 입력한 메세지
     const [alertShow, setAlertShow] = useState(true); 
     const [socket, setSocket] = useState(null); // initializeSocket 소켓 초기화
@@ -511,7 +512,7 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
                                             <BsDoorOpen size={15} /> 채팅방 나가기
                                         </button>
                                         <button className="dropdown-content-block"> 
-                                            <ImBlocked size={20} /> 차단하기  
+                                            <ImBlocked size={20}/> 차단하기  
                                         </button>
                                         <button className="dropdown-content-declare" onClick={handleShowReportModal}>
                                             <AiOutlineAlert size={20} /> 신고하기 

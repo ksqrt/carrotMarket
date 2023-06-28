@@ -45,7 +45,8 @@ router.get('/getUserById/:id', async (req, res) => {
         let jsonRes = {
             _id: user._id, name: user.name, email: user.email, phoneNumber: user.phoneNumber,
             totalSells: user.createdSells.length, avatar: user.avatar,
-            isMe: req.user._id == req.params.id
+            mannertmp: user.mannertmp
+            // isMe: req.user._id == req.params.id
         }
         res.status(200).json({user: jsonRes});
     } catch (error) {
@@ -65,6 +66,32 @@ router.get('/getUserName/:id', async (req, res) => {
         res.status(500).json({ error });
     }
 });
+
+// "매너 점수"를 업데이트하는 엔드포인트
+router.post('/updatemanner/:id', async (req, res) => {
+    console.log('fff');
+    console.log(req.body.mannerScoreChange);
+    try {
+      const { mannerScoreChange } = req.body; // Retrieve mannerScoreChange from req.body
+      const numericMannerScoreChange = Number(mannerScoreChange); // Convert mannerScoreChange to a numeric value
+  
+      if (isNaN(numericMannerScoreChange)) {
+        throw new Error('Invalid mannerScoreChange'); // Throw an error if the converted value is NaN
+      }
+  
+      // Retrieve user data from the user service based on the provided ID
+      const user = await userService.getUserById2(req.params.id);
+  
+      // Update the "매너 점수" based on the provided manner score change
+      user.mannertmp += numericMannerScoreChange;
+      await user.save();
+  
+      res.status(200).json({ message: '매너 점수가 업데이트되었습니다.' });
+    } catch (error) {
+      console.error('Error updating MannerTemperature:', error);
+      res.status(500).json({ error: 'Failed to update MannerTemperature' });
+    }
+  });
 
 
 module.exports = router;

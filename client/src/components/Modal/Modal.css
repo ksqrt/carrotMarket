@@ -5,23 +5,24 @@
     left: 0;
     top: 0;
     z-index: 900;
-    background: #000;
-    opacity: 0.6;
+    background: whitesmoke;
+    opacity: 0.2;
 }
 .modal-popup {
     width: 420px;
     /* height: 500px; */
     background: rgb(239, 239, 239);
-    border-radius: 4px;
+    /* border: 6px solid orange; */
+    border-radius: 6px;
     overflow: hidden;
-    box-shadow: rgba(0, 0, 0, 0.1) 0px 6px 50px 0px;
+    box-shadow: rgba(0, 0, 0, 0.3) 0px 6px 50px 0px;
     position: absolute;
     z-index: 1000;
     left: 50%;
     top: 50%; 
     padding: 30px;
     box-sizing: border-box;
-    transform: translate(-50%, 40%); 
+    transform: translate(-50%, 20%); 
 }
 .modal-close {
     position: absolute;
@@ -78,7 +79,7 @@
     position: relative;
 }
 .loginBtn:hover {
-    background: orange;
+    background: #FF8A3D;
     border: 1px solid #dadce0;
 
 }
@@ -108,4 +109,22 @@
     font-size: 12px;
     letter-spacing: 0.25px;
     text-align: center;
+}
+
+/* .col-lg-6 authAlert {
+    text-align: center;
+
+} */
+
+.authAlert {
+    color: #FF8A3D;
+    font-family: "Google Sans",arial,sans-serif;
+    font-size: 12px;
+    letter-spacing: 0.25px;
+    text-align: center;
+    border: 1px solid rgb(239, 239, 239);
+    background: rgb(239, 239, 239);
+    width: auto;
+    height: 40px;
+    /* margin-left: 5px; */
 }
