@@ -21,7 +21,7 @@ const MannerModal = ({ onClose, id }) => {
       setError('하나를 선택하셔야 합니다.');
     } else {
       // Show loading state
-      setLoading(true);
+     
 
       // Check if the last praising was within the allowed time frame
       const lastPraisingTime = localStorage.getItem('lastPraisingTime');
@@ -31,24 +31,23 @@ const MannerModal = ({ onClose, id }) => {
         const timeDiff = currentDate.getTime() - lastPraisingDate.getTime();
         const hoursDiff = timeDiff / (1000 * 3600); // Convert milliseconds to hours
 
-        if (hoursDiff < 24) {
-          setError('하루에 한 번만 칭찬할 수 있습니다.');
-          setLoading(false);
-          return;
-        }
+        // if (hoursDiff < 24) {
+        //   setError('하루에 한 번만 칭찬할 수 있습니다.');
+        //   return;
+        // }
       }
-
+      setLoading(true);
       // Handle the submission of the selected option
       console.log('Selected Option:', selectedOption);
 
       // Calculate the manner score change based on the selected option
       let mannerScoreChange = 0;
       if (selectedOption === '아쉬워요') {
-        mannerScoreChange = -0.5;
+        mannerScoreChange = -1.0;
       } else if (selectedOption === '좋아요') {
-        mannerScoreChange = 0.5;
+        mannerScoreChange = 1.0;
       } else if (selectedOption === '매우 좋아요') {
-        mannerScoreChange = 1.5;
+        mannerScoreChange = 2.0;
       }
 
       // Pass the selected option and manner score change to the parent component or send them as userdata
@@ -73,7 +72,7 @@ const MannerModal = ({ onClose, id }) => {
 
       window.location.reload();
       // Hide the loading state
-      setLoading(false);
+        setLoading(false);
     }
   };
 

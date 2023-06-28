@@ -28,7 +28,7 @@ function SellerProfile({ params, history }) {
             const user = await getUserById(params._id); // 사용자 정보를 가져오는 API 호출 (예시)
             const mannerTemp = parseFloat(user.mannertmp);
             setMannerTemperature(mannerTemp);
-            console.log(params.mannertmp, '매너온도');
+            console.log(params.mannertmp, '매너온도파람매너');
             console.log(params.mannertmp, '매너온도');
         } catch (error) {
             console.error('Failed to fetch user data:', error);
@@ -82,7 +82,7 @@ function SellerProfile({ params, history }) {
         } else if (temperature >= 50 && temperature < 60) {
             return "https://kr.object.ncloudstorage.com/ncp3/ncp3/5.png";
         } else {
-            return null;
+            return "https://kr.object.ncloudstorage.com/ncp3/ncp3/5.png";
         }
     };
 
@@ -111,8 +111,10 @@ function SellerProfile({ params, history }) {
                             <img id="avatar" alt="avatar" src={params.avatar} />
                         </Col>
                         <Col id="profile_information" lg={2} md={3} sm={12}>
-                            <p><BsFillPersonFill /> {params.name}</p>
-                            <div id="tem_total">
+                            <p style={{ marginTop: '20px', fontWeight: 'bold' }}>
+                                <BsFillPersonFill /> {params.name}
+                            </p>
+                            <div id="tem_total2">
                                 <p style={{ float: 'left', fontWeight: 'bold', textDecoration: 'underline' }}>매너온도</p>
                                 <p style={{ marginBottom: '-1px', float: 'right', color: getFontColor(params.mannertmp) }}>{params.mannertmp}°C&nbsp;&nbsp;
                                     <img
@@ -137,10 +139,11 @@ function SellerProfile({ params, history }) {
                             {/* ... rest of the code ... */}
 
                             <div id="profile_infobtn">
-                                <button className="custom-button" onClick={handleshowCpt}>
+                                <button className="custom-button" style={{ marginLeft: '25px', marginTop: '50px' }} onClick={handleshowCpt}>
                                     매너 칭찬하기
                                 </button>
-                                
+
+
                             </div>
 
                             {/* ... rest of the code ... */}
@@ -153,7 +156,7 @@ function SellerProfile({ params, history }) {
                 </div>
             </div>
 
-            
+
 
 
 

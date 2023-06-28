@@ -4,30 +4,47 @@ import { GrEdit } from 'react-icons/gr';
 import { MdArchive } from 'react-icons/md'
 import { BsHeart, BsHeartFill } from 'react-icons/bs';
 import { Col, Row, Spinner, Tabs, Tab, Image, OverlayTrigger, Tooltip, Modal, Form, Button } from 'react-bootstrap';
-import { getAll, archiveSell, wishProduct, archiveSoldout, deleteProduct,declareProduct } from '../../../services/productData';
+import { getAll, archiveSell, wishProduct, archiveSoldout, deleteProduct, declareProduct } from '../../../services/productData';
 import ProductCard from "../../../components/ProductCard/ProductCard";
-import aImage from '../../Profile/profile_images/a.png'; // 이미지 파일 경로
-import bImage from '../../Profile/profile_images/b.png'; // 이미지 파일 경로
-import cImage from '../../Profile/profile_images/c.png'; // 이미지 파일 경로
-import dImage from '../../Profile/profile_images/d.png'; // 이미지 파일 경로
-import eImage from '../../Profile/profile_images/e.png'; // 이미지 파일 경로
 import { startChat, initializeSocket } from '../../../services/messagesData'; // startChat 함수와 socket 객체를 import합니다.
 import { RiMessage3Fill } from 'react-icons/ri';
 import { Context } from '../../../ContextStore'; // Context import
 import { Link, useHistory } from 'react-router-dom';
 import './ProductInfo.css';
 import { Carousel } from 'react-bootstrap'
+import { getUserById } from '../../../services/userData';
 
-function ProductInfo({ params }) {
 
-  const declareHandler = (e) =>{
+function ProductInfo({ params, user }) {
+  const [mannerTemperature, setMannerTemperature] = useState(null);
+
+  useEffect(() => {
+    fetchUserData(params.seller);
+  }, [params.seller]);
+
+  const fetchUserData = async (user) => {
+    try {
+      const userData = await getUserById(params.seller);
+      console.log(userData.user, '여기는 유저 불러온 데이터');
+      const mannerTemp = parseFloat(userData.user.mannertmp);
+      setMannerTemperature(mannerTemp);
+      console.log(mannerTemp, '매너온도');
+
+      // Rest of your code...
+    } catch (error) {
+      console.error('Failed to fetch user data:', error);
+    }
+  };
+
+
+  const declareHandler = (e) => {
 
     const declareproduct = e.target.value;
 
-    console.log('ProductInfo'+declareproduct);
+    console.log('ProductInfo' + declareproduct);
 
     declareProduct(declareproduct);
-   
+
 
   }
 
@@ -39,7 +56,7 @@ function ProductInfo({ params }) {
   const [showArchive, setShowArchive] = useState(false);
   const [showArchive2, setShowArchive2] = useState(false);
   const images = params && params.image ? params.image : [];
-  
+
   const history = useHistory();
 
   const handleClose = () => setShowMdg(false);
@@ -47,34 +64,34 @@ function ProductInfo({ params }) {
 
   const handleCloseArchive = () => setShowArchive(false);
   const handleShowArchive = () => setShowArchive(true);
-  
+
   const handleCloseArchive2 = () => setShowArchive2(false);
   const handleShowArchive2 = () => setShowArchive2(true);
 
   const handleSubmit = (e) => {
     console.log('handleSubmit called')
-      e.preventDefault();
-      console.log('handleSubmit called2')
-      archiveSell(params._id)
-          .then(res => {
-            console.log('handleSubmit called3')
-              setShowArchive(false);
-              history.push(`/profile/${params.seller}`);
-          })
-          .catch(err => console.log(err))
+    e.preventDefault();
+    console.log('handleSubmit called2')
+    archiveSell(params._id)
+      .then(res => {
+        console.log('handleSubmit called3')
+        setShowArchive(false);
+        history.push(`/profile/${params.seller}`);
+      })
+      .catch(err => console.log(err))
   }
 
   const handleSubmit2 = (e) => {
     console.log('handleSubmit2 called')
-      e.preventDefault();
-      console.log('handleSubmit2 called2')
-      archiveSoldout(params._id)
-          .then(res => {
-            console.log('handleSubmit called3')
-              setShowArchive2(false);
-              history.push(`/profile/${params.seller}`);
-          })
-          .catch(err => console.log(err))
+    e.preventDefault();
+    console.log('handleSubmit2 called2')
+    archiveSoldout(params._id)
+      .then(res => {
+        console.log('handleSubmit called3')
+        setShowArchive2(false);
+        history.push(`/profile/${params.seller}`);
+      })
+      .catch(err => console.log(err))
   }
 
   useEffect(() => {
@@ -159,7 +176,7 @@ function ProductInfo({ params }) {
     } else if (temperature >= 50 && temperature < 60) {
       return "https://kr.object.ncloudstorage.com/ncp3/ncp3/5.png";
     } else {
-      return null;
+      return "https://kr.object.ncloudstorage.com/ncp3/ncp3/5.png";
     }
   };
 
@@ -217,21 +234,21 @@ function ProductInfo({ params }) {
   // const history = useHistory();
   const { userData } = useContext(Context);
   const [socket, setSocket] = useState(null);
-  
+
   useEffect(() => {
     const initSocket = async () => {
       const socket = await initializeSocket();
       setSocket(socket);
-  
+
       socket.on('startChat', ({ chatId }) => {
         history.push(`/messages/${chatId}`);
       });
     };
-  
+
     initSocket();
   }, []);
 
-  
+
   const onChatStart = async (e) => {
     e.preventDefault();
     if (!socket) return;
@@ -254,7 +271,7 @@ function ProductInfo({ params }) {
 
 
   function sendLinkCustom() {
-    
+
     if (window.Kakao) {
       window.Kakao.Link.sendCustom({
         templateId: 94886
@@ -291,50 +308,50 @@ function ProductInfo({ params }) {
 
   return (
     <div className="d-flex flex-column align-items-center">
-    <Carousel style={{ transition: 'transform 0.5s ease-in-out' }}>
-      {images.map((img, index) => (
-        <Carousel.Item key={index}>
-          <div style={{ display: 'flex', justifyContent: 'center' }}>
-          <img
-            className="d-block"
-            style={{
-              objectFit: "cover",
-              maxWidth: "700px", // Set the desired maximum width
-              maxHeight: "500px", // Set the desired maximum height
-            }}
-            src={img}
-            alt={`Slide ${index + 1}`}
-            />
-          </div>
-        </Carousel.Item>
-      ))}
-    </Carousel>
+      <Carousel style={{ transition: 'transform 0.5s ease-in-out' }}>
+        {images.map((img, index) => (
+          <Carousel.Item key={index}>
+            <div style={{ display: 'flex', justifyContent: 'center' }}>
+              <img
+                className="d-block"
+                style={{
+                  objectFit: "cover",
+                  maxWidth: "700px", // Set the desired maximum width
+                  maxHeight: "500px", // Set the desired maximum height
+                }}
+                src={img}
+                alt={`Slide ${index + 1}`}
+              />
+            </div>
+          </Carousel.Item>
+        ))}
+      </Carousel>
 
       <section id="profile">
         <div id="space-between">
           <div style={{ display: 'flex' }}>
-            <Link to={ `/profile/${params.sellerId}` }>
+            <Link to={`/profile/${params.sellerId}`}>
               <div id='profile_image'>
-                <img id="avatar" src={ params.avatar } alt="user-avatar" />
+                <img id="avatar" src={params.avatar} alt="user-avatar" />
               </div>
             </Link>
             <div id="profile_left">
-              <Link to={ `/profile/${params.sellerId}` }>
-                <div id="nickname">{ params.name }</div>
+              <Link to={`/profile/${params.sellerId}`}>
+                <div id="nickname">{params.name}</div>
               </Link>
-              <div id="profile_address">{ params.city }</div>
+              <div id="profile_address">{params.city}</div>
               <div id="content_UpDel">
-                { params.isSeller && (
+                {params.isSeller && (
                   <>
                     <OverlayTrigger placement="top" overlay={<Tooltip>상품 보관함 이동</Tooltip>}>
-                    <Button variant="primary" size="sm" style={{ backgroundColor: '#FF7E36', borderColor: 'orange', color: 'white' }} onClick={handleShowArchive}>
-                      <Link to={<MdArchive />}>보관함</Link>
-                    </Button>
+                      <Button variant="primary" size="sm" style={{ backgroundColor: '#FF7E36', borderColor: 'orange', color: 'white' }} onClick={handleShowArchive}>
+                        <Link to={<MdArchive />}>보관함</Link>
+                      </Button>
                     </OverlayTrigger>
                     <span className="link-spacing"></span>
                     <OverlayTrigger placement="top" overlay={<Tooltip>판매 완료</Tooltip>} >
-                      <Button variant="primary" size="sm" style={{ backgroundColor: '#FF7E36', borderColor: 'orange', color: 'white' }} onClick={ handleShowArchive2 }>
-                      <Link to={<MdArchive />}>판매 완료</Link>
+                      <Button variant="primary" size="sm" style={{ backgroundColor: '#FF7E36', borderColor: 'orange', color: 'white' }} onClick={handleShowArchive2}>
+                        <Link to={<MdArchive />}>판매 완료</Link>
                         {/* <Link to="/archived-sells">
                           &nbsp;&nbsp;판매완료
                         </Link> */}
@@ -343,62 +360,62 @@ function ProductInfo({ params }) {
                     <span className="link-spacing"></span>
 
 
-                    <OverlayTrigger placement="top" overlay={ <Tooltip>상품 수정하기</Tooltip>} >
+                    <OverlayTrigger placement="top" overlay={<Tooltip>상품 수정하기</Tooltip>} >
 
                       <span id="archive-icon2">
-                      <Link to={`/categories/${params.category}/${params._id}/edit`}>게시글 수정하기</Link>
+                        <Link to={`/categories/${params.category}/${params._id}/edit`}>게시글 수정하기</Link>
                       </span>
 
 
-                    </OverlayTrigger> 
+                    </OverlayTrigger>
 
 
                     <span className="link-spacing"></span>
 
-                   
-                    <OverlayTrigger placement="top" overlay={ <Tooltip>상품 삭제하기</Tooltip>} >
 
-                    <span id="deleteProduct">
-                      <button onClick={ handleDelPro }>게시글 삭제하기</button>
-                     </span>
+                    <OverlayTrigger placement="top" overlay={<Tooltip>상품 삭제하기</Tooltip>} >
+
+                      <span id="deleteProduct">
+                        <button onClick={handleDelPro}>게시글 삭제하기</button>
+                      </span>
                     </OverlayTrigger>
                   </>
                 )}
-                
-                <Modal show={ showArchive } onHide={ handleCloseArchive }>
-                <Modal.Header closeButton>
+
+                <Modal show={showArchive} onHide={handleCloseArchive}>
+                  <Modal.Header closeButton>
                     <Modal.Title>보관함으로 이동하시겠습니까???</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                   보관함에 넣어두어도 언제든 다시 재판매 가능합니다!!
-                </Modal.Body>
-                <Modal.Footer>
+                  </Modal.Header>
+                  <Modal.Body>
+                    보관함에 넣어두어도 언제든 다시 재판매 가능합니다!!
+                  </Modal.Body>
+                  <Modal.Footer>
                     <Button variant="secondary" onClick={handleCloseArchive}>
-                        닫기
+                      닫기
                     </Button>
                     <Button variant="success" onClick={handleSubmit}>
-                        보관함에 보관
+                      보관함에 보관
                     </Button>
-                </Modal.Footer>
-              </Modal>
+                  </Modal.Footer>
+                </Modal>
 
 
-              <Modal show={ showArchive2 } onHide={ handleCloseArchive2 }>
-                <Modal.Header closeButton>
+                <Modal show={showArchive2} onHide={handleCloseArchive2}>
+                  <Modal.Header closeButton>
                     <Modal.Title>판매완료 되었습니까???</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
+                  </Modal.Header>
+                  <Modal.Body>
                     정말 판매가 완료된 상품인지 확인하시오
-                </Modal.Body>
-                <Modal.Footer>
+                  </Modal.Body>
+                  <Modal.Footer>
                     <Button variant="secondary" onClick={handleCloseArchive2}>
-                        닫기
+                      닫기
                     </Button>
                     <Button variant="success" onClick={handleSubmit2}>
-                        판매 완료
+                      판매 완료
                     </Button>
-                </Modal.Footer>
-              </Modal>
+                  </Modal.Footer>
+                </Modal>
 
               </div>
             </div>
@@ -406,26 +423,22 @@ function ProductInfo({ params }) {
 
           <div id="profile_right">
             <div id="tem_total">
-              <p id="tem_total_txt">매너온도</p>
-              <div className='meters'>
-                <p id="tem_total_cnt" style={{ marginBottom: '-1px', float: 'right', color: getFontColor(36.5) }}>
-                  {36.5}°C
-                </p>
-                {/* <p id="tem_total_img">
-                  <img
-                    src={getMannerTemperatureImage(36.5)}
-                    alt="이미지 사진"
-                    style={{ width: '25px', height: '25px' }}
-                  />
-                </p> */}
-              </div>
-              <div className="manner-thermometer" style={{ width: '100%' }}>
-                <div className="manner-thermometer-fill" style={getMannerTemperatureStyle(36.5)}></div>
+              <p style={{ float: 'left', fontWeight: 'bold', textDecoration: 'underline' }}>매너온도</p>
+              <p style={{ marginBottom: '-1px', float: 'right', color: getFontColor(parseInt(mannerTemperature) + 0) }}>{(mannerTemperature)}°C&nbsp;&nbsp;
+
+                <img
+                  src={getMannerTemperatureImage(mannerTemperature)}
+                  alt="이미지 사진"
+                  style={{ width: '25px', height: '25px' }}
+                />
+              </p>
+              <div className="manner-thermometer" style={{ marginBottom: '10px' }}>
+                <div className="manner-thermometer-fill" style={getMannerTemperatureStyle(mannerTemperature)}></div>
               </div>
             </div>
           </div>
 
-        {/* <dl id="manner_temper">
+          {/* <dl id="manner_temper">
           <dt>매너온도</dt>
           <dd className="text-color">75<span>°C</span></dd>
         </dl>
@@ -437,16 +450,16 @@ function ProductInfo({ params }) {
       </section>
 
       <section id='content'>
-        <h1 id='content_title'>{ params.title }</h1>
-        <p id='content_category'>{ params.category } · <time>{displayCreateAt(params.addedAt)}</time></p>
+        <h1 id='content_title'>{params.title}</h1>
+        <p id='content_category'>{params.category} · <time>{displayCreateAt(params.addedAt)}</time></p>
         <p id='content_price'>{params.price ? params.price.toLocaleString() : ''}원</p>
-        <p id='content_main'>{ params.description }</p>
-        <p id='content_cnt'> 관심 ♥ { params.likes } · 채팅 갯수 · 조회 수 { params.views } </p>
+        <p id='content_main'>{params.description}</p>
+        <p id='content_cnt'> 관심 ♥ {params.likes} · 채팅 갯수 · 조회 수 {params.views} </p>
         <div id='content_button'>
           {params.isAuth ? (
             <>
               {!params.isSeller && (
-                <Button variant="primary" style={{ backgroundColor: 'orange', borderColor: 'orange', color: 'white' }} className="col-lg-9" id="btnContact" onClick={ onChatStart }>
+                <Button variant="primary" style={{ backgroundColor: 'orange', borderColor: 'orange', color: 'white' }} className="col-lg-9" id="btnContact" onClick={onChatStart}>
                   <RiMessage3Fill />채팅하기
                 </Button>
               )}
@@ -459,10 +472,10 @@ function ProductInfo({ params }) {
           <span>
             <a id="kakaotalk-sharing-btn" href="javascript:;" onClick={sendLinkDefault}>
               <img
-                  src="https://developers.kakao.com/assets/img/about/logos/kakaotalksharing/kakaotalk_sharing_btn_medium.png"
-                  style={{ width: "50px", height: "50px", marginLeft: '15px', marginBottom: '45px' }}
-                  alt="카카오톡 공유 보내기 버튼"
-                />
+                src="https://developers.kakao.com/assets/img/about/logos/kakaotalksharing/kakaotalk_sharing_btn_medium.png"
+                style={{ width: "50px", height: "50px", marginLeft: '15px', marginBottom: '45px' }}
+                alt="카카오톡 공유 보내기 버튼"
+              />
             </a>
           </span>
           {!params.isSeller && (
@@ -484,15 +497,15 @@ function ProductInfo({ params }) {
           )}
 
 
-           <div>
+          <div>
             {/* <button onClick={sendLinkCustom}>Send Custom Link</button> */}
-                <button className="kakao-button" onClick = {sendLinkDefault}>카카오 공유하기</button>
-                <button className='declare-button' value={params._id} onClick={declareHandler} >신고하기</button>
-               
+            <button className="kakao-button" onClick={sendLinkDefault}>카카오 공유하기</button>
+            <button className='declare-button' value={params._id} onClick={declareHandler} >신고하기</button>
 
-            </div>
 
-            </div>
+          </div>
+
+        </div>
 
 
 
@@ -506,9 +519,9 @@ function ProductInfo({ params }) {
         </div>
         <div id='container'>
           <InfiniteScroll
-            dataLength={ products.length }
-            next={ fetchMoreData }
-            hasMore= {true }
+            dataLength={products.length}
+            next={fetchMoreData}
+            hasMore={true}
             className="row"
           >
             <Row>
