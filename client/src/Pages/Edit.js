@@ -33,18 +33,36 @@ const Edit= ({ match, history }) => {
 
     useEffect(() => {
         window.scrollTo(0, 0);
-        getSpecific(productId)
-            .then(res => setProduct(res))
-            .catch(err => console.log(err));
+        // getSpecific(productId)
+        //     .then(res => setProduct(res))
+        //     .catch(err => console.log(err));
  
-            setTitle(product.title)
-            setPrice(product.price)    
-            setDescription(product.description)    
-            setCity(product.city)    
-            setCategory(product.category)    
-        }, [productId])
+        //     setTitle(product.title)
+        //     setPrice(product.price)
+        //     setDescription(product.description)
+        //     setCity(product.city)
+        //     setCategory(product.category)
+        //     setImage([...product.image])
+        const fetchData = async () => {
+            try {
+              const res = await getSpecific(productId);
+              setProduct(res);
         
-    setImage([...product.image])    
+              setTitle(res.title);
+              setPrice(res.price);
+              setDescription(res.description);
+              setCity(res.city);
+              setCategory(res.category);
+              setImage([...res.image]);
+            } catch (err) {
+              console.log(err);
+            }
+          };
+        
+          fetchData();
+
+        }, [productId])
+    
 
     // let { _id, title, price, description, city, category, image } = product;
 
@@ -138,36 +156,36 @@ const Edit= ({ match, history }) => {
         e.preventDefault();
         let obj = { title, price, description, city, category }
         setLoading(true);
-        if (typeof image == 'object') {
+        // if (typeof image == 'object') {
             // getBase64(image)
             //     .then((data) => {
-                    obj['image'] = image;
-                    editProduct(_id, obj)
-                        .then(res => {
-                            if (!res.error) {
-                                history.push(`/categories/${category}/${_id}/details`)
-                            } else {
-                                setLoading(false);
-                                setError(res.error);
-                                setAlertShow(true);
-                            }
-                        })
-                        .catch(err => console.error('edit product err: ', err))
+        obj['image'] = image;
+        editProduct(_id, obj)
+            .then(res => {
+                if (!res.error) {
+                    history.push(`/categories/${category}/${_id}/details`)
+                } else {
+                    setLoading(false);
+                    setError(res.error);
+                    setAlertShow(true);
+                }
+            })
+        .catch(err => console.error('edit product err: ', err))
                 // })
-                .catch(err => console.log('base64 error: ', err));
-        } else {
-            editProduct(_id, obj)
-                .then(res => {
-                    if (!res.error) {
-                        history.push(`/categories/${category}/${_id}/details`)
-                    } else {
-                        setLoading(false);
-                        setError(res.error);
-                        setAlertShow(true);
-                    }
-                })
-                .catch(err => console.error('edit product err: ', err))
-        }
+                // .catch(err => console.log('base64 error: ', err));
+        // } else {
+        //     editProduct(_id, obj)
+        //         .then(res => {
+        //             if (!res.error) {
+        //                 history.push(`/categories/${category}/${_id}/details`)
+        //             } else {
+        //                 setLoading(false);
+        //                 setError(res.error);
+        //                 setAlertShow(true);
+        //             }
+        //         })
+        //         .catch(err => console.error('edit product err: ', err))
+        // }
     }
 
     const getBase64 = (file) => {
