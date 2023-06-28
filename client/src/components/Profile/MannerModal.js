@@ -31,10 +31,10 @@ const MannerModal = ({ onClose, id }) => {
         const timeDiff = currentDate.getTime() - lastPraisingDate.getTime();
         const hoursDiff = timeDiff / (1000 * 3600); // Convert milliseconds to hours
 
-        // if (hoursDiff < 24) {
-        //   setError('하루에 한 번만 칭찬할 수 있습니다.');
-        //   return;
-        // }
+        if (hoursDiff < 24) {
+          setError('하루에 한 번만 칭찬할 수 있습니다.');
+          return;
+        }
       }
       setLoading(true);
       // Handle the submission of the selected option
