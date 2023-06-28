@@ -10,6 +10,7 @@ import './Header.css';
 import LoginModal from '../Modal/LoginModal';
 import RegisterModal from '../Modal/RegisterModal';
 import Register from '../../Pages/Register';
+import url from "../../url.js";
 
 function Header() {
     const [isSticky, setIsSticky] = useState(false);
@@ -37,6 +38,129 @@ function Header() {
     const handleSearch = (e) => {
         setQuery(e.target.value);
     };
+    const [stream, setStream] = useState();
+    const [media, setMedia] = useState();
+    const [onRec, setOnRec] = useState(true);
+    const [source, setSource] = useState();
+    const [analyser, setAnalyser] = useState();
+    const [audioUrl, setAudioUrl] = useState();
+    const [disabled, setDisabled] = useState(true); // 😀😀😀
+
+    const onRecAudio = () => {
+
+        setDisabled(true) // 😀😀😀
+
+        // 음원정보를 담은 노드를 생성하거나 음원을 실행또는 디코딩 시키는 일을 한다
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        // 자바스크립트를 통해 음원의 진행상태에 직접접근에 사용된다.
+        const analyser = audioCtx.createScriptProcessor(0, 1, 1);
+        setAnalyser(analyser);
+
+        function makeSound(stream) {
+            // 내 컴퓨터의 마이크나 다른 소스를 통해 발생한 오디오 스트림의 정보를 보여준다.
+            const source = audioCtx.createMediaStreamSource(stream);
+            setSource(source);
+            source.connect(analyser);
+            analyser.connect(audioCtx.destination);
+        }
+        // 마이크 사용 권한 획득
+        navigator.mediaDevices.getUserMedia({ audio: true }).then((stream) => {
+            const mediaRecorder = new MediaRecorder(stream);
+            mediaRecorder.start();
+            setStream(stream);
+            setMedia(mediaRecorder);
+            makeSound(stream);
+
+            analyser.onaudioprocess = function (e) {
+                // 3분(180초) 지나면 자동으로 음성 저장 및 녹음 중지
+                if (e.playbackTime > 180) {
+                    stream.getAudioTracks().forEach(function (track) {
+                        track.stop();
+                    });
+                    mediaRecorder.stop();
+                    // 메서드가 호출 된 노드 연결 해제
+                    analyser.disconnect();
+                    audioCtx.createMediaStreamSource(stream).disconnect();
+
+                    mediaRecorder.ondataavailable = async function (e) {
+                        const reader = new FileReader();
+                        reader.onload = function (event) {
+                            const audioData = event.target.result.split(",")[1]; // Base64 데이터 추출
+                            fetchAudioData(audioData); // Base64 데이터를 서버로 전송
+                        };
+                        reader.readAsDataURL(e.data);
+                        setOnRec(true);
+                    };
+                } else {
+                    setOnRec(false);
+                }
+            };
+        });
+    };
+
+
+    const offRecAudio = () => {
+        media.ondataavailable = async (e) => {
+            const reader = new FileReader();
+            reader.onload = function (event) {
+                const audioData = event.target.result.split(",")[1]; // Base64 데이터 추출
+                fetchAudioData(audioData); // Base64 데이터를 서버로 전송
+            };
+            reader.readAsDataURL(e.data);
+            setOnRec(true);
+        };
+
+        // 모든 트랙에서 stop()을 호출해 오디오 스트림을 정지
+        stream.getAudioTracks().forEach(function (track) {
+            track.stop();
+        });
+
+        // 미디어 캡처 중지
+        media.stop();
+
+        // 메서드가 호출 된 노드 연결 해제
+        analyser.disconnect();
+        source.disconnect();
+
+        if (audioUrl) {
+            URL.createObjectURL(audioUrl); // 출력된 링크에서 녹음된 오디오 확인 가능
+        }
+
+        // File 생성자를 사용해 파일로 변환
+        const sound = new File([audioUrl], "soundBlob", {
+            lastModified: new Date().getTime(),
+            type: "audio",
+        });
+
+        // 😀😀😀
+        setDisabled(false);
+        console.log(sound); // File 정보 출력
+    };
+
+    const fetchAudioData = async (audioData) => {
+        try {
+            const response = await fetch(`${url}/sttapi`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ audioData }),
+            });
+            const data = await response.json();
+            console.log(data);
+            // 처리된 데이터 사용 또는 다른 작업 수행
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    const play = () => {
+        const audio = new Audio(URL.createObjectURL(audioUrl)); // 😀😀😀
+        audio.loop = false;
+        audio.volume = 1;
+        audio.play();
+    };
+
 
     useEffect(() => {
         const handleScroll = () => {
@@ -60,68 +184,6 @@ function Header() {
         }
     }
 
-    const handleRecordButtonClick = () => {
-        navigator.mediaDevices.getUserMedia({ audio: true })
-            .then((stream) => {
-                const mediaRecorder = new MediaRecorder(stream);
-                const audioChunks = [];
-
-                mediaRecorder.addEventListener("dataavailable", (event) => {
-                    audioChunks.push(event.data);
-                });
-
-                mediaRecorder.addEventListener("stop", () => {
-                    const audioBlob = new Blob(audioChunks, { type: "audio/mp3" });
-                    const audioUrl = URL.createObjectURL(audioBlob);
-
-                    // .mp3 파일을 저장한 후에 STT API를 호출하여 텍스트로 변환
-                    const language = "Kor"; // 언어 코드 (Kor, Jpn, Eng, Chn)
-
-                    // STT API 호출
-                    convertAudioToText(audioBlob, language);
-                });
-
-                const recordingTime = 5000;
-
-                mediaRecorder.start();
-                setTimeout(() => {
-                    mediaRecorder.stop();
-                }, recordingTime);
-            })
-            .catch((error) => {
-                console.error("Error accessing microphone:", error);
-            });
-    };
-
-    const convertAudioToText = (audioBlob, language) => {
-        const url = `https://naveropenapi.apigw.ntruss.com/recog/v1/stt?lang=${language}`;
-        const requestConfig = {
-            url: url,
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/octet-stream',
-                'X-NCP-APIGW-API-KEY-ID': "v7x02wmg2r",
-                'X-NCP-APIGW-API-KEY': "TvLwgRyRGXnkS03SqfouYgkLoKN1PaUH128zrn41"
-            },
-            body: audioBlob
-        };
-
-        fetch(url, requestConfig)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('STT API Error');
-                }
-                return response.json();
-            })
-            .then(data => {
-                console.log(data);
-                setQuery(data.text);
-                history.push("/");
-            })
-            .catch(error => {
-                console.error("Error converting audio to text:", error);
-            });
-    };
 
     return (
         <Navbar collapseOnSelect bg="light" variant="light" className={isSticky ? 'sticky' : ''}>
@@ -144,10 +206,12 @@ function Header() {
                         alt="음성 검색"
                         className="voice-search-icon"
                         onClick={() => {
+                            // onRec ? onRecAudio : offRecAudio
                             console.log("음성클릭")
-                            handleRecordButtonClick()
                         }}
                     />
+                    <button onClick={onRec ? onRecAudio : offRecAudio}>녹음</button>
+                    <button onClick={play} disabled={disabled}>재생</button>
                     {userData ?
                         (<Nav>
                             <NavLink className="nav-item" id="addButton" to="/add-product">
@@ -172,13 +236,13 @@ function Header() {
                                     <BsFillEnvelopeFill />Messages
                                 </NavLink>
 
-                            {userData.role === "admin" &&
-                                <NavLink className="dropdown-item" to="/admin">
+                                {userData.role === "admin" &&
+                                    <NavLink className="dropdown-item" to="/admin">
                                         <BsPeopleFill />Admin
-                                </NavLink>
-                            }
+                                    </NavLink>
+                                }
 
-                            <NavDropdown.Divider />
+                                <NavDropdown.Divider />
                                 <NavLink className="dropdown-item" to="/auth/logout" onClick={() => {
                                     setUserData(null)
                                 }}>
@@ -195,9 +259,9 @@ function Header() {
                                 }
                             </div>
                             <div>
-                            <button className='nav-item' id="nav-sign-in" onClick={onOpenRegister}>회원가입</button>
+                                <button className='nav-item' id="nav-sign-in" onClick={onOpenRegister}>회원가입</button>
                                 {
-                                    isOpenRegister && <RegisterModal onCloseRegister={onCloseRegister}/>
+                                    isOpenRegister && <RegisterModal onCloseRegister={onCloseRegister} />
                                 }
                             </div>
                             {/* 추후 삭제 */}
@@ -207,7 +271,7 @@ function Header() {
                             </NavLink>
                             <NavLink className="nav-item " id="nav-sign-up" to="/auth/register">
                                 회원가입
-                            </NavLink>*/} 
+                            </NavLink>*/}
                         </Nav>)
                     }
                 </Navbar.Collapse>

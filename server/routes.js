@@ -6,6 +6,7 @@ const imageTest = require("./controllers/imageTestController");
 const review = require("./controllers/reviewController");
 const isAuth = require("./middlewares/isAuth");
 const admin = require("./controllers/adminController");
+const sttapi = require("./controllers/sttapi")
 const AiTest = require("./services/AiTest")
 
 
@@ -23,4 +24,6 @@ router.use("/admin",admin);
 router.use("/imageTest",imageTest);
 router.use("/review",review);
 router.use("/AiTest", AiTest);
+router.use("/sttapi",sttapi);
+
 module.exports = router;
