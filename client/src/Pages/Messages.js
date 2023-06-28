@@ -419,7 +419,9 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
 
     // 채팅방을 클릭했을 때
     const handleChatRoomClick = (chatId) => {
-        readMessages(socket, { chatId, userId:myId });
+         if (!userData._id) {console.error('userData._id is not defined'); return;}
+        socket.emit('enterChatRoom', { chatId, userId: userData._id });
+        readMessages(socket, { chatId, userId: userData._id });
         setIsSelected(true);
         setSelected(chatroomList.find(room => room.chats._id === chatId));
     };

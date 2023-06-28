@@ -138,10 +138,14 @@ function Header() {
             
             socket.emit("getUserConversations", {userId:userData._id});
     
-            socket.on ('userConversations',(userChats) => { // 초기 알림 상태 설정
+            socket.on ('userConversations',(userChats) => {
                 // console.log('userConversations',userChats);
                 const initialNotifications = userChats.reduce((acc, cur) => {
-                    acc[cur.chats._id] = cur.notificationMessages;
+                    if(cur.isBuyer){
+                        acc[cur.chats._id] = cur.chats.notificationMessages_buyer;
+                    } else {
+                        acc[cur.chats._id] = cur.chats.notificationMessages_seller;
+                    }
                     return acc;
                 },{});
                 setNotifications(initialNotifications);
@@ -168,6 +172,15 @@ function Header() {
             }
         };
     }, [userData]);
+
+
+    useEffect(() => {
+        if (!socket) return;
+        socket.on('readMessagesUpdate', ({ chatId }) => {
+            setNotifications(prev => ({ ...prev, [chatId]: 0 }));
+        });
+    },[socket])
+
 
 
     return (

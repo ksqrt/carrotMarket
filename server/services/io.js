@@ -17,11 +17,18 @@ function Io(server) {
     }
   });
   
+  let activeUsers = {}; // 채팅방:사용자 추적 , socket.to를 썼다면...
 
   io.on("connection", (socket) => { //socket 변수 = socket.io에서 제공하는 것 
     // console.log("socket.io connected");
 
-    
+    socket.on('enterChatRoom', ({chatId, userId}) => {
+      activeUsers[userId] = chatId;
+      socket.userId = userId;
+      // console.log("채팅방 안에 있냐? : ", activeUsers, socket.userId);
+
+    });
+
     socket.on("startChat", async ({buyerId, sellerId, productId}) => { // 클라이언트에서 받을 내용 buyerId = buyer._id 될듯.
       let chatRoom = buyerId !== sellerId && await ChatRoom.findOne({ buyer: buyerId, seller: sellerId, product: productId }) || new ChatRoom({ buyer: buyerId, seller: sellerId, product: productId });
       await chatRoom.save();
@@ -36,9 +43,9 @@ function Io(server) {
       
       const chatRoom = await ChatRoom.findOne({ _id: chatId });
       let NotificationIncrease = {};
-      if (chatRoom.buyer.equals(senderId)) { 
+      if (chatRoom.buyer.equals(senderId) && activeUsers[senderId] !== chatId) { 
         NotificationIncrease = { notificationMessages_seller: 1 };
-      } else if (chatRoom.seller.equals(senderId)) {  
+      } else if (chatRoom.seller.equals(senderId) && activeUsers[senderId] !== chatId) {  
         NotificationIncrease = { notificationMessages_buyer: 1 };
       }
       const updatedChatRoom = await ChatRoom.findOneAndUpdate({ _id: chatId },{ $push: { conversation: newMessage }, $inc: NotificationIncrease },{ new: true });      
@@ -68,6 +75,7 @@ function Io(server) {
         NotificationRead = { notificationMessages_seller: 0 };
       }
       await ChatRoom.updateOne({ _id: chatId }, { $set: NotificationRead });
+      io.emit("readMessagesUpdate", { chatId, NotificationRead });
       // console.log("User ID: ", userId);
       // console.log("Chat Room Buyer ID: ", chatRoom.buyer);
       // console.log("Chat Room Seller ID: ", chatRoom.seller);
@@ -124,7 +132,17 @@ function Io(server) {
       io.emit("TradeCompleted", { chatId, productId });
     });
 
-
+    let activeChatRooms = {};
+    
+    socket.on("enterChatRoom", ({ chatId, userId }) => {
+      activeChatRooms[userId] = chatId;
+    });
+    
+    socket.on("leaveChatRoom", ({ chatId, userId }) => {
+      if (activeChatRooms[userId] === chatId) {
+        delete activeChatRooms[userId];
+      }
+    });
 
     socket.on("getUserConversations", async ({ userId }) => {
       // $or : 주어진 배열 내의 조건 중 하나라도 참이면 참으로 간주 buyer 또는 seller에 userId가 있는 경우에 참. 전부 가져옴.
@@ -133,11 +151,15 @@ function Io(server) {
         chats: x, 
         isBuyer: (x.buyer?._id == userId), 
         myId: userId, 
-        notificationMessages: x.buyer?._id == userId ? x.notificationMessages_seller : x.notificationMessages_buyer 
       })));    
     });
   
-    socket.on("disconnect", () => console.log("socket disconnected"));
+    socket.on("disconnect", () => {
+      console.log("socket disconnected")
+      delete activeUsers[socket.userId];
+      // console.log("감? : ", activeUsers);
+
+    });
   });
   return io;
 }
