@@ -327,3 +327,4 @@ article img {
 .messageInButton:hover {
   background-color: #FF7E36;
 }
+section > .flex {width: 300px; height: 200px;}
