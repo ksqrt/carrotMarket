@@ -513,13 +513,13 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
                                              
                                             <button className={`${styles['menu-item']} ${styles.green}`} onClick={openDateTimePicker}> <AiOutlineSchedule size={23} style={{marginBottom:'7px'}} /> </button>
                                             
-                                            <button type="button" className={`${styles['menu-item']} ${styles.blue}`} style={{display: "none"}} onClick={() => document.getElementById("uploadInput").click()}> 
+                                            <button className={`${styles['menu-item']} ${styles.purple}`} style={{display: "none"}}> </button>
+                                            <button className={`${styles['menu-item']} ${styles.orange}`} style={{display: "none"}}>  </button>
+
+                                            <button type="button" className={`${styles['menu-item']} ${styles.blue}`} onClick={() => document.getElementById("uploadInput").click()}> 
                                                 <input type="file" name='image' id="uploadInput" onChange={e => setFile(e.target.files[0])} style={{display: 'none'}} />
                                                 <AiOutlineUpload className="upload-icon" size={25} style={{marginBottom:'7px'}} /> 
                                             </button>
-
-                                            <button className={`${styles['menu-item']} ${styles.purple}`} style={{display: "none"}}> </button>
-                                            <button className={`${styles['menu-item']} ${styles.orange}`} style={{display: "none"}}>  </button>
 
                                             {/* 이모티콘 */}
                                             <button className={`${styles['menu-item']} ${styles.red}`}
