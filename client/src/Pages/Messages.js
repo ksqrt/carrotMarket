@@ -502,21 +502,6 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
                                             <label className={styles['menu-open-button']} htmlFor="menu-open">
                                                 <UseAnimations className="plusToX" animation={plusToX} size={40} />
                                             </label>
-
-                                            <button type="button" className={`${styles['menu-item']} ${styles.blue}`} onClick={() => document.getElementById("uploadInput").click()}> 
-                                                <input type="file" name='image' id="uploadInput" onChange={e => setFile(e.target.files[0])} style={{display: 'none'}} />
-                                                <AiOutlineUpload className="upload-icon" size={25} style={{marginBottom:'7px'}} /> 
-                                            </button>
-                                            <button className={`${styles['menu-item']} ${styles.green}`} onClick={openDateTimePicker}> <AiOutlineSchedule size={23} style={{marginBottom:'7px'}} /> </button>
-                                            {/* 이모티콘 */}
-                                            <button className={`${styles['menu-item']} ${styles.red}`}
-                                                onClick={handleEmojiPickerToggle}> 
-                                                <div style={{fontSize:'16px', marginBottom:'7px'}} >🤗</div> 
-                                            </button>
-                                            
-                                        
-                                            <button className={`${styles['menu-item']} ${styles.purple}`}> </button>
-                                            <button className={`${styles['menu-item']} ${styles.orange}`}>  </button>
                                             <button type="button" className={`${styles['menu-item']} ${styles.lightblue}`} onClick={ handleShow }> <FaMapMarkedAlt size={20} style={{marginBottom:'8px'}} /> {/*{console.log('modalstate 값 확인 : ',modalState)}*/} </button>
                                             {handleShow && (
                                                 <Modal show={show} onHide={handleClose}>
@@ -525,6 +510,22 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
                                                 </div>
                                                 </Modal>
                                             )}
+                                             
+                                            <button className={`${styles['menu-item']} ${styles.green}`} onClick={openDateTimePicker}> <AiOutlineSchedule size={23} style={{marginBottom:'7px'}} /> </button>
+                                            
+                                            <button type="button" className={`${styles['menu-item']} ${styles.blue}`} style={{display: "none"}} onClick={() => document.getElementById("uploadInput").click()}> 
+                                                <input type="file" name='image' id="uploadInput" onChange={e => setFile(e.target.files[0])} style={{display: 'none'}} />
+                                                <AiOutlineUpload className="upload-icon" size={25} style={{marginBottom:'7px'}} /> 
+                                            </button>
+
+                                            <button className={`${styles['menu-item']} ${styles.purple}`} style={{display: "none"}}> </button>
+                                            <button className={`${styles['menu-item']} ${styles.orange}`} style={{display: "none"}}>  </button>
+
+                                            {/* 이모티콘 */}
+                                            <button className={`${styles['menu-item']} ${styles.red}`}
+                                                onClick={handleEmojiPickerToggle}> 
+                                                <div style={{fontSize:'16px', marginBottom:'7px'}} >🤗</div> 
+                                            </button>
                                             
                                             </nav>
                                                 {/* <input type="file" id="file-upload" style={{ display: 'none' }}/> */}
