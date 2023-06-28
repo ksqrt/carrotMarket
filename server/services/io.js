@@ -19,7 +19,7 @@ function Io(server) {
   
 
   io.on("connection", (socket) => { //socket 변수 = socket.io에서 제공하는 것 
-    console.log("socket.io connected");
+    // console.log("socket.io connected");
 
     
     socket.on("startChat", async ({buyerId, sellerId, productId}) => { // 클라이언트에서 받을 내용 buyerId = buyer._id 될듯.
@@ -52,10 +52,10 @@ function Io(server) {
       }
 
 
-      console.log("Sender ID: ", senderId);
-      console.log("Chat Room Buyer ID: ", chatRoom.buyer);
-      console.log("Chat Room Seller ID: ", chatRoom.seller);
-      console.log("Notification Increase: ", NotificationIncrease);
+      // console.log("Sender ID: ", senderId);
+      // console.log("Chat Room Buyer ID: ", chatRoom.buyer);
+      // console.log("Chat Room Seller ID: ", chatRoom.seller);
+      // console.log("Notification Increase: ", NotificationIncrease);
 
     });
 
@@ -68,10 +68,10 @@ function Io(server) {
         NotificationRead = { notificationMessages_seller: 0 };
       }
       await ChatRoom.updateOne({ _id: chatId }, { $set: NotificationRead });
-      console.log("User ID: ", userId);
-      console.log("Chat Room Buyer ID: ", chatRoom.buyer);
-      console.log("Chat Room Seller ID: ", chatRoom.seller);
-      console.log("Notification Read: ", NotificationRead);
+      // console.log("User ID: ", userId);
+      // console.log("Chat Room Buyer ID: ", chatRoom.buyer);
+      // console.log("Chat Room Seller ID: ", chatRoom.seller);
+      // console.log("Notification Read: ", NotificationRead);
     });
 
     socket.on("setAppointment", async ({chatId, appointmentDate }) => {

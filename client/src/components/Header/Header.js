@@ -139,7 +139,7 @@ function Header() {
             socket.emit("getUserConversations", {userId:userData._id});
     
             socket.on ('userConversations',(userChats) => { // 초기 알림 상태 설정
-                console.log('userConversations',userChats);
+                // console.log('userConversations',userChats);
                 const initialNotifications = userChats.reduce((acc, cur) => {
                     acc[cur.chats._id] = cur.notificationMessages;
                     return acc;
@@ -151,8 +151,8 @@ function Header() {
                 if (senderId !== userData._id) {
                     setNotifications(prev => ({ ...prev, [chatId]: notificationMessages }));
                 }
-                console.log("Chat ID: ", chatId);
-                console.log("Notification Messages: ", notificationMessages);
+                // console.log("Chat ID: ", chatId);
+                // console.log("Notification Messages: ", notificationMessages);
             });
         };
     
@@ -164,7 +164,7 @@ function Header() {
             if (socket) {
                 socket.off('notificationChat');
                 socket.disconnect();
-                console.log("socket disconnected");
+                // console.log("socket disconnected");
             }
         };
     }, [userData]);

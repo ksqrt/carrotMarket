@@ -460,14 +460,14 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
                                             <>
                                                 {x.chats.seller?.avatar ? <img src={x.chats.seller?.avatar} alt="user-avatar" /> : <img src='https://kr.object.ncloudstorage.com/ncp3/ghuPttFw_400x400.jpg' />}  
                                                 <span> {x.chats.seller?.name  || '(알 수 없음)'}</span>
-                                                {x.chats.product?.image ? <img src={x.chats.product?.image} alt="product" style={{float: 'right', width: '35px', height: '35px', objectFit: 'cover'}}/> : 
+                                                {x.chats.product?.image ? <img src={x.chats.product?.image[0]} alt="product" style={{float: 'right', width: '35px', height: '35px', objectFit: 'cover'}}/> : 
                                                 <CiImageOff size={20} style={{float: 'right', width: '35px', height: '35px', objectFit: 'cover'}} />}
                                             </>
                                             :
                                             <>
                                                 {x.chats.buyer?.avatar ? <img src={x.chats.buyer?.avatar} alt="user-avatar" /> : <img src='https://kr.object.ncloudstorage.com/ncp3/ghuPttFw_400x400.jpg' />}
                                                 <span> {x.chats.buyer?.name  || '(알 수 없음)'}</span>
-                                                {x.chats.product?.image ? <img src={x.chats.product?.image} alt="product" style={{float: 'right', width: '35px', height: '35px', objectFit: 'cover'}}/> : 
+                                                {x.chats.product?.image ? <img src={x.chats.product?.image[0]} alt="product" style={{float: 'right', width: '35px', height: '35px', objectFit: 'cover'}}/> : 
                                                 <CiImageOff size={20} style={{float: 'right', width: '35px', height: '35px', objectFit: 'cover'}} />}
                                             </>
                                         }
@@ -524,7 +524,7 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
                             {alertShow &&
                                 <Alert className="alert-glass" onClose={() => setAlertShow(false)}>
                                 <div className="flex-container">
-                                    {selected.chats.product?.image ? <img src={selected.chats.product?.image} alt="product" className="img-style" /> :  <CiImageOff size={40}  /> }
+                                    {selected.chats.product?.image ? <img src={selected.chats.product?.image[0]} alt="product" className="img-style" /> :  <CiImageOff size={40}  /> }
                                     <div className="text-container">
                                         <div>
                                             <span className="text-bold">{selected.chats.product?.soldout ? '거래완료' : (selected.chats.appointmentCheck ? '예약중' : '거래중')}</span> &nbsp;&nbsp;
