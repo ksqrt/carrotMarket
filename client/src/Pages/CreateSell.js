@@ -36,9 +36,7 @@ const AddProduct = ({ history }) => {
     setCity(a);
   };
 
-
   const fileInput = useRef(null);
-  let tmp = 0;
   const onChangeHandler = (e) => {
     e.preventDefault();
     let value = e.target.value;
@@ -81,9 +79,12 @@ const AddProduct = ({ history }) => {
       .then((data) => {
         setImage([...image,data]);
       });
-        tmp = tmp + 1;
     }
   };
+  const deleteimg = (index) => {
+    image.splice(index,1);
+    setImage([...image]);
+  }
   // useEffect(()=>{
   //   for (let index = 0; index < image.length; index++) {
 
@@ -117,7 +118,11 @@ const AddProduct = ({ history }) => {
   const getBase64 = (file) => {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
-      reader.readAsDataURL(file);
+      try{
+        reader.readAsDataURL(file);
+      } catch (err){
+
+      }
       reader.onload = () => resolve(reader.result);
       reader.onerror = (error) => reject(error);
     });
@@ -126,6 +131,8 @@ const AddProduct = ({ history }) => {
   const handlerButtonClick = (e) => {
     fileInput.current.click();
   };
+
+  
 
   return (
     <div className="container">
@@ -162,7 +169,7 @@ const AddProduct = ({ history }) => {
                   />
                 </button>
                   
-                <Display image={image} />
+                <Display image={image} deleteimg={deleteimg} />
 
               </div>    
 

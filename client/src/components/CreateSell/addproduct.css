@@ -69,6 +69,10 @@
   cursor: pointer;
 }
 
+.hidden{
+  display: none;
+}
+
 /* .closebtnwrapper{
   position: absolute;
   top: 0;
