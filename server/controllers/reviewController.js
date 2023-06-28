@@ -1,20 +1,46 @@
 const { Router } = require('express');
 const router = Router();
 const { cloudinary } = require('../config/cloudinary');
+const isAuth = require('../middlewares/isAuth')
+const Product = require('../models/Product');
 const User = require('../models/User');
-// const isAuth = require('../middlewares/isAuth')
+const moment = require('moment');
+const Review = require('../models/Review');
+
 const productService = require('../services/productService');
-const userService = require('../services/userService');
-const ReviewService = require('../services/ReviewService')
-// 사용자 ID로 사용자 정보를 가져오는 엔드포인트
-router.post('/review/create', async (req, res) => {
-    console.log('여기오냐');
+
+// router.use(express.json()); // JSON 파싱 미들웨어 추가
+
+
+router.post('/create', async (req, res) => {
+    const { id, content, seller, name } = req.body;
+  
     try {
-        let review = await ReviewService.createReview(req.body);
-
+      const review = new Review({
+        id,
+        content,
+        name,
+        seller
+      });
+  
+      await review.save();
+      res.status(201).json(review);
     } catch (error) {
-        res.status(500).json({ error });
+      console.error(error);
+      res.status(500).json({ error: 'Failed to create review' });
     }
-})
+  });
+  
 
-module.exports = router;
+  // Get reviews by ID
+router.get('/find/:id', async (req, res) => {
+    try {
+      const reviews = await Review.find({ seller: req.params.id });
+      res.json(reviews);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Failed to fetch reviews.' });
+    }
+  });
+  
+  module.exports = router;
