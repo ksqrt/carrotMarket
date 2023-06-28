@@ -299,10 +299,13 @@ article img {
     padding-bottom: 5px;
     font-weight: bold;
     font-size: 11px;
+    
 }
 
 .messageButton:hover {
     background-color: #FF7E36;
+    border-color: transparent;
+    
 }
 
 .messageButton:disabled {
@@ -333,4 +336,24 @@ article img {
 
 .messageInButton:hover {
   background-color: #FF7E36;
+  border-color: transparent;
+}
+
+.ReportModalBody textarea {
+  height: 150px;
+  width: 460px;
+  resize: none;
+}
+
+.ReportModalHeader {
+  justify-content: flex-start;
+  align-items: center;
+  font-size: 20px;
+  color: red;
+  font-weight: bold;
+}
+
+.Confetti{
+  left: 210px;
+  bottom: 15px;
 }

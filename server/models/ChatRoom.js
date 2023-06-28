@@ -53,7 +53,11 @@ const chatRoomSchema = new mongoose.Schema({
         type:Boolean,
         default:false
     },
-    notificationMessages: {
+    notificationMessages_seller: {
+        type: Number,
+        default:0
+    },
+    notificationMessages_buyer: {
         type: Number,
         default:0
     },

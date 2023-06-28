@@ -5,8 +5,7 @@ export const initializeSocket = async () => {
   const socket = IO(url);
 
   socket.on('connect', () => {
-    //console.log('Socket connected:', socket.id);
-    // console.log(socket.connected);
+    // console.log('Socket connected:', socket.id);
     });
   //console.log("Socket created:", socket);
   return socket;
@@ -22,6 +21,10 @@ export const startChat = (socket, { buyerId, sellerId, productId}) => {
 //sendMessage: 메시지를 전송하는 함수입니다. socket.emit을 사용하여 sendMessage 이벤트와 chatId, senderId, message 정보를 서버로 전송합니다.
 export const sendMessage = (socket, { chatId, senderId, message, location }) => {
     socket.emit('sendMessage', { chatId, senderId, message, location });
+};
+
+export const readMessages = (socket, { chatId, userId }) => {
+    socket.emit('readMessages', { chatId, userId });
 };
 
 export const setAppointment = (socket, { chatId, appointmentDate, appointmentCheck }) => {
