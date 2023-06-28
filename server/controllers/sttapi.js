@@ -16,44 +16,43 @@ function stt(language, filePath) {
         body: fs.createReadStream(filePath)
     };
 
-    request(requestConfig, (err, response, body) => {
-        if (err) {
-            console.log(err);
-            return;
-        }
-
-        console.log(response.statusCode);
-        console.log(body);
+    return new Promise((resolve, reject) => {
+        request(requestConfig, (err, response, body) => {
+            if (err) {
+                console.log(err);
+                reject(err);
+                return;
+            }
+            console.log(response.statusCode);
+            console.log(body);
+            resolve(body);
+        });
     });
 }
 
-
 router.post('/', async (req, res) => {
     try {
-        // console.log(req.body.audioData)
-        const base64Audio = req.body.audioData
+        const base64Audio = req.body.audioData;
         const base64Data = base64Audio.replace(/^data:audio\/mp3;base64,/, '');
 
         // Convert the base64 string to binary data
         const binaryData = Buffer.from(base64Data, 'base64');
 
         // Write the binary data to a file
-        fs.writeFile('./test.mp3', binaryData, 'binary', (err) => {
+        fs.writeFile('./test.mp3', binaryData, 'binary', async (err) => {
             if (err) {
-            console.error('Error saving audio file:', err);
+                console.error('Error saving audio file:', err);
+                res.status(500).json({ error: 'Error saving audio file' });
             } else {
-            console.log('Audio file saved successfully!');
-            stt('Kor', './test.mp3');
-        }
+                console.log('Audio file saved successfully!');
+                try {
+                    let message = await stt('Kor', './test.mp3');
+                    res.status(200).json({ message: message });
+                } catch (error) {
+                    res.status(500).json({ error });
+                }
+            }
         });
-
-
-
-
-
-
-
-        res.status(200).json({ message: 'Audio saved successfully' });
     } catch (error) {
         res.status(500).json({ error });
     }

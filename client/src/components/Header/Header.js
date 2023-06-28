@@ -148,6 +148,11 @@ function Header() {
             });
             const data = await response.json();
             console.log(data);
+            const messageObj = JSON.parse(data.message);
+            const text = messageObj.text;
+
+            console.log(text); // "테스트"
+            setQuery(text)
             // 처리된 데이터 사용 또는 다른 작업 수행
         } catch (error) {
             console.log(error);
