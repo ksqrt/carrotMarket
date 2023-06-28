@@ -1,19 +1,32 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import '../CreateSell/addproduct.css';
-import { ReactDOM } from 'react-dom';
-
 import Imagecard from './Imagecard';
 
+
+    // const imgboxbtn = (e) => {
+    //     const value  = e.currentTarget.value;
+    // }
 const Display = ({image, deleteimg, imgboxbtn}) => {
     
     return (
         <>
         {
             image.map((item,index) => 
-                <Imagecard imgboxbtn={imgboxbtn} deleteimg={deleteimg} item={item} index={index}/>
+                <Imagecard imgboxbtn={imgboxbtn} deleteimg={deleteimg} item={item} index={index}/>                
+                
+                // {if(index === 0){
+                //     return(
+                //         <Imagecard imgboxbtn={imgboxbtn} deleteimg={deleteimg} item={item} index={index}/>
+                //     );
+                // }else{
+                //     return (
+                //         <Imagecard imgboxbtn={imgboxbtn} deleteimg={deleteimg} item={item} index={index}/>
+                //     );
+                // }}
             )
         }   
         </>
     );
 };
 export default Display;
+    

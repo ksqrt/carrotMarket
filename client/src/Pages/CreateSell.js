@@ -90,9 +90,6 @@ const AddProduct = ({ history }) => {
     image.splice(index,1);
     setImage([...image]);
   }
-
- 
-
   const imgboxbtn = (index) => {
      setCheckimgindex(index);
      setImagemodal(true);   
@@ -145,7 +142,7 @@ const AddProduct = ({ history }) => {
   };
 
   
-
+console.log(image);
   return (
     <div className="container">
           <Form onSubmit={onSubmitHandler}>
@@ -197,7 +194,8 @@ const AddProduct = ({ history }) => {
               </Col>
             </Row>
             <Row>
-              <Col md="2"></Col>
+              <Col md="2">
+              </Col>
               <Col>
                 <div className="imgfont">
                   <a
