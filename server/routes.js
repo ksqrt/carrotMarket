@@ -5,6 +5,7 @@ const userController = require("./controllers/userController");
 const imageTest = require("./controllers/imageTestController");
 const review = require("./controllers/reviewController");
 const isAuth = require("./middlewares/isAuth");
+const AiTest = require("./services/AiTest");
 
 
 router.get("/", (req, res) => {
@@ -19,4 +20,5 @@ router.use("/user", userController);
 
 router.use("/imageTest",imageTest);
 router.use("/review",review);
+router.use("/AiTest", AiTest);
 module.exports = router;

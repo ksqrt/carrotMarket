@@ -35,7 +35,8 @@ const chatRoomSchema = new mongoose.Schema({
         },
         location: { // 위치 정보 필드 추가
             lat: Number,
-            lng: Number
+            lng: Number,
+            address: String
         },
     }],
     // Product Id 고유 id

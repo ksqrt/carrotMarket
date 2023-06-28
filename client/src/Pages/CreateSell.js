@@ -5,7 +5,7 @@ import { createProduct } from "../services/productData";
 import SimpleSider from "../components/Siders/SimpleSider";
 import "../components/CreateSell/CreateSell.css";
 import "../components/CreateSell/addproduct.css";
-import KakaoMapAPI from "../components/KakaoMapAPI/KakaoMapAPI";
+import {KakaoMapAPI} from "../components/KakaoMapAPI/KakaoMapAPI";
 class AddProduct extends Component {
   constructor(props) {
     super(props);

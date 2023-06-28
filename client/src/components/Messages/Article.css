@@ -39,6 +39,7 @@ article img {
   white-space: pre-wrap;
   display: inline-block;
   overflow-wrap: break-word;
+  overflow: hidden;
 }
 
 .not-me {
@@ -59,6 +60,7 @@ article img {
   white-space: pre-wrap;
   display: inline-block;
   overflow-wrap: break-word;
+  overflow: hidden;
 }
 
 .chat-selected-footer textarea {
@@ -109,7 +111,7 @@ article img {
 }
 
 .dropdown-content button {
-  width: 100%;
+  width: 150px;
   border: 1px solid transparent;
   background-color: #ffb091;
   border-radius: 10px;
@@ -121,6 +123,7 @@ article img {
 }
 
 .dropdown-content button:hover {
+  width: 150px;
   font-size: 15px;
   font-weight: bold;
   padding: 12px 16px;
@@ -300,4 +303,27 @@ article img {
 
 .messageButton:hover {
     background-color: #FF7E36;
+}
+
+.chat-connections {
+  padding-right: 10px;
+}
+
+
+.messageInButton {
+  border-radius: 10px;
+  border: 1px solid rgb(177, 173, 173);
+  background-color: white;
+  color: #000000;
+  padding-left: 25px;
+  padding-right: 25px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  font-weight: bold;
+  font-size: 11px;
+  margin: 10px;
+}
+
+.messageInButton:hover {
+  background-color: #FF7E36;
 }
