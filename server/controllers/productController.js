@@ -190,15 +190,17 @@ router.get('/sells/archived', async (req, res) => {
 });
 
 // 사용자가 판매완료한 상품 목록을 가져오는 엔드포인트
-router.get('/sells/soldout', async (req, res) => {
-    console.log('soldout목록 가져오는 함수옴')
+router.get('/sells/soldout/:id', async (req, res) => {
     try {
-        let user = await (await User.findById(req.user._id).populate('createdSells')).toJSON();
-        res.status(200).json({ sells: user.createdSells.filter(x => x.soldout == true), user });
+      const userId = req.params.id || req.user._id; // Use the provided id or the id of the authenticated user
+      const soldOutProducts = await Product.find({ seller: userId, soldout: true });
+  
+      res.status(200).json({ sells: soldOutProducts });
     } catch (error) {
-        res.status(500).json({ message: error.message })
+      res.status(500).json({ error: error.message });
     }
-});
+  });
+
 
 // 상품을 활성화하는 엔드포인트
 router.get('/enable/:id', async (req, res) => {
