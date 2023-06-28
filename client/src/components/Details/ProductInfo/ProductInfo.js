@@ -21,14 +21,9 @@ import { Carousel } from 'react-bootstrap'
 function ProductInfo({ params }) {
 
   const declareHandler = (e) =>{
-
     const declareproduct = e.target.value;
-
     console.log('ProductInfo'+declareproduct);
-
     declareProduct(declareproduct);
-   
-
   }
 
   const [products, setProducts] = useState([]);
@@ -288,7 +283,6 @@ function ProductInfo({ params }) {
     }
   }//수정
 
-
   return (
     <div className="d-flex flex-column align-items-center">
     <Carousel style={{ transition: 'transform 0.5s ease-in-out' }}>
@@ -327,41 +321,31 @@ function ProductInfo({ params }) {
                 { params.isSeller && (
                   <>
                     <OverlayTrigger placement="top" overlay={<Tooltip>상품 보관함 이동</Tooltip>}>
-                    <Button variant="primary" size="sm" style={{ backgroundColor: '#FF7E36', borderColor: 'orange', color: 'white' }} onClick={handleShowArchive}>
+                    <button className="sell_box" onClick={handleShowArchive}>
                       <Link to={<MdArchive />}>보관함</Link>
-                    </Button>
+                    </button>
                     </OverlayTrigger>
                     <span className="link-spacing"></span>
                     <OverlayTrigger placement="top" overlay={<Tooltip>판매 완료</Tooltip>} >
-                      <Button variant="primary" size="sm" style={{ backgroundColor: '#FF7E36', borderColor: 'orange', color: 'white' }} onClick={ handleShowArchive2 }>
-                      <Link to={<MdArchive />}>판매 완료</Link>
-                        {/* <Link to="/archived-sells">
-                          &nbsp;&nbsp;판매완료
-                        </Link> */}
-                      </Button>
+                      <button className="sell_box" onClick={ handleShowArchive2 }>
+                        <Link to={<MdArchive />}>판매 완료</Link>
+                          {/* <Link to="/archived-sells">
+                            &nbsp;&nbsp;판매완료
+                          </Link> */}
+                      </button>
                     </OverlayTrigger>
                     <span className="link-spacing"></span>
-
-
-                    <OverlayTrigger placement="top" overlay={ <Tooltip>상품 수정하기</Tooltip>} >
-
-                      <span id="archive-icon2">
+                    <OverlayTrigger placement="top" overlay={<Tooltip>상품 수정하기</Tooltip>}>
+                    <button className="sell_box">
                       <Link to={`/categories/${params.category}/${params._id}/edit`}>게시글 수정하기</Link>
-                      </span>
-
-
-                    </OverlayTrigger> 
-
-
-                    <span className="link-spacing"></span>
-
-                   
-                    <OverlayTrigger placement="top" overlay={ <Tooltip>상품 삭제하기</Tooltip>} >
-
-                    <span id="deleteProduct">
-                      <button onClick={ handleDelPro }>게시글 삭제하기</button>
-                     </span>
-                    </OverlayTrigger>
+                    </button>
+                  </OverlayTrigger>
+                  <span className="link-spacing"></span>
+                  <OverlayTrigger placement="top" overlay={<Tooltip>상품 삭제하기</Tooltip>}>
+                    <button className="sell_delete">
+                      <Link to="#" onClick={ handleDelPro }>게시글 삭제하기</Link>
+                    </button>
+                  </OverlayTrigger>
                   </>
                 )}
                 
@@ -446,7 +430,7 @@ function ProductInfo({ params }) {
           {params.isAuth ? (
             <>
               {!params.isSeller && (
-                <Button variant="primary" style={{ backgroundColor: 'orange', borderColor: 'orange', color: 'white' }} className="col-lg-9" id="btnContact" onClick={ onChatStart }>
+                <Button variant="primary" style={{ backgroundColor: '#FF7E36', borderColor: 'orange', color: 'white' }} className="col-lg-9" id="btnContact" onClick={ onChatStart }>
                   <RiMessage3Fill />채팅하기
                 </Button>
               )}
@@ -488,15 +472,8 @@ function ProductInfo({ params }) {
             {/* <button onClick={sendLinkCustom}>Send Custom Link</button> */}
                 <button className="kakao-button" onClick = {sendLinkDefault}>카카오 공유하기</button>
                 <button className='declare-button' value={params._id} onClick={declareHandler} >신고하기</button>
-               
-
             </div>
-
-            </div>
-
-
-
-
+          </div>
       </section>
 
       <section id="product_more">

@@ -1,11 +1,11 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router-dom/cjs/react-router-dom.min';
 import { Col, Row } from 'react-bootstrap';
 import { BsFillPersonFill } from 'react-icons/bs';
 import { MdEmail, MdPhoneAndroid } from 'react-icons/md'
 import { FaSellsy } from 'react-icons/fa'
 import { GrEdit } from 'react-icons/gr';
-
+import { FaShoppingCart } from 'react-icons/fa'; // Import a different icon from react-icons library
 
 const getMannerTemperatureStyle = (temperature) => {
     const width = temperature + "%";
@@ -65,8 +65,6 @@ const getMannerTemperatureStyle = (temperature) => {
     }
   };
 
-
-
 function ProfileSection({ params }) {
     return (
         <div id="profile-head">
@@ -75,39 +73,52 @@ function ProfileSection({ params }) {
                     <Col id="profile_avatar" lg={2} md={5} sm={12}>
                         <img id="avatar" alt="avatar" src={params.avatar} />
                     </Col>
-                    <Col id="profile_information" lg={3} md={3} sm={12}>
+                    <Col id="profile_information1" lg={3} md={3} sm={12}>
                         <div id="profile_information2">
                             <div id="profile_name">
-                            <p>
+                              <p>
                                 <span style={{ fontWeight: 'bold' }}><BsFillPersonFill /> {params.name}</span>
-                            </p>
-                                <span id="edit-icon">
-                                    <Link to={`/profile/${params._id}/edit`}>
-                                        <button className="profile-edit-button">프로필 수정</button>
-                                    </Link>
-                                </span>
+                              </p>
                             </div>
-                        <div id="tem_total">
-                            <p style={{ float: 'left', fontWeight: 'bold', textDecoration: 'underline' }}>매너온도</p>
-                            <p style={{ marginBottom: '-1px', float: 'right', color: getFontColor(parseInt(params.mannertmp) + 0) }}>{(params.mannertmp)}°C&nbsp;&nbsp;
-
-                                <img
-                                    src={getMannerTemperatureImage(params.mannertmp)}
-                                    alt="이미지 사진"
-                                    style={{ width: '25px', height: '25px' }}
-                                />
-                            </p>
-                            <div className="manner-thermometer" style={{ marginBottom: '10px' }}>
-                                <div className="manner-thermometer-fill" style={getMannerTemperatureStyle(params.mannertmp)}></div>
+                            <div id="profile_button">
+                              <span id="edit-icon">
+                                <Link to={`/profile/${params._id}/edit`}>
+                                    <button className="profile-edit-button">프로필 수정</button>
+                                </Link>
+                                <Link to="탈퇴하기">
+                                    <button className="profile-delete-button">회원 탈퇴</button>
+                                </Link>
+                              </span>
                             </div>
-                        </div>
-                        <br></br>
                         {/* <p><MdEmail /> {params.email} asdasd</p>
                         <p><MdPhoneAndroid /> {params.phoneNumber}</p>
                         <p><FaSellsy /> {params.totalSells} sells in total</p> */}
-                        </div>
+                      </div>
                     </Col>
-                
+                    <Col id="profile_information3" lg={3} md={3} sm={12}>
+                        <div className='sellcount'>
+                            <FaShoppingCart className="section-icon" />
+                            <p className="section-title">판매상품 <span className="item-count">{params.totalSells}</span>개</p>
+                        </div>
+                      <div id="tem_total">
+                        <p id="tem_total_txt">매너온도</p>
+                        <div className='meters'>
+                          <p id="tem_total_cnt" style={{ marginBottom: '-1px', float: 'right', color: getFontColor(36.5) }}>
+                            {36.5}°C
+                          </p>
+                          {/* <p id="tem_total_img">
+                            <img
+                              src={getMannerTemperatureImage(36.5)}
+                              alt="이미지 사진"
+                              style={{ width: '25px', height: '25px' }}
+                            />
+                          </p> */}
+                        </div>
+                        <div className="manner-thermometer" style={{ width: '100%' }}>
+                          <div className="manner-thermometer-fill" style={getMannerTemperatureStyle(36.5)}></div>
+                        </div>
+                      </div>
+                    </Col>
                 </Row>
             </div>
         </div>
