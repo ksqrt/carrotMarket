@@ -3,6 +3,7 @@ const ChatRoom = require('../models/ChatRoom') // 채팅방 id, buyer, seller, c
 const mongoose = require('mongoose');
 const User = require('../models/User'); 
 const Product = require('../models/Product'); 
+const productService = require('../services/productService');
 
 let io;
 function Io(server) {
@@ -28,17 +29,29 @@ function Io(server) {
       socket.emit('startChat', { chatId: chatRoom._id.toString() });
     });
 
-    socket.on("sendMessage", async ({chatId, senderId, message, location }) => { // chatId, senderId, message 인자와 함께 이벤트를 받았을 때 실행됨.
+    socket.on("sendMessage", async ({chatId, senderId, message, location, file }) => { // chatId, senderId, message 인자와 함께 이벤트를 받았을 때 실행됨.
       const sentAt = new mongoose.Types.ObjectId(); // MongoDB의 ObjectId를 사용하여 서버 시간을 가져옵니다. 
       const _id = new mongoose.Types.ObjectId();
-      const newMessage = { _id, senderId, message, sentAt: sentAt.getTimestamp(), location };
-      await ChatRoom.updateOne({ _id: chatId }, { $push: { conversation: newMessage }, $inc: { unreadMessages: 1 } });
+      const newMessage = { _id, senderId, message, sentAt: sentAt.getTimestamp(), location, file };
+      if (newMessage.file) {
+        const image = newMessage.file;
+        newMessage.file = await productService.uploadImage(image);
+      }
+      await ChatRoom.updateOne({ _id: chatId }, { $push: { conversation: newMessage }, $inc: { unreadMessages: 1 }});
       
       console.log('3. io.js, sendMessage', newMessage );
       io.emit("newMessage", newMessage); // senderId, message, sentAt 인자 제공 필요
       console.log('4. io.js, newMessage');
 
     });
+
+    // socket.on("sendFile", async ({chatId, senderId, file }) => {
+    //   const sentAt = new mongoose.Types.ObjectId(); // MongoDB의 ObjectId를 사용하여 서버 시간을 가져옵니다. 
+    //   const _id = new mongoose.Types.ObjectId();
+
+    //   const newFile = { _id, senderId, sentAt: sentAt.getTimestamp(), };
+    //   await ChatRoom.updateOne({ _id: chatId }, { $push: { conversation: newMessage }, $inc: { unreadMessages: 1 } });
+    // })
 
 
     socket.on("setAppointment", async ({chatId, appointmentDate }) => {
