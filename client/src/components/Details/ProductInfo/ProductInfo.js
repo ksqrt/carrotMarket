@@ -244,6 +244,10 @@ const getFontColor = (temperature) => {
     startChat(socket, { buyerId: userData._id, sellerId: params.sellerId, productId: params._id });
   };
 
+
+
+
+  //카카오
   useEffect(() => {
     const script = document.createElement("script");
     script.src = "https://developers.kakao.com/sdk/js/kakao.js";
@@ -252,6 +256,29 @@ const getFontColor = (temperature) => {
     return () => document.body.removeChild(script);
   }, []);
 
+  const shareKakao = () => { // url이 id값에 따라 변경되기 때문에 route를 인자값으로 받아줌
+    if (window.Kakao) {
+      const kakao = window.Kakao;
+      if (!kakao.isInitialized()) {
+        kakao.init(process.env.REACT_APP_KAKAO_API); // 카카오에서 제공받은 javascript key를 넣어줌 -> .env파일에서 호출시킴
+      }
+  
+      kakao.Link.sendDefault({
+        objectType: "feed", // 카카오 링크 공유 여러 type들 중 feed라는 타입 -> 자세한 건 카카오에서 확인
+        content: {
+          title: params.title, // 인자값으로 받은 title
+          description: params.description, // 인자값으로 받은 title
+          imageUrl: params.image[0],
+          link: {
+            mobileWebUrl: 'https://developers.kakao.com', // 인자값으로 받은 route(uri 형태)
+            webUrl: `http://localhost:3000/categories/auto/${params._id}/details`
+          }
+        }
+      });
+    }
+  };
+
+  
 
   //{params.title}: 상품 제목
   //{params.addedAt}: 업로드 날짜
@@ -477,10 +504,19 @@ const getFontColor = (temperature) => {
           )}
 
 
-          <div>
-            {/* <button onClick={sendLinkCustom}>Send Custom Link</button> */}
-                <button className="kakao-button" onClick = {sendLinkDefault}>카카오 공유하기</button>
+           <div>
+           <a id="kakaotalk-sharing-btn" href="javascript:;" onClick={shareKakao}>
+              <img
+                  src="https://developers.kakao.com/assets/img/about/logos/kakaotalksharing/kakaotalk_sharing_btn_medium.png"
+                  style={{ width: "50px", height: "50px", marginLeft: '15px', marginBottom: '45px',marginTop :'45px' }}
+                  alt="카카오톡 공유 보내기 버튼"
+                />
+            </a>
                 <button className='declare-button' value={params._id} onClick={declareHandler} >신고하기</button>
+                
+                <span>
+            
+          </span>
             </div>
 
             </div>
