@@ -3,7 +3,7 @@ import { Context } from '../../ContextStore';
 import { Navbar, NavDropdown, Nav, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import { NavLink } from 'react-router-dom';
 import { BsFillPersonFill, BsFillEnvelopeFill, BsFillPlusCircleFill, BsPeopleFill } from 'react-icons/bs';
-import { useHistory } from "react-router-dom";
+import { useHistory, useLocation  } from "react-router-dom";
 import { IoLogOut } from 'react-icons/io5'
 import SearchBar from "../../components/SearchBar/SearchBar";
 import './Header.css';
@@ -13,6 +13,16 @@ import Register from '../../Pages/Register';
 import { initializeSocket } from '../../services/messagesData';
 
 function Header() {
+    const location = useLocation();
+    const pathParts = location.pathname.split("/");
+    const isMessagesPath = pathParts[1] === "messages";
+  
+    const handleClick = (e) => {
+      if (isMessagesPath) {
+        e.preventDefault();
+      }
+    };
+
     const [isSticky, setIsSticky] = useState(false);
     const { userData, setUserData } = useContext(Context);
     const { query, setQuery } = useContext(Context);
@@ -231,10 +241,10 @@ function Header() {
                                     <BsFillPersonFill />Profile
                                 </NavLink>
 
-                                <NavLink className="dropdown-item" to="/messages">
+                                <NavLink className="dropdown-item"  to="/messages" onClick={handleClick}>
                                 {(totalNotifications > 0 ? <BsFillEnvelopeFill className='bell' /> : <BsFillEnvelopeFill/>)}Messages
                                 </NavLink>
-
+                                  
                             {userData.role === "admin" &&
                                 <NavLink className="dropdown-item" to="/admin">
                                         <BsPeopleFill />Admin
