@@ -486,7 +486,8 @@ function ProductInfo({ params }) {
                 <button className="kakao-button" onClick = {sendLinkDefault}>카카오 공유하기</button>
                 <button className='declare-button' value={params._id} onClick={declareHandler} >신고하기</button>
             </div>
-          </div>
+
+            </div>
       </section>
 
       <section id="product_more">

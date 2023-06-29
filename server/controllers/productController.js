@@ -85,7 +85,6 @@ router.post("/specific/:id", async (req, res) => {
     let user_id = req.body.user_id;
     console.log(user_id)
   try {
-    console.log('specific컨트롤러');
     let product = await (await Product.findById(req.params.id)).toJSON();
     let seller = await (await User.findById(product.seller)).toJSON();
     product.addedAt = moment(product.addedAt).format("d MMM YYYY (dddd) HH:mm");
@@ -125,23 +124,23 @@ router.post('/create', async (req, res) => {
     let user_id = req.body.user_id;
     console.log(user_id)
     let { title, price, description, city, category, image } = req.body;
-    console.log('ttoto'+image);
-    console.log();
-    console.log();
+    console.log(image);
     try {
         let errors = [];
         if (title.length < 3 || title.length > 50) errors.push('Title should be at least 3 characters long and max 50 characters long; ');
         if (isNaN(Number(price))) errors.push('Price should be a number; ');
         if (description.length < 10 || description.length > 1000) errors.push('Description should be at least 10 characters long and max 1000 characters long; ');
         if ((city) == false) errors.push('City should contains only english letters; ')
-        // if (!image.includes('image')) errors.push('The uploaded file should be an image; ');
+        if (!image[0]) errors.push('이미지를 넣어주세요.');
         if (!category) errors.push('Category is required; ');
 
         if (errors.length >= 1) throw { message: [errors] };
         let compressedImg = [];
+        
         for (let index = 0; index < image.length; index++) {
             compressedImg[index] = await productService.uploadImage(image[index]);
         }
+
         let product = new Product({
             title, price, description, city, category,
             image: compressedImg,
@@ -149,6 +148,7 @@ router.post('/create', async (req, res) => {
             seller: user_id
         })
         
+        console.log(errors);
         await product.save()
         await productService.userCollectionUpdate(user_id, product);
 
@@ -176,16 +176,27 @@ router.post('/edit/:id', isAuth, async (req, res) => {
         if (title.length < 3 || title.length > 50) errors.push('Title should be at least 3 characters long and max 50 characters long; ');
         if (isNaN(Number(price))) errors.push('Price should be a number; ');
         if (description.length < 10 || description.length > 1000) errors.push('Description should be at least 10 characters long and max 1000 characters long; ');
-        if (/^[A-Za-z]+$/.test(city) == false) errors.push('City should contains only english letters; ')
-        if (req.body.image) {
-            if (!req.body.image.includes('image')) errors.push('The uploaded file should be an image; ');
-        }
-        if (!category || category == "Choose...") errors.push('Category is required; ');
+        if ((city) == false) errors.push('City should contains only english letters; ')
+        // if (req.body.image) {
+        //     if (!req.body.image.includes('image')) errors.push('The uploaded file should be an image; ');
+        // }
+        if (!image[0]) errors.push('이미지를 넣어주세요.');
+        if (!category) errors.push('Category is required; ');
 
         if (errors.length >= 1) throw { message: [errors] };
 
         if (req.body.image) {
-            let compressedImg = await productService.uploadImage(req.body.image);
+            let compressedImg = [];
+        
+            for (let index = 0; index < image.length; index++) {
+                if(image[index].startsWith("https://ncp3")){
+                    compressedImg[index] = image[index];
+                }else{
+                    compressedImg[index] = await productService.uploadImage(image[index]);
+            
+                }
+            }
+            
             await productService.edit(req.params.id, { title, price, description, city, category, image: compressedImg });
         } else {
             await productService.edit(req.params.id, { title, price, description, city, category });
