@@ -10,7 +10,7 @@ import { IoIosArrowBack } from 'react-icons/io';
 import { FaMapMarkedAlt, FaRegHandshake } from 'react-icons/fa'
 import { MdOutlineRateReview } from 'react-icons/md'
 import Linkify from 'react-linkify'; // url 주소 링크 처리하는 라이브러리
-import { BsSend, BsDoorOpen } from "react-icons/bs";
+import { BsSend, BsDoorOpen, BsFillEnvelopeFill } from "react-icons/bs";
 import { CiImageOff } from "react-icons/ci";
 import UseAnimations from "react-useanimations";
 import plusToX from "react-useanimations/lib/plusToX";
@@ -28,6 +28,7 @@ import moment from "moment";
 import 'moment-timezone';
 import Confetti from 'react-dom-confetti';
 import EmojiPicker from 'emoji-picker-react';
+import { right } from '@popperjs/core';
 
 function Messages({ match }) { // match = Router 제공 객체, url을 매개변수로 사용. ex) 경로 : /messages/123  => match.params.id = "123" // app.js 참고 : <Route path="/messages" exact component={Messages} />;
     //map modal
@@ -92,10 +93,11 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
         myId: 0
     });
     const myName = selected.isBuyer ? selected.chats.buyer?.name : selected.chats.seller?.name;
-
+    const myId = selected.isBuyer ? selected.chats.buyer?._id : selected.chats.seller?._id;
+    const [notifications, setNotifications] = useState({});
     //차단하기
-    const blockName1 = selected.isBuyer ? selected.chats.seller._id : selected.chats.buyer?._id
-    const blockName2 = selected.isBuyer ? selected.chats.buyer._id : selected.chats.seller._id;
+    const blockName1 = selected.isBuyer ? selected.chats.seller?._id : selected.chats.buyer?._id
+    const blockName2 = selected.isBuyer ? selected.chats.buyer?._id : selected.chats.seller?._id;
 
     const blockHandle = () => {
         const blockId = blockName1
@@ -106,7 +108,6 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
 
     }
 
-    const myId = selected.isBuyer ? selected.chats.buyer?._id : selected.chats.seller?._id;
 
     const [message, setMessage] = useState(""); // 내가 입력한 메세지
     const [alertShow, setAlertShow] = useState(true); 
@@ -408,6 +409,13 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
         .then(res => {
         // console.log("채팅방 가져오기 : ",res);
         setChatroomList(res); // 가져온 채팅방 목록을 상태 변수에 저장.
+        const newNotifications = {};
+        res.forEach(chatroom => {
+            newNotifications[chatroom.chats._id] = chatroom.isBuyer 
+            ? chatroom.chats.notificationMessages_buyer
+            : chatroom.chats.notificationMessages_seller;
+        });
+        setNotifications(newNotifications);
         if (isSelected) { // 채팅방이 선택되었다면 현재 선택된 채팅방의 정보를 selected 상태 변수에 저장
             setSelected(res.find(x => x.chats?._id === chatId))
             scrollToBottom();
@@ -451,8 +459,10 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
 
     useEffect(() => {
         console.log("채팅방 전체 로그 : ", selected);
-        console.log('새 메세지 알림 테스트 : ', selected.notificationMessages);
-      }, [selected]);
+        // console.log('새 메세지 알림 테스트 : ', selected.notificationMessages);
+        // console.log('채팅방 목록 알림 테스트 : ', notifications);
+        
+      }, [selected, notifications]);
 
     useEffect(() => {
         return () => {
@@ -485,15 +495,19 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
                                             <>
                                                 {x.chats.seller?.avatar ? <img src={x.chats.seller?.avatar} alt="user-avatar" /> : <img src='https://kr.object.ncloudstorage.com/ncp3/ghuPttFw_400x400.jpg' alt='carrot_avatar' />}  
                                                 <span> {x.chats.seller?.name  || '(알 수 없음)'}</span>
-                                                {x.chats.product?.image ? <img src={x.chats.product?.image[0]} alt="product" style={{float: 'right', width: '35px', height: '35px', objectFit: 'cover'}}/> : 
-                                                <CiImageOff size={20} style={{float: 'right', width: '35px', height: '35px', objectFit: 'cover'}} />}
+                                                {x.chats.product?.image ? <img src={x.chats.product?.image[0]} alt="product" style={{float: 'right', width: '35px', height: '35px', objectFit: 'cover', marginTop:'5px'}}/> : 
+                                                <CiImageOff size={20} style={{float: 'right', width: '35px', height: '35px', objectFit: 'cover'}} />} &nbsp;&nbsp;
+                                                {notifications[x.chats._id] > 0 && (<span ><BsFillEnvelopeFill className='bell'/>&nbsp;&nbsp;<span className='message_notiNumber'>{notifications[x.chats._id]}</span></span>)}
+
                                             </>
                                             :
                                             <>
                                                 {x.chats.buyer?.avatar ? <img src={x.chats.buyer?.avatar} alt="user-avatar" /> : <img src='https://kr.object.ncloudstorage.com/ncp3/ghuPttFw_400x400.jpg' alt='carrot_avatar' />}
                                                 <span> {x.chats.buyer?.name  || '(알 수 없음)'}</span>
-                                                {x.chats.product?.image ? <img src={x.chats.product?.image[0]} alt="product" style={{float: 'right', width: '35px', height: '35px', objectFit: 'cover'}}/> : 
-                                                <CiImageOff size={20} style={{float: 'right', width: '35px', height: '35px', objectFit: 'cover'}} />}
+                                                {x.chats.product?.image ? <img src={x.chats.product?.image[0]} alt="product" style={{float: 'right', width: '35px', height: '35px', objectFit: 'cover', marginTop:'5px'}}/> : 
+                                                <CiImageOff size={20} style={{float: 'right', width: '35px', height: '35px', objectFit: 'cover'}} />} &nbsp;&nbsp;
+                                                {notifications[x.chats._id] > 0 && (<span ><BsFillEnvelopeFill className='bell'/>&nbsp;&nbsp;<span className='message_notiNumber'>{notifications[x.chats._id]}</span></span>)}
+
                                             </>
                                         }
                                     </Link>
@@ -602,11 +616,6 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
                                                 </div>
 
                                             )}
-                                                {/* {x.location && (
-                                                    <div className="map-message">
-                                                        <MapMessage lat={x.location.lat} lng={x.location.lng}/>
-                                                    </div>
-                                                )} */}
                                         </Fragment>
                                     )
                                 } else {
