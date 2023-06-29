@@ -10,6 +10,7 @@ import './Header.css';
 import LoginModal from '../Modal/LoginModal';
 import RegisterModal from '../Modal/RegisterModal';
 import Register from '../../Pages/Register';
+import { initializeSocket } from '../../services/messagesData';
 
 function Header() {
     const [isSticky, setIsSticky] = useState(false);
@@ -123,6 +124,65 @@ function Header() {
             });
     };
 
+    // chat 알림 polling
+    const [notifications, setNotifications] = useState({});
+    const [socket, setSocket] = useState(null);
+    const totalNotifications = Object.values(notifications).reduce((a, b) => a + b, 0);
+
+    useEffect(() => {
+        let socket;
+    
+        const initSocket = async () => {
+            socket = await initializeSocket();
+            setSocket(socket);
+            
+            socket.emit("getUserConversations", {userId:userData._id});
+    
+            socket.on ('userConversations',(userChats) => {
+                // console.log('userConversations',userChats);
+                const initialNotifications = userChats.reduce((acc, cur) => {
+                    if(cur.isBuyer){
+                        acc[cur.chats._id] = cur.chats.notificationMessages_buyer;
+                    } else {
+                        acc[cur.chats._id] = cur.chats.notificationMessages_seller;
+                    }
+                    return acc;
+                },{});
+                setNotifications(initialNotifications);
+            });
+    
+            socket.on('notificationChat', ({ chatId, notificationMessages, senderId }) => {
+                if (senderId !== userData._id) {
+                    setNotifications(prev => ({ ...prev, [chatId]: notificationMessages }));
+                }
+                // console.log("Chat ID: ", chatId);
+                // console.log("Notification Messages: ", notificationMessages);
+            });
+        };
+    
+        if (userData) {
+            initSocket();
+        }
+    
+        return () => {
+            if (socket) {
+                socket.off('notificationChat');
+                socket.disconnect();
+                // console.log("socket disconnected");
+            }
+        };
+    }, [userData]);
+
+
+    useEffect(() => {
+        if (!socket) return;
+        socket.on('readMessagesUpdate', ({ chatId }) => {
+            setNotifications(prev => ({ ...prev, [chatId]: 0 }));
+        });
+    },[socket])
+
+
+
     return (
         <Navbar collapseOnSelect bg="light" variant="light" className={isSticky ? 'sticky' : ''}>
             <div className="container">
@@ -148,8 +208,12 @@ function Header() {
                             handleRecordButtonClick()
                         }}
                     />
+                    {/* <div> <FontAwesomeIcon className='bell' icon={faBell} /> {totalNotifications > 0 &&<div className='notiNumber'>{totalNotifications}</div>}</div> */}
                     {userData ?
-                        (<Nav>
+                        (<Nav className="nav-wrapper">
+                            <div className='notificationIcon'>
+                                {totalNotifications > 0 &&<div className='notiNumber'>{totalNotifications}</div>}
+                            </div>
                             <NavLink className="nav-item" id="addButton" to="/add-product">
                                 <OverlayTrigger key="bottom" placement="bottom"
                                     overlay={
@@ -169,7 +233,7 @@ function Header() {
                                 </NavLink>
 
                                 <NavLink className="dropdown-item" to="/messages">
-                                    <BsFillEnvelopeFill />Messages
+                                {totalNotifications > 0 &&<BsFillEnvelopeFill className='bell' /> || <BsFillEnvelopeFill/>}Messages
                                 </NavLink>
 
                             {userData.role === "admin" &&
