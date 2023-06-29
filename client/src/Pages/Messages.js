@@ -124,7 +124,7 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
 
     // 약속 잡기 버튼
     const tempAppointment = () => {
-        setModalState(prevState => ({ ...prevState, modalOpen: false }));
+        setModalState(prevState => ({ ...prevState, modalOpen: false, appointmentModalOpen: true }));
         // dayjs를 사용해서 날짜 객체를 만들어주기
         const date = dayjs(modalState.date);
         const weekdays = ["일", "월", "화", "수", "목", "금", "토"];
@@ -136,6 +136,7 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
     const [modalState, setModalState] = useState({
         date: null,
         modalOpen: false,
+        appointmentModalOpen: false,
         datePickerOpen: false,
         content: ''
     });
@@ -452,17 +453,36 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
     const handleChatRoomClick = (chatId) => {
         if (!userData._id) {console.error('userData._id is not defined'); return;}
         socket.emit('enterChatRoom', { chatId, userId: userData._id });
-        readMessages(socket, { chatId, userId: userData._id });
         setIsSelected(true);
         setSelected(chatroomList.find(room => room.chats._id === chatId));
+        setTimeout(() => {
+            readMessages(socket, { chatId, userId: userData._id });
+        }, 500);
     };
+
+    // 알림 실시간 확인
+    useEffect(() => {
+        if (!userData || !socket) return;
+        socket.on('notificationChat', ({ chatId, notificationMessages, senderId }) => {
+            if (senderId !== userData._id) {
+                setNotifications(prev => ({ ...prev, [chatId]: notificationMessages }));
+            }
+        });
+        socket.on('readMessagesUpdate', ({ chatId }) => {
+            setNotifications(prev => ({ ...prev, [chatId]: 0 }));
+        });
+        return () => {
+            if (socket) {
+                socket.off('notificationChat');
+                socket.off('readMessagesUpdate');
+            }
+        };
+    }, [socket, userData._id]);
+
 
     useEffect(() => {
         console.log("채팅방 전체 로그 : ", selected);
-        // console.log('새 메세지 알림 테스트 : ', selected.notificationMessages);
-        // console.log('채팅방 목록 알림 테스트 : ', notifications);
-        
-      }, [selected, notifications]);
+    }, [selected]);
 
     useEffect(() => {
         return () => {
@@ -706,7 +726,7 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
                                     </Modal.Footer>
                                 </Modal>
                                 )}
-                                <AppointmentModal show={currentAppointment !== null && selected.chats.appointmentCheck === false} selected={selected} appointmentModalAccept={appointmentModalAccept} appointmentModalReject={appointmentModalReject} myName={myName}  />
+                                <AppointmentModal show={modalState.appointmentModalOpen && currentAppointment !== null && selected.chats.appointmentCheck === false} selected={selected} appointmentModalAccept={appointmentModalAccept} appointmentModalReject={appointmentModalReject} myName={myName}  />
                                 <ReportModal show={reportModalShow} onHide={() => setReportModalShow(false)} onReport={handleReport}/>
                                 <ExitRoomModal show={exitRoomModalShow} onHide={() =>  setExitRoomModalShow(false)} handleExitRoom={handleExitRoom}   />
                             </div>
