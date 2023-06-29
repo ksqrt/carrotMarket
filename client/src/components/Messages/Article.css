@@ -357,3 +357,5 @@ article img {
   left: 210px;
   bottom: 15px;
 }
+
+section > .flex {width: 300px; height: 200px;}

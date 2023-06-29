@@ -19,12 +19,19 @@ export const startChat = (socket, { buyerId, sellerId, productId}) => {
 };
 
 //sendMessage: 메시지를 전송하는 함수입니다. socket.emit을 사용하여 sendMessage 이벤트와 chatId, senderId, message 정보를 서버로 전송합니다.
-export const sendMessage = (socket, { chatId, senderId, message, location }) => {
-    socket.emit('sendMessage', { chatId, senderId, message, location });
+export const sendMessage = (socket, { chatId, senderId, message, location, file }) => {
+    socket.emit('sendMessage', { chatId, senderId, message, location, file });
 };
 
 export const readMessages = (socket, { chatId, userId }) => {
     socket.emit('readMessages', { chatId, userId });
+}
+
+//차단하기
+export const UserBlock = (socket, {blockId, myId99}) => {
+  console.log(blockId + 'blockIdData');
+  console.log(myId99 + 'myId99Data');
+  socket.emit('UserBlock', { blockId, myId99 });
 };
 
 export const setAppointment = (socket, { chatId, appointmentDate, appointmentCheck }) => {

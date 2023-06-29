@@ -1,23 +1,30 @@
-#card-wrap{
+#cardAdmin-wrap{
     text-align:center;
 }
 
-.card {
+.cardAdmin {
     margin-bottom: 15%;
 }
-.card {
+.cardAdmin {
     width:300px;
 
 }
-.card-title {
+.cardAdmin-title {
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
   }
-  .card-text {
+  .cardAdmin-text {
     display: -webkit-box;
     -webkit-line-clamp: 1; /* 최대 표시할 줄 수 */
     -webkit-box-orient: vertical;
     overflow: hidden;
     text-overflow: ellipsis;
+  }
+
+  .AdminCardRow{
+    min-width:1400px;
+  }
+
+  .AdminCardCol{
   }

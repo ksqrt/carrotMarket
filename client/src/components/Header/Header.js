@@ -276,8 +276,8 @@ function Header() {
                 if (senderId !== userData._id) {
                     setNotifications(prev => ({ ...prev, [chatId]: notificationMessages }));
                 }
-                // console.log("Chat ID: ", chatId);
-                // console.log("Notification Messages: ", notificationMessages);
+                console.log("Chat ID: ", chatId);
+                console.log("Notification Messages: ", notificationMessages);
             });
         };
     
@@ -329,8 +329,10 @@ function Header() {
                             console.log("음성클릭")
                         }}
                     />
+
                     <button onClick={onRec ? onRecAudio : offRecAudio}>녹음</button>
                     <button onClick={play} disabled={disabled}>재생</button>
+
                     {userData ?
                         (<Nav className="nav-wrapper">
                             <div className='notificationIcon'>
@@ -355,7 +357,7 @@ function Header() {
                                 </NavLink>
 
                                 <NavLink className="dropdown-item" to="/messages">
-                                {totalNotifications > 0 &&<BsFillEnvelopeFill className='bell' /> || <BsFillEnvelopeFill/>}Messages
+                                {(totalNotifications > 0 ? <BsFillEnvelopeFill className='bell' /> : <BsFillEnvelopeFill/>)}Messages
                                 </NavLink>
 
                                 {userData.role === "admin" &&
