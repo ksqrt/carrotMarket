@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { useEffect, useState } from 'react';
 import ActiveSells from '../components/Profile/Sells/ActiveSells';
@@ -13,6 +14,7 @@ function EditProfile({ history }) {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(false);
     const [alertShow, setAlertShow] = useState(false);
+    const [avatar,setAvatar] = useState('');
 
     useEffect(() => {
         window.scrollTo(0, 0);
@@ -28,6 +30,8 @@ function EditProfile({ history }) {
         if (e.target.files) {
             setUser({ ...user, avatar: e.target.files[0] })
         }
+
+      
     }
 
     const handleSave = (e) => {
@@ -98,12 +102,11 @@ function EditProfile({ history }) {
                                         <img id="avatar" src={user.avatar} alt="user-avatar"/>
                                     </OverlayTrigger>
                                 </label>
-                                <input id="file-upload" type="file" name="avatar" onChangeCapture={handleChanges} />
+                                <input id="file-upload" type="file" name="avatar" onChangeCapture={handleChanges} hidden />
                             </Col>
                             <Col lg={4} md={3} sm={12}>
                                 <p><BsFillPersonFill /> <input type="text" name="name" value={user.name} onChange={handleChanges} required /></p>
-                                <p><MdEmail /> <input type="email" name="email" value={user.email} onChange={handleChanges} required /></p>
-                                <p><MdPhoneAndroid /> <input type="text" name="phoneNumber" value={user.phoneNumber} onChange={handleChanges} required /></p>
+                             
                                 {/* TODO user password changes:
                                 <p><RiLockPasswordFill /> <input type="password" name="oldPassword" placeholder="Old password" onChange={handleChanges} required /></p>
                                 <p><RiLockPasswordFill /> <input type="password" name="newPassword" placeholder="New password" onChange={handleChanges} required /></p>
@@ -132,20 +135,10 @@ function EditProfile({ history }) {
                     </form>
                 </div>
             </div>
-            <div className="container">
-                <Row>
-                    <Col lg={2} sm={12} id="aside">
-                        <Button disabled variant="dark" id="active-sells">Active Sells</Button>{' '}
-                        <Button disabled variant="dark" id="archived-sells">Archived</Button>{' '}
-                        <Button disabled variant="dark" id="wishlist">Wishlist</Button>{' '}
-                    </Col>
-                    <Col lg={10} sm={12} disabled>
-                        <ActiveSells params={user}/>
-                    </Col>
-                </Row>
-            </div>
+
         </>
     )
 }
 
 export default EditProfile;
+

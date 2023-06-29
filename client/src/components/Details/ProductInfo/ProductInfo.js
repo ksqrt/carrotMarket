@@ -18,6 +18,7 @@ import { Link, useHistory } from 'react-router-dom';
 import './ProductInfo.css';
 import { Carousel } from 'react-bootstrap'
 
+
 function ProductInfo({ params }) {
 
   const declareHandler = (e) =>{
@@ -238,13 +239,26 @@ function ProductInfo({ params }) {
     startChat(socket, { buyerId: userData._id, sellerId: params.sellerId, productId: params._id });
   };
 
-  useEffect(() => {
-    const script = document.createElement("script");
-    script.src = "https://developers.kakao.com/sdk/js/kakao.js";
-    script.async = true;
-    document.body.appendChild(script);
-    return () => document.body.removeChild(script);
-  }, []);
+
+
+
+useEffect(() => {
+  const script = document.createElement('script');
+  script.src = 'https://t1.kakaocdn.net/kakao_js_sdk/2.2.0/kakao.min.js';
+  script.async = true;
+  document.body.appendChild(script);
+
+  script.onload = () => {
+      console.log('여기오냐');
+      window.Kakao.init(process.env.REACT_APP_KAKAO_API);
+      console.log('gg');
+  };
+
+  return () => {
+      document.body.removeChild(script);
+  };
+}, []);
+  
 
 
   //{params.title}: 상품 제목
@@ -253,40 +267,19 @@ function ProductInfo({ params }) {
   //{params.createdSells}: 물품 갯수
 
 
-  function sendLinkCustom() {
+  // function sendLinkCustom() {
     
-    if (window.Kakao) {
-      window.Kakao.Link.sendCustom({
-        templateId: 94886
-      });
-    }
-  }
+  //   if (window.Kakao) {
+      
+    
 
-  function sendLinkDefault() {
-    if (window.Kakao) {
-      window.Kakao.Link.sendDefault({
-        objectType: 'feed',
-        content: {
-          title: params && params.title ? params.title : '호랑이',
-          description: params.description,
-          imageUrl: params.image,
-          link: {
-            mobileWebUrl: 'https://developers.kakao.com',
-            webUrl: `http://localhost:3000/categories/auto/${params._id}/details`,
-          },
-        },
-        buttons: [
-          {
-            title: '웹으로 보기',
-            link: {
-              mobileWebUrl: 'https://developers.kakao.com',
-              webUrl: `http://localhost:3000/categories/auto/${params._id}/details`,
-            },
-          },
-        ],
-      });
-    }
-  }//수정
+
+  //     window.Kakao.Link.sendCustom({
+  //       templateId: 94886
+  //     });
+  //   }
+  // }
+
 
 
   return (
@@ -470,13 +463,7 @@ function ProductInfo({ params }) {
             </p>
           )}
           <span>
-            <a id="kakaotalk-sharing-btn" href="javascript:;" onClick={sendLinkDefault}>
-              <img
-                  src="https://developers.kakao.com/assets/img/about/logos/kakaotalksharing/kakaotalk_sharing_btn_medium.png"
-                  style={{ width: "50px", height: "50px", marginLeft: '15px', marginBottom: '45px' }}
-                  alt="카카오톡 공유 보내기 버튼"
-                />
-            </a>
+           
           </span>
           {!params.isSeller && (
             <span id="heartIconDetails" className="col-lg-1 col-sm-1" onClick={onHearthClick}>
@@ -499,7 +486,7 @@ function ProductInfo({ params }) {
 
            <div>
             {/* <button onClick={sendLinkCustom}>Send Custom Link</button> */}
-                <button className="kakao-button" onClick = {sendLinkDefault}>카카오 공유하기</button>
+               
                 <button className='declare-button' value={params._id} onClick={declareHandler} >신고하기</button>
                
 
