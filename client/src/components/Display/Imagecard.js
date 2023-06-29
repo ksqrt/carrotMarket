@@ -19,9 +19,9 @@ const Imagecard = ({deleteimg, item, index, imgboxbtn}) => {
 
     return (
         <div className={`imgwrapper ${hideImage ? 'hidden' : ''}`} key={index}>
-                <button className='imgbtn' onClick={() => zoomin(index)} value={index}>
+                <div className='imgbtn' onClick={() => zoomin(index)} value={index}>
                     <img src={item} className="imge" alt="이미지" />
-                </button>
+                </div>
                 <CloseButton className='closebtn' onClick={() => hide(index)} />
         </div>
     );
