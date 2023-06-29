@@ -19,7 +19,6 @@ router.use('/auth', authController);
 router.use("/products", productController);
 router.use("/user", userController);
 router.use("/admin",admin);
-//router.use("/messages", messageController);
 router.use("/imageTest",imageTest);
 router.use("/review",review);
 router.use("/AiTest", AiTest);

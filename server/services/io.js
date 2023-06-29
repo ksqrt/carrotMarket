@@ -25,7 +25,7 @@ function Io(server) {
     socket.on('enterChatRoom', ({chatId, userId}) => {
       activeUsers[userId] = chatId;
       socket.userId = userId;
-      // console.log("채팅방 안에 있냐? : ", activeUsers, socket.userId);
+      console.log("채팅방 안에 있냐? : ", activeUsers, socket.userId);
 
     });
 
@@ -59,10 +59,10 @@ function Io(server) {
       }
 
 
-      // console.log("Sender ID: ", senderId);
-      // console.log("Chat Room Buyer ID: ", chatRoom.buyer);
-      // console.log("Chat Room Seller ID: ", chatRoom.seller);
-      // console.log("Notification Increase: ", NotificationIncrease);
+      console.log("Sender ID: ", senderId);
+      console.log("Chat Room Buyer ID: ", chatRoom.buyer);
+      console.log("Chat Room Seller ID: ", chatRoom.seller);
+      console.log("Notification Increase: ", NotificationIncrease);
 
     });
 
@@ -76,10 +76,10 @@ function Io(server) {
       }
       await ChatRoom.updateOne({ _id: chatId }, { $set: NotificationRead });
       io.emit("readMessagesUpdate", { chatId, NotificationRead });
-      // console.log("User ID: ", userId);
-      // console.log("Chat Room Buyer ID: ", chatRoom.buyer);
-      // console.log("Chat Room Seller ID: ", chatRoom.seller);
-      // console.log("Notification Read: ", NotificationRead);
+      console.log("User ID: ", userId);
+      console.log("Chat Room Buyer ID: ", chatRoom.buyer);
+      console.log("Chat Room Seller ID: ", chatRoom.seller);
+      console.log("Notification Read: ", NotificationRead);
     });
 
     socket.on("setAppointment", async ({chatId, appointmentDate }) => {
@@ -157,9 +157,16 @@ function Io(server) {
     socket.on("disconnect", () => {
       console.log("socket disconnected")
       delete activeUsers[socket.userId];
-      // console.log("감? : ", activeUsers);
+      console.log("감? : ", activeUsers);
 
     });
+    //차단하기
+    socket.on("UserBlock", async ({blockId, myId99}) => {
+      console.log(blockId + 'blockIdsocket');
+      console.log(myId99 + 'myId99socket');
+      await User.updateOne({ _id: myId99 }, { blacklist: blockId });
+    });
+
   });
   return io;
 }

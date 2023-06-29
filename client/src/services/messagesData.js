@@ -25,6 +25,13 @@ export const sendMessage = (socket, { chatId, senderId, message, location }) => 
 
 export const readMessages = (socket, { chatId, userId }) => {
     socket.emit('readMessages', { chatId, userId });
+}
+
+//차단하기
+export const UserBlock = (socket, {blockId, myId99}) => {
+  console.log(blockId + 'blockIdData');
+  console.log(myId99 + 'myId99Data');
+  socket.emit('UserBlock', { blockId, myId99 });
 };
 
 export const setAppointment = (socket, { chatId, appointmentDate, appointmentCheck }) => {

@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext, useRef, React, Fragment } from 'react';
-import {sendMessage, disconnect, getUserConversations, initializeSocket, setAppointment, deleteAppointment, appointmentCheck, ReportMessage, ExitRoom, TradeComplete, readMessages} from '../services/messagesData';
+import {UserBlock, sendMessage, disconnect, getUserConversations, initializeSocket, setAppointment, deleteAppointment, appointmentCheck, ReportMessage, ExitRoom, TradeComplete, readMessages} from '../services/messagesData';
 import { Navbar, NavDropdown, Nav, Container, Row, Form, InputGroup, Button, Alert, Modal } from 'react-bootstrap';
 import { Link, NavLink, useHistory, } from 'react-router-dom';
 import { Context } from '../ContextStore';
@@ -27,7 +27,7 @@ import { faLastfmSquare } from '@fortawesome/free-brands-svg-icons';
 import moment from "moment";
 import 'moment-timezone';
 import Confetti from 'react-dom-confetti';
-
+import EmojiPicker from 'emoji-picker-react';
 
 function Messages({ match }) { // match = Router 제공 객체, url을 매개변수로 사용. ex) 경로 : /messages/123  => match.params.id = "123" // app.js 참고 : <Route path="/messages" exact component={Messages} />;
     //map modal
@@ -48,9 +48,31 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
     }
     const [showMessageKakaoMapAPI, setShowMessageKakaoMapAPI] = useState(false);
 
+    //이모티콘
+    const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+    const emojiPickerRef = useRef(null);
 
+    const handleOutsideClick = (event) => {
+        if (emojiPickerRef.current && !emojiPickerRef.current.contains(event.target) && showEmojiPicker) {
+          setShowEmojiPicker(false);
+        }
+    };
 
+    useEffect(() => {
+    document.addEventListener("mousedown", handleOutsideClick);
+    return () => {
+        document.removeEventListener("mousedown", handleOutsideClick);
+    };
+    }, [showEmojiPicker]);
 
+    const handleEmojiPickerToggle = () => {
+    setShowEmojiPicker(!showEmojiPicker);
+    };
+
+    const handleEmojiSelect = (event, emojiObject) => {
+        console.log(emojiObject.emoji);
+        setMessage((Message) => Message + emojiObject.emoji);
+    };
 
     const github = settings;
     let chatId = match.params.id; // 선택된 채팅방의 id
@@ -70,6 +92,19 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
         myId: 0
     });
     const myName = selected.isBuyer ? selected.chats.buyer?.name : selected.chats.seller?.name;
+
+    //차단하기
+    const blockName1 = selected.isBuyer ? selected.chats.seller._id : selected.chats.buyer?._id
+    const blockName2 = selected.isBuyer ? selected.chats.buyer._id : selected.chats.seller._id;
+
+    const blockHandle = () => {
+        const blockId = blockName1
+        const myId99 = blockName2
+        console.log(blockId + 'blockId')
+        console.log(myId99 + 'myId99')
+        UserBlock(socket, {blockId, myId99})
+
+    }
 
     const myId = selected.isBuyer ? selected.chats.buyer?._id : selected.chats.seller?._id;
 
@@ -105,7 +140,7 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
         content: ''
     });
 
-        // 달력 창 열릴 때 실행
+    // 달력 창 열릴 때 실행
     const openDateTimePicker = (event) => {
         event.preventDefault()
         setModalState({ ...modalState, date: dayjs(), datePickerOpen: true, content: '', modalOpen: false, });
@@ -316,11 +351,6 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
         }, 500);
     }
 
-
-
-
-
-
     // 위로 스크롤 시 추가 로딩 구현
     const [showMessagesCount, setShowMessagesCount] = useState(15);
     const chatContainerRef = useRef(null);
@@ -347,8 +377,6 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
         element.addEventListener("scroll", handleScroll);
         return () => element.removeEventListener("scroll", handleScroll);
     }, [selected.chats.conversation.length]);
-
-
 
     // 5% 확률로 다른 이모티콘 나옴
     const [bgUrl, setBgUrl] = useState('');
@@ -389,7 +417,7 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
         .catch(console.log)
     }, [isSelected, chatId, socket, userData]);
 
-      //채팅 내용 불러오기
+    //채팅 내용 불러오기
     useEffect(() => {
         if (!socket) return;
         console.log('5. messages.js, newmessage');
@@ -509,9 +537,9 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
                                         <button className="dropdown-content-out" onClick={ExitRoomModalopen}>
                                             <BsDoorOpen size={15} /> 채팅방 나가기
                                         </button>
-                                        <button className="dropdown-content-block"> 
-                                            <ImBlocked size={20}/> 차단하기  
-                                        </button>
+                                        {/* <button className="dropdown-content-block" onClick={blockHandle}> 
+                                            <ImBlocked size={20} /> 차단하기  
+                                        </button> */}
                                         <button className="dropdown-content-declare" onClick={handleShowReportModal}>
                                             <AiOutlineAlert size={20} /> 신고하기 
                                         </button>
@@ -587,6 +615,7 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
                                 }
                             })}
                             </div>
+                            
                             <div className="chat-selected-footer col-lg-12" style={{backgroundColor: '#F2F3F7', padding:0, borderRadius:20}}>
                                 <Form onSubmit={handleMsgSubmit}>
                                     <Form.Group>
@@ -597,15 +626,6 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
                                             <label className={styles['menu-open-button']} htmlFor="menu-open">
                                                 <UseAnimations className="plusToX" animation={plusToX} size={40} />
                                             </label>
-
-                                            <button type="button" className={`${styles['menu-item']} ${styles.blue}`} onClick={() => document.getElementById("uploadInput").click()}> 
-                                                <input type="file" name='image' id="uploadInput" onChange={e => setFile(e.target.files[0])} style={{display: 'none'}} />
-                                                <AiOutlineUpload className="upload-icon" size={25} style={{marginBottom:'7px'}} /> 
-                                            </button>
-                                            <button className={`${styles['menu-item']} ${styles.green}`} onClick={openDateTimePicker}> <AiOutlineSchedule size={23} style={{marginBottom:'7px'}} /> </button>
-                                            <button className={`${styles['menu-item']} ${styles.red}`}> <div style={{fontSize:'16px', marginBottom:'7px'}} >🤗</div> </button>
-                                            <button className={`${styles['menu-item']} ${styles.purple}`}> </button>
-                                            <button className={`${styles['menu-item']} ${styles.orange}`}>  </button>
                                             <button type="button" className={`${styles['menu-item']} ${styles.lightblue}`} onClick={ handleShow }> <FaMapMarkedAlt size={20} style={{marginBottom:'8px'}} /> {/*{console.log('modalstate 값 확인 : ',modalState)}*/} </button>
                                             {handleShow && (
                                                 <Modal show={show} onHide={handleClose}>
@@ -614,15 +634,30 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
                                                 </div>
                                                 </Modal>
                                             )}
-                                            
+                                             
+                                            <button className={`${styles['menu-item']} ${styles.green}`} onClick={openDateTimePicker}> <AiOutlineSchedule size={23} style={{marginBottom:'7px'}} /> </button>
 
+                                            <button className={`${styles['menu-item']} ${styles.purple}`} style={{display: "none"}}> </button>
+                                            <button className={`${styles['menu-item']} ${styles.orange}`} style={{display: "none"}}>  </button>
+
+                                            <button type="button" className={`${styles['menu-item']} ${styles.blue}`} onClick={() => document.getElementById("uploadInput").click()}> 
+                                                <input type="file" name='image' id="uploadInput" onChange={e => setFile(e.target.files[0])} style={{display: 'none'}} />
+                                                <AiOutlineUpload className="upload-icon" size={25} style={{marginBottom:'7px'}} /> 
+                                            </button>
+
+                                            {/* 이모티콘 */}
+                                            <button className={`${styles['menu-item']} ${styles.red}`}
+                                                onClick={handleEmojiPickerToggle}> 
+                                                <div style={{fontSize:'16px', marginBottom:'7px'}} >🤗</div> 
+                                            </button>
+                                            
                                             </nav>
                                             </InputGroup.Append>
                                             &nbsp;&nbsp;
                                             <Form.Control
                                                 as="textarea"
                                                 required
-                                                value={message}
+                                                value= {message}
                                                 onChange={(e) => setMessage(e.target.value)}
                                                 style={{ borderRadius: '30px', verticalAlign: 'middle', marginTop:'5px', marginBottom:'5px', fontSize:'16px', overflow:'hidden' }}
                                                 onKeyDown={event => {
@@ -643,6 +678,7 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
                                         </InputGroup>
                                     </Form.Group>
                                 </Form>
+                                
                                 {modalState.datePickerOpen && (
                                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                                         <MobileDateTimePicker open={modalState.datePickerOpen} onAccept={handleDateAccept} onClose={handleDatePickerClose} value={modalState.date ? modalState.date : new Date()} on/>
@@ -668,12 +704,19 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
                             </div>
                         </>
                     }
+                    <div ref={emojiPickerRef}>
+                            {showEmojiPicker && 
+                            <EmojiPicker 
+                            onEmojiClick={handleEmojiSelect}
+                            />}
+                    </div>
                 </article>
-            </Row>
-            
+            </Row>  
         </Container>
+        
     )
 }
+
 // 약속을 db가 존재할 때 처음 한번만 떠야 함. 그러면 결국 약속 상태 db를 만들어야 함.
 function AppointmentModal({ show, selected, appointmentModalAccept, appointmentModalReject, myName }) {
     const weekdays = ["일", "월", "화", "수", "목", "금", "토"];
