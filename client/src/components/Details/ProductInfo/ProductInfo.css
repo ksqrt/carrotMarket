@@ -383,30 +383,6 @@
   #archive-icon2 a:hover {
     text-decoration: underline; /* 호버시 밑줄 추가 */
   }
-
-  #deleteProduct {
-    display: inline-block;
-  }
-  
-  #deleteProduct button {
-    background-color: #ffa500; /* 배경색 설정 */
-    color: #fff; /* 텍스트 색상 */
-    border: none; /* 테두리 제거 */
-    border-radius: 4px; /* 테두리를 둥글게 설정 */
-    padding: 4px 8px; /* 내부 여백 설정 */
-    font-weight: bold; /* 텍스트 굵게 설정 */
-    cursor: pointer; /* 커서 포인터로 변경 */
-  }
-  
-  #deleteProduct button:focus {
-    outline: none; /* 포커스시 아웃라인 제거 */
-  }
-  
-  #deleteProduct button:hover {
-    text-decoration: underline; /* 호버시 밑줄 추가 */
-  }
-  
-  
   
 .declare-button{
     background-color: #FEE500;
@@ -420,4 +396,48 @@
     padding-left:40px;
     margin-left:50px;
     padding-right:50px;
+}
+
+.sell_box,
+.sell_delete {
+  font-size: 13px;
+  background-color: white;
+  border: 2px solid #FF7E36;
+  padding: 2px 4px;
+  margin-right: 1px;
+  font-weight: bold;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  cursor: pointer;
+  color: #FF7E36;
+}
+
+.sell_delete {
+  border-color: #FF4B4B; /* Change border-color of sell_delete to red */
+  color: #FF4B4B; /* Change text color of sell_delete to red */
+}
+
+.sell_box a,
+.sell_delete a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.sell_box:hover,
+.sell_delete:hover {
+  background-color: #FF7E36;
+  color: white;
+  border-color: #FF7E36;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.sell_delete:hover {
+  background-color: #FF4B4B; /* Change background-color of sell_delete hover to red */
+  border-color: #FF4B4B; /* Change border-color of sell_delete hover to red */
+}
+
+.sell_box:active,
+.sell_delete:active {
+  transform: translateY(1px);
 }
