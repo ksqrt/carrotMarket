@@ -415,9 +415,9 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
                                         <button className="dropdown-content-out" onClick={ExitRoomModalopen}>
                                             <BsDoorOpen size={15} /> 채팅방 나가기
                                         </button>
-                                        <button className="dropdown-content-block" onClick={blockHandle}> 
+                                        {/* <button className="dropdown-content-block" onClick={blockHandle}> 
                                             <ImBlocked size={20} /> 차단하기  
-                                        </button>
+                                        </button> */}
                                         <button className="dropdown-content-declare" onClick={handleShowReportModal}>
                                             <AiOutlineAlert size={20} /> 신고하기 
                                         </button>
@@ -512,7 +512,7 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
                                             )}
                                              
                                             <button className={`${styles['menu-item']} ${styles.green}`} onClick={openDateTimePicker}> <AiOutlineSchedule size={23} style={{marginBottom:'7px'}} /> </button>
-                                            
+
                                             <button className={`${styles['menu-item']} ${styles.purple}`} style={{display: "none"}}> </button>
                                             <button className={`${styles['menu-item']} ${styles.orange}`} style={{display: "none"}}>  </button>
 
