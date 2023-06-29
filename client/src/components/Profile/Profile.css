@@ -1,94 +1,145 @@
-#profile-head .profile-row {
-    margin-left: 50px;
-    align-items: center;
-  }
-  
-  
-  #profile_avatar {
-    width: 80px;
-    /* border: 1px solid black; */
-  }
-  
-  #avatar {
-    margin: 0 auto;
-    display: block;
-    width: 75px;
-    height: 75px;
-    border-radius: 100px;
-    object-fit: cover;
-  }
-  
-    #profile-head {
-      display: flex;
-      background-color: #ffffff; /* 흰색 배경으로 변경 */
-      margin-bottom: 30px;
-      border: 1px solid rgba(128, 128, 128, 0.2); /* 1픽셀 굵기의 연한 회색 테두리 */
-  }
-  
-  
-  #profile_information2 {
-    margin-top: 25px;
-    /* border: 1px solid black; */
-    float:left;
-  }
+#profile-head {
+  background-color: #f8f9fa;
+  padding: 20px 0 30px 0;
+  border-radius: 8px;
+  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
+}
 
-  .profile-edit-button {
-    width: 100px;
-    background-color: white;
-    border: 1px solid lightgray;
-    padding: 5px 10px;
-    font-weight: bold;
-    font-size: 13px;
-    border-radius: 5px;
-    cursor: pointer;
-    color: #888888;
-  }
+.profile-row {
+  align-items: center;
+}
   
+#profile_avatar {
+  width: 80px;
+  /* border: 1px solid black; */
+}
   
-  
+/* 이미지 프로필 */
+#avatar {
+  object-fit: cover;
+  border: 3px solid #FF7E36;
+  margin: 0 auto;
+  display: block;
+  width: 100px;
+  height: 100px;
+  border-radius: 100px;
+  object-fit: cover;
+}
 
+/* 전체 div */
+#profile-head {
+  display: flex;
+  background-color: #ffffff;
+  margin-bottom: 30px;
+  border: 1px solid rgba(128, 128, 128, 0.2);
+  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1); /* Add box-shadow for a bit of depth */
+}
 
   
-  /* 프로필 이름 */
-  #profile_name {
-    display: flex;
-  }
-  #profile_name button {
-    margin-left: 20px;
-  }
+#profile_information2 {
+  margin-top: 25px;
+  /* border: 1px solid black; */
+  float:left;
+}
+
+.profile-edit-button,
+.profile-delete-button,
+.manner-button {
+  font-size: 13px;
+  width: 120px; /* Increase button width to 120px */
+  height: 40px; /* Set button height to 40px */
+  background-color: white;
+  border: 2px solid #FF7E36;
+  padding: 2px 4px;
+  margin-right: 3px;
+  font-weight: bold;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  cursor: pointer;
+  color: #FF7E36;
+}
+
+.profile-delete-button {
+  border-color: #FF4B4B; /* Change border-color of sell_delete to red */
+  color: #FF4B4B; /* Change text color of sell_delete to red */
+}
+
+.profile-edit-button:hover,
+.profile-delete-button:hover,
+.manner-button:hover {
+  background-color: #FF7E36;
+  color: white;
+  border-color: #FF7E36;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.profile-delete-button:hover {
+  background-color: #FF4B4B; /* Change background-color of sell_delete hover to red */
+  border-color: #FF4B4B; /* Change border-color of sell_delete hover to red */
+}
+
+.profile-edit-button:focus,
+.profile-delete-button:focus,
+.manner-button:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px #FF9A52;
+}
+
+.profile-edit-button {
+  width: 100px;
+  background-color: white;
+  border: 1px solid lightgray;
+  padding: 5px 10px;
+  font-weight: bold;
+  font-size: 13px;
+  border-radius: 5px;
+  cursor: pointer;
+  color: #888888;
+}
   
+/* 프로필 이름 */
+#profile_name {
+  display: flex;
+}
+
+#profile_name button {
+  margin-left: 20px;
+}
+
   
-    /* 판매자 css */
-    #profile_infobtn {
-      margin-top: 20px;
-    }
+/* 판매자 css */
+/* #profile_infobtn {
+  margin-top: 20px;
+} */
+
+.sellcount {
+  margin-left: 100px;
+  padding-bottom: 10px;
+  display: inline-block;
+  align-items: center;
+}
   
-    .sellcount {
-      display: flex;
-      float: left;
-      align-items: center;
-      margin-top: 10px;
-      /* Adjust the margin as needed */
-      margin-right: 20px;
-    }
-  
-    .section-icon {
-      margin-right: 5px;
-      /* Add some spacing between the icon and text */
-    }
-  
-    .section-title {
-      font-weight: bold;
-      margin: 0;
-      /* Reset the default margin */
-    }
-  
-    .item-count {
-      font-weight: normal;
-      color: #555;
-    }
-  
-    /* 여기까지 */
+.section-icon {
+  vertical-align: middle;
+  margin-right: 5px;
+  /* Add some spacing between the icon and text */
+}
+
+.section-title {
+  display: inline;
+  font-size: 1rem;
+  font-weight: bold;
+  margin: 0;
+  /* Reset the default margin */
+}
+
+.item-count {
+  font-weight: normal;
+  color: #555;
+}
+
+/* 여기까지 */
 
 
     #edit-profile-icons {

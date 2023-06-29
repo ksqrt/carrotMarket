@@ -14,8 +14,6 @@ import './ProductInfo.css';
 import { Carousel } from 'react-bootstrap'
 import { getUserById } from '../../../services/userData';
 
-
-
 function ProductInfo({ params, user }) {
   const [mannerTemperature, setMannerTemperature] = useState(null);
 
@@ -37,13 +35,9 @@ function ProductInfo({ params, user }) {
     }
   };
 
-
   const declareHandler = (e) => {
-
     const declareproduct = e.target.value;
-
     console.log('ProductInfo' + declareproduct);
-
     declareProduct(declareproduct);
   }
 
@@ -410,20 +404,22 @@ function ProductInfo({ params, user }) {
 
           <div id="profile_right">
             <div id="tem_total">
-              <p style={{ float: 'left', fontWeight: 'bold', textDecoration: 'underline' }}>매너온도</p>
-              <p style={{ marginBottom: '-1px', float: 'right', color: getFontColor(parseInt(mannerTemperature) + 0) }}>{(mannerTemperature)}°C&nbsp;&nbsp;
-
-                <img
-                  src={getMannerTemperatureImage(mannerTemperature)}
-                  alt="이미지 사진"
-                  style={{ width: '25px', height: '25px' }}
-                />
-              </p>
-              <div className="manner-thermometer" style={{ marginBottom: '10px' }}>
-                <div className="manner-thermometer-fill" style={getMannerTemperatureStyle(mannerTemperature)}></div>
+              <p id="tem_total_txt">매너온도</p>
+                <div className='meters'>
+                  <p id="tem_total_cnt" style={{ marginBottom: "-1px", float: "right", color: getFontColor( params.mannertmp ) }}>
+                    {(mannerTemperature)}°C&nbsp;&nbsp;
+                  <img
+                      src={getMannerTemperatureImage( params.mannertmp )}
+                      alt="이미지 사진"
+                      style={{ width: '25px', height: '25px' }}
+                  />
+                  </p>
+                  </div>
+                  <div className="manner-thermometer" style={{ width: "100%" }}>
+                    <div className="manner-thermometer-fill" style={ getMannerTemperatureStyle(mannerTemperature) }></div>
+                  </div>
               </div>
             </div>
-          </div>
 
           {/* <dl id="manner_temper">
           <dt>매너온도</dt>
