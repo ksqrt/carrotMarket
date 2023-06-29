@@ -1,4 +1,6 @@
-const baseUrl = "http://localhost:5000";
+import url from "../url.js";
+const baseUrl = url;
+
 // // const baseUrl = "http://101.79.11.48:5000";
 
 export async function getadminUser() {

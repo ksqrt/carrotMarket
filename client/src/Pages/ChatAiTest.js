@@ -1,8 +1,11 @@
 import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
+import url from "../url.js";
+const baseUrl = url;
+
 
 function ChatAiTest() {
-  const BASE_URL = "http://localhost:5000/";
+  const BASE_URL = baseUrl;
   const [value, setValue] = useState("");
   const [allMessage, setAllMessage] = useState([]);
   const [prog, setProg] = useState(false);
