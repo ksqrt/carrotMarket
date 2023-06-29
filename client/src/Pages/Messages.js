@@ -76,7 +76,6 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
     const [message, setMessage] = useState(""); // 내가 입력한 메세지
     const [alertShow, setAlertShow] = useState(true); 
     const [socket, setSocket] = useState(null); // initializeSocket 소켓 초기화
-    //const [newMessageCount, setNewMessageCount] = useState(0); // 새 메세지 개수 알림
     const [notifications, setNotifications] = useState({});
     const scrollToBottom = () => {
         animateScroll.scrollToBottom({
@@ -405,9 +404,6 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
             if (newMessage.location) {
                 setLocation(newMessage.location);
             }
-            // if (newMessage.senderId !== userData._id) {
-            //     setNewMessageCount(prevCount => prevCount + 1);
-            // }
             scrollToBottom();
         };
         socket.on('newMessage', handleNewMessage);
