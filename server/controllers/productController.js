@@ -236,6 +236,7 @@ router.get('/sells/soldout/:id', async (req, res) => {
     }
   });
 
+
 // 상품을 활성화하는 엔드포인트
 router.get('/enable/:id', async (req, res) => {
     try {
