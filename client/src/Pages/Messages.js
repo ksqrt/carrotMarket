@@ -52,7 +52,6 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
     const [showEmojiPicker, setShowEmojiPicker] = useState(false);
     const emojiPickerRef = useRef(null);
 
-    
     useEffect(() => {
         const handleOutsideClick = (event) => {
             if (emojiPickerRef.current && !emojiPickerRef.current.contains(event.target) && showEmojiPicker) {
@@ -94,8 +93,8 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
     const myName = selected.isBuyer ? selected.chats.buyer?.name : selected.chats.seller?.name;
 
     //차단하기
-    const blockName1 = selected.isBuyer ? selected.chats.seller._id : selected.chats.buyer?._id
-    const blockName2 = selected.isBuyer ? selected.chats.buyer._id : selected.chats.seller._id;
+    const blockName1 = selected.isBuyer ? selected.chats.seller?._id : selected.chats.buyer?._id
+    const blockName2 = selected.isBuyer ? selected.chats.buyer?._id : selected.chats.seller?._id;
 
     const blockHandle = () => {
         const blockId = blockName1
@@ -598,9 +597,34 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
                                                         <Linkify>{x.message}</Linkify>
                                                         </div>
                                                     )}
-                                                    {selected.myId !== x.senderId && <img className="user-avatar" src={(selected.isBuyer ? selected.chats.seller?.avatar : selected.chats.buyer?.avatar) || 'https://kr.object.ncloudstorage.com/ncp3/ghuPttFw_400x400.jpg'} alt="user-avatar" />}
-                                                </div>
-
+                                                    {selected.myId !== x.senderId && (
+                                                         selected.chats.seller?._id ? (
+                                                            <Link to={`/profile/${selected.chats.seller?._id}`}>
+                                                              <img
+                                                                className="user-avatar"
+                                                                src={
+                                                                  (selected.isBuyer
+                                                                    ? selected.chats.seller?.avatar
+                                                                    : selected.chats.buyer?.avatar) ||
+                                                                  'https://kr.object.ncloudstorage.com/ncp3/ghuPttFw_400x400.jpg'
+                                                                }
+                                                                alt="user-avatar"
+                                                              />
+                                                            </Link>
+                                                          ) : (
+                                                            <img
+                                                              className="user-avatar"
+                                                              src={
+                                                                (selected.isBuyer
+                                                                  ? selected.chats.seller?.avatar
+                                                                  : selected.chats.buyer?.avatar) ||
+                                                                'https://kr.object.ncloudstorage.com/ncp3/ghuPttFw_400x400.jpg'
+                                                              }
+                                                              alt="user-avatar"
+                                                            />
+                                                          )
+                                                        )}
+                                                    </div>
                                             )}
                                                 {/* {x.location && (
                                                     <div className="map-message">
