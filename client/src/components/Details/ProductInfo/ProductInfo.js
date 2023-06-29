@@ -4,7 +4,7 @@ import { GrEdit } from 'react-icons/gr';
 import { MdArchive } from 'react-icons/md'
 import { BsHeart, BsHeartFill } from 'react-icons/bs';
 import { Col, Row, Spinner, Tabs, Tab, Image, OverlayTrigger, Tooltip, Modal, Form, Button } from 'react-bootstrap';
-import { getAll, archiveSell, wishProduct, archiveSoldout, deleteProduct, declareProduct } from '../../../services/productData';
+import { getAll, archiveSell, wishProduct, archiveSoldout, deleteProduct,declareProduct } from '../../../services/productData';
 import ProductCard from "../../../components/ProductCard/ProductCard";
 import { startChat, initializeSocket } from '../../../services/messagesData'; // startChat 함수와 socket 객체를 import합니다.
 import { RiMessage3Fill } from 'react-icons/ri';
@@ -49,7 +49,7 @@ function ProductInfo({ params, user }) {
   const [showArchive, setShowArchive] = useState(false);
   const [showArchive2, setShowArchive2] = useState(false);
   const images = params && params.image ? params.image : [];
-
+  
   const history = useHistory();
 
   const handleClose = () => setShowMdg(false);
@@ -57,34 +57,34 @@ function ProductInfo({ params, user }) {
 
   const handleCloseArchive = () => setShowArchive(false);
   const handleShowArchive = () => setShowArchive(true);
-
+  
   const handleCloseArchive2 = () => setShowArchive2(false);
   const handleShowArchive2 = () => setShowArchive2(true);
 
   const handleSubmit = (e) => {
     console.log('handleSubmit called')
-    e.preventDefault();
-    console.log('handleSubmit called2')
-    archiveSell(params._id)
-      .then(res => {
-        console.log('handleSubmit called3')
-        setShowArchive(false);
-        history.push(`/profile/${params.seller}`);
-      })
-      .catch(err => console.log(err))
+      e.preventDefault();
+      console.log('handleSubmit called2')
+      archiveSell(params._id)
+          .then(res => {
+            console.log('handleSubmit called3')
+              setShowArchive(false);
+              history.push(`/profile/${params.seller}`);
+          })
+          .catch(err => console.log(err))
   }
 
   const handleSubmit2 = (e) => {
     console.log('handleSubmit2 called')
-    e.preventDefault();
-    console.log('handleSubmit2 called2')
-    archiveSoldout(params._id)
-      .then(res => {
-        console.log('handleSubmit called3')
-        setShowArchive2(false);
-        history.push(`/profile/${params.seller}`);
-      })
-      .catch(err => console.log(err))
+      e.preventDefault();
+      console.log('handleSubmit2 called2')
+      archiveSoldout(params._id)
+          .then(res => {
+            console.log('handleSubmit called3')
+              setShowArchive2(false);
+              history.push(`/profile/${params.seller}`);
+          })
+          .catch(err => console.log(err))
   }
 
   useEffect(() => {
@@ -169,7 +169,7 @@ function ProductInfo({ params, user }) {
     } else if (temperature >= 50 && temperature < 60) {
       return "https://kr.object.ncloudstorage.com/ncp3/ncp3/5.png";
     } else {
-      return "https://kr.object.ncloudstorage.com/ncp3/ncp3/5.png";
+      return null;
     }
   };
 
@@ -226,34 +226,47 @@ function ProductInfo({ params, user }) {
   // startchat 이벤트 실행
   const { userData } = useContext(Context);
   const [socket, setSocket] = useState(null);
-
+  
   useEffect(() => {
     const initSocket = async () => {
       const socket = await initializeSocket();
       setSocket(socket);
-
+  
       socket.on('startChat', ({ chatId }) => {
         history.push(`/messages/${chatId}`);
       });
     };
-
+  
     initSocket();
   }, []);
 
-
+  
   const onChatStart = async (e) => {
     e.preventDefault();
     if (!socket) return;
     startChat(socket, { buyerId: userData._id, sellerId: params.sellerId, productId: params._id });
   };
 
-  useEffect(() => {
-    const script = document.createElement("script");
-    script.src = "https://developers.kakao.com/sdk/js/kakao.js";
-    script.async = true;
-    document.body.appendChild(script);
-    return () => document.body.removeChild(script);
-  }, []);
+
+
+
+useEffect(() => {
+  const script = document.createElement('script');
+  script.src = 'https://t1.kakaocdn.net/kakao_js_sdk/2.2.0/kakao.min.js';
+  script.async = true;
+  document.body.appendChild(script);
+
+  script.onload = () => {
+      console.log('여기오냐');
+      window.Kakao.init(process.env.REACT_APP_KAKAO_API);
+      console.log('gg');
+  };
+
+  return () => {
+      document.body.removeChild(script);
+  };
+}, []);
+  
 
 
   //{params.title}: 상품 제목
@@ -262,77 +275,56 @@ function ProductInfo({ params, user }) {
   //{params.createdSells}: 물품 갯수
 
 
-  function sendLinkCustom() {
+  // function sendLinkCustom() {
+    
+  //   if (window.Kakao) {
+      
+    
 
-    if (window.Kakao) {
-      window.Kakao.Link.sendCustom({
-        templateId: 94886
-      });
-    }
-  }
 
-  function sendLinkDefault() {
-    if (window.Kakao) {
-      window.Kakao.Link.sendDefault({
-        objectType: 'feed',
-        content: {
-          title: params && params.title ? params.title : '호랑이',
-          description: params.description,
-          imageUrl: params.image,
-          link: {
-            mobileWebUrl: 'https://developers.kakao.com',
-            webUrl: `http://localhost:3000/categories/auto/${params._id}/details`,
-          },
-        },
-        buttons: [
-          {
-            title: '웹으로 보기',
-            link: {
-              mobileWebUrl: 'https://developers.kakao.com',
-              webUrl: `http://localhost:3000/categories/auto/${params._id}/details`,
-            },
-          },
-        ],
-      });
-    }
-  }//수정
+  //     window.Kakao.Link.sendCustom({
+  //       templateId: 94886
+  //     });
+  //   }
+  // }
+
 
   return (
     <div className="d-flex flex-column align-items-center">
-      <Carousel style={{ transition: 'transform 0.5s ease-in-out' }}>
-        {images.map((img, index) => (
-          <Carousel.Item key={index}>
-            <div style={{ display: 'flex', justifyContent: 'center' }}>
-              <img
-                className="d-block"
-                style={{
-                  objectFit: "cover",
-                  maxWidth: "700px", // Set the desired maximum width
-                  maxHeight: "500px", // Set the desired maximum height
-                }}
-                src={img}
-                alt={`Slide ${index + 1}`}
-              />
-            </div>
-          </Carousel.Item>
-        ))}
-      </Carousel>
+    <Carousel style={{ transition: 'transform 0.5s ease-in-out' }}>
+      {images.map((img, index) => (
+        <Carousel.Item key={index}>
+          <div style={{ display: 'flex', justifyContent: 'center' }}>
+          <img
+            className="d-block"
+            style={{
+              objectFit: "cover",
+              maxWidth: "700px", // Set the desired maximum width
+              maxHeight: "500px", // Set the desired maximum height
+            }}
+            src={img}
+            alt={`Slide ${index + 1}`}
+            />
+          </div>
+        </Carousel.Item>
+      ))}
+    </Carousel>
 
       <section id="profile">
         <div id="space-between">
           <div style={{ display: 'flex' }}>
-            <Link to={`/profile/${params.sellerId}`}>
+            <Link to={ `/profile/${params.sellerId}` }>
               <div id='profile_image'>
-                <img id="avatar" src={params.avatar} alt="user-avatar" />
+                <img id="avatar" src={ params.avatar } alt="user-avatar" />
               </div>
             </Link>
             <div id="profile_left">
-              <Link to={`/profile/${params.sellerId}`}>
-                <div id="nickname">{params.name}</div>
+              <Link to={ `/profile/${params.sellerId}` }>
+                <div id="nickname">{ params.name }</div>
               </Link>
-              <div id="profile_address">{params.city}</div>
+              <div id="profile_address">{ params.city }</div>
               <div id="content_UpDel">
-                {params.isSeller && (
+                { params.isSeller && (
                   <>
                     <OverlayTrigger placement="top" overlay={<Tooltip>상품 보관함 이동</Tooltip>}>
                     <button className="sell_box" onClick={handleShowArchive}>
@@ -362,41 +354,41 @@ function ProductInfo({ params, user }) {
                   </OverlayTrigger>
                   </>
                 )}
-
-                <Modal show={showArchive} onHide={handleCloseArchive}>
-                  <Modal.Header closeButton>
+                
+                <Modal show={ showArchive } onHide={ handleCloseArchive }>
+                <Modal.Header closeButton>
                     <Modal.Title>보관함으로 이동하시겠습니까???</Modal.Title>
-                  </Modal.Header>
-                  <Modal.Body>
-                    보관함에 넣어두어도 언제든 다시 재판매 가능합니다!!
-                  </Modal.Body>
-                  <Modal.Footer>
+                </Modal.Header>
+                <Modal.Body>
+                   보관함에 넣어두어도 언제든 다시 재판매 가능합니다!!
+                </Modal.Body>
+                <Modal.Footer>
                     <Button variant="secondary" onClick={handleCloseArchive}>
-                      닫기
+                        닫기
                     </Button>
                     <Button variant="success" onClick={handleSubmit}>
-                      보관함에 보관
+                        보관함에 보관
                     </Button>
-                  </Modal.Footer>
-                </Modal>
+                </Modal.Footer>
+              </Modal>
 
 
-                <Modal show={showArchive2} onHide={handleCloseArchive2}>
-                  <Modal.Header closeButton>
+              <Modal show={ showArchive2 } onHide={ handleCloseArchive2 }>
+                <Modal.Header closeButton>
                     <Modal.Title>판매완료 되었습니까???</Modal.Title>
-                  </Modal.Header>
-                  <Modal.Body>
+                </Modal.Header>
+                <Modal.Body>
                     정말 판매가 완료된 상품인지 확인하시오
-                  </Modal.Body>
-                  <Modal.Footer>
+                </Modal.Body>
+                <Modal.Footer>
                     <Button variant="secondary" onClick={handleCloseArchive2}>
-                      닫기
+                        닫기
                     </Button>
                     <Button variant="success" onClick={handleSubmit2}>
-                      판매 완료
+                        판매 완료
                     </Button>
-                  </Modal.Footer>
-                </Modal>
+                </Modal.Footer>
+              </Modal>
 
               </div>
             </div>
@@ -421,7 +413,7 @@ function ProductInfo({ params, user }) {
               </div>
             </div>
 
-          {/* <dl id="manner_temper">
+        {/* <dl id="manner_temper">
           <dt>매너온도</dt>
           <dd className="text-color">75<span>°C</span></dd>
         </dl>
@@ -433,11 +425,11 @@ function ProductInfo({ params, user }) {
       </section>
 
       <section id='content'>
-        <h1 id='content_title'>{params.title}</h1>
-        <p id='content_category'>{params.category} · <time>{displayCreateAt(params.addedAt)}</time></p>
+        <h1 id='content_title'>{ params.title }</h1>
+        <p id='content_category'>{ params.category } · <time>{displayCreateAt(params.addedAt)}</time></p>
         <p id='content_price'>{params.price ? params.price.toLocaleString() : ''}원</p>
-        <p id='content_main'>{params.description}</p>
-        <p id='content_cnt'> 관심 ♥ {params.likes} · 채팅 갯수 · 조회 수 {params.views} </p>
+        <p id='content_main'>{ params.description }</p>
+        <p id='content_cnt'> 관심 ♥ { params.likes } · 채팅 갯수 · 조회 수 { params.views } </p>
         <div id='content_button'>
           {params.isAuth ? (
             <>
@@ -453,13 +445,7 @@ function ProductInfo({ params, user }) {
             </p>
           )}
           <span>
-            <a id="kakaotalk-sharing-btn" href="javascript:;" onClick={sendLinkDefault}>
-              <img
-                src="https://developers.kakao.com/assets/img/about/logos/kakaotalksharing/kakaotalk_sharing_btn_medium.png"
-                style={{ width: "50px", height: "50px", marginLeft: '15px', marginBottom: '45px' }}
-                alt="카카오톡 공유 보내기 버튼"
-              />
-            </a>
+           
           </span>
           {!params.isSeller && (
             <span id="heartIconDetails" className="col-lg-1 col-sm-1" onClick={onHearthClick}>
@@ -480,9 +466,9 @@ function ProductInfo({ params, user }) {
           )}
 
 
-          <div>
+           <div>
             {/* <button onClick={sendLinkCustom}>Send Custom Link</button> */}
-                <button className="kakao-button" onClick = {sendLinkDefault}>카카오 공유하기</button>
+               
                 <button className='declare-button' value={params._id} onClick={declareHandler} >신고하기</button>
             </div>
 
@@ -496,9 +482,9 @@ function ProductInfo({ params, user }) {
         </div>
         <div id='container'>
           <InfiniteScroll
-            dataLength={products.length}
-            next={fetchMoreData}
-            hasMore={true}
+            dataLength={ products.length }
+            next={ fetchMoreData }
+            hasMore= {true }
             className="row"
           >
             <Row>
