@@ -45,7 +45,7 @@ const getMannerTemperatureStyle = (temperature) => {
     } else if (temperature >= 50 && temperature < 60) {
       return "https://kr.object.ncloudstorage.com/ncp3/ncp3/5.png";
     } else {
-      return null;
+      return "https://kr.object.ncloudstorage.com/ncp3/ncp3/5.png";
     }
   };
 
