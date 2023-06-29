@@ -1,6 +1,5 @@
 import url from "../url.js";
 const baseUrl = url;
-const baseUrl2 = "http://localhost:5000";
 
 
 export async function snsUser(user) {
@@ -113,7 +112,7 @@ export async function updateMannerTemperature(id, mannerTemperature) {
     console.log('ggg');
     console.log(mannerTemperature);
     console.log(id, '아이디용');
-      const response = await fetch(`${baseUrl2}/user/updatemanner/${id}`, {
+      const response = await fetch(`${baseUrl}/user/updatemanner/${id}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

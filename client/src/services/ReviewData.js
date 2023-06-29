@@ -1,4 +1,6 @@
-const baseUrl = "http://localhost:5000";
+import url from "../url.js";
+const baseUrl = url;
+
 
 export async function createReview(review) {
   try {
