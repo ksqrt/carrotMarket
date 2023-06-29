@@ -42,10 +42,10 @@ const AdminProduct = (props) => {
               <Col className="AdminCardCol" sm={3} key={product.id}>
                 <Card className="cardAdmin">
                   <Link to={`/categories/${product.category}/${product._id}/details`}>
-                    <Card.Img variant="top" src={product.image} />
+                    <Card.Img variant="top" src={product.image[0]} />
                   </Link>
                   <Card.Body>
-                    <Card.Title className="cardAdmin-title">{product.name}</Card.Title>
+                    <Card.Title className="cardAdmin-title">{product.title}</Card.Title>
                     <Card.Text className="cardAdmin-text">{product.description}</Card.Text>
                   </Card.Body>
                   <Card.Footer>
