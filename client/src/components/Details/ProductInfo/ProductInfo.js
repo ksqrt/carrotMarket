@@ -24,10 +24,8 @@ function ProductInfo({ params, user }) {
   const fetchUserData = async (user) => {
     try {
       const userData = await getUserById(params.seller);
-      console.log(userData.user, '여기는 유저 불러온 데이터');
       const mannerTemp = parseFloat(userData.user.mannertmp);
       setMannerTemperature(mannerTemp);
-      console.log(mannerTemp, '매너온도');
 
       // Rest of your code...
     } catch (error) {
@@ -37,7 +35,6 @@ function ProductInfo({ params, user }) {
 
   const declareHandler = (e) => {
     const declareproduct = e.target.value;
-    console.log('ProductInfo' + declareproduct);
     declareProduct(declareproduct);
   }
 
@@ -147,47 +144,47 @@ function ProductInfo({ params, user }) {
     } else if (temperature >= 21 && temperature < 36.5) {
       return "darkblue";
     } else if (temperature >= 36.5 && temperature < 40) {
-      return "royalblue";
-    } else if (temperature >= 40 && temperature < 50) {
+        return "royalblue";
+    }else if (temperature >= 40 && temperature < 50) {
       return "green";
-    } else if (temperature >= 50 && temperature < 60) {
-      return "#f9bc28";
-    } else {
+    }else if (temperature >= 50 && temperature < 60) {
+        return "#f9bc28";
+    }else {
       return "#ff6f31";
     }
   };
 
-  const getMannerTemperatureImage = (temperature) => {
-    if (temperature >= 0 && temperature < 21) {
-      return "https://kr.object.ncloudstorage.com/ncp3/ncp3/2.png";
-    } else if (temperature >= 21 && temperature < 36.5) {
-      return "https://kr.object.ncloudstorage.com/ncp3/ncp3/3.png";
-    } else if (temperature >= 36.5 && temperature < 40) {
-      return "https://kr.object.ncloudstorage.com/ncp3/ncp3/4.png";
-    } else if (temperature >= 40 && temperature < 50) {
-      return "https://kr.object.ncloudstorage.com/ncp3/ncp3/5.png";
-    } else if (temperature >= 50 && temperature < 60) {
-      return "https://kr.object.ncloudstorage.com/ncp3/ncp3/5.png";
-    } else {
-      return "https://kr.object.ncloudstorage.com/ncp3/ncp3/5.png";
-    }
-  };
+const getMannerTemperatureImage = (temperature) => {
+  if (temperature >= 0 && temperature < 21) {
+    return "https://kr.object.ncloudstorage.com/ncp3/ncp3/2.png";
+  } else if (temperature >= 21 && temperature < 36.5) {
+    return "https://kr.object.ncloudstorage.com/ncp3/ncp3/3.png";
+  } else if (temperature >= 36.5 && temperature < 40) {
+    return "https://kr.object.ncloudstorage.com/ncp3/ncp3/4.png";
+  } else if (temperature >= 40 && temperature < 50) {
+    return "https://kr.object.ncloudstorage.com/ncp3/ncp3/5.png";
+  } else if (temperature >= 50 && temperature < 60) {
+    return "https://kr.object.ncloudstorage.com/ncp3/ncp3/5.png";
+  } else {
+    return "https://kr.object.ncloudstorage.com/ncp3/ncp3/5.png";
+  }
+};
 
-  const getFontColor = (temperature) => {
-    if (temperature >= 0 && temperature < 21) {
-      return "black";
-    } else if (temperature >= 21 && temperature < 36.5) {
-      return "darkblue";
-    } else if (temperature >= 36.5 && temperature < 40) {
-      return "royalblue";
-    } else if (temperature >= 40 && temperature < 50) {
-      return "green";
-    } else if (temperature >= 50 && temperature < 60) {
-      return "#f9bc28";
-    } else {
-      return "#ff6f31";
-    }
-  };
+const getFontColor = (temperature) => {
+  if (temperature >= 0 && temperature < 21) {
+    return "black";
+  } else if (temperature >= 21 && temperature < 36.5) {
+    return "darkblue";
+  } else if (temperature >= 36.5 && temperature < 40) {
+    return "royalblue";
+  } else if (temperature >= 40 && temperature < 50) {
+    return "green";
+  } else if (temperature >= 50 && temperature < 60) {
+    return "#f9bc28";
+  } else {
+    return "#ff6f31";
+  }
+};
 
   //글 작성시간 계산 함수
   const displayCreateAt = (createdAt) => {
@@ -386,7 +383,7 @@ function ProductInfo({ params, user }) {
                     <Modal.Title>판매완료 되었습니까???</Modal.Title>
                   </Modal.Header>
                   <Modal.Body>
-                    정말 판매가 완료된 상품인지 확인하시오
+                    정말 판매가 완료된 상품인지 확인하십시오.
                   </Modal.Body>
                   <Modal.Footer>
                     <Button variant="secondary" onClick={handleCloseArchive2}>
@@ -406,7 +403,7 @@ function ProductInfo({ params, user }) {
             <div id="tem_total">
               <p id="tem_total_txt">매너온도</p>
                 <div className='meters'>
-                  <p id="tem_total_cnt" style={{ marginBottom: "-1px", float: "right", color: getFontColor( params.mannertmp ) }}>
+                  <p id="tem_total_cnt" style={{ marginBottom: "-1px", float: "right", color: getFontColor(parseInt(mannerTemperature) + 0) }}>
                     {(mannerTemperature)}°C&nbsp;&nbsp;
                   <img
                       src={getMannerTemperatureImage( params.mannertmp )}

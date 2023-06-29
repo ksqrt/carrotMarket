@@ -6,6 +6,7 @@ import { MdEmail, MdPhoneAndroid } from 'react-icons/md'
 import { FaSellsy } from 'react-icons/fa'
 import { GrEdit } from 'react-icons/gr';
 import { FaShoppingCart } from 'react-icons/fa'; // Import a different icon from react-icons library
+import { deleteUser } from '../../services/userData';
 
 const getMannerTemperatureStyle = (temperature) => {
   const width = temperature + "%";
@@ -130,7 +131,7 @@ function ProfileSection({ params }) {
                 </p>
               </div>
               <div className="manner-thermometer" style={{ width: "100%" }}>
-                <div className="manner-thermometer-fill" style={getMannerTemperatureStyle(params.mannertmp)}></div>
+                <div className="manner-thermometer-fill" style={ getMannerTemperatureStyle(params.mannertmp) }></div>
               </div>
             </div>
           </Col>

@@ -184,21 +184,14 @@
     background-color: white;
     padding: 20px;
   }
-  
-  
-    
-  
-  
 
-    .custom-file-upload {
-      cursor: pointer;
-    }
+  .custom-file-upload {
+    cursor: pointer;
+  }
   
-    .heading {
-      display: none;
-    }
-  
-  
+  .heading {
+    display: none;
+  }
   
   /* 매너칭찬버튼 */
   .custom-button {
@@ -255,39 +248,33 @@
   box-shadow: 0 0 0 2px #ff4b4b; /* 빨간색 바탕에 대한 적절한 색상 설정 */
 }
 
+/* 매너온도 부분 */
+#tem_total {
+  width: 250px;
+  /* border: 1px solid black; */
+  padding-left:20px;
+}
+
+.manner-thermometer {
+  margin-top: -5px;
+  width: 240px;
+  height: 10px;
+  background-color: #f2f2f2;
+  border-radius: 10px;
+  overflow: hidden;
   
+}
+
+.manner-thermometer-fill {
+  height: 100%;
+  border-radius: 10px;
+  background-color: #ff6f31;
+  transition: width 0.3s ease-in-out;
   
-  
-  /* 매너온도 부분 */
-  #tem_total {
-    width: 250px;
-    /* border: 1px solid black; */
-    padding-left:20px;
-  }
-  
-  
-  
-  
-  .manner-thermometer {
-    margin-top: -5px;
-    width: 240px;
-    height: 10px;
-    background-color: #f2f2f2;
-    border-radius: 10px;
-    overflow: hidden;
-    
-  }
-  
-  .manner-thermometer-fill {
-    height: 100%;
-    border-radius: 10px;
-    background-color: #ff6f31;
-    transition: width 0.3s ease-in-out;
-   
-  }
-  
-  .manner-thermometer-label {
-    font-size: 12px;
-    text-align: right;
-    padding-right: 5px;
-  }
+}
+
+.manner-thermometer-label {
+  font-size: 12px;
+  text-align: right;
+  padding-right: 5px;
+}
