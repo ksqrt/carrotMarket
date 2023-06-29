@@ -9,6 +9,10 @@ COPY package.json /server
 COPY package-lock.json /server
 COPY . /server
 
+# .env 파일 복사
+COPY .env /server/.env
+
+
 # 패키지 설치
 RUN npm install
 

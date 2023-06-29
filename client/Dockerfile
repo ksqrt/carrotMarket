@@ -9,6 +9,9 @@ COPY package.json /client
 COPY package-lock.json /client
 COPY . /client
 
+# .env 파일 복사
+COPY .env /client/.env
+
 # 패키지 설치
 RUN npm install
 
