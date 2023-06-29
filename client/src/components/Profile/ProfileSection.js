@@ -98,7 +98,7 @@ function ProfileSection({ params }) {
                     <Col id="profile_information3" lg={3} md={3} sm={12}>
                         <div className='sellcount'>
                             <FaShoppingCart className="section-icon" />
-                            <p className="section-title">판매상품 <span className="item-count">{params.totalSells}</span>개</p>
+                            <p className="section-title">총상품 <span className="item-count">{params.totalSells}</span>개</p>
                         </div>
                       <div id="tem_total">
                         <p id="tem_total_txt">매너온도</p>

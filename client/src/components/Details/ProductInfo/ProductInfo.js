@@ -17,6 +17,7 @@ import { Context } from '../../../ContextStore'; // Context import
 import { Link, useHistory } from 'react-router-dom';
 import './ProductInfo.css';
 import { Carousel } from 'react-bootstrap'
+import url from '../../../url.js'
 
 function ProductInfo({ params }) {
 
@@ -279,7 +280,7 @@ function ProductInfo({ params }) {
           imageUrl: params.image,
           link: {
             mobileWebUrl: 'https://developers.kakao.com',
-            webUrl: `http://localhost:3000/categories/auto/${params._id}/details`,
+            webUrl: `${url}/categories/auto/${params._id}/details`,
           },
         },
         buttons: [
@@ -287,7 +288,7 @@ function ProductInfo({ params }) {
             title: '웹으로 보기',
             link: {
               mobileWebUrl: 'https://developers.kakao.com',
-              webUrl: `http://localhost:3000/categories/auto/${params._id}/details`,
+              webUrl: `${url}/categories/auto/${params._id}/details`,
             },
           },
         ],

@@ -4,6 +4,7 @@ import { Context } from '../../ContextStore';
 import { Spinner } from 'react-bootstrap';
 import { snsUser } from '../../services/userData';
 import { useHistory } from 'react-router-dom';
+import url from '../../url.js'
 
 const NaverLogin = () => {
   const [loading, setLoading] = useState(false);
@@ -32,7 +33,7 @@ const NaverLogin = () => {
         // clientId: process.env.REACT_APP_NAVER_CLIENT_ID,
         // callbackUrl: process.env.REACT_APP_NAVER_CALLBACK_URL,
         clientId: 'a9oKP47JDXAvbgaf2Mg1',
-        callbackUrl: 'http://localhost:3000/naver/callback',
+        callbackUrl: `${url}/naver/callback`,
         loginButton: {color: "green", type: 2, height: 40}
     }
   );
@@ -87,24 +88,24 @@ export default NaverLogin;
 
 // const NaverLogin = () => {
 //   useEffect(() => {
-//     const naver_id_login = new window.naver_id_login(process.env.REACT_APP_NAVER_CLIENT_ID, "http://localhost:3000/naver/callback");
+//     const naver_id_login = new window.naver_id_login(process.env.REACT_APP_NAVER_CLIENT_ID, `${url}/naver/callback");
 //     const state = naver_id_login.getUniqState();
 //     naver_id_login.setButton("white", 2, 40);
-//     naver_id_login.setDomain("http://localhost:3000");
+//     naver_id_login.setDomain(`${url}");
 //     naver_id_login.setState(state);
 //     naver_id_login.setPopup();
 //     naver_id_login.init_naver_id_login();
 //   }, []);
 
 //   const naverSignInCallback = () => {
-//     const naver_id_login = new window.naver_id_login(process.env.REACT_APP_NAVER_CLIENT_ID, "http://localhost:3000/naver/callback");
+//     const naver_id_login = new window.naver_id_login(process.env.REACT_APP_NAVER_CLIENT_ID, `${url}/naver/callback");
 //     alert(naver_id_login.getProfileData('email'));
 //     alert(naver_id_login.getProfileData('nickname'));
 //     // alert(naver_id_login.getProfileData('age'));
 //   };
 
 //   useEffect(() => {
-//     const naver_id_login = new window.naver_id_login(process.env.REACT_APP_NAVER_CLIENT_ID, "http://localhost:3000");
+//     const naver_id_login = new window.naver_id_login(process.env.REACT_APP_NAVER_CLIENT_ID, `${url}");
 //     alert(naver_id_login.oauthParams.access_token);
 //     naver_id_login.get_naver_userprofile(naverSignInCallback);
 //   }, []);
@@ -134,10 +135,10 @@ export default NaverLogin;
 
 // const NaverLogin = () => {
 //     useEffect(() => {
-//         const naver_id_login = new window.naver_id_login(process.env.REACT_APP_NAVER_CLIENT_ID, "http://localhost:3000");
+//         const naver_id_login = new window.naver_id_login(process.env.REACT_APP_NAVER_CLIENT_ID, `${url}");
 //         const state = naver_id_login.getUniqState();
 //         naver_id_login.setButton("white", 3, 38);
-//         naver_id_login.setDomain("http://localhost:3000");
+//         naver_id_login.setDomain(`${url}");
 //         naver_id_login.setState(state);
 //         naver_id_login.setPopup();
 //         naver_id_login.init_naver_id_login();
@@ -160,17 +161,17 @@ export default NaverLogin;
 
 // const NaverLogin = () => {
 //     useEffect(() => {
-//         const naver_id_login = new window.naver_id_login(process.env.REACT_APP_NAVER_CLIENT_ID, "http://localhost:3000/naver/callback");
+//         const naver_id_login = new window.naver_id_login(process.env.REACT_APP_NAVER_CLIENT_ID, `${url}/naver/callback");
 //         const state = naver_id_login.getUniqState();
 //         naver_id_login.setButton("white", 3, 38);
-//         naver_id_login.setDomain("http://localhost:3000");
+//         naver_id_login.setDomain(`${url}");
 //         naver_id_login.setState(state);
 //         naver_id_login.setPopup();
 //         naver_id_login.init_naver_id_login();
 
 //     }, []);
 
-//     var naver_id_login = new naver_id_login(process.env.REACT_APP_NAVER_CLIENT_ID, "http://localhost:3000/naver/callback");
+//     var naver_id_login = new naver_id_login(process.env.REACT_APP_NAVER_CLIENT_ID, `${url}/naver/callback");
 //     // 접근 토큰 값 출력
 //     alert(naver_id_login.oauthParams.access_token);
 //     // 네이버 사용자 프로필 조회
@@ -199,10 +200,16 @@ export default NaverLogin;
 
 // const NaverLogin = () => {
 //     useEffect(() => {
-//         const naver_id_login = new window.naver_id_login(process.env.REACT_APP_NAVER_CLIENT_ID, "http://localhost:3000/naver/callback");
+//         const naver_id_login = new window.naver_id_login(process.env.REACT_APP_NAVER_CLIENT_ID, `${url}/naver/callback");
 //         const state = naver_id_login.getUniqState();
 //         naver_id_login.setButton("white", 2, 40);
-//         naver_id_login.setDomain("http://localhost:3000");
+//         naver_id_login.setDomain(`${url}");
+
+
+
+
+
+
 //         naver_id_login.setState(state);
 //         naver_id_login.setPopup();
 //         naver_id_login.init_naver_id_login();
