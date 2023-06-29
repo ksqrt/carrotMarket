@@ -69,7 +69,7 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
     setShowEmojiPicker(!showEmojiPicker);
     };
 
-    const handleEmojiSelect = (event, emojiObject) => {
+    const handleEmojiSelect = (emojiObject, event) => {
         console.log(emojiObject.emoji);
         setMessage((Message) => Message + emojiObject.emoji);
     };
