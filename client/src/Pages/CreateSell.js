@@ -141,8 +141,6 @@ const AddProduct = ({ history }) => {
     fileInput.current.click();
   };
 
-  
-console.log(image);
   return (
     <div className="container">
           <Form onSubmit={onSubmitHandler}>
@@ -187,7 +185,6 @@ console.log(image);
                   ref={fileInput}
                   type="file"
                   className="imginput"
-                  required
                   multiple
                   onChange={onChangeHandler}
                   />

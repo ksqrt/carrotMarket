@@ -93,13 +93,14 @@ router.get("/specific/:id", async (req, res) => {
 // 새로운 상품을 생성하는 엔드포인트
 router.post('/create', async (req, res) => {
     let { title, price, description, city, category, image } = req.body;
+    console.log(image);
     try {
         let errors = [];
         if (title.length < 3 || title.length > 50) errors.push('Title should be at least 3 characters long and max 50 characters long; ');
         if (isNaN(Number(price))) errors.push('Price should be a number; ');
         if (description.length < 10 || description.length > 1000) errors.push('Description should be at least 10 characters long and max 1000 characters long; ');
         if ((city) == false) errors.push('City should contains only english letters; ')
-        // if (!image.includes('image')) errors.push('The uploaded file should be an image; ');
+        if (!image[0]) errors.push('이미지를 넣어주세요.');
         if (!category) errors.push('Category is required; ');
 
         if (errors.length >= 1) throw { message: [errors] };
@@ -116,6 +117,7 @@ router.post('/create', async (req, res) => {
             seller: req.user._id
         })
         
+        console.log(errors);
         await product.save()
         await productService.userCollectionUpdate(req.user._id, product);
 
@@ -145,6 +147,7 @@ router.patch('/edit/:id', isAuth, async (req, res) => {
         // if (req.body.image) {
         //     if (!req.body.image.includes('image')) errors.push('The uploaded file should be an image; ');
         // }
+        if (!image[0]) errors.push('이미지를 넣어주세요.');
         if (!category) errors.push('Category is required; ');
 
         if (errors.length >= 1) throw { message: [errors] };

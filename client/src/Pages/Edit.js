@@ -249,7 +249,6 @@ const Edit= ({ match, history }) => {
                 ref={fileInput}
                 type="file"
                 className="imginput"
-                required
                 multiple
                 onChange={onChangeHandler}
                 />
@@ -294,7 +293,7 @@ const Edit= ({ match, history }) => {
                 placeholder="제목을 입력해주세요"
                 name="title"
                 required
-                value={product.title}
+                value={title}
                 onChange={onTitle}
               />
             </Col>
@@ -315,7 +314,7 @@ const Edit= ({ match, history }) => {
                 placeholder="가격을 입력해주세요"
                 name="price"
                 required
-                value={product.price}
+                value={price}
                 onChange={onPrice}
               />
             </Col>
@@ -331,7 +330,7 @@ const Edit= ({ match, history }) => {
                 as="select"
                 name="category"
                 required
-                value={product.category}
+                value={category}
                 onChange={onChangeHandler}
               >
                 <option selected value="clothing">
@@ -365,7 +364,7 @@ const Edit= ({ match, history }) => {
                 name="city"
                 placeholder="서울"
                 required
-                value={product.city}
+                value={city}
                 onChange={onCity}
               />
             </Col>
@@ -390,7 +389,7 @@ const Edit= ({ match, history }) => {
                 rows={3}
                 name="description"
                 required
-                value={product.description}
+                value={description}
                 onChange={onDescription}
               />
             </Col>

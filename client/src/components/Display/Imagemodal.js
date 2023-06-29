@@ -15,11 +15,11 @@ const Imagemodal = ({image,closeModal,checkimgindex}) => {
 
     return (
         <>
-            <div className="modal-overlay">
-                <div className="modal">
-                    <span className="close" onClick={closeModal}>&times;</span>
-                    <div className='modalimagesize'>
-                        <img src={imagesrc} className="modal-image" />
+            <div className="byun-modal-overlay">
+                <div className="byun-modal">
+                    <span className="byun-close" onClick={closeModal}>&times;</span>
+                    <div className='byun-modalimagesize'>
+                        <img src={imagesrc} className="byun-modal-image" />
                     </div>
                 </div>
             </div>
