@@ -1,11 +1,11 @@
 import { useState, useEffect, useContext, useRef, React, Fragment } from 'react';
 import {UserBlock, sendMessage, disconnect, getUserConversations, initializeSocket, setAppointment, deleteAppointment, appointmentCheck, ReportMessage, ExitRoom, TradeComplete, readMessages} from '../services/messagesData';
-import { Navbar, NavDropdown, Nav, Container, Row, Form, InputGroup, Button, Alert, Modal } from 'react-bootstrap';
-import { Link, NavLink, useHistory, } from 'react-router-dom';
+import { Container, Row, Form, InputGroup, Button, Alert, Modal } from 'react-bootstrap';
+import { Link, useHistory, } from 'react-router-dom';
 import { Context } from '../ContextStore';
 import { animateScroll } from 'react-scroll';
 import { AiOutlineAlert, AiOutlineUpload, AiOutlineSchedule } from 'react-icons/ai';
-import { ImBlocked } from 'react-icons/im';
+// import { ImBlocked } from 'react-icons/im';
 import { IoIosArrowBack } from 'react-icons/io';
 import { FaMapMarkedAlt, FaRegHandshake } from 'react-icons/fa'
 import { MdOutlineRateReview } from 'react-icons/md'
@@ -23,7 +23,7 @@ import dayjs from 'dayjs';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { MobileDateTimePicker } from '@mui/x-date-pickers/MobileDateTimePicker';
-import { faLastfmSquare } from '@fortawesome/free-brands-svg-icons';
+// import { faLastfmSquare } from '@fortawesome/free-brands-svg-icons';
 import moment from "moment";
 import 'moment-timezone';
 import Confetti from 'react-dom-confetti';
@@ -52,17 +52,17 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
     const [showEmojiPicker, setShowEmojiPicker] = useState(false);
     const emojiPickerRef = useRef(null);
 
-    const handleOutsideClick = (event) => {
-        if (emojiPickerRef.current && !emojiPickerRef.current.contains(event.target) && showEmojiPicker) {
-          setShowEmojiPicker(false);
-        }
-    };
-
+    
     useEffect(() => {
-    document.addEventListener("mousedown", handleOutsideClick);
-    return () => {
-        document.removeEventListener("mousedown", handleOutsideClick);
-    };
+        const handleOutsideClick = (event) => {
+            if (emojiPickerRef.current && !emojiPickerRef.current.contains(event.target) && showEmojiPicker) {
+                setShowEmojiPicker(false);
+            }
+        };
+        document.addEventListener("mousedown", handleOutsideClick);
+        return () => {
+            document.removeEventListener("mousedown", handleOutsideClick);
+        };
     }, [showEmojiPicker]);
 
     const handleEmojiPickerToggle = () => {
@@ -111,7 +111,6 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
     const [message, setMessage] = useState(""); // 내가 입력한 메세지
     const [alertShow, setAlertShow] = useState(true); 
     const [socket, setSocket] = useState(null); // initializeSocket 소켓 초기화
-    const [notifications, setNotifications] = useState({});
     const scrollToBottom = () => {
         animateScroll.scrollToBottom({
             containerId: "chat-selected-body",
@@ -443,7 +442,7 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
 
     // 채팅방을 클릭했을 때
     const handleChatRoomClick = (chatId) => {
-         if (!userData._id) {console.error('userData._id is not defined'); return;}
+        if (!userData._id) {console.error('userData._id is not defined'); return;}
         socket.emit('enterChatRoom', { chatId, userId: userData._id });
         readMessages(socket, { chatId, userId: userData._id });
         setIsSelected(true);
@@ -452,7 +451,7 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
 
     useEffect(() => {
         console.log("채팅방 전체 로그 : ", selected);
-        // console.log('새 메세지 알림 테스트 : ', selected.notificationMessages);
+        console.log('새 메세지 알림 테스트 : ', selected.notificationMessages);
       }, [selected]);
 
     useEffect(() => {
@@ -484,14 +483,14 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
                                     <Link onClick={() => handleChatRoomClick(x.chats._id)} to={`/messages/${x.chats?._id}`}>
                                         {x.isBuyer ?
                                             <>
-                                                {x.chats.seller?.avatar ? <img src={x.chats.seller?.avatar} alt="user-avatar" /> : <img src='https://kr.object.ncloudstorage.com/ncp3/ghuPttFw_400x400.jpg' />}  
+                                                {x.chats.seller?.avatar ? <img src={x.chats.seller?.avatar} alt="user-avatar" /> : <img src='https://kr.object.ncloudstorage.com/ncp3/ghuPttFw_400x400.jpg' alt='carrot_avatar' />}  
                                                 <span> {x.chats.seller?.name  || '(알 수 없음)'}</span>
                                                 {x.chats.product?.image ? <img src={x.chats.product?.image[0]} alt="product" style={{float: 'right', width: '35px', height: '35px', objectFit: 'cover'}}/> : 
                                                 <CiImageOff size={20} style={{float: 'right', width: '35px', height: '35px', objectFit: 'cover'}} />}
                                             </>
                                             :
                                             <>
-                                                {x.chats.buyer?.avatar ? <img src={x.chats.buyer?.avatar} alt="user-avatar" /> : <img src='https://kr.object.ncloudstorage.com/ncp3/ghuPttFw_400x400.jpg' />}
+                                                {x.chats.buyer?.avatar ? <img src={x.chats.buyer?.avatar} alt="user-avatar" /> : <img src='https://kr.object.ncloudstorage.com/ncp3/ghuPttFw_400x400.jpg' alt='carrot_avatar' />}
                                                 <span> {x.chats.buyer?.name  || '(알 수 없음)'}</span>
                                                 {x.chats.product?.image ? <img src={x.chats.product?.image[0]} alt="product" style={{float: 'right', width: '35px', height: '35px', objectFit: 'cover'}}/> : 
                                                 <CiImageOff size={20} style={{float: 'right', width: '35px', height: '35px', objectFit: 'cover'}} />}
@@ -515,14 +514,14 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
                                 </button>
                                 {selected.isBuyer ?
                                     <Link to={`/profile/${selected.chats.seller?._id}`}>
-                                        {selected.chats.seller?.avatar ? <img className='messageAvatar' src={selected.chats.seller?.avatar} alt="user-avatar" /> : <img className='messageAvatar' src='https://kr.object.ncloudstorage.com/ncp3/ghuPttFw_400x400.jpg' />}&nbsp;
+                                        {selected.chats.seller?.avatar ? <img className='messageAvatar' src={selected.chats.seller?.avatar} alt="user-avatar" /> : <img className='messageAvatar' src='https://kr.object.ncloudstorage.com/ncp3/ghuPttFw_400x400.jpg' alt='carrot_avatar' />}&nbsp;
                                         <span>{selected.chats.seller?.name || '(알 수 없음)'} </span>
                                         <span className='message_mannertmp'>{selected.chats.seller?.mannertmp}°C</span>
 
                                     </Link>
                                     :
                                     <Link to={`/profile/${selected.chats.buyer?._id}`}>
-                                        {selected.chats.buyer?.avatar ? <img className='messageAvatar' src={selected.chats.buyer?.avatar} alt="user-avatar" /> : <img className='messageAvatar' src='https://kr.object.ncloudstorage.com/ncp3/ghuPttFw_400x400.jpg' />}&nbsp;
+                                        {selected.chats.buyer?.avatar ? <img className='messageAvatar' src={selected.chats.buyer?.avatar} alt="user-avatar" /> : <img className='messageAvatar' src='https://kr.object.ncloudstorage.com/ncp3/ghuPttFw_400x400.jpg' alt='carrot_avatar'/>}&nbsp;
                                         <span>{selected.chats.buyer?.name || '(알 수 없음)'} </span> 
                                         <span className='message_mannertmp'>{selected.chats.buyer?.mannertmp}°C</span>
                                         

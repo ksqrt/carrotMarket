@@ -29,6 +29,14 @@ function Io(server) {
 
     });
 
+    socket.on('leaveChatRoom', ({userId}) => {
+      console.log("사용자가 채팅방을 나감 : ", userId);
+      if (userId in activeUsers) {
+        delete activeUsers[userId];
+      }
+      console.log("현재 채팅방에 있는 사용자들: ", activeUsers);
+  });
+
     socket.on("startChat", async ({buyerId, sellerId, productId}) => { // 클라이언트에서 받을 내용 buyerId = buyer._id 될듯.
       let chatRoom = buyerId !== sellerId && await ChatRoom.findOne({ buyer: buyerId, seller: sellerId, product: productId }) || new ChatRoom({ buyer: buyerId, seller: sellerId, product: productId });
       await chatRoom.save();
@@ -43,9 +51,9 @@ function Io(server) {
       
       const chatRoom = await ChatRoom.findOne({ _id: chatId });
       let NotificationIncrease = {};
-      if (chatRoom.buyer.equals(senderId) && activeUsers[senderId] !== chatId) { 
+      if (chatRoom.buyer.equals(senderId) && activeUsers[chatRoom.seller] !== chatId) { 
         NotificationIncrease = { notificationMessages_seller: 1 };
-      } else if (chatRoom.seller.equals(senderId) && activeUsers[senderId] !== chatId) {  
+      } else if (chatRoom.seller.equals(senderId) && activeUsers[chatRoom.buyer] !== chatId) {  
         NotificationIncrease = { notificationMessages_buyer: 1 };
       }
       const updatedChatRoom = await ChatRoom.findOneAndUpdate({ _id: chatId },{ $push: { conversation: newMessage }, $inc: NotificationIncrease },{ new: true });      
@@ -132,17 +140,8 @@ function Io(server) {
       io.emit("TradeCompleted", { chatId, productId });
     });
 
-    let activeChatRooms = {};
     
-    socket.on("enterChatRoom", ({ chatId, userId }) => {
-      activeChatRooms[userId] = chatId;
-    });
-    
-    socket.on("leaveChatRoom", ({ chatId, userId }) => {
-      if (activeChatRooms[userId] === chatId) {
-        delete activeChatRooms[userId];
-      }
-    });
+
 
     socket.on("getUserConversations", async ({ userId }) => {
       // $or : 주어진 배열 내의 조건 중 하나라도 참이면 참으로 간주 buyer 또는 seller에 userId가 있는 경우에 참. 전부 가져옴.

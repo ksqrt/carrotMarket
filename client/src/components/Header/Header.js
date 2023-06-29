@@ -208,7 +208,6 @@ function Header() {
                             handleRecordButtonClick()
                         }}
                     />
-                    {/* <div> <FontAwesomeIcon className='bell' icon={faBell} /> {totalNotifications > 0 &&<div className='notiNumber'>{totalNotifications}</div>}</div> */}
                     {userData ?
                         (<Nav className="nav-wrapper">
                             <div className='notificationIcon'>
