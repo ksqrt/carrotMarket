@@ -65,7 +65,9 @@ export async function insertConversation(){
 }
 
 export async function editUserProfile(id, data) {
-    return (await fetch(`/user/edit-profile/${id}`, {
+
+    console.log(id+ 'ㅋㅋㅋ' + data.name + data.phoneNumber + data.email + data.avatar);    
+    return (await fetch(`${baseUrl}/user/edit-profile/${id}`, {
         method: 'PATCH',
         headers: {
             'Content-Type': 'application/json',
@@ -74,6 +76,8 @@ export async function editUserProfile(id, data) {
         body: JSON.stringify(data)
     })).json();
 }
+
+
 
 export async function getUserById(id) {
     return await (await fetch(baseUrl + `/user/getUserById/${id}`, {credentials: 'include'})).json()
@@ -94,4 +98,19 @@ export async function updateMannerTemperature(id, mannerTemperature) {
       });
       console.log(mannerTemperature, '수정후');
     }
-  
+
+export async function deleteUser(userId) {
+    console.log(userId);
+    return (
+    
+      await fetch(`${baseUrl}/user/delete/${userId}`, {
+        method:'DELETE',
+
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+       
+      })
+    ).json();
+  }

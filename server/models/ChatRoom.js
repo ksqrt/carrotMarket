@@ -38,6 +38,10 @@ const chatRoomSchema = new mongoose.Schema({
             lng: Number,
             address: String
         },
+        file: {
+            type: String,
+            required: false
+        }
     }],
     // Product Id 고유 id
     product:{
