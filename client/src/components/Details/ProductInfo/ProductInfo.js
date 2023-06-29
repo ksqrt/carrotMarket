@@ -6,25 +6,38 @@ import { BsHeart, BsHeartFill } from 'react-icons/bs';
 import { Col, Row, Spinner, Tabs, Tab, Image, OverlayTrigger, Tooltip, Modal, Form, Button } from 'react-bootstrap';
 import { getAll, archiveSell, wishProduct, archiveSoldout, deleteProduct,declareProduct } from '../../../services/productData';
 import ProductCard from "../../../components/ProductCard/ProductCard";
-import aImage from '../../Profile/profile_images/a.png'; // 이미지 파일 경로
-import bImage from '../../Profile/profile_images/b.png'; // 이미지 파일 경로
-import cImage from '../../Profile/profile_images/c.png'; // 이미지 파일 경로
-import dImage from '../../Profile/profile_images/d.png'; // 이미지 파일 경로
-import eImage from '../../Profile/profile_images/e.png'; // 이미지 파일 경로
 import { startChat, initializeSocket } from '../../../services/messagesData'; // startChat 함수와 socket 객체를 import합니다.
 import { RiMessage3Fill } from 'react-icons/ri';
 import { Context } from '../../../ContextStore'; // Context import
 import { Link, useHistory } from 'react-router-dom';
 import './ProductInfo.css';
 import { Carousel } from 'react-bootstrap'
-import url from '../../../url.js'
+import { getUserById } from '../../../services/userData';
 
+function ProductInfo({ params, user }) {
+  const [mannerTemperature, setMannerTemperature] = useState(null);
 
-function ProductInfo({ params }) {
+  useEffect(() => {
+    fetchUserData(params.seller);
+  }, [params.seller]);
 
-  const declareHandler = (e) =>{
+  const fetchUserData = async (user) => {
+    try {
+      const userData = await getUserById(params.seller);
+      console.log(userData.user, '여기는 유저 불러온 데이터');
+      const mannerTemp = parseFloat(userData.user.mannertmp);
+      setMannerTemperature(mannerTemp);
+      console.log(mannerTemp, '매너온도');
+
+      // Rest of your code...
+    } catch (error) {
+      console.error('Failed to fetch user data:', error);
+    }
+  };
+
+  const declareHandler = (e) => {
     const declareproduct = e.target.value;
-    console.log('ProductInfo'+declareproduct);
+    console.log('ProductInfo' + declareproduct);
     declareProduct(declareproduct);
   }
   // startchat 이벤트 실행
@@ -172,7 +185,7 @@ function ProductInfo({ params }) {
     } else if (temperature >= 50 && temperature < 60) {
       return "https://kr.object.ncloudstorage.com/ncp3/ncp3/5.png";
     } else {
-      return null;
+      return "https://kr.object.ncloudstorage.com/ncp3/ncp3/5.png";
     }
   };
 
@@ -397,23 +410,21 @@ useEffect(() => {
           <div id="profile_right">
             <div id="tem_total">
               <p id="tem_total_txt">매너온도</p>
-              <div className='meters'>
-                <p id="tem_total_cnt" style={{ marginBottom: '-1px', float: 'right', color: getFontColor(36.5) }}>
-                  {36.5}°C
-                </p>
-                {/* <p id="tem_total_img">
+                <div className='meters'>
+                  <p id="tem_total_cnt" style={{ marginBottom: "-1px", float: "right", color: getFontColor( params.mannertmp ) }}>
+                    {(mannerTemperature)}°C&nbsp;&nbsp;
                   <img
-                    src={getMannerTemperatureImage(36.5)}
-                    alt="이미지 사진"
-                    style={{ width: '25px', height: '25px' }}
+                      src={getMannerTemperatureImage( params.mannertmp )}
+                      alt="이미지 사진"
+                      style={{ width: '25px', height: '25px' }}
                   />
-                </p> */}
-              </div>
-              <div className="manner-thermometer" style={{ width: '100%' }}>
-                <div className="manner-thermometer-fill" style={getMannerTemperatureStyle(36.5)}></div>
+                  </p>
+                  </div>
+                  <div className="manner-thermometer" style={{ width: "100%" }}>
+                    <div className="manner-thermometer-fill" style={ getMannerTemperatureStyle(mannerTemperature) }></div>
+                  </div>
               </div>
             </div>
-          </div>
 
         {/* <dl id="manner_temper">
           <dt>매너온도</dt>
