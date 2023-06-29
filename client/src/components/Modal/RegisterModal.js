@@ -4,7 +4,6 @@ import { useHistory } from 'react-router-dom';
 import { Form, Button, Spinner, Alert } from 'react-bootstrap';
 import { registerUser } from '../../services/userData';
 import GoogleLogin from './GoogleLogin';
-import NaverLogin from './NaverLogin';
 import KakaoLogin from './KakaoLogin';
 import axios from 'axios';
 
@@ -111,7 +110,6 @@ const RegisterModal = ({ onCloseRegister}) => {
                     <div className="modal-paths" style={{paddingLeft: 75}}> 
                         <KakaoLogin/>
                         <GoogleLogin/>
-                        {/* <NaverLogin/> */}
                         
                     </div>
 

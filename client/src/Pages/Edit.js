@@ -1,10 +1,9 @@
 import React, { useRef } from 'react';
 import { useState, useEffect } from 'react';
 import { Col, Form, Button, Spinner, Alert, Row } from 'react-bootstrap';
-import SimpleSider from '../components/Siders/SimpleSider';
 import { getSpecific, editProduct } from '../services/productData';
-
-import '../components/Edit/Edit.css'
+import "../components/CreateSell/CreateSell.css";
+import "../components/CreateSell/addproduct.css";
 import Imagemodal from '../components/Display/Imagemodal';
 import KakaoMapAPI from '../components/KakaoMapAPI/KakaoMapAPICreateSell';
 import Display from '../components/Display/Display';
@@ -85,7 +84,7 @@ const Edit= ({ match, history }) => {
     const closeModal = () => {
         setImagemodal(false);
     }
-    const fileInput = useRef(null);
+    
 
     const onChangeHandler = (e) => {
       e.preventDefault();
@@ -132,8 +131,8 @@ const Edit= ({ match, history }) => {
         setImage([...image]);
     }
     const imgboxbtn = (index) => {
-        setCheckimgindex(index);
-        setImagemodal(true);   
+      setCheckimgindex(index);
+      setImagemodal(true);   
     }
 
 
@@ -201,8 +200,11 @@ const Edit= ({ match, history }) => {
         });
     };
     
+    const fileInputRef = useRef(null);
+    
     const handlerButtonClick = (e) => {
-        fileInput.current.click();
+      e.preventDefault();  
+      fileInputRef.current.click();
     };
 
     return (
@@ -246,7 +248,7 @@ const Edit= ({ match, history }) => {
 
               <Form.Control
                 name="image"
-                ref={fileInput}
+                ref={fileInputRef}
                 type="file"
                 className="imginput"
                 multiple
@@ -411,70 +413,6 @@ const Edit= ({ match, history }) => {
         )}
       </div>
     );
-        // <>
-        //     <div className='container'>
-        //         <h1 className="heading">Edit product</h1>
-        //         <Form onSubmit={onSubmitHandler}>
-        //             {alertShow &&
-        //                 <Alert variant="danger" onClose={() => setAlertShow(false)} dismissible>
-        //                     <p>
-        //                         {error}
-        //                     </p>
-        //                 </Alert>
-        //             }
-        //             <Form.Row>
-        //                 <Form.Group as={Col} controlId="formGridTitle">
-        //                     <Form.Label>Title</Form.Label>
-        //                     <Form.Control type="text" placeholder="Enter title" name="title" value={product.title} onChange={onChangeHandler} required />
-        //                 </Form.Group>
-
-        //                 <Form.Group as={Col} controlId="formGridPrice">
-        //                     <Form.Label>Price</Form.Label>
-        //                     <Form.Control type="number" step="0.01" placeholder="Price" name="price" value={product.price} onChange={onChangeHandler} required />
-        //                 </Form.Group>
-        //             </Form.Row>
-
-        //             <Form.Group controlId="formGridDescription.ControlTextarea1">
-        //                 <Form.Label>Description</Form.Label>
-        //                 <Form.Control as="textarea" rows={3} name="description" defaultValue={product.description} onChange={onChangeHandler} required />
-        //             </Form.Group>
-
-        //             <Form.Row>
-        //                 <Form.Group as={Col} controlId="formGridCity">
-        //                     <Form.Label>City</Form.Label>
-        //                     <Form.Control name="city" placeholder="Sofia" value={product.city} onChange={onChangeHandler} required />
-        //                 </Form.Group>
-
-        //                 <Form.Group as={Col} controlId="formGridCategory">
-        //                     <Form.Label>Category</Form.Label>
-        //                     <Form.Control as="select" value={product.category} name="category" onChange={onChangeHandler} required >
-        //                         <option>Choose...</option>
-        //                         <option>properties</option>
-        //                         <option>auto</option>
-        //                         <option>electronics</option>
-        //                         <option>clothes</option>
-        //                         <option>toys</option>
-        //                         <option>home</option>
-        //                         <option>garden</option>
-        //                     </Form.Control>
-        //                 </Form.Group>
-
-        //                 <Form.Group as={Col} controlId="formGridImage" >
-        //                     <Form.Label>Image</Form.Label>
-        //                     <Form.Control name="image" type="file" onChange={onChangeHandler} />
-        //                 </Form.Group>
-        //             </Form.Row>
-        //             {loading ?
-        //                 <Button className="col-lg-12" variant="dark" disabled >
-        //                     Please wait... <Spinner animation="border" />
-        //                 </Button>
-        //                 :
-        //                 <Button className="col-lg-12" variant="dark" type="submit">Add product</Button>
-        //             }
-        //         </Form>
-        //     </div>
-        // </>
-    
 };
 
 export default Edit;
