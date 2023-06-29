@@ -34,6 +34,7 @@
     "nodemailer": "^6.9.3",
     "openai": "^3.3.0",
     "react-chartjs-2": "^5.2.0",
+    "request": "^2.88.2",
     "socket.io": "^4.6.2",
     "uuid": "^9.0.0"
   }
