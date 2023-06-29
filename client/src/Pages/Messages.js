@@ -28,7 +28,6 @@ import moment from "moment";
 import 'moment-timezone';
 import Confetti from 'react-dom-confetti';
 
-
 function Messages({ match }) { // match = Router 제공 객체, url을 매개변수로 사용. ex) 경로 : /messages/123  => match.params.id = "123" // app.js 참고 : <Route path="/messages" exact component={Messages} />;
     //map modal
     const [show, setShow] = useState(false);
@@ -300,26 +299,6 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
     setReportModalShow(false);
     };
 
-    // 채팅방 나가기 모달
-    const [exitRoomModalShow,setExitRoomModalShow] = useState(false);
-    const ExitRoomModalopen = () => {
-        setExitRoomModalShow(true);
-    }
-    const handleExitRoom = () => {
-        const message = `${myName}님이 나가셨습니다.`;
-        sendMessage(socket, { chatId: selected.chats._id, senderId: null, message}); 
-        console.log('나가기 테스트 : ',selected.chats._id, myId)
-        ExitRoom(socket, {chatId: selected.chats._id, userId: myId})
-        setExitRoomModalShow(false);
-        
-        setTimeout(() => {
-            history.push("/");
-        }, 500);
-    }
-
-
-
-
 
 
     // 위로 스크롤 시 추가 로딩 구현
@@ -510,11 +489,11 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
                                         <UseAnimations animation={github} size={35}/>
                                     </button>
                                     <div className="dropdown-content">
-                                        <button className="dropdown-content-out" onClick={ExitRoomModalopen}>
+                                        <button className="dropdown-content-out">
                                             <BsDoorOpen size={15} /> 채팅방 나가기
                                         </button>
                                         <button className="dropdown-content-block"> 
-                                            <ImBlocked size={20}/> 차단하기  
+                                            <ImBlocked size={20} /> 차단하기  
                                         </button>
                                         <button className="dropdown-content-declare" onClick={handleShowReportModal}>
                                             <AiOutlineAlert size={20} /> 신고하기 
@@ -668,7 +647,7 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
                                 )}
                                 <AppointmentModal show={currentAppointment !== null && selected.chats.appointmentCheck === false} selected={selected} appointmentModalAccept={appointmentModalAccept} appointmentModalReject={appointmentModalReject} myName={myName}  />
                                 <ReportModal show={reportModalShow} onHide={() => setReportModalShow(false)} onReport={handleReport}/>
-                                <ExitRoomModal show={exitRoomModalShow} onHide={() =>  setExitRoomModalShow(false)} handleExitRoom={handleExitRoom}   />
+                                {/* <ExitRoomModal show={exitRoomModalShow} onHide={() =>  setExitRoomModalShow(false)} handleExitRoom={handleExitRoom}   /> */}
                             </div>
                         </>
                     }
