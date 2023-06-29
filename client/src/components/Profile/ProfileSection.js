@@ -131,7 +131,7 @@ function ProfileSection({ params }) {
                 </p>
               </div>
               <div className="manner-thermometer" style={{ width: "100%" }}>
-                <div className="manner-thermometer-fill" style={getMannerTemperatureStyle(params.mannertmp)}></div>
+                <div className="manner-thermometer-fill" style={ getMannerTemperatureStyle(params.mannertmp) }></div>
               </div>
             </div>
           </Col>
