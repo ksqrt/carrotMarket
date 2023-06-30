@@ -1,465 +1,441 @@
 .product-card {
-    /* padding: 3px;
-    margin-bottom: 20px; */
-    /* Add any additional styles to adjust the card size */
+  /* padding: 3px;
+  margin-bottom: 20px; */
+  /* Add any additional styles to adjust the card size */
 }
 
 .tab-content {
-    padding-top: 20px;
-    padding-bottom: 20px;
+  padding-top: 20px;
+  padding-bottom: 20px;
 }
 
 #content_button {
-    display: block;
+  display: block;
 }
 
 #heartIconDetails svg {
-    font-size: 1.5rem;
-    cursor: pointer;
-    margin-bottom: 45px;
-    color:#81002c;
+  font-size: 1.5rem;
+  cursor: pointer;
+  margin-bottom: 45px;
+  color:#81002c;
 }
 
 
 .product-info-heading {
-    margin-left: 19px;
-    padding-top: 20px;
-    padding-bottom: 20px;
+  margin-left: 19px;
+  padding-top: 20px;
+  padding-bottom: 20px;
 }
 
 #detailsCardText {
-    margin-left: 8px;
+  margin-left: 8px;
 }
 
 #details-footer {
-    text-align: right;
+  text-align: right;
 }
 
 #detailsProduct img {
-    height: 500px;
-    object-fit: cover;
+  height: 500px;
+  object-fit: cover;
 }
 
 .tab-pane {
-    text-indent: 50px;
-    text-align: justify;
-    letter-spacing: 1px;
+  text-indent: 50px;
+  text-align: justify;
+  letter-spacing: 1px;
 }
 
 #profile_link {
-    text-decoration: none;
-    display: block;
-    margin-top: 25px;
-    padding-bottom: 23px;
-    position: relative;
-    border-bottom: 1px solid #e9ecef;
+  text-decoration: none;
+  display: block;
+  margin-top: 25px;
+  padding-bottom: 23px;
+  position: relative;
+  border-bottom: 1px solid #e9ecef;
 }
 
 #profile_link .space-between {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 #space-between {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 #profile_image {
-    display: inline-block;
+  display: inline-block;
 }
 
 #profile_image img {
-    width: 40px;
-    height: 40px;
-    -o-object-fit: cover;
-    object-fit: cover;
-    border-radius: 50%;
-    -webkit-border-radius: 50%;
-    -moz-border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  -o-object-fit: cover;
+  object-fit: cover;
+  border-radius: 50%;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
 }
 
 #profile_left {
-    display: inline-block;
-    margin-left: 8px;
+  display: inline-block;
+  margin-left: 8px;
 }
 
 #nickname {
-    font-size: 15px;
-    font-weight: 600;
-    line-height: 1.5;
-    letter-spacing: -0.6px;
-    color: #212529;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.5;
+  letter-spacing: -0.6px;
+  color: #212529;
 }
 
 #profile_address {
-    font-size: 13px;
-    line-height: 1.46;
-    letter-spacing: -0.6px;
-    color: #212529;
+  font-size: 13px;
+  line-height: 1.46;
+  letter-spacing: -0.6px;
+  color: #212529;
 }
 
 #content_UpDel {
-    padding-top: 10px;
-    font-size: 13px;
+  padding-top: 10px;
+  font-size: 13px;
 }
 
 /* a 태그 간격 띄우기용 */
 .link-spacing {
-    margin-right: 10px;
+  margin-right: 10px;
 }
 
 #profile {
-    width: 677px;
-    margin: 0 auto;
-    padding-top: 30px;
+  width: 677px;
+  margin: 0 auto;
+  padding-top: 30px;
 }
 
 #profile_address {
-    font-size: 13px;
-    line-height: 1.46;
-    letter-spacing: -0.6px;
-    color: #212529;
+  font-size: 13px;
+  line-height: 1.46;
+  letter-spacing: -0.6px;
+  color: #212529;
 }
 
 /* Profile section */
 #profile #profile_right {
-    position: relative;
-    right: 0;
-    padding-left: 40px;
-  }
-  
-  /* Manner temperature block */
-  #tem_total {
-    float: right;
-    display: block;
-    width: 180px;
-    border: 1px solid rgb(219, 219, 219);
-    border-radius: 10px;
-    padding: 15px 20px;
-    background: linear-gradient(270deg, rgba(255,255,255,0.9) 0%, rgb(248, 255, 255) 100%);
-    box-shadow: 0px 3px 16px rgba(0, 0, 0, 0.1);
-  }
-  
-  /* Manner temperature text */
-  #tem_total_cnt {
-    position: absolute;
-    font-size: 16px;
-    font-weight: bold;
-    line-height: 1;
-    letter-spacing: -0.5px;
-    color: #212529;
-    margin-top: 1px;
-    width: 100px;
-    text-align: right;
-    animation: textColorChange 4s infinite alternate;
-  }
-  
-  /* Temperature text label */
-  #tem_total_txt {
-    float: left;
-    top: 36px;
-    right: 0px;
-    font-size: 12px;
-    line-height: 1;
-    letter-spacing: -0.6px;
-    color: #868e96;
-  }
-  
-  /* Temperature image */
-  #tem_total_img {
-    position: absolute;
-    right: 0;
-    top: 0;
-  }
+  position: relative;
+  right: 0;
+  padding-left: 40px;
+}
+
+/* Manner temperature block */
+#tem_total {
+  float: right;
+  display: block;
+  width: 180px;
+  border: 1px solid rgb(219, 219, 219);
+  border-radius: 10px;
+  padding: 15px 20px;
+  background: linear-gradient(270deg, rgba(255,255,255,0.9) 0%, rgb(248, 255, 255) 100%);
+  box-shadow: 0px 3px 16px rgba(0, 0, 0, 0.1);
+}
+
+/* Manner temperature text */
+#tem_total_cnt {
+  position: absolute;
+  font-size: 16px;
+  font-weight: bold;
+  line-height: 1;
+  letter-spacing: -0.5px;
+  margin-top: 1px;
+  width: 100px;
+  text-align: right;
+}
+
+/* Temperature text label */
+#tem_total_txt {
+  float: left;
+  top: 36px;
+  right: 0px;
+  font-size: 12px;
+  line-height: 1;
+  letter-spacing: -0.6px;
+  color: #868e96;
+}
+
+/* Temperature image */
+#tem_total_img {
+  position: absolute;
+  right: 0;
+  top: 0;
+}
 
 .meters {
-    margin-Bottom: '-1px';
-    margin-left: 35px; 
+  margin-Bottom: '-1px';
+  margin-left: 35px; 
 }
-  
-  /* Animate text color */
-  @keyframes textColorChange {
-    0% {color: #212529;}
-    50% {color: #5BC0DE;}
-    100% {color: #212529;}
-  }
-  
-  /* Thermometer */
-  .manner-thermometer {
-    width: 100%;
-    background-color: rgb(240, 240, 240);
-    border-radius: 50px;
-    box-shadow: inset 0px 1px 3px rgba(0, 0, 0, 0.2);
-  }
-  
-  /* Thermometer fill */
-  .manner-thermometer-fill {
-    border-radius: 50px;
-    height: 12px;
-    background: linear-gradient(90deg, rgb(43, 207, 255) 0%, rgb(117, 117, 241) 100%);
-  }
 
 .text-color {
-    color: #FF7E36;
+  color: #FF7E36;
 }
 
 #face {
-    position: absolute;
-    right: 0;
-    top: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
 }
 
 #content {
-    padding: 32px 0;
-    width: 677px;
-    margin: 0 auto;
-    border-bottom: 1px solid #e9ecef;
+  padding: 32px 0;
+  width: 677px;
+  margin: 0 auto;
+  border-bottom: 1px solid #e9ecef;
 }
 
 #content_title {
-    margin-top: 16px;
-    font-size: 20px;
-    font-weight: 600;
-    line-height: 1.5;
-    letter-spacing: -0.6px;
+  margin-top: 16px;
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 1.5;
+  letter-spacing: -0.6px;
 }
 
 #content_category {
-    margin-top: 4px;
-    font-size: 13px;
-    line-height: 1.46;
-    letter-spacing: -0.6px;
-    color: #868e96;
+  margin-top: 4px;
+  font-size: 13px;
+  line-height: 1.46;
+  letter-spacing: -0.6px;
+  color: #868e96;
 }
 
 #content_price {
-    margin-top: 4px;
-    font-size: 17px;
-    font-weight: 600;
-    line-height: 1.76;
-    letter-spacing: -0.6px
+  margin-top: 4px;
+  font-size: 17px;
+  font-weight: 600;
+  line-height: 1.76;
+  letter-spacing: -0.6px
 }
 
 #profile_right #face {
-    position: absolute;
-    right: 0;
-    top: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
 }
 
 #content_title {
-    margin-top: 16px;
-    font-size: 20px;
-    font-weight: 600;
-    line-height: 1.5;
-    letter-spacing: -0.6px;
+  margin-top: 16px;
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 1.5;
+  letter-spacing: -0.6px;
 }
 
 #content_category {
-    margin-top: 4px;
-    font-size: 13px;
-    line-height: 1.46;
-    letter-spacing: -0.6px;
-    color: #868e96;
+  margin-top: 4px;
+  font-size: 13px;
+  line-height: 1.46;
+  letter-spacing: -0.6px;
+  color: #868e96;
 }
 
 #content_price {
-    margin-top: 4px;
-    font-size: 17px;
-    font-weight: 600;
-    line-height: 1.76;
-    letter-spacing: -0.6px;
+  margin-top: 4px;
+  font-size: 17px;
+  font-weight: 600;
+  line-height: 1.76;
+  letter-spacing: -0.6px;
 }
 
 #content_main {
-    margin-bottom: 16px;
-    margin-top: 8px;
+  margin-bottom: 16px;
+  margin-top: 8px;
 }
 
 #content_cnt {
-    font-size: 13px;
-    line-height: 1.46;
-    letter-spacing: -0.6px;
-    color: #868e96;
+  font-size: 13px;
+  line-height: 1.46;
+  letter-spacing: -0.6px;
+  color: #868e96;
 }
 
 #product_more {
-    width: 677px;
-    margin: 0 auto;
-    padding-top: 32px;
-    position: relative;
+  width: 677px;
+  margin: 0 auto;
+  padding-top: 32px;
+  position: relative;
 }
 
 #product_more h3 {
-    font-size: 18px;
-    text-align: left;
-    line-height: 1.47;
-    letter-spacing: -0.6px;
-    font-weight: 600;
-    padding-bottom: 0;
-    margin-bottom: 30px;
+  font-size: 18px;
+  text-align: left;
+  line-height: 1.47;
+  letter-spacing: -0.6px;
+  font-weight: 600;
+  padding-bottom: 0;
+  margin-bottom: 30px;
 }
 
 #more_link {
-    position: absolute;
-    top: 32px;
-    right: 0;
-    text-align: right;
+  position: absolute;
+  top: 32px;
+  right: 0;
+  text-align: right;
 }
 
 #more_link a {
-    font-size: 15px;
-    line-height: 1.4;
-    letter-spacing: -0.6px;
-    text-decoration: none;
-    color: #FF7E36
+  font-size: 15px;
+  line-height: 1.4;
+  letter-spacing: -0.6px;
+  text-decoration: none;
+  color: #FF7E36
 }
 
 #guest-msg {
-    font-weight: bold;
-    font-family: serif;
-    font-size: 14pt;
+  font-weight: bold;
+  font-family: serif;
+  font-size: 14pt;
 }
 
 #guest-msg a {
-    text-decoration: underline;
+  text-decoration: underline;
 }
 
 .kakao-button {
-    background-color: #FEE500;
-    color: #000000;
-    border: none;
-    border-radius: 4px;
-    padding: 10px 20px;
-    font-size: 16px;
-    font-weight: bold;
-    cursor: pointer;
-  }
-  
-  .kakao-button:hover {
-    background-color: #FED200;
-  }
+  background-color: #FEE500;
+  color: #000000;
+  border: none;
+  border-radius: 4px;
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.kakao-button:hover {
+  background-color: #FED200;
+}
 
 
-  #archive-icon {
-    display: inline-block;
-    margin-right: 10px;
-  }
-  
-  #archive-icon a {
-    display: inline-block;
-    background-color: #ffa500; /* 배경색 설정 */
-    border-radius: 4px; /* 테두리를 둥글게 설정 */
-    padding: 4px 8px; /* 내부 여백 설정 */
-  }
-  
-  #archive-icon a {
-    color: #fff; /* 텍스트 색상 */
-    text-decoration: none; /* 밑줄 제거 */
-    font-weight: bold; /* 텍스트 굵게 설정 */
-  }
-  
-  #archive-icon svg {
-    vertical-align: middle;
-    margin-right: 5px;
-  }
+#archive-icon {
+  display: inline-block;
+  margin-right: 10px;
+}
+
+#archive-icon a {
+  display: inline-block;
+  background-color: #ffa500; /* 배경색 설정 */
+  border-radius: 4px; /* 테두리를 둥글게 설정 */
+  padding: 4px 8px; /* 내부 여백 설정 */
+}
+
+#archive-icon a {
+  color: #fff; /* 텍스트 색상 */
+  text-decoration: none; /* 밑줄 제거 */
+  font-weight: bold; /* 텍스트 굵게 설정 */
+}
+
+#archive-icon svg {
+  vertical-align: middle;
+  margin-right: 5px;
+}
 
 
-  #archive-icon2 {
-    display: inline-block;
-    background-color: #ffa500; /* 배경색 설정 */
-    border-radius: 4px; /* 테두리를 둥글게 설정 */
-    padding: 4px 8px; /* 내부 여백 설정 */
-  }
-  
-  #archive-icon2 a {
-    color: #fff; /* 텍스트 색상 */
-    text-decoration: none; /* 밑줄 제거 */
-    font-weight: bold; /* 텍스트 굵게 설정 */
-  }
-  
-  #archive-icon2 a:hover {
-    text-decoration: underline; /* 호버시 밑줄 추가 */
-  }
+#archive-icon2 {
+  display: inline-block;
+  background-color: #ffa500; /* 배경색 설정 */
+  border-radius: 4px; /* 테두리를 둥글게 설정 */
+  padding: 4px 8px; /* 내부 여백 설정 */
+}
 
-  #deleteProduct {
-    display: inline-block;
-  }
-  
-  #deleteProduct button {
-    background-color: #ffa500; /* 배경색 설정 */
-    color: #fff; /* 텍스트 색상 */
-    border: none; /* 테두리 제거 */
-    border-radius: 4px; /* 테두리를 둥글게 설정 */
-    padding: 4px 8px; /* 내부 여백 설정 */
-    font-weight: bold; /* 텍스트 굵게 설정 */
-    cursor: pointer; /* 커서 포인터로 변경 */
-  }
-  
-  #deleteProduct button:focus {
-    outline: none; /* 포커스시 아웃라인 제거 */
-  }
-  
-  #deleteProduct button:hover {
-    text-decoration: underline; /* 호버시 밑줄 추가 */
-  }
-  
+#archive-icon2 a {
+  color: #fff; /* 텍스트 색상 */
+  text-decoration: none; /* 밑줄 제거 */
+  font-weight: bold; /* 텍스트 굵게 설정 */
+}
+
+#archive-icon2 a:hover {
+  text-decoration: underline; /* 호버시 밑줄 추가 */
+}
+
+#deleteProduct {
+  display: inline-block;
+}
+
+#deleteProduct button {
+  background-color: #ffa500; /* 배경색 설정 */
+  color: #fff; /* 텍스트 색상 */
+  border: none; /* 테두리 제거 */
+  border-radius: 4px; /* 테두리를 둥글게 설정 */
+  padding: 4px 8px; /* 내부 여백 설정 */
+  font-weight: bold; /* 텍스트 굵게 설정 */
+  cursor: pointer; /* 커서 포인터로 변경 */
+}
+
+#deleteProduct button:focus {
+  outline: none; /* 포커스시 아웃라인 제거 */
+}
+
+#deleteProduct button:hover {
+  text-decoration: underline; /* 호버시 밑줄 추가 */
+}
+
 .declare-button{
-    background-color: #FEE500;
-    color: #000000;
-    border: none;
-    border-radius: 4px;
-    padding: 10px 20px;
-    font-size: 16px;
-    font-weight: bold;
-    cursor: pointer;
-    padding-left:40px;
-    margin-left:50px;
-    padding-right:50px;
+  background-color: #FEE500;
+  color: #000000;
+  border: none;
+  border-radius: 4px;
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  padding-left:40px;
+  margin-left:50px;
+  padding-right:50px;
 }
 
 .sell_box,
 .sell_delete {
-  font-size: 13px;
-  background-color: white;
-  border: 2px solid #FF7E36;
-  padding: 2px 4px;
-  margin-right: 1px;
-  font-weight: bold;
-  border-radius: 5px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  transition: all 0.3s ease;
-  cursor: pointer;
-  color: #FF7E36;
+font-size: 13px;
+background-color: white;
+border: 2px solid #FF7E36;
+padding: 2px 4px;
+margin-right: 1px;
+font-weight: bold;
+border-radius: 5px;
+box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+transition: all 0.3s ease;
+cursor: pointer;
+color: #FF7E36;
 }
 
 .sell_delete {
-  border-color: #FF4B4B; /* Change border-color of sell_delete to red */
-  color: #FF4B4B; /* Change text color of sell_delete to red */
+border-color: #FF4B4B; /* Change border-color of sell_delete to red */
+color: #FF4B4B; /* Change text color of sell_delete to red */
 }
 
 .sell_box a,
 .sell_delete a {
-  color: inherit;
-  text-decoration: none;
+color: inherit;
+text-decoration: none;
 }
 
 .sell_box:hover,
 .sell_delete:hover {
-  background-color: #FF7E36;
-  color: white;
-  border-color: #FF7E36;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+background-color: #FF7E36;
+color: white;
+border-color: #FF7E36;
+box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .sell_delete:hover {
-  background-color: #FF4B4B; /* Change background-color of sell_delete hover to red */
-  border-color: #FF4B4B; /* Change border-color of sell_delete hover to red */
+background-color: #FF4B4B; /* Change background-color of sell_delete hover to red */
+border-color: #FF4B4B; /* Change border-color of sell_delete hover to red */
 }
 
 .sell_box:active,
 .sell_delete:active {
-  transform: translateY(1px);
+transform: translateY(1px);
 }
