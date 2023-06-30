@@ -3,7 +3,7 @@ import { Context } from '../../ContextStore';
 import { Navbar, NavDropdown, Nav, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import { NavLink } from 'react-router-dom';
 import { BsFillPersonFill, BsFillEnvelopeFill, BsFillPlusCircleFill, BsPeopleFill } from 'react-icons/bs';
-import { useHistory } from "react-router-dom";
+import { useHistory, useLocation  } from "react-router-dom";
 import { IoLogOut } from 'react-icons/io5'
 import SearchBar from "../../components/SearchBar/SearchBar";
 import './Header.css';
@@ -14,6 +14,16 @@ import { initializeSocket } from '../../services/messagesData';
 import url from "../../url.js";
 
 function Header() {
+    const location = useLocation();
+    const pathParts = location.pathname.split("/");
+    const isMessagesPath = pathParts[1] === "messages";
+  
+    const handleClick = (e) => {
+      if (isMessagesPath) {
+        e.preventDefault();
+      }
+    };
+
     const [isSticky, setIsSticky] = useState(false);
     const { userData, setUserData } = useContext(Context);
     const { query, setQuery } = useContext(Context);
@@ -250,60 +260,6 @@ function Header() {
 
 
 
-    useEffect(() => {
-        let socket;
-    
-        const initSocket = async () => {
-            socket = await initializeSocket();
-            setSocket(socket);
-            
-            socket.emit("getUserConversations", {userId:userData._id});
-    
-            socket.on ('userConversations',(userChats) => {
-                console.log('userConversations',userChats);
-                const initialNotifications = userChats.reduce((acc, cur) => {
-                    if(cur.isBuyer){
-                        acc[cur.chats._id] = cur.chats.notificationMessages_buyer;
-                    } else {
-                        acc[cur.chats._id] = cur.chats.notificationMessages_seller;
-                    }
-                    return acc;
-                },{});
-                setNotifications(initialNotifications);
-            });
-    
-            socket.on('notificationChat', ({ chatId, notificationMessages, senderId }) => {
-                if (senderId !== userData._id) {
-                    setNotifications(prev => ({ ...prev, [chatId]: notificationMessages }));
-                }
-                console.log("Chat ID: ", chatId);
-                console.log("Notification Messages: ", notificationMessages);
-            });
-        };
-    
-        if (userData) {
-            initSocket();
-        }
-    
-        return () => {
-            if (socket) {
-                socket.off('notificationChat');
-                socket.disconnect();
-                // console.log("socket disconnected");
-            }
-        };
-    }, [userData]);
-
-
-    useEffect(() => {
-        if (!socket) return;
-        socket.on('readMessagesUpdate', ({ chatId }) => {
-            setNotifications(prev => ({ ...prev, [chatId]: 0 }));
-        });
-    },[socket])
-
-
-
     return (
         <Navbar collapseOnSelect bg="light" variant="light" className={isSticky ? 'sticky' : ''}>
             <div className="container">
@@ -357,12 +313,12 @@ function Header() {
                                     <BsFillPersonFill />Profile
                                 </NavLink>
 
-                                <NavLink className="dropdown-item" to="/messages">
+                                <NavLink className="dropdown-item"  to="/messages" onClick={handleClick}>
                                 {(totalNotifications > 0 ? <BsFillEnvelopeFill className='bell' /> : <BsFillEnvelopeFill/>)}Messages
                                 </NavLink>
-
-                                {userData.role === "admin" &&
-                                    <NavLink className="dropdown-item" to="/admin">
+                                  
+                            {userData.role === "admin" &&
+                                <NavLink className="dropdown-item" to="/admin">
                                         <BsPeopleFill />Admin
                                     </NavLink>
                                 }

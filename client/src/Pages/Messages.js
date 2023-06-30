@@ -23,12 +23,10 @@ import dayjs from 'dayjs';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { MobileDateTimePicker } from '@mui/x-date-pickers/MobileDateTimePicker';
-// import { faLastfmSquare } from '@fortawesome/free-brands-svg-icons';
 import moment from "moment";
 import 'moment-timezone';
 import Confetti from 'react-dom-confetti';
 import EmojiPicker from 'emoji-picker-react';
-import { right } from '@popperjs/core';
 
 function Messages({ match }) { // match = Router 제공 객체, url을 매개변수로 사용. ex) 경로 : /messages/123  => match.params.id = "123" // app.js 참고 : <Route path="/messages" exact component={Messages} />;
     //map modal
@@ -53,7 +51,6 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
     const [showEmojiPicker, setShowEmojiPicker] = useState(false);
     const emojiPickerRef = useRef(null);
 
-    
     useEffect(() => {
         const handleOutsideClick = (event) => {
             if (emojiPickerRef.current && !emojiPickerRef.current.contains(event.target) && showEmojiPicker) {
@@ -99,14 +96,14 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
     const blockName1 = selected.isBuyer ? selected.chats.seller?._id : selected.chats.buyer?._id
     const blockName2 = selected.isBuyer ? selected.chats.buyer?._id : selected.chats.seller?._id;
 
-    const blockHandle = () => {
-        const blockId = blockName1
-        const myId99 = blockName2
-        console.log(blockId + 'blockId')
-        console.log(myId99 + 'myId99')
-        UserBlock(socket, {blockId, myId99})
+    // const blockHandle = () => {
+    //     const blockId = blockName1
+    //     const myId99 = blockName2
+    //     console.log(blockId + 'blockId')
+    //     console.log(myId99 + 'myId99')
+    //     UserBlock(socket, {blockId, myId99})
 
-    }
+    // }
 
 
     const [message, setMessage] = useState(""); // 내가 입력한 메세지
@@ -479,7 +476,7 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
 
     // 알림 실시간 확인
     useEffect(() => {
-        if (!userData || !socket) return;
+        if (!userData?._id || !socket) return;
         socket.on('notificationChat', ({ chatId, notificationMessages, senderId }) => {
             if (senderId !== userData._id) {
                 setNotifications(prev => ({ ...prev, [chatId]: notificationMessages }));
@@ -494,7 +491,7 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
                 socket.off('readMessagesUpdate');
             }
         };
-    }, [socket, userData._id]);
+    }, [socket, userData?._id]);
 
 
     useEffect(() => {
@@ -585,7 +582,7 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
                                         <UseAnimations animation={github} size={35}/>
                                     </button>
                                     <div className="dropdown-content">
-                                        <button className="dropdown-content-out">
+                                        <button className="dropdown-content-out" onClick={ExitRoomModalopen}>
                                             <BsDoorOpen size={15} /> 채팅방 나가기
                                         </button>
                                         {/* <button className="dropdown-content-block" onClick={blockHandle}> 
@@ -650,9 +647,34 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
                                                         <Linkify>{x.message}</Linkify>
                                                         </div>
                                                     )}
-                                                    {selected.myId !== x.senderId && <img className="user-avatar" src={(selected.isBuyer ? selected.chats.seller?.avatar : selected.chats.buyer?.avatar) || 'https://kr.object.ncloudstorage.com/ncp3/ghuPttFw_400x400.jpg'} alt="user-avatar" />}
-                                                </div>
-
+                                                    {selected.myId !== x.senderId && (
+                                                         selected.chats.seller?._id ? (
+                                                            <Link to={`/profile/${selected.chats.seller?._id}`}>
+                                                              <img
+                                                                className="user-avatar"
+                                                                src={
+                                                                  (selected.isBuyer
+                                                                    ? selected.chats.seller?.avatar
+                                                                    : selected.chats.buyer?.avatar) ||
+                                                                  'https://kr.object.ncloudstorage.com/ncp3/ghuPttFw_400x400.jpg'
+                                                                }
+                                                                alt="user-avatar"
+                                                              />
+                                                            </Link>
+                                                          ) : (
+                                                            <img
+                                                              className="user-avatar"
+                                                              src={
+                                                                (selected.isBuyer
+                                                                  ? selected.chats.seller?.avatar
+                                                                  : selected.chats.buyer?.avatar) ||
+                                                                'https://kr.object.ncloudstorage.com/ncp3/ghuPttFw_400x400.jpg'
+                                                              }
+                                                              alt="user-avatar"
+                                                            />
+                                                          )
+                                                        )}
+                                                    </div>
                                             )}
                                         </Fragment>
                                     )
@@ -702,7 +724,7 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
                                             &nbsp;&nbsp;
                                             {file && file.type.startsWith('image/') ? (
                                                 <div>
-                                                    <img src={URL.createObjectURL(file)} alt="Selected Image" style={{ maxWidth: '100%', height: 'auto', borderRadius: '30px', verticalAlign: 'middle', marginTop:'5px', marginBottom:'5px', paddingRight:'10px' }} />
+                                                    <img src={URL.createObjectURL(file)} alt="Selected" style={{ maxWidth: '100%', height: 'auto', borderRadius: '30px', verticalAlign: 'middle', marginTop:'5px', marginBottom:'5px', paddingRight:'10px' }} />
                                                     <button onClick={() => setFile(null)}>파일취소</button>
                                                 </div>
                                                 ) : (
@@ -753,7 +775,7 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
                                 )}
                                 <AppointmentModal show={modalState.appointmentModalOpen && currentAppointment !== null && selected.chats.appointmentCheck === false} selected={selected} appointmentModalAccept={appointmentModalAccept} appointmentModalReject={appointmentModalReject} myName={myName}  />
                                 <ReportModal show={reportModalShow} onHide={() => setReportModalShow(false)} onReport={handleReport}/>
-                                {/* <ExitRoomModal show={exitRoomModalShow} onHide={() =>  setExitRoomModalShow(false)} handleExitRoom={handleExitRoom}   /> */}
+                                <ExitRoomModal show={exitRoomModalShow} onHide={() =>  setExitRoomModalShow(false)} handleExitRoom={handleExitRoom}   />
                             </div>
                         </>
                     }
