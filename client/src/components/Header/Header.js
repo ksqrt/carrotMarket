@@ -378,17 +378,19 @@ function Header() {
                         :
                         (<Nav>
                             <div>
-                                <button className='nav-item' id="nav-sign-in" onClick={onOpen}>로그인</button>&nbsp;/&nbsp;
+                                <button className='nav-item' style={{
+                                    marginBottom:"20px"
+                                }} id="nav-sign-in" onClick={onOpen}>로그인</button>
                                 {
                                     isOpen && <LoginModal onClose={onClose} />
                                 }
                             </div>
-                            <div>
+                            {/* <div>
                                 <button className='nav-item' id="nav-sign-in" onClick={onOpenRegister}>회원가입</button>
                                 {
                                     isOpenRegister && <RegisterModal onCloseRegister={onCloseRegister} />
                                 }
-                            </div>
+                            </div> */}
                             {/* 추후 삭제 */}
                             {/* &nbsp;&nbsp;
                             <NavLink style={{ backgroundColor: '#FF7E36' }} className="nav-item" id="nav-sign-in" to="/auth/login">

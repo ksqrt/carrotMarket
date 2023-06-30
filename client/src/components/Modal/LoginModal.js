@@ -66,7 +66,7 @@ const LoginModal = ({ onClose }) => {
                             }
                     <div className="container auth-form" style={{paddingRight: 160}}>
                         <Form className="col-lg-6" onSubmit={handleSubmitLogin}>
-              <div className="forms" style={{ paddingLeft: 20 }}>
+              {/* <div className="forms" style={{ paddingLeft: 20 }}>
                 <input
                   className="emailForm"
                   type="email"
@@ -83,8 +83,8 @@ const LoginModal = ({ onClose }) => {
                   onChange={handleChanges}
                   required
                 />
-              </div>
-              {loading ? (
+              </div> */}
+              {/* {loading ? (
                 <Button className="loginBtn btnAuth" variant="dark" disabled>
                   Please wait... <Spinner animation="border" />
                 </Button>
@@ -96,7 +96,7 @@ const LoginModal = ({ onClose }) => {
                 >
                   당근마켓 계정으로 로그인
                 </Button>
-              )}
+              )} */}
             </Form>
           </div>
 
