@@ -584,7 +584,7 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
                                         <UseAnimations animation={github} size={35}/>
                                     </button>
                                     <div className="dropdown-content">
-                                        <button className="dropdown-content-out">
+                                        <button className="dropdown-content-out" onClick={ExitRoomModalopen}>
                                             <BsDoorOpen size={15} /> 채팅방 나가기
                                         </button>
                                         {/* <button className="dropdown-content-block" onClick={blockHandle}> 
@@ -777,7 +777,7 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
                                 )}
                                 <AppointmentModal show={modalState.appointmentModalOpen && currentAppointment !== null && selected.chats.appointmentCheck === false} selected={selected} appointmentModalAccept={appointmentModalAccept} appointmentModalReject={appointmentModalReject} myName={myName}  />
                                 <ReportModal show={reportModalShow} onHide={() => setReportModalShow(false)} onReport={handleReport}/>
-                                {/* <ExitRoomModal show={exitRoomModalShow} onHide={() =>  setExitRoomModalShow(false)} handleExitRoom={handleExitRoom}   /> */}
+                                <ExitRoomModal show={exitRoomModalShow} onHide={() =>  setExitRoomModalShow(false)} handleExitRoom={handleExitRoom}   />
                             </div>
                         </>
                     }
