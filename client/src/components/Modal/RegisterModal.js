@@ -6,6 +6,7 @@ import { registerUser } from '../../services/userData';
 import GoogleLogin from './GoogleLogin';
 import KakaoLogin from './KakaoLogin';
 import axios from 'axios';
+import url from '../../url';
 
 const RegisterModal = ({ onCloseRegister}) => {
     const [loading, setLoading] = useState(false);
@@ -39,7 +40,7 @@ const RegisterModal = ({ onCloseRegister}) => {
             };
 
             // console.log('authCode = ' + createdAuthCode);
-            axios.post(`http://localhost:5000/auth/sendEmail`, dataToSubmit)
+            axios.post(`${url}/auth/sendEmail`, dataToSubmit)
                 .then(response => {
                     var input = window.prompt('인증코드가 발송되었습니다.', '인증코드를 입력하세요');
                    
