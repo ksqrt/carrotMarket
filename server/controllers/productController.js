@@ -160,7 +160,6 @@ router.patch('/edit/:id', isAuth, async (req, res) => {
                     compressedImg[index] = image[index];
                 }else{
                     compressedImg[index] = await productService.uploadImage(image[index]);
-            
                 }
             }
             

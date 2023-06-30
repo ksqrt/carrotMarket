@@ -238,6 +238,8 @@ function ProductInfo({ params }) {
     startChat(socket, { buyerId: userData._id, sellerId: params.sellerId, productId: params._id });
   };
 
+
+  //카카오
   useEffect(() => {
     const script = document.createElement("script");
     script.src = "https://developers.kakao.com/sdk/js/kakao.js";
@@ -246,47 +248,30 @@ function ProductInfo({ params }) {
     return () => document.body.removeChild(script);
   }, []);
 
-
-  //{params.title}: 상품 제목
-  //{params.addedAt}: 업로드 날짜
-  //{params.description}: 상품 설명
-  //{params.createdSells}: 물품 갯수
-
-
-  function sendLinkCustom() {
-    
+  const shareKakao = () => { // url이 id값에 따라 변경되기 때문에 route를 인자값으로 받아줌
     if (window.Kakao) {
-      window.Kakao.Link.sendCustom({
-        templateId: 94886
-      });
-    }
-  }
-
-  function sendLinkDefault() {
-    if (window.Kakao) {
-      window.Kakao.Link.sendDefault({
-        objectType: 'feed',
+      const kakao = window.Kakao;
+      if (!kakao.isInitialized()) {
+        kakao.init(process.env.REACT_APP_KAKAO_API); // 카카오에서 제공받은 javascript key를 넣어줌 -> .env파일에서 호출시킴
+      }
+  
+      kakao.Link.sendDefault({
+        objectType: "feed", // 카카오 링크 공유 여러 type들 중 feed라는 타입 -> 자세한 건 카카오에서 확인
         content: {
-          title: params && params.title ? params.title : '호랑이',
-          description: params.description,
-          imageUrl: params.image,
+          title: params.title, // 인자값으로 받은 title
+          description: params.description, // 인자값으로 받은 title
+          imageUrl: params.image[0],
           link: {
-            mobileWebUrl: 'https://developers.kakao.com',
-            webUrl: `http://localhost:3000/categories/auto/${params._id}/details`,
-          },
-        },
-        buttons: [
-          {
-            title: '웹으로 보기',
-            link: {
-              mobileWebUrl: 'https://developers.kakao.com',
-              webUrl: `http://localhost:3000/categories/auto/${params._id}/details`,
-            },
-          },
-        ],
+            mobileWebUrl: 'https://developers.kakao.com', // 인자값으로 받은 route(uri 형태)
+            webUrl: `http://localhost:3000/categories/auto/${params._id}/details`
+          }
+        }
       });
     }
-  }//수정
+  };
+
+  
+  //수정
 
 
   return (
@@ -456,15 +441,6 @@ function ProductInfo({ params }) {
               판매자와 연락하기 위해 지금!<Link to="/auth/login">로그인</Link>하세요!
             </p>
           )}
-          <span>
-            <a id="kakaotalk-sharing-btn" href="javascript:;" onClick={sendLinkDefault}>
-              <img
-                  src="https://developers.kakao.com/assets/img/about/logos/kakaotalksharing/kakaotalk_sharing_btn_medium.png"
-                  style={{ width: "50px", height: "50px", marginLeft: '15px', marginBottom: '45px' }}
-                  alt="카카오톡 공유 보내기 버튼"
-                />
-            </a>
-          </span>
           {!params.isSeller && (
             <span id="heartIconDetails" className="col-lg-1 col-sm-1" onClick={onHearthClick}>
               {params.isAuth && (
@@ -486,7 +462,7 @@ function ProductInfo({ params }) {
 
            <div>
             {/* <button onClick={sendLinkCustom}>Send Custom Link</button> */}
-                <button className="kakao-button" onClick = {sendLinkDefault}>카카오 공유하기</button>
+                <button className="kakao-button" onClick = {shareKakao}>카카오 공유하기</button>
                 <button className='declare-button' value={params._id} onClick={declareHandler} >신고하기</button>
                
 
