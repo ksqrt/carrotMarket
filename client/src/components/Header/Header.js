@@ -324,14 +324,15 @@ function Header() {
                         style={{ margin: '10px' }}
                         alt="음성 검색"
                         className="voice-search-icon"
-                        onClick={() => {
-                            // onRec ? onRecAudio : offRecAudio
-                            console.log("음성클릭")
-                        }}
+                        onClick={
+                            
+                            onRec ? onRecAudio : offRecAudio
+                            
+                        }
                     />
 
-                    <button onClick={onRec ? onRecAudio : offRecAudio}>녹음</button>
-                    <button onClick={play} disabled={disabled}>재생</button>
+                    {/* <button onClick={onRec ? onRecAudio : offRecAudio}>녹음</button> */}
+                    {/* <button onClick={play} disabled={disabled}>재생</button> */}
 
                     {userData ?
                         (<Nav className="nav-wrapper">
