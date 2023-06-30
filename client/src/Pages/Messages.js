@@ -612,7 +612,7 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
                                     {!selected.chats.product?.soldout && <Button className='messageButton' onClick={openDateTimePicker}> <AiOutlineSchedule size={20}/> 약속 잡기 </Button>}&nbsp;
                                     <Button className='messageButton' onClick={ handleShow }> <FaMapMarkedAlt size={20}/> 장소 공유 </Button> &nbsp;
                                     {reviewButtonOn && <Button className='messageButton' onClick={handleTradeComplete} disabled={selected.chats.product?.soldout}> <FaRegHandshake size={20}/> 거래 완료 </Button>} &nbsp;
-                                    {selected.chats.product?.soldout && <Button className='messageButton' onClick={() => history.push('/profile/chatId/review')}> <MdOutlineRateReview size={20} /> 후기 보내기 </Button>} &nbsp;
+                                    {selected.chats.product?.soldout && <Button className='messageButton' onClick={() => history.push('/profile')}> <MdOutlineRateReview size={20} /> 후기 보내기 </Button>} &nbsp;
                                     <Confetti className="Confetti" active={ tradeCompleteConfetti } config={ confettiConfig } />
                                 </Alert>
                             }
