@@ -4,6 +4,7 @@ const ChatRoom = require('../models/ChatRoom') // 채팅방 id, buyer, seller, c
 const mongoose = require('mongoose');
 const User = require('../models/User'); 
 const Product = require('../models/Product'); 
+const productService = require('../services/productService');
 
 let io;
 function Io(server) {
@@ -74,21 +75,6 @@ function Io(server) {
 
     });
 
-    socket.on("readMessages", async ({chatId, userId}) => {
-      const chatRoom = await ChatRoom.findOne({ _id: chatId });
-      let NotificationRead = {};
-      if (chatRoom.buyer.equals(userId)) {
-        NotificationRead = { notificationMessages_buyer: 0 };
-      } else if (chatRoom.seller.equals(userId)) {  
-        NotificationRead = { notificationMessages_seller: 0 };
-      }
-      await ChatRoom.updateOne({ _id: chatId }, { $set: NotificationRead });
-      io.emit("readMessagesUpdate", { chatId, NotificationRead });
-      console.log("User ID: ", userId);
-      console.log("Chat Room Buyer ID: ", chatRoom.buyer);
-      console.log("Chat Room Seller ID: ", chatRoom.seller);
-      console.log("Notification Read: ", NotificationRead);
-    });
 
     socket.on("setAppointment", async ({chatId, appointmentDate }) => {
       await ChatRoom.updateOne({ _id: chatId }, { appointmentDate, appointmentCheck: false });

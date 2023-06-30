@@ -3,8 +3,10 @@ import { createProduct } from "../services/productData";
 import { Form, Button, Col, Spinner, Alert, Row } from "react-bootstrap";
 import "../components/CreateSell/CreateSell.css";
 import "../components/CreateSell/addproduct.css";
+// import KakaoMapAPI from "../components/KakaoMapAPI/KakaoMapAPI";
 import Display from "../components/Display/Display";
-import { KakaoMapAPI } from "../components/KakaoMapAPI/KakaoMapAPI";
+import KakaoMapAPI from "../components/KakaoMapAPI/KakaoMapAPICreateSell";
+import Imagemodal from "../components/Display/Imagemodal";
 
 const AddProduct = ({ history }) => {
   const [title, setTitle] = useState("");
@@ -13,10 +15,11 @@ const AddProduct = ({ history }) => {
   const [city, setCity] = useState("");
   const [category, setCategory] = useState("clothing");
   const [image, setImage] = useState([]);
-  const [previewURL, setPreviewURL] = useState([]);
   const [loading, setLoading] = useState(false);
   const [alertShow, setAlertShow] = useState(false);
   const [errors, setErrors] = useState([]);
+  const [imagemodal, setImagemodal] = useState(false);
+  const [checkimgindex, setCheckimgindex] = useState('');
 
   const onTitle= (e) => {
     setTitle(e.target.value);
@@ -30,9 +33,15 @@ const AddProduct = ({ history }) => {
   const onCity= (e) => {
     setCity(e.target.value);
   };
+  const kakaocity = (a) => {
+    setCity(a);
+  };
+
+  const closeModal = () => {
+    setImagemodal(false);
+  }
 
   const fileInput = useRef(null);
-  let tmp = 0;
   const onChangeHandler = (e) => {
     e.preventDefault();
     let value = e.target.value;
@@ -59,8 +68,7 @@ const AddProduct = ({ history }) => {
     }
 
     if (e.target.name === "category") {
-      console.log(e.target.name);
-      console.log(value);
+      setCategory(value);
     }
 
     if (e.target.files) {
@@ -76,11 +84,16 @@ const AddProduct = ({ history }) => {
       .then((data) => {
         setImage([...image,data]);
       });
-        tmp = tmp + 1;
-      console.log('pre'+previewURL);
-      console.log('image'+image);
     }
   };
+  const deleteimg = (index) => {
+    image.splice(index,1);
+    setImage([...image]);
+  }
+  const imgboxbtn = (index) => {
+     setCheckimgindex(index);
+     setImagemodal(true);   
+  }
   // useEffect(()=>{
   //   for (let index = 0; index < image.length; index++) {
 
@@ -114,7 +127,11 @@ const AddProduct = ({ history }) => {
   const getBase64 = (file) => {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
-      reader.readAsDataURL(file);
+      try{
+        reader.readAsDataURL(file);
+      } catch (err){
+
+      }
       reader.onload = () => resolve(reader.result);
       reader.onerror = (error) => reject(error);
     });
@@ -150,6 +167,7 @@ const AddProduct = ({ history }) => {
                 </Form.Label>
               </Col>
               <Col>
+              <div className="displaygrid">
                 <button className="imgbtn" onClick={handlerButtonClick}>
                   <img
                     src={
@@ -157,30 +175,24 @@ const AddProduct = ({ history }) => {
                     }
                   />
                 </button>
-                <button
-                  style={{
-                    border: "none",
-                    backgroundColor: "white",
-                  }}
-                >
-                </button>
                   
-                  <Display image={image}/>
+                <Display image={image} imgboxbtn={imgboxbtn} deleteimg={deleteimg} />
 
+              </div>    
 
                 <Form.Control
                   name="image"
                   ref={fileInput}
                   type="file"
                   className="imginput"
-                  required
                   multiple
                   onChange={onChangeHandler}
                   />
               </Col>
             </Row>
             <Row>
-              <Col md="2"></Col>
+              <Col md="2">
+              </Col>
               <Col>
                 <div className="imgfont">
                   <a
@@ -193,8 +205,7 @@ const AddProduct = ({ history }) => {
                   <br />- 상품 이미지는 PC에서는 1:1, 모바일에서는 1:1.23 비율로
                   보여집니다.
                   <br />- 이미지를 클릭할 경우 원본 이미지를 확인할 수 있습니다.
-                  <br />- 이미지를 클릭 후 이동하여 등록순서를 변경할 수
-                  있습니다.
+                  <br />- 먼저 등록한 이미지가 대표 이미지가 됩니다.
                   <br />- 큰 이미지일 경우 이미지가 깨지는 경우가 발생할 수
                   있습니다.
                   <br />
@@ -286,11 +297,12 @@ const AddProduct = ({ history }) => {
                   name="city"
                   placeholder="서울"
                   required
+                  value={city}
                   onChange={onCity}
                 />
               </Col>
               <Col>
-                <KakaoMapAPI />
+                <KakaoMapAPI kakaocity={kakaocity}/>
               </Col>
             </Row>
             <hr />
@@ -325,6 +337,10 @@ const AddProduct = ({ history }) => {
             )}
           </Form>
           <br></br>
+          {/* 모달 */}
+          {imagemodal && (
+            <Imagemodal image={image} closeModal={closeModal} checkimgindex={checkimgindex}/>
+          )}
         </div>
   );
 };

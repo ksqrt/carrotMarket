@@ -13,10 +13,12 @@
 .imgbtn {
   border: none;
   padding: 0;
+  margin-bottom: 10px;
   margin-right: 10px;
+  background-color: white;
+  position: relative;
 }
 .imge {
-  margin-right: 10px;
   width: 200px;
   height: 200px;
 }
@@ -46,3 +48,39 @@
   width: auto;
   height: 45px;
 }
+.displaygrid{
+  display:block;
+
+}
+.imgwrapper{
+  position: relative;
+  display: inline-block;
+  margin-right: 10px;
+  width:200px;
+  height: 200px;
+}
+.closebtn{
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.hidden{
+  display: none;
+}
+
+
+/* .closebtnwrapper{
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 1;
+} */
+/* .closebtn{
+  position: absolute;
+  left: 200px;
+} */

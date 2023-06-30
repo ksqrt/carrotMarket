@@ -9,6 +9,7 @@ import Categories from "./Pages/Categories";
 import Login from "./Pages/Login";
 import Register from "./Pages/Register";
 import LogOut from "./Pages/LogOut";
+import SignOut from "./Pages/SignOut";
 import Profile from "./Pages/Profile";
 import Details from "./Pages/Details";
 import Edit from "./Pages/Edit";
@@ -35,6 +36,7 @@ function App() {
             <Route path="/auth/login" exact component={Login} />
             <Route path="/auth/register" exact component={Register} />
             <Route path="/auth/logout" exact render={LogOut} />
+            <Route path="/auth/:id/signout" exact component={SignOut} />;
             <Route path="/add-product" exact component={CreateSell} />;
             <Route path="/profile/:id" exact component={Profile} />;
             <Route path="/profile/:id/edit" exact component={EditProfile} />;

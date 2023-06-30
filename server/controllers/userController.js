@@ -1,3 +1,4 @@
+
 const { Router } = require('express');
 const router = Router();
 const { cloudinary } = require('../config/cloudinary');
@@ -9,30 +10,40 @@ const userService = require('../services/userService');
 // 사용자 프로필을 수정하는 엔드포인트
 router.patch('/edit-profile/:id', async (req, res) => {
     //TODO: 이 부분 재작성하기 
-    let { name, phoneNumber, email } = req.body;
+    // console.log(req.body);
+    let { name,avatar } = req.body;
+    // console.log(name);
+    // console.log(phoneNumber);
+    // console.log(email);
+    // console.log(avatar);
+
     try {
-        let errors = [];
-        let checkUser = await User.findOne({ email });
+        // let errors = [];
+        // let checkUser = await User.findOne({ email });
 
-        if (checkUser && checkUser._id.toString() !== req.user._id.toString()) errors.push('This email address is already in use; ');
-        if (name.length < 3 || name.length > 50) errors.push('Name should be at least 3 characters long and max 50 characters long; ')
-        if (/(\+)?(359|0)8[789]\d{1}(|-| )\d{3}(|-| )\d{3}/.test(phoneNumber) == false) errors.push('Phone number should be a valid BG number; ');
-        if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email) == false) errors.push("Please fill a valid email address; ");
+        // if (checkUser && checkUser._id.toString() !== req.user._id.toString()) errors.push('This email address is already in use; ');
+        // if (name.length < 3 || name.length > 50) errors.push('Name should be at least 3 characters long and max 50 characters long; ')
+        // if (/(\+)?(359|0)8[789]\d{1}(|-| )\d{3}(|-| )\d{3}/.test(phoneNumber) == false) errors.push('Phone number should be a valid BG number; ');
+        // if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email) == false) errors.push("Please fill a valid email address; ");
 
-        if (req.body.avatar) {
-            if (!req.body.avatar.includes('image')) errors.push('The uploaded file should be an image; ');
-        }
+    //     if (req.body.avatar) {
+    //         if (!req.body.avatar.includes('image')) errors.push('The uploaded file should be an image; ');
+    //     }
 
-        if (errors.length >= 1) throw { message: [errors] };
+    let compressedImg = await productService.uploadImage(req.body.avatar);
+    await userService.edit(req.params.id, { name, avatar: compressedImg });
+    res.status(201).json({ message: 'Updated!', avatar: compressedImg });
 
-        if (req.body.avatar) {
-            let compressedImg = await productService.uploadImage(req.body.avatar);
-            await userService.edit(req.params.id, { name, phoneNumber, email, avatar: compressedImg });
-            res.status(201).json({ message: 'Updated!', avatar: compressedImg });
-        } else {
-            await userService.edit(req.params.id, { name, phoneNumber, email });
-            res.status(201).json({ message: 'Updated!' });
-        }
+    //     if (errors.length >= 1) throw { message: [errors] };
+
+    //     if (req.body.avatar) {
+    //         let compressedImg = await productService.uploadImage(req.body.avatar);
+    //         await userService.edit(req.params.id, { name, phoneNumber, email, avatar: compressedImg });
+    //         res.status(201).json({ message: 'Updated!', avatar: compressedImg });
+    //     } else {
+    //         await userService.edit(req.params.id, { name, phoneNumber, email });
+    //         res.status(201).json({ message: 'Updated!' });
+    //     }
     } catch (err) {
         res.status(404).json({ error: err.message });
     }
@@ -95,3 +106,5 @@ router.post('/updatemanner/:id', async (req, res) => {
 
 
 module.exports = router;
+
+
