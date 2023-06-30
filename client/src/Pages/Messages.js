@@ -23,12 +23,10 @@ import dayjs from 'dayjs';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { MobileDateTimePicker } from '@mui/x-date-pickers/MobileDateTimePicker';
-// import { faLastfmSquare } from '@fortawesome/free-brands-svg-icons';
 import moment from "moment";
 import 'moment-timezone';
 import Confetti from 'react-dom-confetti';
 import EmojiPicker from 'emoji-picker-react';
-import { right } from '@popperjs/core';
 
 function Messages({ match }) { // match = Router 제공 객체, url을 매개변수로 사용. ex) 경로 : /messages/123  => match.params.id = "123" // app.js 참고 : <Route path="/messages" exact component={Messages} />;
     //map modal
@@ -98,14 +96,14 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
     const blockName1 = selected.isBuyer ? selected.chats.seller?._id : selected.chats.buyer?._id
     const blockName2 = selected.isBuyer ? selected.chats.buyer?._id : selected.chats.seller?._id;
 
-    const blockHandle = () => {
-        const blockId = blockName1
-        const myId99 = blockName2
-        console.log(blockId + 'blockId')
-        console.log(myId99 + 'myId99')
-        UserBlock(socket, {blockId, myId99})
+    // const blockHandle = () => {
+    //     const blockId = blockName1
+    //     const myId99 = blockName2
+    //     console.log(blockId + 'blockId')
+    //     console.log(myId99 + 'myId99')
+    //     UserBlock(socket, {blockId, myId99})
 
-    }
+    // }
 
 
     const [message, setMessage] = useState(""); // 내가 입력한 메세지
@@ -478,7 +476,7 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
 
     // 알림 실시간 확인
     useEffect(() => {
-        if (!userData || !socket) return;
+        if (!userData?._id || !socket) return;
         socket.on('notificationChat', ({ chatId, notificationMessages, senderId }) => {
             if (senderId !== userData._id) {
                 setNotifications(prev => ({ ...prev, [chatId]: notificationMessages }));
@@ -726,7 +724,7 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
                                             &nbsp;&nbsp;
                                             {file && file.type.startsWith('image/') ? (
                                                 <div>
-                                                    <img src={URL.createObjectURL(file)} alt="Selected Image" style={{ maxWidth: '100%', height: 'auto', borderRadius: '30px', verticalAlign: 'middle', marginTop:'5px', marginBottom:'5px', paddingRight:'10px' }} />
+                                                    <img src={URL.createObjectURL(file)} alt="Selected" style={{ maxWidth: '100%', height: 'auto', borderRadius: '30px', verticalAlign: 'middle', marginTop:'5px', marginBottom:'5px', paddingRight:'10px' }} />
                                                     <button onClick={() => setFile(null)}>파일취소</button>
                                                 </div>
                                                 ) : (

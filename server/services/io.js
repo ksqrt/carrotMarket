@@ -52,18 +52,18 @@ function Io(server) {
       
       const chatRoom = await ChatRoom.findOne({ _id: chatId });
       let NotificationIncrease = {};
-      if (chatRoom.buyer.equals(senderId) && activeUsers[chatRoom.seller] !== chatId) { 
-        NotificationIncrease = { notificationMessages_seller: 1 };
-      } else if (chatRoom.seller.equals(senderId) && activeUsers[chatRoom.buyer] !== chatId) {  
+      if (chatRoom.buyer && chatRoom.buyer.equals(senderId) && activeUsers[chatRoom.seller] !== chatId) { 
+        NotificationIncrease = { notificationMessages_seller: 1 }; 
+      } else if (chatRoom.seller && chatRoom.seller.equals(senderId) && activeUsers[chatRoom.buyer] !== chatId) {  
         NotificationIncrease = { notificationMessages_buyer: 1 };
       }
       const updatedChatRoom = await ChatRoom.findOneAndUpdate({ _id: chatId },{ $push: { conversation: newMessage }, $inc: NotificationIncrease },{ new: true });      
       // const notificationMessages = updatedChatRoom.buyer.equals(senderId) ? updatedChatRoom.notificationMessages_seller : updatedChatRoom.notificationMessages_buyer;
 
       io.emit("newMessage", newMessage);
-      if (chatRoom.buyer.equals(senderId)) { 
+      if (chatRoom.buyer && chatRoom.buyer.equals(senderId)) { 
         io.emit("notificationChat", { chatId, notificationMessages: updatedChatRoom.notificationMessages_seller, senderId });
-      } else if (chatRoom.seller.equals(senderId)) {  
+      } else if (chatRoom.seller && chatRoom.seller.equals(senderId)) {  
         io.emit("notificationChat", { chatId, notificationMessages: updatedChatRoom.notificationMessages_buyer, senderId });
       }
 
@@ -75,7 +75,22 @@ function Io(server) {
 
     });
 
-
+    socket.on("readMessages", async ({chatId, userId}) => {
+      const chatRoom = await ChatRoom.findOne({ _id: chatId });
+      let NotificationRead = {};
+      if (chatRoom.buyer.equals(userId)) {
+        NotificationRead = { notificationMessages_buyer: 0 };
+      } else if (chatRoom.seller.equals(userId)) {  
+        NotificationRead = { notificationMessages_seller: 0 };
+      }
+      await ChatRoom.updateOne({ _id: chatId }, { $set: NotificationRead });
+      io.emit("readMessagesUpdate", { chatId, NotificationRead });
+      // console.log("User ID: ", userId);
+      // console.log("Chat Room Buyer ID: ", chatRoom.buyer);
+      // console.log("Chat Room Seller ID: ", chatRoom.seller);
+      // console.log("Notification Read: ", NotificationRead);
+    });
+    
     socket.on("setAppointment", async ({chatId, appointmentDate }) => {
       await ChatRoom.updateOne({ _id: chatId }, { appointmentDate, appointmentCheck: false });
       io.emit("appointmentUpdated", { chatId, appointmentDate });
