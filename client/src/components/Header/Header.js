@@ -260,7 +260,7 @@ function Header() {
             socket.emit("getUserConversations", {userId:userData._id});
     
             socket.on ('userConversations',(userChats) => {
-                // console.log('userConversations',userChats);
+                console.log('userConversations',userChats);
                 const initialNotifications = userChats.reduce((acc, cur) => {
                     if(cur.isBuyer){
                         acc[cur.chats._id] = cur.chats.notificationMessages_buyer;
