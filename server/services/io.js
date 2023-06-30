@@ -26,7 +26,7 @@ function Io(server) {
     socket.on('enterChatRoom', ({chatId, userId}) => {
       activeUsers[userId] = chatId;
       socket.userId = userId;
-      console.log("채팅방 안에 있냐? : ", activeUsers, socket.userId);
+      // console.log("채팅방 안에 있냐? : ", activeUsers, socket.userId);
 
     });
 
@@ -142,7 +142,7 @@ function Io(server) {
     socket.on("disconnect", () => {
       console.log("socket disconnected")
       delete activeUsers[socket.userId];
-      console.log("감? : ", activeUsers);
+      // console.log("감? : ", activeUsers);
 
     });
     //차단하기
