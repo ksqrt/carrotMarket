@@ -120,6 +120,23 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
         });
     }
     const [file, setFile] = useState(null); // 파일 업로드
+    // 사진 선택 시
+    // const handleFileSelect = (e) => {
+    //     const file = e.target.files[0];
+    //     console.log(file);
+    //     if (file) {
+    //         // const reader = new FileReader();
+    //         // reader.onload = (e) => {
+    //         // const imageBase64 = e.target.result;
+    //         // socket.send(JSON.stringify({ type: 'image', data: imageBase64 }));
+    //         // };
+    //         // reader.readAsDataURL(file);
+    //         sendFile(socket, { chatId: selected.chats._id, senderId: null, file });
+
+    //     };
+        
+    // };
+
     let currentDate = null; // 날짜 구분선
 
     // 약속 잡기 버튼
@@ -494,8 +511,9 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
 
     const handleMsgSubmit = async event => { // 채팅 보내기, 파일 업로드, 지도 업로드
         event.preventDefault();
+        console.log({chatId: selected.chats._id, senderId: userData._id, message, file})
         // sendMessage(socket, { chatId: selected.chats._id, senderId: userData._id, message, location});
-        sendMessage(socket, { chatId: selected.chats._id, senderId: userData._id, message});
+        sendMessage(socket, { chatId: selected.chats._id, senderId: userData._id, message, file});
         setMessage("");
         console.log('2. messages.js, sendmessage');
     };
@@ -567,7 +585,7 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
                                         <UseAnimations animation={github} size={35}/>
                                     </button>
                                     <div className="dropdown-content">
-                                        <button className="dropdown-content-out" onClick={ExitRoomModalopen}>
+                                        <button className="dropdown-content-out">
                                             <BsDoorOpen size={15} /> 채팅방 나가기
                                         </button>
                                         {/* <button className="dropdown-content-block" onClick={blockHandle}> 
@@ -682,12 +700,18 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
                                             </nav>
                                             </InputGroup.Append>
                                             &nbsp;&nbsp;
+                                            {file && file.type.startsWith('image/') ? (
+                                                <div>
+                                                    <img src={URL.createObjectURL(file)} alt="Selected Image" style={{ maxWidth: '100%', height: 'auto', borderRadius: '30px', verticalAlign: 'middle', marginTop:'5px', marginBottom:'5px', paddingRight:'10px' }} />
+                                                    <button onClick={() => setFile(null)}>파일취소</button>
+                                                </div>
+                                                ) : (
                                             <Form.Control
                                                 as="textarea"
                                                 required
                                                 value= {message}
                                                 onChange={(e) => setMessage(e.target.value)}
-                                                style={{ borderRadius: '30px', verticalAlign: 'middle', marginTop:'5px', marginBottom:'5px', fontSize:'16px', overflow:'hidden' }}
+                                                style={{ borderRadius: '30px', verticalAlign: 'middle', marginTop:'5px', marginBottom:'5px', fontSize:'16px', overflow:'hidden'}}
                                                 onKeyDown={event => {
                                                     if (event.key === 'Enter' && (event.ctrlKey || event.shiftKey)) {
                                                         event.preventDefault();
@@ -700,6 +724,7 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
                                                 // placeholder="메세지를 입력하세요."
                                                 >
                                             </Form.Control>
+                                            )}
                                             <InputGroup.Append>
                                                 <Button className='BeSend_chat_button' type="submit" variant="light"><BsSend/></Button>
                                             </InputGroup.Append>
@@ -728,7 +753,7 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
                                 )}
                                 <AppointmentModal show={modalState.appointmentModalOpen && currentAppointment !== null && selected.chats.appointmentCheck === false} selected={selected} appointmentModalAccept={appointmentModalAccept} appointmentModalReject={appointmentModalReject} myName={myName}  />
                                 <ReportModal show={reportModalShow} onHide={() => setReportModalShow(false)} onReport={handleReport}/>
-                                <ExitRoomModal show={exitRoomModalShow} onHide={() =>  setExitRoomModalShow(false)} handleExitRoom={handleExitRoom}   />
+                                {/* <ExitRoomModal show={exitRoomModalShow} onHide={() =>  setExitRoomModalShow(false)} handleExitRoom={handleExitRoom}   /> */}
                             </div>
                         </>
                     }

@@ -5,8 +5,6 @@ import { Link } from "react-router-dom";
 import Moment from "react-moment";
 import 'moment/locale/ko'; // 한국어 로케일을 불러옵니다.
 
-
-
 function ProductCard({ params }) {
   const like = params.likes.length
   const view = params.views.length
@@ -28,10 +26,6 @@ function ProductCard({ params }) {
     formattedDate = `${daysDiff}일 전`;
   }
 
-
-  console.log('ProductCard' + params.category);
-
-
   return (
     <Card style={{ border: 'none' }}>
     <Link to={`/categories/${params.category}/${params._id}/details`} style={{ textDecoration: 'none' }}>
@@ -47,10 +41,10 @@ function ProductCard({ params }) {
         </Card.Text> */}
         {/* 조회수 추가 */}
       </Card.Body>
-    <Card.Footer style={{ backgroundColor: '#f8f9fa', border: 'none' , borderRadius: '10px'  }}>
+    <Card.Footer>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <div>
-          <strong style={{ color: '#FF7E36', fontSize: '18px' }}>{params.price.toLocaleString()} 원 </strong>
+          <strong style={{ color: '#FF7E36', fontSize: '18px' }}>{ params.price.toLocaleString() } 원 </strong>
           <br />
           <small className="text-muted">
             {formattedDate && <span>{formattedDate}</span>}

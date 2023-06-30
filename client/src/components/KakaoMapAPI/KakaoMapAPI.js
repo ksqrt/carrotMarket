@@ -119,5 +119,4 @@ const MapMessage = ({lat,lng}) => {
   );
 };
 
-
 export {KakaoMapAPI,MapMessage};

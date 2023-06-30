@@ -12,8 +12,6 @@ import { Context } from '../ContextStore';
 
 import '../components/Profile/Profile.css';
 
-
-
 function Profile({ match, history }) {
   const { userData } = useContext(Context);
   const { id } = useParams();

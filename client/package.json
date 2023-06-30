@@ -22,6 +22,7 @@
     "axios": "^1.4.0",
     "bootstrap": "^4.6.0",
     "config": "^3.3.9",
+    "dayjs": "^1.11.8",
     "deep-equal": "^2.2.1",
     "emoji-mart": "^5.5.2",
     "emoji-picker-react": "^4.4.9",

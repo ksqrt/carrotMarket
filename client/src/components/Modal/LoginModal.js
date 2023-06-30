@@ -5,7 +5,6 @@ import { loginUser } from "../../services/userData";
 import { useHistory } from "react-router-dom";
 import { Form, Button, Spinner, Alert } from "react-bootstrap";
 import GoogleLogin from "./GoogleLogin";
-import NaverLogin from "./NaverLogin";
 import KakaoLogin from "./KakaoLogin";
 
 const LoginModal = ({ onClose }) => {
@@ -104,7 +103,6 @@ const LoginModal = ({ onClose }) => {
           <div className="modal-paths" style={{ paddingLeft: 75 }}>
             <KakaoLogin />
             <GoogleLogin />
-            {/* <NaverLogin/> */}
           </div>
 
           <div>

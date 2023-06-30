@@ -2,7 +2,7 @@ require('dotenv').config();
 const mailer = require("nodemailer");
 // const smtpTransport = require('nodemailer-smtp-transport');
 const {Hello} = require("./hello_template");
-const { REACT_APP_NODEMAILER_USER, REACT_APP_NODEMAILER_PASS } = require('../config/config');
+// const { REACT_APP_NODEMAILER_USER, REACT_APP_NODEMAILER_PASS } = require('../config/config');
 
 const getEmailData = (to, authCode) => {
     data = {
