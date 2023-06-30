@@ -493,7 +493,7 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
                 socket.off('readMessagesUpdate');
             }
         };
-    }, [socket, userData._id]);
+    }, [socket, userData?._id]);
 
 
     useEffect(() => {
