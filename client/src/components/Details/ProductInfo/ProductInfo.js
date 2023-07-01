@@ -235,7 +235,7 @@ const getFontColor = (temperature) => {
     };
 
     initSocket();
-  }, []);
+  }, [history]);
 
 
   const onChatStart = async (e) => {

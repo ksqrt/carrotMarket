@@ -10,7 +10,7 @@ import { IoIosArrowBack } from 'react-icons/io';
 import { FaMapMarkedAlt, FaRegHandshake } from 'react-icons/fa'
 import { MdOutlineRateReview } from 'react-icons/md'
 import Linkify from 'react-linkify'; // url 주소 링크 처리하는 라이브러리
-import { BsSend, BsDoorOpen } from "react-icons/bs";
+import { BsSend, BsDoorOpen, BsFillEnvelopeFill } from "react-icons/bs";
 import { CiImageOff } from "react-icons/ci";
 import UseAnimations from "react-useanimations";
 import plusToX from "react-useanimations/lib/plusToX";
@@ -23,7 +23,6 @@ import dayjs from 'dayjs';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { MobileDateTimePicker } from '@mui/x-date-pickers/MobileDateTimePicker';
-// import { faLastfmSquare } from '@fortawesome/free-brands-svg-icons';
 import moment from "moment";
 import 'moment-timezone';
 import Confetti from 'react-dom-confetti';
@@ -52,7 +51,6 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
     const [showEmojiPicker, setShowEmojiPicker] = useState(false);
     const emojiPickerRef = useRef(null);
 
-    
     useEffect(() => {
         const handleOutsideClick = (event) => {
             if (emojiPickerRef.current && !emojiPickerRef.current.contains(event.target) && showEmojiPicker) {
@@ -92,21 +90,21 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
         myId: 0
     });
     const myName = selected.isBuyer ? selected.chats.buyer?.name : selected.chats.seller?.name;
-
-    //차단하기
-    const blockName1 = selected.isBuyer ? selected.chats.seller._id : selected.chats.buyer?._id
-    const blockName2 = selected.isBuyer ? selected.chats.buyer._id : selected.chats.seller._id;
-
-    const blockHandle = () => {
-        const blockId = blockName1
-        const myId99 = blockName2
-        console.log(blockId + 'blockId')
-        console.log(myId99 + 'myId99')
-        UserBlock(socket, {blockId, myId99})
-
-    }
-
     const myId = selected.isBuyer ? selected.chats.buyer?._id : selected.chats.seller?._id;
+    const [notifications, setNotifications] = useState({});
+    //차단하기
+    const blockName1 = selected.isBuyer ? selected.chats.seller?._id : selected.chats.buyer?._id
+    const blockName2 = selected.isBuyer ? selected.chats.buyer?._id : selected.chats.seller?._id;
+
+    // const blockHandle = () => {
+    //     const blockId = blockName1
+    //     const myId99 = blockName2
+    //     console.log(blockId + 'blockId')
+    //     console.log(myId99 + 'myId99')
+    //     UserBlock(socket, {blockId, myId99})
+
+    // }
+
 
     const [message, setMessage] = useState(""); // 내가 입력한 메세지
     const [alertShow, setAlertShow] = useState(true); 
@@ -140,7 +138,7 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
 
     // 약속 잡기 버튼
     const tempAppointment = () => {
-        setModalState(prevState => ({ ...prevState, modalOpen: false }));
+        setModalState(prevState => ({ ...prevState, modalOpen: false, appointmentModalOpen: true }));
         // dayjs를 사용해서 날짜 객체를 만들어주기
         const date = dayjs(modalState.date);
         const weekdays = ["일", "월", "화", "수", "목", "금", "토"];
@@ -152,6 +150,7 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
     const [modalState, setModalState] = useState({
         date: null,
         modalOpen: false,
+        appointmentModalOpen: false,
         datePickerOpen: false,
         content: ''
     });
@@ -425,6 +424,13 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
         .then(res => {
         // console.log("채팅방 가져오기 : ",res);
         setChatroomList(res); // 가져온 채팅방 목록을 상태 변수에 저장.
+        const newNotifications = {};
+        res.forEach(chatroom => {
+            newNotifications[chatroom.chats._id] = chatroom.isBuyer 
+            ? chatroom.chats.notificationMessages_buyer
+            : chatroom.chats.notificationMessages_seller;
+        });
+        setNotifications(newNotifications);
         if (isSelected) { // 채팅방이 선택되었다면 현재 선택된 채팅방의 정보를 selected 상태 변수에 저장
             setSelected(res.find(x => x.chats?._id === chatId))
             scrollToBottom();
@@ -461,15 +467,36 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
     const handleChatRoomClick = (chatId) => {
         if (!userData._id) {console.error('userData._id is not defined'); return;}
         socket.emit('enterChatRoom', { chatId, userId: userData._id });
-        readMessages(socket, { chatId, userId: userData._id });
         setIsSelected(true);
         setSelected(chatroomList.find(room => room.chats._id === chatId));
+        setTimeout(() => {
+            readMessages(socket, { chatId, userId: userData._id });
+        }, 500);
     };
+
+    // 알림 실시간 확인
+    useEffect(() => {
+        if (!userData?._id || !socket) return;
+        socket.on('notificationChat', ({ chatId, notificationMessages, senderId }) => {
+            if (senderId !== userData._id) {
+                setNotifications(prev => ({ ...prev, [chatId]: notificationMessages }));
+            }
+        });
+        socket.on('readMessagesUpdate', ({ chatId }) => {
+            setNotifications(prev => ({ ...prev, [chatId]: 0 }));
+        });
+        return () => {
+            if (socket) {
+                socket.off('notificationChat');
+                socket.off('readMessagesUpdate');
+            }
+        };
+    }, [socket, userData?._id]);
+
 
     useEffect(() => {
         console.log("채팅방 전체 로그 : ", selected);
-        console.log('새 메세지 알림 테스트 : ', selected.notificationMessages);
-      }, [selected]);
+    }, [selected]);
 
     useEffect(() => {
         return () => {
@@ -503,15 +530,19 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
                                             <>
                                                 {x.chats.seller?.avatar ? <img src={x.chats.seller?.avatar} alt="user-avatar" /> : <img src='https://kr.object.ncloudstorage.com/ncp3/ghuPttFw_400x400.jpg' alt='carrot_avatar' />}  
                                                 <span> {x.chats.seller?.name  || '(알 수 없음)'}</span>
-                                                {x.chats.product?.image ? <img src={x.chats.product?.image[0]} alt="product" style={{float: 'right', width: '35px', height: '35px', objectFit: 'cover'}}/> : 
-                                                <CiImageOff size={20} style={{float: 'right', width: '35px', height: '35px', objectFit: 'cover'}} />}
+                                                {x.chats.product?.image ? <img src={x.chats.product?.image[0]} alt="product" style={{float: 'right', width: '35px', height: '35px', objectFit: 'cover', marginTop:'5px'}}/> : 
+                                                <CiImageOff size={20} style={{float: 'right', width: '35px', height: '35px', objectFit: 'cover'}} />} &nbsp;&nbsp;
+                                                {notifications[x.chats._id] > 0 && (<span ><BsFillEnvelopeFill className='bell'/>&nbsp;&nbsp;<span className='message_notiNumber'>{notifications[x.chats._id]}</span></span>)}
+
                                             </>
                                             :
                                             <>
                                                 {x.chats.buyer?.avatar ? <img src={x.chats.buyer?.avatar} alt="user-avatar" /> : <img src='https://kr.object.ncloudstorage.com/ncp3/ghuPttFw_400x400.jpg' alt='carrot_avatar' />}
                                                 <span> {x.chats.buyer?.name  || '(알 수 없음)'}</span>
-                                                {x.chats.product?.image ? <img src={x.chats.product?.image[0]} alt="product" style={{float: 'right', width: '35px', height: '35px', objectFit: 'cover'}}/> : 
-                                                <CiImageOff size={20} style={{float: 'right', width: '35px', height: '35px', objectFit: 'cover'}} />}
+                                                {x.chats.product?.image ? <img src={x.chats.product?.image[0]} alt="product" style={{float: 'right', width: '35px', height: '35px', objectFit: 'cover', marginTop:'5px'}}/> : 
+                                                <CiImageOff size={20} style={{float: 'right', width: '35px', height: '35px', objectFit: 'cover'}} />} &nbsp;&nbsp;
+                                                {notifications[x.chats._id] > 0 && (<span ><BsFillEnvelopeFill className='bell'/>&nbsp;&nbsp;<span className='message_notiNumber'>{notifications[x.chats._id]}</span></span>)}
+
                                             </>
                                         }
                                     </Link>
@@ -551,7 +582,7 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
                                         <UseAnimations animation={github} size={35}/>
                                     </button>
                                     <div className="dropdown-content">
-                                        <button className="dropdown-content-out">
+                                        <button className="dropdown-content-out" onClick={ExitRoomModalopen}>
                                             <BsDoorOpen size={15} /> 채팅방 나가기
                                         </button>
                                         {/* <button className="dropdown-content-block" onClick={blockHandle}> 
@@ -581,7 +612,7 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
                                     {!selected.chats.product?.soldout && <Button className='messageButton' onClick={openDateTimePicker}> <AiOutlineSchedule size={20}/> 약속 잡기 </Button>}&nbsp;
                                     <Button className='messageButton' onClick={ handleShow }> <FaMapMarkedAlt size={20}/> 장소 공유 </Button> &nbsp;
                                     {reviewButtonOn && <Button className='messageButton' onClick={handleTradeComplete} disabled={selected.chats.product?.soldout}> <FaRegHandshake size={20}/> 거래 완료 </Button>} &nbsp;
-                                    {selected.chats.product?.soldout && <Button className='messageButton' onClick={() => history.push('/profile/chatId/review')}> <MdOutlineRateReview size={20} /> 후기 보내기 </Button>} &nbsp;
+                                    {selected.chats.product?.soldout && <Button className='messageButton' onClick={() => history.push('/profile')}> <MdOutlineRateReview size={20} /> 후기 보내기 </Button>} &nbsp;
                                     <Confetti className="Confetti" active={ tradeCompleteConfetti } config={ confettiConfig } />
                                 </Alert>
                             }
@@ -616,15 +647,35 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
                                                         <Linkify>{x.message}</Linkify>
                                                         </div>
                                                     )}
-                                                    {selected.myId !== x.senderId && <img className="user-avatar" src={(selected.isBuyer ? selected.chats.seller?.avatar : selected.chats.buyer?.avatar) || 'https://kr.object.ncloudstorage.com/ncp3/ghuPttFw_400x400.jpg'} alt="user-avatar" />}
-                                                </div>
-
-                                            )}
-                                                {/* {x.location && (
-                                                    <div className="map-message">
-                                                        <MapMessage lat={x.location.lat} lng={x.location.lng}/>
+                                                    {selected.myId !== x.senderId && (
+                                                         selected.chats.seller?._id ? (
+                                                            <Link to={`/profile/${selected.chats.seller?._id}`}>
+                                                              <img
+                                                                className="user-avatar"
+                                                                src={
+                                                                  (selected.isBuyer
+                                                                    ? selected.chats.seller?.avatar
+                                                                    : selected.chats.buyer?.avatar) ||
+                                                                  'https://kr.object.ncloudstorage.com/ncp3/ghuPttFw_400x400.jpg'
+                                                                }
+                                                                alt="user-avatar"
+                                                              />
+                                                            </Link>
+                                                          ) : (
+                                                            <img
+                                                              className="user-avatar"
+                                                              src={
+                                                                (selected.isBuyer
+                                                                  ? selected.chats.seller?.avatar
+                                                                  : selected.chats.buyer?.avatar) ||
+                                                                'https://kr.object.ncloudstorage.com/ncp3/ghuPttFw_400x400.jpg'
+                                                              }
+                                                              alt="user-avatar"
+                                                            />
+                                                          )
+                                                        )}
                                                     </div>
-                                                )} */}
+                                            )}
                                         </Fragment>
                                     )
                                 } else {
@@ -673,7 +724,7 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
                                             &nbsp;&nbsp;
                                             {file && file.type.startsWith('image/') ? (
                                                 <div>
-                                                    <img src={URL.createObjectURL(file)} alt="Selected Image" style={{ maxWidth: '100%', height: 'auto', borderRadius: '30px', verticalAlign: 'middle', marginTop:'5px', marginBottom:'5px', paddingRight:'10px' }} />
+                                                    <img src={URL.createObjectURL(file)} alt="Selected" style={{ maxWidth: '100%', height: 'auto', borderRadius: '30px', verticalAlign: 'middle', marginTop:'5px', marginBottom:'5px', paddingRight:'10px' }} />
                                                     <button onClick={() => setFile(null)}>파일취소</button>
                                                 </div>
                                                 ) : (
@@ -722,9 +773,9 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
                                     </Modal.Footer>
                                 </Modal>
                                 )}
-                                <AppointmentModal show={currentAppointment !== null && selected.chats.appointmentCheck === false} selected={selected} appointmentModalAccept={appointmentModalAccept} appointmentModalReject={appointmentModalReject} myName={myName}  />
+                                <AppointmentModal show={modalState.appointmentModalOpen && currentAppointment !== null && selected.chats.appointmentCheck === false} selected={selected} appointmentModalAccept={appointmentModalAccept} appointmentModalReject={appointmentModalReject} myName={myName}  />
                                 <ReportModal show={reportModalShow} onHide={() => setReportModalShow(false)} onReport={handleReport}/>
-                                {/* <ExitRoomModal show={exitRoomModalShow} onHide={() =>  setExitRoomModalShow(false)} handleExitRoom={handleExitRoom}   /> */}
+                                <ExitRoomModal show={exitRoomModalShow} onHide={() =>  setExitRoomModalShow(false)} handleExitRoom={handleExitRoom}   />
                             </div>
                         </>
                     }
