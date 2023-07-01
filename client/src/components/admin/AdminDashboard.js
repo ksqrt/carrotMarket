@@ -357,7 +357,7 @@ const categoryActiveCounts = Products.reduce((counts, product) => {
                     tickSize: 5, // 값 설명하기 위해 튀어나오는 점 크기
                     tickPadding: 5, // tick padding
                     tickRotation: 0, // tick 기울기
-                    legend: '유저수', // bottom 글씨
+                    legend: '카테 고리별 거래현황', // bottom 글씨
                     legendPosition: 'middle', // 글씨 위치
                     legendOffset: 40, // 글씨와 chart간 간격
                 }}

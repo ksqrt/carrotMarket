@@ -47,7 +47,7 @@ const AdminUser = (props) => {
             {user.report.map((report,index)=>(
               <div key={index}>
                 {report.userName} :{report.content}
-              <button className="useroutBtn" onClick={deleteHandler} value={report._id}>
+              <button className="useroutBtn" onClick={deleteHandler} value={report.userId}>
               회원탈퇴
             </button>
             <hr/>
