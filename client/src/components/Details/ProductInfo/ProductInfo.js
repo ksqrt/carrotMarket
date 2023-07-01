@@ -345,16 +345,16 @@ const getFontColor = (temperature) => {
       <section id="profile">
         <div id="space-between">
           <div style={{ display: 'flex' }}>
-            <Link to={`/profile/${params.sellerId}`}>
+            <Link to={`/profile/${ params.sellerId }`}>
               <div id='profile_image'>
                 <img id="avatar" src={params.avatar} alt="user-avatar" />
               </div>
             </Link>
             <div id="profile_left">
-              <Link to={`/profile/${params.sellerId}`}>
+              <Link to={`/profile/${ params.sellerId }`}>
                 <div id="nickname">{params.name}</div>
               </Link>
-              <div id="profile_address">{params.city}</div>
+              <div id="profile_address">{ params.city }</div>
               <div id="content_UpDel">
                 {params.isSeller && (
                   <>
@@ -461,7 +461,7 @@ const getFontColor = (temperature) => {
         <p id='content_category'>{params.category} · <time>{displayCreateAt(params.addedAt)}</time></p>
         <p id='content_price'>{params.price ? params.price.toLocaleString() : ''}원</p>
         <p id='content_main'>{params.description}</p>
-        <p id='content_cnt'> 관심 ♥ {params.likes} · 채팅 갯수 · 조회 수 {params.views} </p>
+        <p id='content_cnt'> 관심 ♥ {params.likes} · 조회 수 {params.views} </p>
         <div id='content_button'>
           {params.isAuth ? (
             <>
@@ -477,12 +477,12 @@ const getFontColor = (temperature) => {
             </p>
           )}
           <span>
-            <a id="kakaotalk-sharing-btn" href="javascript:;" onClick={sendLinkDefault}>
+            <a id="kakaotalk-sharing-btn" href="javascript:;" onClick={shareKakao}>
               <img
-                src="https://developers.kakao.com/assets/img/about/logos/kakaotalksharing/kakaotalk_sharing_btn_medium.png"
-                style={{ width: "50px", height: "50px", marginLeft: '15px', marginBottom: '45px' }}
-                alt="카카오톡 공유 보내기 버튼"
-              />
+                  src="https://developers.kakao.com/assets/img/about/logos/kakaotalksharing/kakaotalk_sharing_btn_medium.png"
+                  style={{ width: "50px", height: "50px", marginLeft: '15px', marginBottom: '45px' }}
+                  alt="카카오톡 공유 보내기 버튼"
+                />
             </a>
           </span>
           {!params.isSeller && (
@@ -502,25 +502,11 @@ const getFontColor = (temperature) => {
               )}
             </span>
           )}
-
-
-           <div>
-           <a id="kakaotalk-sharing-btn" href="javascript:;" onClick={shareKakao}>
-              <img
-                  src="https://developers.kakao.com/assets/img/about/logos/kakaotalksharing/kakaotalk_sharing_btn_medium.png"
-                  style={{ width: "50px", height: "50px", marginLeft: '15px', marginBottom: '45px',marginTop :'45px' }}
-                  alt="카카오톡 공유 보내기 버튼"
-                />
-            </a>
-                <button className='declare-button' value={params._id} onClick={declareHandler} >신고하기</button>
-                
-                <span>
-            
-          </span>
-            </div>
-
-            </div>
-      </section>
+        <div>
+          <button className='declare-button' value={params._id} onClick={declareHandler} >신고하기</button>
+        </div>
+      </div>
+    </section>
 
       <section id="product_more">
         <h3>당근마켓 인기중고</h3>

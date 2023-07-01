@@ -73,7 +73,7 @@ function Profile({ match, history }) {
 
   return (
     <>
-        {userData && (isCurrentUserSeller ? (
+      {userData && isCurrentUserSeller ? (
         <>
           <ProfileSection params={user} />
           <div className="container">
@@ -119,39 +119,41 @@ function Profile({ match, history }) {
           </div>
         </>
       ) : (
-        <>
-          <SellerProfile params={user} history={history} />
-          <div className="container">
-            <div className="sidebar">
-              <button
-                className={`sidebar-button ${active ? 'active' : ''}`}
-                onClick={handleActive}
-              >
-                판매 물품
-              </button>
-              <button
-                className={`sidebar-button ${soldout ? 'active' : ''}`}
-                onClick={handleSoldout}
-              >
-                판매 완료
-              </button>
-              <button
-                className={`sidebar-button ${review ? 'active' : ''}`}
-                onClick={handleReview}
-              >
-                거래 후기
-              </button>
+        !userData && (
+          <>
+            <SellerProfile params={user} history={history} />
+            <div className="container">
+              <div className="sidebar">
+                <button
+                  className={`sidebar-button ${active ? 'active' : ''}`}
+                  onClick={handleActive}
+                >
+                  판매 물품
+                </button>
+                <button
+                  className={`sidebar-button ${soldout ? 'active' : ''}`}
+                  onClick={handleSoldout}
+                >
+                  판매 완료
+                </button>
+                <button
+                  className={`sidebar-button ${review ? 'active' : ''}`}
+                  onClick={handleReview}
+                >
+                  거래 후기
+                </button>
+              </div>
+              <div className="profile-main-contents">
+                {review && <Review />}
+                {active && <ActiveSells params={user} />}
+                {soldout && <Soldout />}
+              </div>
             </div>
-            <div className="profile-main-contents">
-              {review && <Review />}
-              {active && <ActiveSells params={user} />}
-              {soldout && <Soldout />}
-            </div>
-          </div>
-        </>
-      ))}
+          </>
+        )
+      )}
     </>
   );
-}
+}  
 
 export default Profile;

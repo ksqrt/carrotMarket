@@ -278,14 +278,13 @@ router.get('/wishlist/:id', async (req, res) => {
 
 router.get('/views/:id', async (req, res) => {
     try{
-    let user = await User.findById(req.user._id);
-    let product = await Product.findById(req.params.id)
+        let user = await User.findById(req.user._id);
+        let product = await Product.findById(req.params.id)
 
     if (!product.views.includes(req.user._id)) {
         await Product.updateOne({ _id: req.params.id }, { $push: { views: user } });
         res.status(200).json({ msg: "view" });
     } else {
-
         res.status(200).json({ msg: "dlal" });
     }
   } catch (error) {

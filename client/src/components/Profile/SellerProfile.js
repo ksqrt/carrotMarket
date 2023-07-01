@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Col, Row, Button, Form, Modal } from 'react-bootstrap';
 import { BsFillPersonFill } from 'react-icons/bs';
 import { FaSellsy } from 'react-icons/fa';
@@ -8,9 +8,11 @@ import { getUserById } from '../../services/userData';
 import MannerModal from './MannerModal';
 import { useParams } from 'react-router-dom';
 import { Link } from 'react-router-dom/cjs/react-router-dom.min';
+import { Context } from '../../ContextStore';
 
 function SellerProfile({ params, history }) {
     const { id } = useParams();
+    const { userData } = useContext(Context);
 
     const [showMsg, setShowMdg] = useState(false);
     const [message, setMessage] = useState("");
@@ -19,6 +21,8 @@ function SellerProfile({ params, history }) {
     const [cptIn, setcptIn] = useState("");
 
     const [mannerTemperature, setMannerTemperature] = useState(null);
+
+    const isCurrentUserSeller = userData && id === userData._id;
 
     useEffect(() => {
         fetchUserData(params._id); // 사용자 정보를 가져오는 함수 호출
@@ -119,10 +123,14 @@ function SellerProfile({ params, history }) {
                                     </p>
                                 </div>
                                 <div id="profile_button">
+                                { userData && isCurrentUserSeller && (
                                     <span id="edit-icon">
-                                        <button className="manner-button" onClick={ handleshowCpt }>매너 칭찬하기</button>
-                                        { showCpt && <MannerModal onClose={ handlecloseCpt } id={id} /> }
+                                        <button className="manner-button" onClick={handleshowCpt}>
+                                        매너 칭찬하기
+                                        </button>
+                                        {showCpt && <MannerModal onClose={handlecloseCpt} id={id} />}
                                     </span>
+                                    )}
                                 </div>
                             </div>
                         </Col>
