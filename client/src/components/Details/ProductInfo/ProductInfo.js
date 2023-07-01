@@ -16,11 +16,6 @@ import { getUserById } from '../../../services/userData';
 
 function ProductInfo({ params, user }) {
   const [mannerTemperature, setMannerTemperature] = useState(null);
-
-  useEffect(() => {
-    fetchUserData(params.seller);
-  }, [params.seller]);
-
   const fetchUserData = async (user) => {
     try {
       const userData = await getUserById(params.seller);
@@ -32,6 +27,10 @@ function ProductInfo({ params, user }) {
       console.error('Failed to fetch user data:', error);
     }
   };
+
+  useEffect(() => {
+    fetchUserData(params.seller);
+  }, [params.seller]);
 
   const declareHandler = (e) => {
     const declareproduct = e.target.value;
@@ -321,6 +320,8 @@ const getFontColor = (temperature) => {
     }
   }//수정
 
+  console.log(params.sellerId)
+
   return (
     <div className="d-flex flex-column align-items-center">
       <Carousel style={{ transition: 'transform 0.5s ease-in-out' }}>
@@ -356,7 +357,7 @@ const getFontColor = (temperature) => {
               </Link>
               <div id="profile_address">{ params.city }</div>
               <div id="content_UpDel">
-                {params.isSeller && (
+                { params.isSeller && (
                   <>
                     <OverlayTrigger placement="top" overlay={<Tooltip>상품 보관함 이동</Tooltip>}>
                     <button className="sell_box" onClick={handleShowArchive}>

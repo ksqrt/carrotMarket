@@ -65,8 +65,6 @@ export async function insertConversation(){
 }
 
 export async function editUserProfile(id, data) {
-
-    console.log(id+ 'ㅋㅋㅋ' + data.name + data.phoneNumber + data.email + data.avatar);    
     return (await fetch(`${baseUrl}/user/edit-profile/${id}`, {
         method: 'PATCH',
         headers: {
@@ -77,17 +75,11 @@ export async function editUserProfile(id, data) {
     })).json();
 }
 
-
-
 export async function getUserById(id) {
-    return await (await fetch(baseUrl + `/user/getUserById/${id}`, {credentials: 'include'})).json()
+    return (await fetch(baseUrl + `/user/getUserById/${id}`, {credentials: 'include'})).json()
 }
 
-
 export async function updateMannerTemperature(id, mannerTemperature) {
-    console.log('ggg');
-    console.log(mannerTemperature);
-    console.log(id, '아이디용');
       const response = await fetch(`${baseUrl}/user/updatemanner/${id}`, {
         method: 'POST',
         headers: {
@@ -99,13 +91,10 @@ export async function updateMannerTemperature(id, mannerTemperature) {
       console.log(mannerTemperature, '수정후');
     }
 
-export async function deleteUser(userId) {
-    console.log(userId);
+export async function deleteUser(id) {
     return (
-    
-      await fetch(`${baseUrl}/user/delete/${userId}`, {
+      await fetch(`${baseUrl}/user/delete/${id}`, {
         method:'DELETE',
-
         headers: {
           "Content-Type": "application/json",
         },

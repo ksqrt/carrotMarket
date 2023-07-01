@@ -73,7 +73,7 @@ function Profile({ match, history }) {
 
   return (
     <>
-      {userData && isCurrentUserSeller ? (
+      { userData && isCurrentUserSeller ? (
         <>
           <ProfileSection params={user} />
           <div className="container">
@@ -118,8 +118,7 @@ function Profile({ match, history }) {
             </div>
           </div>
         </>
-      ) : (
-        !userData && (
+      ) : ((
           <>
             <SellerProfile params={user} history={history} />
             <div className="container">
