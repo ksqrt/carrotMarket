@@ -138,7 +138,7 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
 
     // 약속 잡기 버튼
     const tempAppointment = () => {
-        setModalState(prevState => ({ ...prevState, modalOpen: false, appointmentModalOpen: true }));
+        setModalState(prevState => ({ ...prevState, modalOpen: false}));
         // dayjs를 사용해서 날짜 객체를 만들어주기
         const date = dayjs(modalState.date);
         const weekdays = ["일", "월", "화", "수", "목", "금", "토"];
@@ -150,7 +150,6 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
     const [modalState, setModalState] = useState({
         date: null,
         modalOpen: false,
-        appointmentModalOpen: false,
         datePickerOpen: false,
         content: ''
     });
@@ -196,7 +195,9 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
     
     useEffect(()=> { 
         if (selected.chats.appointmentDate && !selected.isBuyer && !selected.chats.appointmentCheck){
-            setCurrentAppointment(selected.chats.appointmentDate);
+            setTimeout(() => {
+                setCurrentAppointment(selected.chats.appointmentDate);
+            }, 2000);
         } else {
             setCurrentAppointment(null);
         }
@@ -496,6 +497,8 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
 
     useEffect(() => {
         console.log("채팅방 전체 로그 : ", selected);
+        console.log("약속 로그 확인용 : ", modalState);
+
     }, [selected]);
 
     useEffect(() => {
@@ -773,7 +776,7 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
                                     </Modal.Footer>
                                 </Modal>
                                 )}
-                                <AppointmentModal show={modalState.appointmentModalOpen && currentAppointment !== null && selected.chats.appointmentCheck === false} selected={selected} appointmentModalAccept={appointmentModalAccept} appointmentModalReject={appointmentModalReject} myName={myName}  />
+                                <AppointmentModal show={currentAppointment !== null && selected.chats.appointmentCheck === false} selected={selected} appointmentModalAccept={appointmentModalAccept} appointmentModalReject={appointmentModalReject} myName={myName}  />
                                 <ReportModal show={reportModalShow} onHide={() => setReportModalShow(false)} onReport={handleReport}/>
                                 <ExitRoomModal show={exitRoomModalShow} onHide={() =>  setExitRoomModalShow(false)} handleExitRoom={handleExitRoom}   />
                             </div>
