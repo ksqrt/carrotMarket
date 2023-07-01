@@ -78,9 +78,9 @@ function Io(server) {
     socket.on("readMessages", async ({chatId, userId}) => {
       const chatRoom = await ChatRoom.findOne({ _id: chatId });
       let NotificationRead = {};
-      if (chatRoom.buyer.equals(userId)) {
+      if (chatRoom.buyer && chatRoom.buyer.equals(userId)) {
         NotificationRead = { notificationMessages_buyer: 0 };
-      } else if (chatRoom.seller.equals(userId)) {  
+      } else if (chatRoom.buyer && chatRoom.seller.equals(userId)) {  
         NotificationRead = { notificationMessages_seller: 0 };
       }
       await ChatRoom.updateOne({ _id: chatId }, { $set: NotificationRead });
