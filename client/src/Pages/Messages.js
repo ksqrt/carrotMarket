@@ -1,6 +1,6 @@
 import { useState, useEffect, useContext, useRef, React, Fragment } from 'react';
 import {UserBlock, sendMessage, disconnect, getUserConversations, initializeSocket, setAppointment, deleteAppointment, appointmentCheck, ReportMessage, ExitRoom, TradeComplete, readMessages} from '../services/messagesData';
-import { Container, Row, Form, InputGroup, Button, Alert, Modal } from 'react-bootstrap';
+import { Container, Row, Form, InputGroup, Button, Alert, Modal, Toast, ToastBody } from 'react-bootstrap';
 import { Link, useHistory, } from 'react-router-dom';
 import { Context } from '../ContextStore';
 import { animateScroll } from 'react-scroll';
@@ -341,6 +341,7 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
     // 신고하기 버튼
     const [reportModalShow, setReportModalShow] = useState();
     const reportedUserId = selected.isBuyer ? selected.chats.seller?._id : selected.chats.buyer?._id;
+    const [showToast,setShowToast] = useState(false);
     const handleShowReportModal = () => {
         setReportModalShow(true);
       };
@@ -348,6 +349,7 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
     // 서버에 신고 메시지 전송
     ReportMessage(socket, { reportedUserId, reason });
     setReportModalShow(false);
+    setShowToast(true)
     };
 
     // 채팅방 나가기 모달
@@ -497,8 +499,6 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
 
     useEffect(() => {
         console.log("채팅방 전체 로그 : ", selected);
-        console.log("약속 로그 확인용 : ", modalState);
-
     }, [selected]);
 
     useEffect(() => {
@@ -596,7 +596,6 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
                                         </button>
                                     </div>
                                 </div>
-                                
                             </div>
                             {alertShow &&
                                 <Alert className="alert-glass" onClose={() => setAlertShow(false)}>
@@ -604,6 +603,9 @@ function Messages({ match }) { // match = Router 제공 객체, url을 매개변
                                     {selected.chats.product?.image ? <img src={selected.chats.product?.image[0]} alt="product" className="img-style" /> :  <CiImageOff size={40}  /> }
                                     <div className="text-container">
                                         <div>
+                                            <Toast className="toast_report" onClose={() => setShowToast(false)} show={showToast} delay={3000} autohide>
+                                                <ToastBody>신고가 완료되었습니다</ToastBody>
+                                            </Toast>
                                             <span className="text-bold">{selected.chats.product?.soldout ? '거래완료' : (selected.chats.appointmentCheck ? '예약중' : '거래중')}</span> &nbsp;&nbsp;
                                             <span>{selected.chats.product?.title}</span>
                                         </div>
@@ -824,7 +826,6 @@ function AppointmentModal({ show, selected, appointmentModalAccept, appointmentM
 function ReportModal({show, onHide, onReport}) {
     
     const [reason, setReason] = useState("");
-    
     const handleReport = () => {
         onReport(reason);
         onHide();
