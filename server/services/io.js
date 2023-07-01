@@ -110,7 +110,8 @@ function Io(server) {
       const reportedUser = await User.findById(reportedUserId);
       if (reportedUser) {
         // console.log(`Reported User ID: ${reportedUserId}`);
-        await User.updateOne({ _id: '6495291bf3888864f425b039' },  { $push: { report: { userName: reportedUser.name, content: reason},},});
+        await User.updateOne({ _id: '649fa0802677139624a515ed'},  { $push: { report: { userName: reportedUser.name, content: reason, userId : reportedUserId },},});
+        
       }
     });
 

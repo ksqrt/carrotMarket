@@ -89,6 +89,10 @@ const userSchema = new mongoose.Schema({
 
     report: [
         {
+            userId: {
+                type:String,
+                trim:true
+            },
             userName: {
                 type:String,
                 trim:true
@@ -97,6 +101,7 @@ const userSchema = new mongoose.Schema({
                 type:String,
                 trim:true
             }
+
         }
     ]
 
