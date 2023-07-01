@@ -339,9 +339,14 @@ article img {
   border-color: transparent;
 }
 
+.ReportModalBody {
+  padding: 20px;
+  padding-bottom: 0px;
+}
+
 .ReportModalBody textarea {
   height: 150px;
-  width: 460px;
+  width: 455px;
   resize: none;
 }
 
@@ -372,4 +377,12 @@ section > .flex {width: 300px; height: 200px;}
   line-height: 14px;
   font-size: 11px;
   font-weight: bold;
+}
+
+.toast_report {
+  position: absolute;
+  top: 0;
+  right: 0;
+  font-size: 12px;
+  color: red;
 }
