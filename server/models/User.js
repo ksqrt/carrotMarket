@@ -96,7 +96,11 @@ const userSchema = new mongoose.Schema({
             content: {
                 type:String,
                 trim:true
-            }
+            },
+            userId: {
+                type:String,
+                trim:true
+            },
         }
     ]
 
