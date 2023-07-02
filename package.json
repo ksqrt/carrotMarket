@@ -1,6 +1,0 @@
-{
-  "dependencies": {
-    "dayjs": "^1.11.8",
-    "nodemailer": "^6.9.3"
-  }
-}
