@@ -104,6 +104,19 @@ router.post('/updatemanner/:id', async (req, res) => {
     }
   });
 
+  //유저 정보 삭제
+  router.delete('/delete/:id', async (req, res) => {
+    try {
+        let user = await userService.getUserById(req.params.id);
+
+        await User.findOneAndDelete({ _id: user._id });
+        res.clearCookie(process.env.REACT_APP_COOKIE_NAME);
+        res.status(200).json({ message: '회원 탈퇴가 완료되었습니다.' });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: '회원 탈퇴가 정상적으로 진행되지 않았습니다. 다시 시도해주세요.' })
+    }
+  })
 
 module.exports = router;
 

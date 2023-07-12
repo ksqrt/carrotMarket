@@ -22,13 +22,15 @@ async function getUserById2(userId) {
     }
   }
 
-
-
+async function findOneAndDelete(userId) {
+    return await User.findOneAndDelete({ _id: userId });
+}
 
 module.exports = {
     edit,
     getUserById,
-    getUserById2
+    getUserById2,
     // userCollectionUpdate,
     // findUserById
+    findOneAndDelete
 }

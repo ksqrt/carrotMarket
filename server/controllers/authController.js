@@ -64,7 +64,6 @@ router.get('/logout', (req, res) => {
     res.clearCookie(process.env.REACT_APP_COOKIE_NAME);
     res.status(200).json({ message: 'Successfully logged out' });
     console.log(res.cookie);
-
 });
 
 router.get('/getUser', async (req, res) => {

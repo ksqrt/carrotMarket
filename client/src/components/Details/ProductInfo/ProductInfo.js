@@ -16,11 +16,6 @@ import { getUserById } from '../../../services/userData';
 
 function ProductInfo({ params, user }) {
   const [mannerTemperature, setMannerTemperature] = useState(null);
-
-  useEffect(() => {
-    fetchUserData(params.seller);
-  }, [params.seller]);
-
   const fetchUserData = async (user) => {
     try {
       const userData = await getUserById(params.seller);
@@ -32,6 +27,10 @@ function ProductInfo({ params, user }) {
       console.error('Failed to fetch user data:', error);
     }
   };
+
+  useEffect(() => {
+    fetchUserData(params.seller);
+  }, [params.seller]);
 
   const declareHandler = (e) => {
     const declareproduct = e.target.value;
@@ -278,13 +277,10 @@ const getFontColor = (temperature) => {
     }
   };
 
-  
-
   //{params.title}: 상품 제목
   //{params.addedAt}: 업로드 날짜
   //{params.description}: 상품 설명
   //{params.createdSells}: 물품 갯수
-
 
   function sendLinkCustom() {
 
@@ -356,7 +352,7 @@ const getFontColor = (temperature) => {
               </Link>
               <div id="profile_address">{ params.city }</div>
               <div id="content_UpDel">
-                {params.isSeller && (
+                { params.isSeller && (
                   <>
                     <OverlayTrigger placement="top" overlay={<Tooltip>상품 보관함 이동</Tooltip>}>
                     <button className="sell_box" onClick={handleShowArchive}>
@@ -503,7 +499,7 @@ const getFontColor = (temperature) => {
             </span>
           )}
         <div>
-          <button className='declare-button' value={params._id} onClick={declareHandler} >신고하기</button>
+          <button className='declare-button' value= {params._id } onClick={ declareHandler } >신고하기</button>
         </div>
       </div>
     </section>

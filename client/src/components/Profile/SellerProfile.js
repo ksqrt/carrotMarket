@@ -13,6 +13,7 @@ import { Context } from '../../ContextStore';
 function SellerProfile({ params, history }) {
     const { id } = useParams();
     const { userData } = useContext(Context);
+    const isCurrentUserSeller = userData && id === userData._id;
 
     const [showMsg, setShowMdg] = useState(false);
     const [message, setMessage] = useState("");
@@ -22,23 +23,20 @@ function SellerProfile({ params, history }) {
 
     const [mannerTemperature, setMannerTemperature] = useState(null);
 
-    const isCurrentUserSeller = userData && id === userData._id;
-
-    useEffect(() => {
-        fetchUserData(params._id); // 사용자 정보를 가져오는 함수 호출
-    }, [params._id]);
-
-    const fetchUserData = async (userId) => {
+    const fetchUserData = async () => {
         try {
             const user = await getUserById(params._id); // 사용자 정보를 가져오는 API 호출 (예시)
             const mannerTemp = parseFloat(user.mannertmp);
             setMannerTemperature(mannerTemp);
             console.log(params.mannertmp, '매너온도');
-            console.log(params.mannertmp, '매너온도');
         } catch (error) {
             console.error('Failed to fetch user data:', error);
         }
     };
+
+    useEffect(() => {
+        fetchUserData(params._id); // 사용자 정보를 가져오는 함수 호출
+    }, [params._id]);
 
     const handleClose = () => setShowMdg(false);
     const handleShow = () => setShowMdg(true);
@@ -123,7 +121,7 @@ function SellerProfile({ params, history }) {
                                     </p>
                                 </div>
                                 <div id="profile_button">
-                                { userData && isCurrentUserSeller && (
+                                { userData && (
                                     <span id="edit-icon">
                                         <button className="manner-button" onClick={handleshowCpt}>
                                         매너 칭찬하기

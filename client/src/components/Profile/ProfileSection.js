@@ -8,23 +8,20 @@ import { GrEdit } from 'react-icons/gr';
 import { FaShoppingCart } from 'react-icons/fa'; // Import a different icon from react-icons library
 import { deleteUser } from '../../services/userData';
 
-const getMannerTemperatureStyle = (temperature) => {
-  const width = temperature + "%";
-  return {
-    width: width,
-    backgroundColor: getBackgroundColor(temperature)
+function ProfileSection({ params }) {
+  const getMannerTemperatureStyle = (temperature) => {
+    const width = temperature + "%";
+    return {
+      width: width,
+      backgroundColor: getBackgroundColor(temperature)
+    };
   };
-};
 
-  const deleteUserHandelr = (e) =>{
-    console.log('delete 유저다');
-    const userId = e.target.value;
-
+  const deleteUserHandler = () => {
     if (window.confirm('탈퇴하시겠습니까?')) {
-      deleteUser(userId)
+      deleteUser(params._id)
         .then(res => {
           alert('당근 마켓에서 탈퇴하셨습니다.');
-          localStorage.removeItem('user');
           window.location.href = '/';
         })
         .catch(error => {
@@ -33,57 +30,56 @@ const getMannerTemperatureStyle = (temperature) => {
     }
   }
 
-  const getBackgroundColor = (temperature) => {
-    // 여기에서 매너온도에 따른 배경색을 결정하는 로직을 작성하면 됩니다.
-    // 예시로 몇 가지 범위에 따른 배경색을 지정합니다.
+    const getBackgroundColor = (temperature) => {
+      // 여기에서 매너온도에 따른 배경색을 결정하는 로직을 작성하면 됩니다.
+      // 예시로 몇 가지 범위에 따른 배경색을 지정합니다.
+      if (temperature >= 0 && temperature < 21) {
+        return "black";
+      } else if (temperature >= 21 && temperature < 36.5) {
+        return "darkblue";
+      } else if (temperature >= 36.5 && temperature < 40) {
+          return "royalblue";
+      }else if (temperature >= 40 && temperature < 50) {
+        return "green";
+      }else if (temperature >= 50 && temperature < 60) {
+          return "#f9bc28";
+      }else {
+        return "#ff6f31";
+      }
+    };
+
+  const getMannerTemperatureImage = (temperature) => {
+    if (temperature >= 0 && temperature < 21) {
+      return "https://kr.object.ncloudstorage.com/ncp3/ncp3/2.png";
+    } else if (temperature >= 21 && temperature < 36.5) {
+      return "https://kr.object.ncloudstorage.com/ncp3/ncp3/3.png";
+    } else if (temperature >= 36.5 && temperature < 40) {
+      return "https://kr.object.ncloudstorage.com/ncp3/ncp3/4.png";
+    } else if (temperature >= 40 && temperature < 50) {
+      return "https://kr.object.ncloudstorage.com/ncp3/ncp3/5.png";
+    } else if (temperature >= 50 && temperature < 60) {
+      return "https://kr.object.ncloudstorage.com/ncp3/ncp3/5.png";
+    } else {
+      return "https://kr.object.ncloudstorage.com/ncp3/ncp3/5.png";
+    }
+  };
+
+  const getFontColor = (temperature) => {
     if (temperature >= 0 && temperature < 21) {
       return "black";
     } else if (temperature >= 21 && temperature < 36.5) {
       return "darkblue";
     } else if (temperature >= 36.5 && temperature < 40) {
-        return "royalblue";
-    }else if (temperature >= 40 && temperature < 50) {
+      return "royalblue";
+    } else if (temperature >= 40 && temperature < 50) {
       return "green";
-    }else if (temperature >= 50 && temperature < 60) {
-        return "#f9bc28";
-    }else {
+    } else if (temperature >= 50 && temperature < 60) {
+      return "#f9bc28";
+    } else {
       return "#ff6f31";
     }
   };
 
-const getMannerTemperatureImage = (temperature) => {
-  if (temperature >= 0 && temperature < 21) {
-    return "https://kr.object.ncloudstorage.com/ncp3/ncp3/2.png";
-  } else if (temperature >= 21 && temperature < 36.5) {
-    return "https://kr.object.ncloudstorage.com/ncp3/ncp3/3.png";
-  } else if (temperature >= 36.5 && temperature < 40) {
-    return "https://kr.object.ncloudstorage.com/ncp3/ncp3/4.png";
-  } else if (temperature >= 40 && temperature < 50) {
-    return "https://kr.object.ncloudstorage.com/ncp3/ncp3/5.png";
-  } else if (temperature >= 50 && temperature < 60) {
-    return "https://kr.object.ncloudstorage.com/ncp3/ncp3/5.png";
-  } else {
-    return "https://kr.object.ncloudstorage.com/ncp3/ncp3/5.png";
-  }
-};
-
-const getFontColor = (temperature) => {
-  if (temperature >= 0 && temperature < 21) {
-    return "black";
-  } else if (temperature >= 21 && temperature < 36.5) {
-    return "darkblue";
-  } else if (temperature >= 36.5 && temperature < 40) {
-    return "royalblue";
-  } else if (temperature >= 40 && temperature < 50) {
-    return "green";
-  } else if (temperature >= 50 && temperature < 60) {
-    return "#f9bc28";
-  } else {
-    return "#ff6f31";
-  }
-};
-
-function ProfileSection({ params }) {
   return (
     <div id="profile-head">
       <div className="container">
@@ -103,7 +99,7 @@ function ProfileSection({ params }) {
                   <Link to={`/profile/${params._id}/edit`}>
                     <button className="profile-edit-button">프로필 수정</button>
                   </Link>
-                  <Link to="탈퇴하기">
+                  <Link to={`/profile/${params._id}/delete`} onClick={ deleteUserHandler }>
                     <button className="profile-delete-button">회원 탈퇴</button>
                   </Link>
                 </span>

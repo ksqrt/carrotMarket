@@ -98,16 +98,12 @@ export async function createProduct(product) {
       ).json();
     }
 
-
-
     export async function declareProduct(declareproduct) {
-
-      console.log('ProductDataController',declareproduct);
+      console.log('ProductDataController', declareproduct);
 
       await fetch(`${baseUrl}/products/declare/${declareproduct}`, {
         credentials: "include"
       })
-  
   }
 
 
