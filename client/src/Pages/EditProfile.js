@@ -34,6 +34,8 @@ function EditProfile({ history }) {
       
     }
 
+    console.log(user+ '유저 프로필 이미지');
+
     const handleSave = (e) => {
         //TODO: Rewrite this 
         e.preventDefault();
@@ -99,6 +101,8 @@ function EditProfile({ history }) {
                                     <OverlayTrigger placement="bottom"
                                         overlay={<Tooltip>Click to select a photo</Tooltip>}
                                     >
+
+
                                         <img id="avatar" src={user.avatar} alt="user-avatar"/>
                                     </OverlayTrigger>
                                 </label>
