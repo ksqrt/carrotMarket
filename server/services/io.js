@@ -80,7 +80,7 @@ function Io(server) {
       let NotificationRead = {};
       if (chatRoom.buyer && chatRoom.buyer.equals(userId)) {
         NotificationRead = { notificationMessages_buyer: 0 };
-      } else if (chatRoom.buyer && chatRoom.seller.equals(userId)) {  
+      } else if (chatRoom.seller && chatRoom.seller.equals(userId)) {  
         NotificationRead = { notificationMessages_seller: 0 };
       }
       await ChatRoom.updateOne({ _id: chatId }, { $set: NotificationRead });
