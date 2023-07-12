@@ -328,6 +328,7 @@ router.delete('/delete/:id', async (req, res) => {
 
 //신고하면 값 바꿔주는 함수 
 router.get('/declare/:declareproduct', async (req, res) => {
+    console.log("시범시범")
     try {
         await Product.updateOne({ _id: req.params.declareproduct }, { declare: true });
         res.status(200).json({ msg: "Declare" });
@@ -335,9 +336,5 @@ router.get('/declare/:declareproduct', async (req, res) => {
         res.status(500).json({ message: error.message })
     }
 });
-
-
-
-
 
 module.exports = router;

@@ -277,13 +277,10 @@ const getFontColor = (temperature) => {
     }
   };
 
-  
-
   //{params.title}: 상품 제목
   //{params.addedAt}: 업로드 날짜
   //{params.description}: 상품 설명
   //{params.createdSells}: 물품 갯수
-
 
   function sendLinkCustom() {
 
@@ -319,8 +316,6 @@ const getFontColor = (temperature) => {
       });
     }
   }//수정
-
-  console.log(params.sellerId)
 
   return (
     <div className="d-flex flex-column align-items-center">
@@ -504,7 +499,7 @@ const getFontColor = (temperature) => {
             </span>
           )}
         <div>
-          <button className='declare-button' value={params._id} onClick={declareHandler} >신고하기</button>
+          <button className='declare-button' value= {params._id } onClick={ declareHandler } >신고하기</button>
         </div>
       </div>
     </section>
