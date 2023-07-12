@@ -68,16 +68,13 @@ router.delete('/deleteuser/:id', async (req, res) => {
   
       await User.updateMany(
         { name: '이정규' },
-        { $pull: { report: { _id: userNameToDelete } } }   
+        { $pull: { report: { userId: userNameToDelete } } }   
       );
 
-    //   await User.updateOne({report:userNameToDelete}, {$unset:{userName:1}});
-
-      
 
       console.log(userNameToDelete);
   
-      await User.deleteOne({ _id: userNameToDelete });
+      await User.deleteOne({ _id: userNameToDelete});
   
       console.log('삭제완료');
       res.sendStatus(200);
