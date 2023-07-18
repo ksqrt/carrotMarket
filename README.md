@@ -48,6 +48,8 @@
     
   - 위치 공유
 
+    <img src="document/위치공유.gif" alt="위치공유" width="1000px" height="450px">
+    
     위치공유 기능은 kakao-map-api를 사용해서 구현했습니다.
     
     위치공유 기능을 개발하는 과정에서 kakao-map-api 공식문서에 나와있는 html코드를 react 함수형 컴포넌트 코드로 변경하면서 잦은 오류가 발생하였습니다.
