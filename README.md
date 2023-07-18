@@ -44,6 +44,9 @@
   - 프로필 수정 
   - 회원탈퇴
   - 어드민 페이지 무한스크롤
+ 
+  ![어드민페이지 포트폴리오사진 ](https://github.com/ksqrt/carrotMarket/assets/50074996/404de692-e23d-4ef6-8869-a9b66ce1edfa)
+
 
 * [엄태훈](https://github.com/PRESSANYKEYBOARD)
   - 버그 픽스 담당
