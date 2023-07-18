@@ -50,7 +50,7 @@
   - 회원탈퇴
   - 어드민 페이지 무한스크롤
  
-  <img src="document/어드민페이지 포트폴리오사진.png" alt="유저관리" width="300px" height="300px">
+  <img src="document/어드민페이지 포트폴리오사진 .png" alt="유저관리" width="300px" height="300px">
   
 
   1. 신고된 유저는 어드민 계정내의 report필드에 신고유저ID와 유저네임, 신고내용이 저장되게됩니다.
@@ -59,7 +59,7 @@
   4. 회원탈퇴 : 신고된 사유가 적합하다면 어드민은 회원계정을 삭제 할 수 있습니다.
      
 
- <img src="document/어드민페이지 제품관리.png" alt="제품관리" width="300px" height="300px">
+ <img src="document/어드민페이지 제품관리 .png" alt="제품관리" width="300px" height="300px">
   1. 신고된 제품은 db내의 declare 필드값이 true로 변경되게 됩니다.
   2. 제품관리 :  declare필드값이 true인 값들을 출력하게됩니다. (신고된 제품 출력)
   3. 제품 삭제하기 : 어드민은 신고된 제품을 클릭하여 상세 제품정보를 확인후 적합하지 않은 제품일시 제품을 삭제할 수 있습니다.
