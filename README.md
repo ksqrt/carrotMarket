@@ -34,7 +34,7 @@
     
   - 약속 잡기
 
-    <img src="document/약속잡기.gif" alt="약속잡기" width="1000px" height="350px">
+    <img src="document/약속잡기.gif" alt="약속잡기" width="1200px" height="450px">
     
     약속잡기 기능은 mui date-pickers 라이브러리를 사용하였습니다.
     
@@ -48,7 +48,7 @@
     
   - 위치 공유
 
-    <img src="document/위치공유.gif" alt="위치공유" width="1000px" height="450px">
+    <img src="document/위치공유.gif" alt="위치공유" width="1000px" height="350px">
     
     위치공유 기능은 kakao-map-api를 사용해서 구현했습니다.
     
