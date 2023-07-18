@@ -145,9 +145,8 @@
 | [Discord](https://discord.com/) | 실시간 채팅·음성·화면 공유 프로그램 |
     
 ## 회의록링크
-
-● [5월 16일](https://difficult-wing-0b1.notion.site/2023-05-16-eb0a51bc8326424e9d169b1948120140)<br>
-● [5월 24일](https://difficult-wing-0b1.notion.site/2023-05-24-7dd0bb8416cd49d6ac6cbeb65aaeb64b)<br>
-● [5월 26일](https://difficult-wing-0b1.notion.site/2023-05-26-d8488e96ca7e4e59b0db9a97cc9fa9bb)<br>
-● [6월 7일](https://difficult-wing-0b1.notion.site/2023-06-07-59f4a2cede2246b9b5950d9c60b7fe44?pvs=4)<br>
-● [6월 20일](https://difficult-wing-0b1.notion.site/2023-06-20-e4bc8cf84d514f98869a5949ee442853?pvs=4)<br>
+* [5월 16일](https://difficult-wing-0b1.notion.site/2023-05-16-eb0a51bc8326424e9d169b1948120140)<br>
+* [5월 24일](https://difficult-wing-0b1.notion.site/2023-05-24-7dd0bb8416cd49d6ac6cbeb65aaeb64b)<br>
+* [5월 26일](https://difficult-wing-0b1.notion.site/2023-05-26-d8488e96ca7e4e59b0db9a97cc9fa9bb)<br>
+* [6월 7일](https://difficult-wing-0b1.notion.site/2023-06-07-59f4a2cede2246b9b5950d9c60b7fe44?pvs=4)<br>
+* [6월 20일](https://difficult-wing-0b1.notion.site/2023-06-20-e4bc8cf84d514f98869a5949ee442853?pvs=4)<br>
