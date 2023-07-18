@@ -1,17 +1,23 @@
-# 회의록링크
+# Carrot Market 클론 코딩
 
-● [5월 16일](https://difficult-wing-0b1.notion.site/2023-05-16-eb0a51bc8326424e9d169b1948120140) 
+<h2>Info</h2>
+비트마켓은 환경보호와 지속 가능한 소비 문화를 더욱 확산시키기 위한 중고 거래 플랫폼입니다.
+<br>
+이를 통해 소비자들은 경제적 이점을 누리고, 관계자 간에는 직접적인 소통이 가능해집니다. 장기적인 관점에서 지구를 지키며, 경제적 이익을 창출할 수 있는 중고 거래 플랫폼 비트마켓에 많은 관심과 참여를 기대합니다.
 
-● [5월 24일](https://difficult-wing-0b1.notion.site/2023-05-24-7dd0bb8416cd49d6ac6cbeb65aaeb64b)  
+<h2>회의록링크</h2>
 
-● [5월 26일](https://difficult-wing-0b1.notion.site/2023-05-26-d8488e96ca7e4e59b0db9a97cc9fa9bb)   
+● [5월 16일](https://difficult-wing-0b1.notion.site/2023-05-16-eb0a51bc8326424e9d169b1948120140)<br>
+● [5월 24일](https://difficult-wing-0b1.notion.site/2023-05-24-7dd0bb8416cd49d6ac6cbeb65aaeb64b)<br>
+● [5월 26일](https://difficult-wing-0b1.notion.site/2023-05-26-d8488e96ca7e4e59b0db9a97cc9fa9bb)<br>
+● [6월 7일](https://difficult-wing-0b1.notion.site/2023-06-07-59f4a2cede2246b9b5950d9c60b7fe44?pvs=4)<br>
+● [6월 20일](https://difficult-wing-0b1.notion.site/2023-06-20-e4bc8cf84d514f98869a5949ee442853?pvs=4)<br>
 
-● [6월 7일](https://difficult-wing-0b1.notion.site/2023-06-07-59f4a2cede2246b9b5950d9c60b7fe44?pvs=4)
+.<br>
+.<br>
+.<br>
 
-● [6월 20일](https://difficult-wing-0b1.notion.site/2023-06-20-e4bc8cf84d514f98869a5949ee442853?pvs=4)
-
-
-![Preview](https://res.cloudinary.com/silenceiv/image/upload/v1617894482/all-for-you-mockup_dafr6c.jpg)
+<h2>Skill🛠</h2>
 
 ### :black_medium_small_square: Tools
 
@@ -20,7 +26,6 @@
 | [GitHub](https://github.com/)                                | 각자 맡은 업무를 진행하고 commit · push · merge 작업하기 위한 원격 저장소 |
 | [Jira](https://www.atlassian.com/ko/software/jira)           | Issue 관리를 위해 Git과 연동하여 사용                 |
 | [Docker](https://www.docker.com/)                            | 테스트 및 배포를 위한 컨테이너 기반 가상화 플랫폼 |
-| [Jenkins](https://www.jenkins.io/)                           | CI/CD 통합 환경 구축도구 
 | [VS Code](https://code.visualstudio.com/)                    | Frontend · Backend 구현 Tool                          |
 | [MongoDB Compass](https://www.mongodb.com/products/compass) | DataBase Tool                                         |
 | [Google Chrome](https://www.google.com/intl/ko_kr/chrome/)  | 구현한 화면을 출력하기 위한 브라우저                  |
@@ -62,48 +67,4 @@
 
 <h2>제작기간📆</h2>
 2023.05. ~ 2023.07.02
-
-# Tech Stack
-
-![MERN stack](https://res.cloudinary.com/silenceiv/image/upload/c_fill,h_205,w_512/v1617484581/mern_sakbwj.png)
-
-- MERN (MongoDB, Express.js, React, and Node.js) Solution stack;
-- [Cloudinary](https://cloudinary.com/) as a file storage cloud API;
-- [Unsplash](https://unsplash.com/) as image provider;
-- [React-Bootstrap](https://react-bootstrap.github.io/);
-- Responsive Design;
-- UX & UI;
-- Validation and error handling.
-
-# How to run 
-
-- Install [MongoDB](https://www.mongodb.com/try/download) (추가 : 몽고DB 설치 필요 X)
-
-- Navigate to server folder
-```bash
-cd server
-```
-- Install all needed packages
-```bash
-npm install
-```
-- Run the server
-```bash
-npm start
-```
-The server will run on http://localhost:5000/
-
-- Navigate to client (react) folder
-```bash
-cd client
-```
-- Install all needed packages
-```bash
-npm install
-```
-- And run the application
-```bash
-npm start
-```
-The app will run on http://localhost:3000/
 
