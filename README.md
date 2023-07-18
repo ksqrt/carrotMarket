@@ -62,6 +62,39 @@
   - 회원 정보
   - 판매중인 상품 무한스크롤
   - 상품등록
+
+* [김소라](https://github.com/ConchK)
+  - 회원가입
+  - 로그인 / 로그아웃
+  - 카카오 · 구글 로그인 API
+  - Auth 관리
+  - Email 인증 개발
+  - 유효성 검사
+
+* [한태희](https://github.com/zknight666)
+  - 타임스탬프
+  - Push 알림
+  - 이모티콘 발송
+  - 약속 잡기
+  - 위치 공유
+  - 거래 완료
+  - 무한스크롤
+  - 채팅방 나가기
+  - 신고하기
+  - URL 링크 공유 기능
+
+* [변성훈](https://github.com/sunghunaaa)
+  - 카카오 Dev 계정 Owner
+  - 카카오 API 개발
+  - 조회수 기능 개발
+  - 상품 판매 관리 
+  - .env 환경 설정
+  - VPN 개발 환경 구축
+  - MongoDB 컬렉션 초기 설계
+  - Base64, 클라우드 이미지 업로드
+  - Clova Voice
+  - 발표 시연 영상 제작
+    
 ## Skill🛠
 
 ### :black_medium_small_square: Tools
