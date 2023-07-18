@@ -48,7 +48,7 @@
     
   - 위치 공유
 
-    <img src="document/위치공유.gif" alt="위치공유" width="1000px" height="350px">
+    <img src="document/위치공유.gif" alt="위치공유" width="800px" height="350px">
     
     위치공유 기능은 kakao-map-api를 사용해서 구현했습니다.
     
