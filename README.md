@@ -13,7 +13,7 @@
 * [권용준](https://github.com/kwonyongjun9978) [실시간 채팅 기능 및 채팅 페이지 구현]
   - 타임스탬프
     
-    <img src="document/타임스탬프.gif" alt="타임스탬프" width="400px">
+    <img src="document/타임스탬프.gif" alt="타임스탬프" width="300px" height="300px">
 
     그날 하루, 처음 채팅창에 입장을 하게되면 현재 날짜가 뜰수 있게 moment-timezone이라는 라이브러리를 사용하여 타임스탬프 기능을 추가했습니다.
 
