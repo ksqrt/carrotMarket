@@ -23,15 +23,17 @@
   - URL 링크 공유 기능
   
 * [강성욱](https://github.com/ksqrt)
-  - Githu훈](https://github.com/PRESSANYKEYBOARD)
-  - 버그 픽스 담당
-  - 판매 물품 상세페이지
-  - MongoDB 환경 구축
-  - Github 병합 및 감독
-  - 물건 상세사항 작성
-  - README.md 작성
-  - Docker 설치 가이드 작성
-  - NCP 서버 가이드 작성
+  - Github 병합 및 감독  
+  - 도커 이미지 관리 
+  - 쿠버네티스 배포  
+  - 이미지서버(S3) 관리 및 설정  
+  - STT 서비스 (음성 → 텍스트 AI)  
+  - 물건 검색 기능 
+  - 카테고리 정렬 기능 
+  - 카테고리 무한스크롤 페이징 기능
+  - Header, Footer 개발
+  - 발표 PPT 작성
+  - 회의록 작성
  
 * [이정규](https://github.com/dlqhdwo1)
   - 카카오 API 개발 
