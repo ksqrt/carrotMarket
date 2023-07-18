@@ -52,7 +52,7 @@
 
 
 
-  <img src="document/어드민페이지 포트폴리오사진 .png" alt="유저관리" width="300px" height="300px">
+<img src="document/어드민페이지 포트폴리오사진 .png" alt="유저관리" width="300px" height="300px">
   
  - 신고된 유저는 어드민 계정내의 report필드에 신고유저ID와 유저네임, 신고내용이 저장되게됩니다.
  - 어드민 유저로 로그인시 어드민 페이지 화면으로 이동을 할 수 있게됩니다.
