@@ -10,7 +10,7 @@
 2023.05.12 ~ 2023.07.02
 
 ## workmate
-* [권용준](https://github.com/kwonyongjun9978)
+* [권용준](https://github.com/kwonyongjun9978) [실시간 채팅 기능 및 채팅 페이지 구현]
   - 타임스탬프
   - Push 알림
   - 이모티콘 발송
