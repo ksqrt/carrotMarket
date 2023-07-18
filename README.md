@@ -25,6 +25,10 @@
     내가 채팅을 보내면 상대방은 페이지 상단의 프로필 이미지쪽과 채팅방 목록쪽에 내가 채팅을 보낸 횟수만큼 실시간으로 알림이 뜨게 구현을 했습니다.
     
   - 이모티콘 발송
+
+    <video width="640" height="360" controls>
+        <source src="document/이모티콘.mp4" type="video/mp4">
+    </video>
     
   - 약속 잡기
     
