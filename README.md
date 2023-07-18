@@ -26,7 +26,7 @@
     
   - 이모티콘 발송
 
-    <img src="document/이모티콘2.gif" alt="이모티콘.png" width="400px" height="200px">
+    <img src="document/이모티콘2.gif" alt="이모티콘.png" width="600px" height="300px">
 
     이모티콘 같은 경우는 emoji-picker-react 라이브러리를 사용했습니다.
 
