@@ -19,6 +19,8 @@
     그날 하루, 처음 채팅창에 입장을 하게되면 현재 날짜가 뜰수 있게 moment-timezone이라는 라이브러리를 사용하여 타임스탬프 기능을 추가했습니다.
 
   - Push 알림
+
+    <img src="document/Push알림.png" alt="Push알림" width="300px" height="300px">
   - 이모티콘 발송
   - 약속 잡기
   - 위치 공유
