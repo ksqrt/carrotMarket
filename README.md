@@ -26,7 +26,11 @@
     
   - 이모티콘 발송
 
-    <img src="document/이모티콘.png" alt="이모티콘.png" width="400px" height="150px">
+    <img src="document/이모티콘.png" alt="이모티콘.png" width="400px" height="200px">
+
+    이모티콘 같은 경우는 emoji-picker-react 라이브러리를 사용했습니다.
+
+    이모티콘 버튼을 누르게 될시 채팅입력창 밑에 이모티콘 선택창이 생기면서 원하는 이모티콘을 선택해서 전송할수 있게 구현했습니다.
     
   - 약속 잡기
     
