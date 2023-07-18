@@ -34,7 +34,7 @@
     
   - 약속 잡기
 
-    <img src="document/약속잡기.gif" alt="약속잡기" width="1000px" height="550px">
+    <img src="document/약속잡기.gif" alt="약속잡기" width="1000px" height="450px">
     
     약속잡기 기능은 mui date-pickers 라이브러리를 사용하였습니다.
     
