@@ -20,7 +20,7 @@
 
   - Push 알림
 
-    <img src="document/Push알림.png" alt="Push알림" width="300px" height="300px">
+    <img src="document/Push알림1.png" alt="Push알림" width="200px" height="150px">
 
     내가 채팅을 보내면 상대방은 페이지 상단의 프로필 이미지쪽과 채팅방 목록쪽에 내가 채팅을 보낸 횟수만큼 실시간으로 알림이 뜨게 구현을 했습니다.
     
