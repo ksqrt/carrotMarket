@@ -2,12 +2,12 @@
 
 ![image01](https://github.com/PRESSANYKEYBOARD/PRESSANYKEYBOARD/assets/121652394/f6f9f596-f2d1-4c07-bcb2-768484484119)
 
-<h2>Info</h2>
+## Info
 비트마켓은 환경보호와 지속 가능한 소비 문화를 더욱 확산시키기 위한 중고 거래 플랫폼입니다.
 <br>
 이를 통해 소비자들은 경제적 이점을 누리고, 관계자 간에는 직접적인 소통이 가능해집니다. 장기적인 관점에서 지구를 지키며, 경제적 이익을 창출할 수 있는 중고 거래 플랫폼 비트마켓에 많은 관심과 참여를 기대합니다.
 
-<h2>회의록링크</h2>
+## 회의록링크
 
 ● [5월 16일](https://difficult-wing-0b1.notion.site/2023-05-16-eb0a51bc8326424e9d169b1948120140)<br>
 ● [5월 24일](https://difficult-wing-0b1.notion.site/2023-05-24-7dd0bb8416cd49d6ac6cbeb65aaeb64b)<br>
@@ -19,7 +19,7 @@
 .<br>
 .<br>
 
-<h2>Skill🛠</h2>
+## Skill🛠
 
 ### :black_medium_small_square: Tools
 
@@ -68,7 +68,90 @@
 | [Discord](https://discord.com/) | 실시간 채팅·음성·화면 공유 프로그램 |
 
 <h2>제작기간📆</h2>
-2023.05. ~ 2023.07.02
+2023.05.12 ~ 2023.07.02
 
-<h2>workmate</h2>
+## workmate
+* [ksqrt](https://github.com/ksqrt)
+  - Github 병합 및 감독
+  - 도커 이미지 관리 
+  - 쿠버네티스 배포
+  - 이미지서버(S3) 관리 및 설정
+  - STT 서비스 (음성 → 텍스트 AI)
+  - 물건 검색 기능
+  - 카테고리 정렬 기능
+  - 카테고리 무한스크롤 페이징 기능
+  - Header, Footer 개발
+  - 발표 PPT 작성
+  - 회의록 작성
 
+* [gun](https://github.com/kwonyongjun9978)
+  - 타임스탬프
+  - Push 알림
+  - 이모티콘 발송
+  - 약속 잡기
+  - 위치 공유
+  - 거래 완료
+  - 무한스크롤
+  - 채팅방 나가기
+  - 신고하기
+  - URL 링크 공유 기능
+ 
+* [sunghunaaa](https://github.com/sunghunaaa)
+  - 카카오 Dev 계정 Owner
+  - 카카오 API 개발
+  - 조회수 기능 개발
+  - 상품 판매 관리 
+  - .env 환경 설정
+  - VPN 개발 환경 구축
+  - MongoDB 컬렉션 초기 설계
+  - Base64, 클라우드 이미지 업로드
+  - Clova Voice
+  - 발표 시연 영상 제작
+ 
+* [zknight666](https://github.com/zknight666)
+  - 타임스탬프
+  - Push 알림
+  - 이모티콘 발송
+  - 약속 잡기
+  - 위치 공유
+  - 거래 완료
+  - 무한스크롤
+  - 채팅방 나가기
+  - 신고하기
+  - URL 링크 공유 기능
+ 
+* [ConchK](https://github.com/ConchK)
+  - 회원가입
+  - 로그인 / 로그아웃
+  - 카카오 · 구글 로그인 API
+  - Auth 관리
+  - Email 인증 개발
+  - 유효성 검사
+ 
+* [gkdltjdrms](https://github.com/gkdltjdrms)
+  - 상품 별 메뉴에 상품 표시
+  - 거래 후기 게시판 
+  - 당근 온도 별 디자인
+  - 매너 칭찬하기 
+  - 회원 정보
+  - 판매중인 상품 무한스크롤
+  - 상품등록
+ 
+* [PRESSANYKEYBOARD](https://github.com/PRESSANYKEYBOARD)
+  - 버그 픽스 담당
+  - 판매 물품 상세페이지
+  - MongoDB 환경 구축
+  - Github 병합 및 감독
+  - 물건 상세사항 작성
+  - README.md 작성
+  - Docker 설치 가이드 작성
+  - NCP 서버 가이드 작성
+ 
+* [dlqhdwo1](https://github.com/dlqhdwo1)
+  - 카카오 API 개발 
+  - 신고제품관리
+  - 신고유저관리
+  - 홈페이지 대시보드 관리
+  - 프로필 수정 
+  - 회원탈퇴
+  - 어드민 페이지 무한스크롤
