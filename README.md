@@ -26,9 +26,7 @@
     
   - 이모티콘 발송
 
-    <video width="640" height="360" controls>
-        <source src="document/이모티콘.mp4" type="video/mp4">
-    </video>
+    <img src="document/이모티콘.png" alt="이모티콘.png" width="400px" height="150px">
     
   - 약속 잡기
     
