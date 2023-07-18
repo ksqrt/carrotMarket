@@ -44,6 +44,24 @@
   - 회원탈퇴
   - 어드민 페이지 무한스크롤
 
+* [엄태훈](https://github.com/PRESSANYKEYBOARD)
+  - 버그 픽스 담당
+  - 판매 물품 상세페이지
+  - MongoDB 환경 구축
+  - Github 병합 및 감독
+  - 물건 상세사항 작성
+  - README.md 작성
+  - Docker 설치 가이드 작성
+  - NCP 서버 가이드 작성
+
+* [송성근](https://github.com/gkdltjdrms)
+  - 상품 별 메뉴에 상품 표시
+  - 거래 후기 게시판   
+  - 당근 온도 별 디자인
+  - 매너 칭찬하기 
+  - 회원 정보
+  - 판매중인 상품 무한스크롤
+  - 상품등록
 ## Skill🛠
 
 ### :black_medium_small_square: Tools
