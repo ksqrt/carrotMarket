@@ -50,7 +50,8 @@
   - 회원탈퇴
   - 어드민 페이지 무한스크롤
  
-   ![어드민페이지 포트폴리오사진 ](https://github.com/ksqrt/carrotMarket/assets/50074996/404de692-e23d-4ef6-8869-a9b66ce1edfa)
+  <img src="document/어드민페이지 포트폴리오사진.png" alt="유저관리" width="300px" height="300px">
+  
 
   1. 신고된 유저는 어드민 계정내의 report필드에 신고유저ID와 유저네임, 신고내용이 저장되게됩니다.
   2. 어드민 유저로 로그인시 어드민 페이지 화면으로 이동을 할 수 있게됩니다.
@@ -58,15 +59,15 @@
   4. 회원탈퇴 : 신고된 사유가 적합하다면 어드민은 회원계정을 삭제 할 수 있습니다.
      
 
-  ![어드민페이지 제품관리 ](https://github.com/ksqrt/carrotMarket/assets/50074996/ec5509ca-5210-4dbb-8e93-58851f5bfe52)
+ <img src="document/어드민페이지 제품관리.png" alt="제품관리" width="300px" height="300px">
   1. 신고된 제품은 db내의 declare 필드값이 true로 변경되게 됩니다.
   2. 제품관리 :  declare필드값이 true인 값들을 출력하게됩니다. (신고된 제품 출력)
   3. 제품 삭제하기 : 어드민은 신고된 제품을 클릭하여 상세 제품정보를 확인후 적합하지 않은 제품일시 제품을 삭제할 수 있습니다.
 
 
 
-  ![어드민 대시보드 화면](https://github.com/ksqrt/carrotMarket/assets/50074996/a5622189-bbeb-4960-a949-8e28ae77db80)
-  1.Nivo Pie라이브러리 : Nivo-pie라이브러리를 이용해 카테고리별로 제품수를 좀더 시각화 하기위해 원형모형으로 표현하였습니다 
+ <img src="document/어드민 대시보드 화면.png" alt="대시보드" width="300px" height="300px">
+  1.Nivo Pie라이브러리 : Nivo-pie라이브러리를 이용해 카테고리별로 제품수를 좀더 시각화 하기위해 원형모형으로 표현하였습니다 .
   2.Nivo Bar라이브러리 : Nivo-bar라이브러리를 이용해 카테고리별로 거래현황을 거래중은 주황색막대기 거래완료는 파란색 막대기로 표현하였습니다. 
 
 
