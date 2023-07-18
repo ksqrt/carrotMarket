@@ -98,7 +98,7 @@
 * [6월 20일](https://difficult-wing-0b1.notion.site/2023-06-20-e4bc8cf84d514f98869a5949ee442853?pvs=4)<br>
 
 ## PPT
-* [PPT](https://www.canva.com/design/DAFlqRNOHns/Vfh2agL7aMnATAE47xbCOA/editutm_content=DAFlqRNOHns&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton)
+* [PPT](https://www.canva.com/design/DAFlqRNOHns/Vfh2agL7aMnATAE47xbCOA/edit?utm_content=DAFlqRNOHns&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton)
 
 ## Setting Guide
 * [MongoDB Setting](https://drive.google.com/file/d/1iBN40hOUbFdv5njA2lWqlsLYoXYBJ4Od/view?usp=sharing)
