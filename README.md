@@ -65,9 +65,9 @@
     
   - 무한스크롤
 
-    <img src="document/무한스크롤.gif" alt="무한스크롤" width="400px" height="350px">
+    <img src="document/무한스크롤.gif" alt="무한스크롤" width="350px" height="350px">
 
-    채팅창에 무한스크롤 기능을 추가하였습니다.
+    채팅창에 무한스크롤 기능을 추가하여 이전의 채팅내용도 손쉽게 찾아볼수있는 편의성 기능을 추가하였습니다.
     
   - 채팅방 나가기
 
