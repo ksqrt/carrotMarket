@@ -12,7 +12,7 @@
 ## workmate
 * [권용준](https://github.com/kwonyongjun9978) [실시간 채팅 기능 및 채팅 페이지 구현]
   - 타임스탬프
-    
+    <img src="documet/타임스탬프.gif" alt="index" width="400px">
   - Push 알림
   - 이모티콘 발송
   - 약속 잡기
