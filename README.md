@@ -10,20 +10,7 @@
 2023.05.12 ~ 2023.07.02
 
 ## workmate
-* [ksqrt](https://github.com/ksqrt)
-  - Github 병합 및 감독
-  - 도커 이미지 관리 
-  - 쿠버네티스 배포
-  - 이미지서버(S3) 관리 및 설정
-  - STT 서비스 (음성 → 텍스트 AI)
-  - 물건 검색 기능
-  - 카테고리 정렬 기능
-  - 카테고리 무한스크롤 페이징 기능
-  - Header, Footer 개발
-  - 발표 PPT 작성
-  - 회의록 작성
-
-* [gun](https://github.com/kwonyongjun9978)
+* [권용준](https://github.com/kwonyongjun9978)
   - 타임스탬프
   - Push 알림
   - 이모티콘 발송
@@ -34,49 +21,9 @@
   - 채팅방 나가기
   - 신고하기
   - URL 링크 공유 기능
- 
-* [sunghunaaa](https://github.com/sunghunaaa)
-  - 카카오 Dev 계정 Owner
-  - 카카오 API 개발
-  - 조회수 기능 개발
-  - 상품 판매 관리 
-  - .env 환경 설정
-  - VPN 개발 환경 구축
-  - MongoDB 컬렉션 초기 설계
-  - Base64, 클라우드 이미지 업로드
-  - Clova Voice
-  - 발표 시연 영상 제작
- 
-* [zknight666](https://github.com/zknight666)
-  - 타임스탬프
-  - Push 알림
-  - 이모티콘 발송
-  - 약속 잡기
-  - 위치 공유
-  - 거래 완료
-  - 무한스크롤
-  - 채팅방 나가기
-  - 신고하기
-  - URL 링크 공유 기능
- 
-* [ConchK](https://github.com/ConchK)
-  - 회원가입
-  - 로그인 / 로그아웃
-  - 카카오 · 구글 로그인 API
-  - Auth 관리
-  - Email 인증 개발
-  - 유효성 검사
- 
-* [gkdltjdrms](https://github.com/gkdltjdrms)
-  - 상품 별 메뉴에 상품 표시
-  - 거래 후기 게시판 
-  - 당근 온도 별 디자인
-  - 매너 칭찬하기 
-  - 회원 정보
-  - 판매중인 상품 무한스크롤
-  - 상품등록
- 
-* [PRESSANYKEYBOARD](https://github.com/PRESSANYKEYBOARD)
+  
+* [강성욱](https://github.com/ksqrt)
+  - Githu훈](https://github.com/PRESSANYKEYBOARD)
   - 버그 픽스 담당
   - 판매 물품 상세페이지
   - MongoDB 환경 구축
@@ -86,7 +33,7 @@
   - Docker 설치 가이드 작성
   - NCP 서버 가이드 작성
  
-* [dlqhdwo1](https://github.com/dlqhdwo1)
+* [이정규](https://github.com/dlqhdwo1)
   - 카카오 API 개발 
   - 신고제품관리
   - 신고유저관리
