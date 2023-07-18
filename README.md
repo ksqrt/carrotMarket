@@ -81,7 +81,7 @@
     
   - 신고하기
 
-    <img src="document/신고하기.gif" alt="신고하기" width="600px" height="300px">
+    <img src="document/신고하기.gif" alt="신고하기" width="450px" height="250px">
     
     신고하기 버튼을 클릭하면 모달창으로 신고 내용을 입력할수 있는 텍스트 입력창이 뜨게 됩니다.
     
