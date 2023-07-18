@@ -11,6 +11,7 @@
 
 ## workmate
 * [권용준](https://github.com/kwonyongjun9978) [실시간 채팅 기능 및 채팅 페이지 구현]
+  ### 중고 거래 플랫폼의 특성상 중요한 특징을 꼽아보자면 판매자와 구매자간의 원활한 의사소통이라는 생각이든다...
   - 타임스탬프
     
     <img src="document/타임스탬프.gif" alt="타임스탬프" width="300px" height="300px">
