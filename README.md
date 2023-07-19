@@ -57,6 +57,19 @@
 | [반디캠](https://www.bandicam.co.kr/) | 동영상 화면 캡처 제작을 위한 녹화 프로그램 |
 | [Discord](https://discord.com/) | 실시간 채팅·음성·화면 공유 프로그램 |
 
+## 회의록링크
+* [5월 16일](https://difficult-wing-0b1.notion.site/2023-05-16-eb0a51bc8326424e9d169b1948120140)<br>
+* [5월 24일](https://difficult-wing-0b1.notion.site/2023-05-24-7dd0bb8416cd49d6ac6cbeb65aaeb64b)<br>
+* [5월 26일](https://difficult-wing-0b1.notion.site/2023-05-26-d8488e96ca7e4e59b0db9a97cc9fa9bb)<br>
+* [6월 7일](https://difficult-wing-0b1.notion.site/2023-06-07-59f4a2cede2246b9b5950d9c60b7fe44?pvs=4)<br>
+* [6월 20일](https://difficult-wing-0b1.notion.site/2023-06-20-e4bc8cf84d514f98869a5949ee442853?pvs=4)<br>
+
+## PPT
+* [PPT](https://www.canva.com/design/DAFlqRNOHns/Vfh2agL7aMnATAE47xbCOA/edit?utm_content=DAFlqRNOHns&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton)
+
+## Setting Guide
+* [MongoDB Setting](https://drive.google.com/file/d/1iBN40hOUbFdv5njA2lWqlsLYoXYBJ4Od/view?usp=sharing)
+* [Docker Setting](https://drive.google.com/file/d/1zWK79267pngBbFLRd9a2W_c8-N57ZrBP/view?usp=sharing)
 
 ## workmate
 * [권용준](https://github.com/kwonyongjun9978) [실시간 채팅 기능 및 채팅 페이지 구현]
@@ -239,18 +252,3 @@
   - Base64, 클라우드 이미지 업로드
   - Clova Voice
   - 발표 시연 영상 제작
-    
-    
-## 회의록링크
-* [5월 16일](https://difficult-wing-0b1.notion.site/2023-05-16-eb0a51bc8326424e9d169b1948120140)<br>
-* [5월 24일](https://difficult-wing-0b1.notion.site/2023-05-24-7dd0bb8416cd49d6ac6cbeb65aaeb64b)<br>
-* [5월 26일](https://difficult-wing-0b1.notion.site/2023-05-26-d8488e96ca7e4e59b0db9a97cc9fa9bb)<br>
-* [6월 7일](https://difficult-wing-0b1.notion.site/2023-06-07-59f4a2cede2246b9b5950d9c60b7fe44?pvs=4)<br>
-* [6월 20일](https://difficult-wing-0b1.notion.site/2023-06-20-e4bc8cf84d514f98869a5949ee442853?pvs=4)<br>
-
-## PPT
-* [PPT](https://www.canva.com/design/DAFlqRNOHns/Vfh2agL7aMnATAE47xbCOA/edit?utm_content=DAFlqRNOHns&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton)
-
-## Setting Guide
-* [MongoDB Setting](https://drive.google.com/file/d/1iBN40hOUbFdv5njA2lWqlsLYoXYBJ4Od/view?usp=sharing)
-* [Docker Setting](https://drive.google.com/file/d/1zWK79267pngBbFLRd9a2W_c8-N57ZrBP/view?usp=sharing)
